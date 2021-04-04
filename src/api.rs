@@ -19,15 +19,11 @@ impl API {
     pub async fn get_updates(&self, params: GetUpdatesParams) -> Result<(), reqwest::Error> {
         let url = format!("{}/{}", self.api_url, "getUpdates");
 
-        let result = Client::new()
-            .post(&url)
-            .json(&params)
-            .send()
-            .await?
-            .json()
-            .await?;
-
-        eprintln!("{:?}", result);
+        eprintln!(
+            "{:?}",
+            Client::new().post(&url).json(&params).send().await? // .json()
+                                                                 // .await?
+        );
 
         Ok(())
     }
