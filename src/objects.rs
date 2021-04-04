@@ -95,7 +95,7 @@ pub struct Chat {
 pub struct Message {
     message_id: isize,
     from: Option<User>,
-    sender_chat: Option<Box<Chat>>,
+    sender_chat: Option<Chat>,
     date: isize,
     chat: Chat,
     forward_from: Option<User>,
@@ -1156,60 +1156,116 @@ impl Update {
         }
     }
 
-    pub fn update_id(&mut self, update_id: isize) {
+    pub fn set_update_id(&mut self, update_id: isize) {
         self.update_id = update_id;
     }
 
-    pub fn message(&mut self, message: Option<Message>) {
+    pub fn set_message(&mut self, message: Option<Message>) {
         self.message = message;
     }
 
-    pub fn edited_message(&mut self, edited_message: Option<Message>) {
+    pub fn set_edited_message(&mut self, edited_message: Option<Message>) {
         self.edited_message = edited_message;
     }
 
-    pub fn channel_post(&mut self, channel_post: Option<Message>) {
+    pub fn set_channel_post(&mut self, channel_post: Option<Message>) {
         self.channel_post = channel_post;
     }
 
-    pub fn edited_channel_post(&mut self, edited_channel_post: Option<Message>) {
+    pub fn set_edited_channel_post(&mut self, edited_channel_post: Option<Message>) {
         self.edited_channel_post = edited_channel_post;
     }
 
-    pub fn inline_query(&mut self, inline_query: Option<InlineQuery>) {
+    pub fn set_inline_query(&mut self, inline_query: Option<InlineQuery>) {
         self.inline_query = inline_query;
     }
 
-    pub fn chosen_inline_result(&mut self, chosen_inline_result: Option<ChosenInlineResult>) {
+    pub fn set_chosen_inline_result(&mut self, chosen_inline_result: Option<ChosenInlineResult>) {
         self.chosen_inline_result = chosen_inline_result;
     }
 
-    pub fn callback_query(&mut self, callback_query: Option<CallbackQuery>) {
+    pub fn set_callback_query(&mut self, callback_query: Option<CallbackQuery>) {
         self.callback_query = callback_query;
     }
 
-    pub fn shipping_query(&mut self, shipping_query: Option<ShippingQuery>) {
+    pub fn set_shipping_query(&mut self, shipping_query: Option<ShippingQuery>) {
         self.shipping_query = shipping_query;
     }
 
-    pub fn pre_checkout_query(&mut self, pre_checkout_query: Option<PreCheckoutQuery>) {
+    pub fn set_pre_checkout_query(&mut self, pre_checkout_query: Option<PreCheckoutQuery>) {
         self.pre_checkout_query = pre_checkout_query;
     }
 
-    pub fn poll(&mut self, poll: Option<Poll>) {
+    pub fn set_poll(&mut self, poll: Option<Poll>) {
         self.poll = poll;
     }
 
-    pub fn poll_answer(&mut self, poll_answer: Option<PollAnswer>) {
+    pub fn set_poll_answer(&mut self, poll_answer: Option<PollAnswer>) {
         self.poll_answer = poll_answer;
     }
 
-    pub fn my_chat_member(&mut self, my_chat_member: Option<ChatMemberUpdated>) {
+    pub fn set_my_chat_member(&mut self, my_chat_member: Option<ChatMemberUpdated>) {
         self.my_chat_member = my_chat_member;
     }
 
-    pub fn chat_member(&mut self, chat_member: Option<ChatMemberUpdated>) {
+    pub fn set_chat_member(&mut self, chat_member: Option<ChatMemberUpdated>) {
         self.chat_member = chat_member;
+    }
+
+    pub fn update_id(&self) -> isize {
+        self.update_id
+    }
+
+    pub fn message(&self) -> Option<Message> {
+        self.message.clone()
+    }
+
+    pub fn edited_message(&self) -> Option<Message> {
+        self.edited_message.clone()
+    }
+
+    pub fn channel_post(&self) -> Option<Message> {
+        self.channel_post.clone()
+    }
+
+    pub fn edited_channel_post(&self) -> Option<Message> {
+        self.edited_channel_post.clone()
+    }
+
+    pub fn inline_query(&self) -> Option<InlineQuery> {
+        self.inline_query.clone()
+    }
+
+    pub fn chosen_inline_result(&self) -> Option<ChosenInlineResult> {
+        self.chosen_inline_result.clone()
+    }
+
+    pub fn callback_query(&self) -> Option<CallbackQuery> {
+        self.callback_query.clone()
+    }
+
+    pub fn shipping_query(&self) -> Option<ShippingQuery> {
+        self.shipping_query.clone()
+    }
+
+    pub fn pre_checkout_query(&self) -> Option<PreCheckoutQuery> {
+        self.pre_checkout_query.clone()
+    }
+
+    pub fn poll(&self) -> Option<Poll> {
+        self.poll.clone()
+    }
+
+    pub fn poll_answer(&self) -> Option<PollAnswer> {
+        self.poll_answer.clone()
+    }
+
+    pub fn my_chat_member(&self) -> Option<ChatMemberUpdated> {
+        self.my_chat_member.clone()
+    }
+
+    pub fn chat_member(&self) -> Option<ChatMemberUpdated> {
+        self.chat_member.clone()
     }
 }
 
@@ -1227,36 +1283,68 @@ impl WebhookInfo {
         }
     }
 
-    pub fn url(&mut self, url: String) {
+    pub fn set_url(&mut self, url: String) {
         self.url = url;
     }
 
-    pub fn has_custom_certificate(&mut self, has_custom_certificate: bool) {
+    pub fn set_has_custom_certificate(&mut self, has_custom_certificate: bool) {
         self.has_custom_certificate = has_custom_certificate;
     }
 
-    pub fn pending_update_count(&mut self, pending_update_count: isize) {
+    pub fn set_pending_update_count(&mut self, pending_update_count: isize) {
         self.pending_update_count = pending_update_count;
     }
 
-    pub fn ip_address(&mut self, ip_address: Option<String>) {
+    pub fn set_ip_address(&mut self, ip_address: Option<String>) {
         self.ip_address = ip_address;
     }
 
-    pub fn last_error_date(&mut self, last_error_date: Option<isize>) {
+    pub fn set_last_error_date(&mut self, last_error_date: Option<isize>) {
         self.last_error_date = last_error_date;
     }
 
-    pub fn last_error_message(&mut self, last_error_message: Option<String>) {
+    pub fn set_last_error_message(&mut self, last_error_message: Option<String>) {
         self.last_error_message = last_error_message;
     }
 
-    pub fn max_connections(&mut self, max_connections: Option<isize>) {
+    pub fn set_max_connections(&mut self, max_connections: Option<isize>) {
         self.max_connections = max_connections;
     }
 
-    pub fn allowed_updates(&mut self, allowed_updates: Option<Vec<String>>) {
+    pub fn set_allowed_updates(&mut self, allowed_updates: Option<Vec<String>>) {
         self.allowed_updates = allowed_updates;
+    }
+
+    pub fn url(&self) -> String {
+        self.url.clone()
+    }
+
+    pub fn has_custom_certificate(&self) -> bool {
+        self.has_custom_certificate
+    }
+
+    pub fn pending_update_count(&self) -> isize {
+        self.pending_update_count
+    }
+
+    pub fn ip_address(&self) -> Option<String> {
+        self.ip_address.clone()
+    }
+
+    pub fn last_error_date(&self) -> Option<isize> {
+        self.last_error_date.clone()
+    }
+
+    pub fn last_error_message(&self) -> Option<String> {
+        self.last_error_message.clone()
+    }
+
+    pub fn max_connections(&self) -> Option<isize> {
+        self.max_connections.clone()
+    }
+
+    pub fn allowed_updates(&self) -> Option<Vec<String>> {
+        self.allowed_updates.clone()
     }
 }
 
@@ -1275,40 +1363,76 @@ impl User {
         }
     }
 
-    pub fn id(&mut self, id: isize) {
+    pub fn set_id(&mut self, id: isize) {
         self.id = id;
     }
 
-    pub fn is_bot(&mut self, is_bot: bool) {
+    pub fn set_is_bot(&mut self, is_bot: bool) {
         self.is_bot = is_bot;
     }
 
-    pub fn first_name(&mut self, first_name: String) {
+    pub fn set_first_name(&mut self, first_name: String) {
         self.first_name = first_name;
     }
 
-    pub fn last_name(&mut self, last_name: Option<String>) {
+    pub fn set_last_name(&mut self, last_name: Option<String>) {
         self.last_name = last_name;
     }
 
-    pub fn username(&mut self, username: Option<String>) {
+    pub fn set_username(&mut self, username: Option<String>) {
         self.username = username;
     }
 
-    pub fn language_code(&mut self, language_code: Option<String>) {
+    pub fn set_language_code(&mut self, language_code: Option<String>) {
         self.language_code = language_code;
     }
 
-    pub fn can_join_groups(&mut self, can_join_groups: Option<bool>) {
+    pub fn set_can_join_groups(&mut self, can_join_groups: Option<bool>) {
         self.can_join_groups = can_join_groups;
     }
 
-    pub fn can_read_all_group_messages(&mut self, can_read_all_group_messages: Option<bool>) {
+    pub fn set_can_read_all_group_messages(&mut self, can_read_all_group_messages: Option<bool>) {
         self.can_read_all_group_messages = can_read_all_group_messages;
     }
 
-    pub fn supports_inline_queries(&mut self, supports_inline_queries: Option<bool>) {
+    pub fn set_supports_inline_queries(&mut self, supports_inline_queries: Option<bool>) {
         self.supports_inline_queries = supports_inline_queries;
+    }
+
+    pub fn id(&self) -> isize {
+        self.id
+    }
+
+    pub fn is_bot(&self) -> bool {
+        self.is_bot
+    }
+
+    pub fn first_name(&self) -> String {
+        self.first_name.clone()
+    }
+
+    pub fn last_name(&self) -> Option<String> {
+        self.last_name.clone()
+    }
+
+    pub fn username(&self) -> Option<String> {
+        self.username.clone()
+    }
+
+    pub fn language_code(&self) -> Option<String> {
+        self.language_code.clone()
+    }
+
+    pub fn can_join_groups(&self) -> Option<bool> {
+        self.can_join_groups.clone()
+    }
+
+    pub fn can_read_all_group_messages(&self) -> Option<bool> {
+        self.can_read_all_group_messages.clone()
+    }
+
+    pub fn supports_inline_queries(&self) -> Option<bool> {
+        self.supports_inline_queries.clone()
     }
 }
 
@@ -1336,76 +1460,148 @@ impl Chat {
         }
     }
 
-    pub fn id(&mut self, id: isize) {
+    pub fn set_id(&mut self, id: isize) {
         self.id = id;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn username(&mut self, username: Option<String>) {
+    pub fn set_username(&mut self, username: Option<String>) {
         self.username = username;
     }
 
-    pub fn first_name(&mut self, first_name: Option<String>) {
+    pub fn set_first_name(&mut self, first_name: Option<String>) {
         self.first_name = first_name;
     }
 
-    pub fn last_name(&mut self, last_name: Option<String>) {
+    pub fn set_last_name(&mut self, last_name: Option<String>) {
         self.last_name = last_name;
     }
 
-    pub fn photo(&mut self, photo: Option<ChatPhoto>) {
+    pub fn set_photo(&mut self, photo: Option<ChatPhoto>) {
         self.photo = photo;
     }
 
-    pub fn bio(&mut self, bio: Option<String>) {
+    pub fn set_bio(&mut self, bio: Option<String>) {
         self.bio = bio;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn invite_link(&mut self, invite_link: Option<String>) {
+    pub fn set_invite_link(&mut self, invite_link: Option<String>) {
         self.invite_link = invite_link;
     }
 
-    pub fn pinned_message(&mut self, pinned_message: Option<Box<Message>>) {
+    pub fn set_pinned_message(&mut self, pinned_message: Option<Box<Message>>) {
         self.pinned_message = pinned_message;
     }
 
-    pub fn permissions(&mut self, permissions: Option<ChatPermissions>) {
+    pub fn set_permissions(&mut self, permissions: Option<ChatPermissions>) {
         self.permissions = permissions;
     }
 
-    pub fn slow_mode_delay(&mut self, slow_mode_delay: Option<isize>) {
+    pub fn set_slow_mode_delay(&mut self, slow_mode_delay: Option<isize>) {
         self.slow_mode_delay = slow_mode_delay;
     }
 
-    pub fn message_auto_delete_time(&mut self, message_auto_delete_time: Option<isize>) {
+    pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: Option<isize>) {
         self.message_auto_delete_time = message_auto_delete_time;
     }
 
-    pub fn sticker_set_name(&mut self, sticker_set_name: Option<String>) {
+    pub fn set_sticker_set_name(&mut self, sticker_set_name: Option<String>) {
         self.sticker_set_name = sticker_set_name;
     }
 
-    pub fn can_set_sticker_set(&mut self, can_set_sticker_set: Option<bool>) {
+    pub fn set_can_set_sticker_set(&mut self, can_set_sticker_set: Option<bool>) {
         self.can_set_sticker_set = can_set_sticker_set;
     }
 
-    pub fn linked_chat_id(&mut self, linked_chat_id: Option<isize>) {
+    pub fn set_linked_chat_id(&mut self, linked_chat_id: Option<isize>) {
         self.linked_chat_id = linked_chat_id;
     }
 
-    pub fn location(&mut self, location: Option<ChatLocation>) {
+    pub fn set_location(&mut self, location: Option<ChatLocation>) {
         self.location = location;
+    }
+
+    pub fn id(&self) -> isize {
+        self.id
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn username(&self) -> Option<String> {
+        self.username.clone()
+    }
+
+    pub fn first_name(&self) -> Option<String> {
+        self.first_name.clone()
+    }
+
+    pub fn last_name(&self) -> Option<String> {
+        self.last_name.clone()
+    }
+
+    pub fn photo(&self) -> Option<ChatPhoto> {
+        self.photo.clone()
+    }
+
+    pub fn bio(&self) -> Option<String> {
+        self.bio.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn invite_link(&self) -> Option<String> {
+        self.invite_link.clone()
+    }
+
+    pub fn pinned_message(&self) -> Option<Box<Message>> {
+        self.pinned_message.clone()
+    }
+
+    pub fn permissions(&self) -> Option<ChatPermissions> {
+        self.permissions.clone()
+    }
+
+    pub fn slow_mode_delay(&self) -> Option<isize> {
+        self.slow_mode_delay.clone()
+    }
+
+    pub fn message_auto_delete_time(&self) -> Option<isize> {
+        self.message_auto_delete_time.clone()
+    }
+
+    pub fn sticker_set_name(&self) -> Option<String> {
+        self.sticker_set_name.clone()
+    }
+
+    pub fn can_set_sticker_set(&self) -> Option<bool> {
+        self.can_set_sticker_set.clone()
+    }
+
+    pub fn linked_chat_id(&self) -> Option<isize> {
+        self.linked_chat_id.clone()
+    }
+
+    pub fn location(&self) -> Option<ChatLocation> {
+        self.location.clone()
     }
 }
 
@@ -1470,233 +1666,453 @@ impl Message {
         }
     }
 
-    pub fn message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: isize) {
         self.message_id = message_id;
     }
 
-    pub fn date(&mut self, date: isize) {
+    pub fn set_date(&mut self, date: isize) {
         self.date = date;
     }
 
-    pub fn chat(&mut self, chat: Chat) {
+    pub fn set_chat(&mut self, chat: Chat) {
         self.chat = chat;
     }
 
-    pub fn from(&mut self, from: Option<User>) {
+    pub fn set_from(&mut self, from: Option<User>) {
         self.from = from;
     }
 
-    pub fn sender_chat(&mut self, sender_chat: Option<Box<Chat>>) {
+    pub fn set_sender_chat(&mut self, sender_chat: Option<Chat>) {
         self.sender_chat = sender_chat;
     }
 
-    pub fn forward_from(&mut self, forward_from: Option<User>) {
+    pub fn set_forward_from(&mut self, forward_from: Option<User>) {
         self.forward_from = forward_from;
     }
 
-    pub fn forward_from_chat(&mut self, forward_from_chat: Option<Chat>) {
+    pub fn set_forward_from_chat(&mut self, forward_from_chat: Option<Chat>) {
         self.forward_from_chat = forward_from_chat;
     }
 
-    pub fn forward_from_message_id(&mut self, forward_from_message_id: Option<isize>) {
+    pub fn set_forward_from_message_id(&mut self, forward_from_message_id: Option<isize>) {
         self.forward_from_message_id = forward_from_message_id;
     }
 
-    pub fn forward_signature(&mut self, forward_signature: Option<String>) {
+    pub fn set_forward_signature(&mut self, forward_signature: Option<String>) {
         self.forward_signature = forward_signature;
     }
 
-    pub fn forward_sender_name(&mut self, forward_sender_name: Option<String>) {
+    pub fn set_forward_sender_name(&mut self, forward_sender_name: Option<String>) {
         self.forward_sender_name = forward_sender_name;
     }
 
-    pub fn forward_date(&mut self, forward_date: Option<isize>) {
+    pub fn set_forward_date(&mut self, forward_date: Option<isize>) {
         self.forward_date = forward_date;
     }
 
-    pub fn reply_to_message(&mut self, reply_to_message: Option<Box<Message>>) {
+    pub fn set_reply_to_message(&mut self, reply_to_message: Option<Box<Message>>) {
         self.reply_to_message = reply_to_message;
     }
 
-    pub fn via_bot(&mut self, via_bot: Option<User>) {
+    pub fn set_via_bot(&mut self, via_bot: Option<User>) {
         self.via_bot = via_bot;
     }
 
-    pub fn edit_date(&mut self, edit_date: Option<isize>) {
+    pub fn set_edit_date(&mut self, edit_date: Option<isize>) {
         self.edit_date = edit_date;
     }
 
-    pub fn media_group_id(&mut self, media_group_id: Option<String>) {
+    pub fn set_media_group_id(&mut self, media_group_id: Option<String>) {
         self.media_group_id = media_group_id;
     }
 
-    pub fn author_signature(&mut self, author_signature: Option<String>) {
+    pub fn set_author_signature(&mut self, author_signature: Option<String>) {
         self.author_signature = author_signature;
     }
 
-    pub fn text(&mut self, text: Option<String>) {
+    pub fn set_text(&mut self, text: Option<String>) {
         self.text = text;
     }
 
-    pub fn entities(&mut self, entities: Option<Vec<MessageEntity>>) {
+    pub fn set_entities(&mut self, entities: Option<Vec<MessageEntity>>) {
         self.entities = entities;
     }
 
-    pub fn animation(&mut self, animation: Option<Animation>) {
+    pub fn set_animation(&mut self, animation: Option<Animation>) {
         self.animation = animation;
     }
 
-    pub fn audio(&mut self, audio: Option<Audio>) {
+    pub fn set_audio(&mut self, audio: Option<Audio>) {
         self.audio = audio;
     }
 
-    pub fn document(&mut self, document: Option<Document>) {
+    pub fn set_document(&mut self, document: Option<Document>) {
         self.document = document;
     }
 
-    pub fn photo(&mut self, photo: Option<Vec<PhotoSize>>) {
+    pub fn set_photo(&mut self, photo: Option<Vec<PhotoSize>>) {
         self.photo = photo;
     }
 
-    pub fn sticker(&mut self, sticker: Option<Sticker>) {
+    pub fn set_sticker(&mut self, sticker: Option<Sticker>) {
         self.sticker = sticker;
     }
 
-    pub fn video(&mut self, video: Option<Video>) {
+    pub fn set_video(&mut self, video: Option<Video>) {
         self.video = video;
     }
 
-    pub fn video_note(&mut self, video_note: Option<VideoNote>) {
+    pub fn set_video_note(&mut self, video_note: Option<VideoNote>) {
         self.video_note = video_note;
     }
 
-    pub fn voice(&mut self, voice: Option<Voice>) {
+    pub fn set_voice(&mut self, voice: Option<Voice>) {
         self.voice = voice;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn contact(&mut self, contact: Option<Contact>) {
+    pub fn set_contact(&mut self, contact: Option<Contact>) {
         self.contact = contact;
     }
 
-    pub fn dice(&mut self, dice: Option<Dice>) {
+    pub fn set_dice(&mut self, dice: Option<Dice>) {
         self.dice = dice;
     }
 
-    pub fn game(&mut self, game: Option<Game>) {
+    pub fn set_game(&mut self, game: Option<Game>) {
         self.game = game;
     }
 
-    pub fn poll(&mut self, poll: Option<Poll>) {
+    pub fn set_poll(&mut self, poll: Option<Poll>) {
         self.poll = poll;
     }
 
-    pub fn venue(&mut self, venue: Option<Venue>) {
+    pub fn set_venue(&mut self, venue: Option<Venue>) {
         self.venue = venue;
     }
 
-    pub fn location(&mut self, location: Option<Location>) {
+    pub fn set_location(&mut self, location: Option<Location>) {
         self.location = location;
     }
 
-    pub fn new_chat_members(&mut self, new_chat_members: Option<Vec<User>>) {
+    pub fn set_new_chat_members(&mut self, new_chat_members: Option<Vec<User>>) {
         self.new_chat_members = new_chat_members;
     }
 
-    pub fn left_chat_member(&mut self, left_chat_member: Option<User>) {
+    pub fn set_left_chat_member(&mut self, left_chat_member: Option<User>) {
         self.left_chat_member = left_chat_member;
     }
 
-    pub fn new_chat_title(&mut self, new_chat_title: Option<String>) {
+    pub fn set_new_chat_title(&mut self, new_chat_title: Option<String>) {
         self.new_chat_title = new_chat_title;
     }
 
-    pub fn new_chat_photo(&mut self, new_chat_photo: Option<Vec<PhotoSize>>) {
+    pub fn set_new_chat_photo(&mut self, new_chat_photo: Option<Vec<PhotoSize>>) {
         self.new_chat_photo = new_chat_photo;
     }
 
-    pub fn delete_chat_photo(&mut self, delete_chat_photo: Option<bool>) {
+    pub fn set_delete_chat_photo(&mut self, delete_chat_photo: Option<bool>) {
         self.delete_chat_photo = delete_chat_photo;
     }
 
-    pub fn group_chat_created(&mut self, group_chat_created: Option<bool>) {
+    pub fn set_group_chat_created(&mut self, group_chat_created: Option<bool>) {
         self.group_chat_created = group_chat_created;
     }
 
-    pub fn supergroup_chat_created(&mut self, supergroup_chat_created: Option<bool>) {
+    pub fn set_supergroup_chat_created(&mut self, supergroup_chat_created: Option<bool>) {
         self.supergroup_chat_created = supergroup_chat_created;
     }
 
-    pub fn channel_chat_created(&mut self, channel_chat_created: Option<bool>) {
+    pub fn set_channel_chat_created(&mut self, channel_chat_created: Option<bool>) {
         self.channel_chat_created = channel_chat_created;
     }
 
-    pub fn message_auto_delete_timer_changed(
+    pub fn set_message_auto_delete_timer_changed(
         &mut self,
         message_auto_delete_timer_changed: Option<MessageAutoDeleteTimerChanged>,
     ) {
         self.message_auto_delete_timer_changed = message_auto_delete_timer_changed;
     }
 
-    pub fn migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<isize>) {
+    pub fn set_migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<isize>) {
         self.migrate_to_chat_id = migrate_to_chat_id;
     }
 
-    pub fn migrate_from_chat_id(&mut self, migrate_from_chat_id: Option<isize>) {
+    pub fn set_migrate_from_chat_id(&mut self, migrate_from_chat_id: Option<isize>) {
         self.migrate_from_chat_id = migrate_from_chat_id;
     }
 
-    pub fn pinned_message(&mut self, pinned_message: Option<Box<Message>>) {
+    pub fn set_pinned_message(&mut self, pinned_message: Option<Box<Message>>) {
         self.pinned_message = pinned_message;
     }
 
-    pub fn invoice(&mut self, invoice: Option<Invoice>) {
+    pub fn set_invoice(&mut self, invoice: Option<Invoice>) {
         self.invoice = invoice;
     }
 
-    pub fn successful_payment(&mut self, successful_payment: Option<SuccessfulPayment>) {
+    pub fn set_successful_payment(&mut self, successful_payment: Option<SuccessfulPayment>) {
         self.successful_payment = successful_payment;
     }
 
-    pub fn connected_website(&mut self, connected_website: Option<String>) {
+    pub fn set_connected_website(&mut self, connected_website: Option<String>) {
         self.connected_website = connected_website;
     }
 
-    pub fn passport_data(&mut self, passport_data: Option<PassportData>) {
+    pub fn set_passport_data(&mut self, passport_data: Option<PassportData>) {
         self.passport_data = passport_data;
     }
 
-    pub fn proximity_alert_triggered(
+    pub fn set_proximity_alert_triggered(
         &mut self,
         proximity_alert_triggered: Option<ProximityAlertTriggered>,
     ) {
         self.proximity_alert_triggered = proximity_alert_triggered;
     }
 
-    pub fn voice_chat_started(&mut self, voice_chat_started: Option<VoiceChatStarted>) {
+    pub fn set_voice_chat_started(&mut self, voice_chat_started: Option<VoiceChatStarted>) {
         self.voice_chat_started = voice_chat_started;
     }
 
-    pub fn voice_chat_ended(&mut self, voice_chat_ended: Option<VoiceChatEnded>) {
+    pub fn set_voice_chat_ended(&mut self, voice_chat_ended: Option<VoiceChatEnded>) {
         self.voice_chat_ended = voice_chat_ended;
     }
 
-    pub fn voice_chat_participants_invited(
+    pub fn set_voice_chat_participants_invited(
         &mut self,
         voice_chat_participants_invited: Option<VoiceChatParticipantsInvited>,
     ) {
         self.voice_chat_participants_invited = voice_chat_participants_invited;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
+    }
+
+    pub fn message_id(&self) -> isize {
+        self.message_id
+    }
+
+    pub fn date(&self) -> isize {
+        self.date
+    }
+
+    pub fn chat(&self) -> Chat {
+        self.chat.clone()
+    }
+
+    pub fn from(&self) -> Option<User> {
+        self.from.clone()
+    }
+
+    pub fn sender_chat(&self) -> Option<Chat> {
+        self.sender_chat.clone()
+    }
+
+    pub fn forward_from(&self) -> Option<User> {
+        self.forward_from.clone()
+    }
+
+    pub fn forward_from_chat(&self) -> Option<Chat> {
+        self.forward_from_chat.clone()
+    }
+
+    pub fn forward_from_message_id(&self) -> Option<isize> {
+        self.forward_from_message_id.clone()
+    }
+
+    pub fn forward_signature(&self) -> Option<String> {
+        self.forward_signature.clone()
+    }
+
+    pub fn forward_sender_name(&self) -> Option<String> {
+        self.forward_sender_name.clone()
+    }
+
+    pub fn forward_date(&self) -> Option<isize> {
+        self.forward_date.clone()
+    }
+
+    pub fn reply_to_message(&self) -> Option<Box<Message>> {
+        self.reply_to_message.clone()
+    }
+
+    pub fn via_bot(&self) -> Option<User> {
+        self.via_bot.clone()
+    }
+
+    pub fn edit_date(&self) -> Option<isize> {
+        self.edit_date.clone()
+    }
+
+    pub fn media_group_id(&self) -> Option<String> {
+        self.media_group_id.clone()
+    }
+
+    pub fn author_signature(&self) -> Option<String> {
+        self.author_signature.clone()
+    }
+
+    pub fn text(&self) -> Option<String> {
+        self.text.clone()
+    }
+
+    pub fn entities(&self) -> Option<Vec<MessageEntity>> {
+        self.entities.clone()
+    }
+
+    pub fn animation(&self) -> Option<Animation> {
+        self.animation.clone()
+    }
+
+    pub fn audio(&self) -> Option<Audio> {
+        self.audio.clone()
+    }
+
+    pub fn document(&self) -> Option<Document> {
+        self.document.clone()
+    }
+
+    pub fn photo(&self) -> Option<Vec<PhotoSize>> {
+        self.photo.clone()
+    }
+
+    pub fn sticker(&self) -> Option<Sticker> {
+        self.sticker.clone()
+    }
+
+    pub fn video(&self) -> Option<Video> {
+        self.video.clone()
+    }
+
+    pub fn video_note(&self) -> Option<VideoNote> {
+        self.video_note.clone()
+    }
+
+    pub fn voice(&self) -> Option<Voice> {
+        self.voice.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn contact(&self) -> Option<Contact> {
+        self.contact.clone()
+    }
+
+    pub fn dice(&self) -> Option<Dice> {
+        self.dice.clone()
+    }
+
+    pub fn game(&self) -> Option<Game> {
+        self.game.clone()
+    }
+
+    pub fn poll(&self) -> Option<Poll> {
+        self.poll.clone()
+    }
+
+    pub fn venue(&self) -> Option<Venue> {
+        self.venue.clone()
+    }
+
+    pub fn location(&self) -> Option<Location> {
+        self.location.clone()
+    }
+
+    pub fn new_chat_members(&self) -> Option<Vec<User>> {
+        self.new_chat_members.clone()
+    }
+
+    pub fn left_chat_member(&self) -> Option<User> {
+        self.left_chat_member.clone()
+    }
+
+    pub fn new_chat_title(&self) -> Option<String> {
+        self.new_chat_title.clone()
+    }
+
+    pub fn new_chat_photo(&self) -> Option<Vec<PhotoSize>> {
+        self.new_chat_photo.clone()
+    }
+
+    pub fn delete_chat_photo(&self) -> Option<bool> {
+        self.delete_chat_photo.clone()
+    }
+
+    pub fn group_chat_created(&self) -> Option<bool> {
+        self.group_chat_created.clone()
+    }
+
+    pub fn supergroup_chat_created(&self) -> Option<bool> {
+        self.supergroup_chat_created.clone()
+    }
+
+    pub fn channel_chat_created(&self) -> Option<bool> {
+        self.channel_chat_created.clone()
+    }
+
+    pub fn message_auto_delete_timer_changed(&self) -> Option<MessageAutoDeleteTimerChanged> {
+        self.message_auto_delete_timer_changed.clone()
+    }
+
+    pub fn migrate_to_chat_id(&self) -> Option<isize> {
+        self.migrate_to_chat_id.clone()
+    }
+
+    pub fn migrate_from_chat_id(&self) -> Option<isize> {
+        self.migrate_from_chat_id.clone()
+    }
+
+    pub fn pinned_message(&self) -> Option<Box<Message>> {
+        self.pinned_message.clone()
+    }
+
+    pub fn invoice(&self) -> Option<Invoice> {
+        self.invoice.clone()
+    }
+
+    pub fn successful_payment(&self) -> Option<SuccessfulPayment> {
+        self.successful_payment.clone()
+    }
+
+    pub fn connected_website(&self) -> Option<String> {
+        self.connected_website.clone()
+    }
+
+    pub fn passport_data(&self) -> Option<PassportData> {
+        self.passport_data.clone()
+    }
+
+    pub fn proximity_alert_triggered(&self) -> Option<ProximityAlertTriggered> {
+        self.proximity_alert_triggered.clone()
+    }
+
+    pub fn voice_chat_started(&self) -> Option<VoiceChatStarted> {
+        self.voice_chat_started.clone()
+    }
+
+    pub fn voice_chat_ended(&self) -> Option<VoiceChatEnded> {
+        self.voice_chat_ended.clone()
+    }
+
+    pub fn voice_chat_participants_invited(&self) -> Option<VoiceChatParticipantsInvited> {
+        self.voice_chat_participants_invited.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
     }
 }
 
@@ -1705,8 +2121,12 @@ impl MessageId {
         Self { message_id }
     }
 
-    pub fn message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: isize) {
         self.message_id = message_id;
+    }
+
+    pub fn message_id(&self) -> isize {
+        self.message_id
     }
 }
 
@@ -1722,28 +2142,52 @@ impl MessageEntity {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn offset(&mut self, offset: isize) {
+    pub fn set_offset(&mut self, offset: isize) {
         self.offset = offset;
     }
 
-    pub fn length(&mut self, length: isize) {
+    pub fn set_length(&mut self, length: isize) {
         self.length = length;
     }
 
-    pub fn url(&mut self, url: Option<String>) {
+    pub fn set_url(&mut self, url: Option<String>) {
         self.url = url;
     }
 
-    pub fn user(&mut self, user: Option<User>) {
+    pub fn set_user(&mut self, user: Option<User>) {
         self.user = user;
     }
 
-    pub fn language(&mut self, language: Option<String>) {
+    pub fn set_language(&mut self, language: Option<String>) {
         self.language = language;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn offset(&self) -> isize {
+        self.offset
+    }
+
+    pub fn length(&self) -> isize {
+        self.length
+    }
+
+    pub fn url(&self) -> Option<String> {
+        self.url.clone()
+    }
+
+    pub fn user(&self) -> Option<User> {
+        self.user.clone()
+    }
+
+    pub fn language(&self) -> Option<String> {
+        self.language.clone()
     }
 }
 
@@ -1758,24 +2202,44 @@ impl PhotoSize {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: isize) {
         self.width = width;
     }
 
-    pub fn height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: isize) {
         self.height = height;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn width(&self) -> isize {
+        self.width
+    }
+
+    pub fn height(&self) -> isize {
+        self.height
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -1800,40 +2264,76 @@ impl Animation {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: isize) {
         self.width = width;
     }
 
-    pub fn height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: isize) {
         self.height = height;
     }
 
-    pub fn duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: isize) {
         self.duration = duration;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
     }
 
-    pub fn file_name(&mut self, file_name: Option<String>) {
+    pub fn set_file_name(&mut self, file_name: Option<String>) {
         self.file_name = file_name;
     }
 
-    pub fn mime_type(&mut self, mime_type: Option<String>) {
+    pub fn set_mime_type(&mut self, mime_type: Option<String>) {
         self.mime_type = mime_type;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn width(&self) -> isize {
+        self.width
+    }
+
+    pub fn height(&self) -> isize {
+        self.height
+    }
+
+    pub fn duration(&self) -> isize {
+        self.duration
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
+    }
+
+    pub fn file_name(&self) -> Option<String> {
+        self.file_name.clone()
+    }
+
+    pub fn mime_type(&self) -> Option<String> {
+        self.mime_type.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -1852,40 +2352,76 @@ impl Audio {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: isize) {
         self.duration = duration;
     }
 
-    pub fn performer(&mut self, performer: Option<String>) {
+    pub fn set_performer(&mut self, performer: Option<String>) {
         self.performer = performer;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn file_name(&mut self, file_name: Option<String>) {
+    pub fn set_file_name(&mut self, file_name: Option<String>) {
         self.file_name = file_name;
     }
 
-    pub fn mime_type(&mut self, mime_type: Option<String>) {
+    pub fn set_mime_type(&mut self, mime_type: Option<String>) {
         self.mime_type = mime_type;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn duration(&self) -> isize {
+        self.duration
+    }
+
+    pub fn performer(&self) -> Option<String> {
+        self.performer.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn file_name(&self) -> Option<String> {
+        self.file_name.clone()
+    }
+
+    pub fn mime_type(&self) -> Option<String> {
+        self.mime_type.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
     }
 }
 
@@ -1901,28 +2437,52 @@ impl Document {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
     }
 
-    pub fn file_name(&mut self, file_name: Option<String>) {
+    pub fn set_file_name(&mut self, file_name: Option<String>) {
         self.file_name = file_name;
     }
 
-    pub fn mime_type(&mut self, mime_type: Option<String>) {
+    pub fn set_mime_type(&mut self, mime_type: Option<String>) {
         self.mime_type = mime_type;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
+    }
+
+    pub fn file_name(&self) -> Option<String> {
+        self.file_name.clone()
+    }
+
+    pub fn mime_type(&self) -> Option<String> {
+        self.mime_type.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -1947,40 +2507,76 @@ impl Video {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: isize) {
         self.width = width;
     }
 
-    pub fn height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: isize) {
         self.height = height;
     }
 
-    pub fn duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: isize) {
         self.duration = duration;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
     }
 
-    pub fn file_name(&mut self, file_name: Option<String>) {
+    pub fn set_file_name(&mut self, file_name: Option<String>) {
         self.file_name = file_name;
     }
 
-    pub fn mime_type(&mut self, mime_type: Option<String>) {
+    pub fn set_mime_type(&mut self, mime_type: Option<String>) {
         self.mime_type = mime_type;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn width(&self) -> isize {
+        self.width
+    }
+
+    pub fn height(&self) -> isize {
+        self.height
+    }
+
+    pub fn duration(&self) -> isize {
+        self.duration
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
+    }
+
+    pub fn file_name(&self) -> Option<String> {
+        self.file_name.clone()
+    }
+
+    pub fn mime_type(&self) -> Option<String> {
+        self.mime_type.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -1996,28 +2592,52 @@ impl VideoNote {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn length(&mut self, length: isize) {
+    pub fn set_length(&mut self, length: isize) {
         self.length = length;
     }
 
-    pub fn duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: isize) {
         self.duration = duration;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn length(&self) -> isize {
+        self.length
+    }
+
+    pub fn duration(&self) -> isize {
+        self.duration
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -2032,24 +2652,44 @@ impl Voice {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: isize) {
         self.duration = duration;
     }
 
-    pub fn mime_type(&mut self, mime_type: Option<String>) {
+    pub fn set_mime_type(&mut self, mime_type: Option<String>) {
         self.mime_type = mime_type;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn duration(&self) -> isize {
+        self.duration
+    }
+
+    pub fn mime_type(&self) -> Option<String> {
+        self.mime_type.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -2064,24 +2704,44 @@ impl Contact {
         }
     }
 
-    pub fn phone_number(&mut self, phone_number: String) {
+    pub fn set_phone_number(&mut self, phone_number: String) {
         self.phone_number = phone_number;
     }
 
-    pub fn first_name(&mut self, first_name: String) {
+    pub fn set_first_name(&mut self, first_name: String) {
         self.first_name = first_name;
     }
 
-    pub fn last_name(&mut self, last_name: Option<String>) {
+    pub fn set_last_name(&mut self, last_name: Option<String>) {
         self.last_name = last_name;
     }
 
-    pub fn user_id(&mut self, user_id: Option<isize>) {
+    pub fn set_user_id(&mut self, user_id: Option<isize>) {
         self.user_id = user_id;
     }
 
-    pub fn vcard(&mut self, vcard: Option<String>) {
+    pub fn set_vcard(&mut self, vcard: Option<String>) {
         self.vcard = vcard;
+    }
+
+    pub fn phone_number(&self) -> String {
+        self.phone_number.clone()
+    }
+
+    pub fn first_name(&self) -> String {
+        self.first_name.clone()
+    }
+
+    pub fn last_name(&self) -> Option<String> {
+        self.last_name.clone()
+    }
+
+    pub fn user_id(&self) -> Option<isize> {
+        self.user_id.clone()
+    }
+
+    pub fn vcard(&self) -> Option<String> {
+        self.vcard.clone()
     }
 }
 
@@ -2090,12 +2750,20 @@ impl Dice {
         Self { emoji, value }
     }
 
-    pub fn emoji(&mut self, emoji: String) {
+    pub fn set_emoji(&mut self, emoji: String) {
         self.emoji = emoji;
     }
 
-    pub fn value(&mut self, value: isize) {
+    pub fn set_value(&mut self, value: isize) {
         self.value = value;
+    }
+
+    pub fn emoji(&self) -> String {
+        self.emoji.clone()
+    }
+
+    pub fn value(&self) -> isize {
+        self.value
     }
 }
 
@@ -2104,12 +2772,20 @@ impl PollOption {
         Self { text, voter_count }
     }
 
-    pub fn text(&mut self, text: String) {
+    pub fn set_text(&mut self, text: String) {
         self.text = text;
     }
 
-    pub fn voter_count(&mut self, voter_count: isize) {
+    pub fn set_voter_count(&mut self, voter_count: isize) {
         self.voter_count = voter_count;
+    }
+
+    pub fn text(&self) -> String {
+        self.text.clone()
+    }
+
+    pub fn voter_count(&self) -> isize {
+        self.voter_count
     }
 }
 
@@ -2122,16 +2798,28 @@ impl PollAnswer {
         }
     }
 
-    pub fn poll_id(&mut self, poll_id: String) {
+    pub fn set_poll_id(&mut self, poll_id: String) {
         self.poll_id = poll_id;
     }
 
-    pub fn user(&mut self, user: User) {
+    pub fn set_user(&mut self, user: User) {
         self.user = user;
     }
 
-    pub fn option_ids(&mut self, option_ids: Vec<isize>) {
+    pub fn set_option_ids(&mut self, option_ids: Vec<isize>) {
         self.option_ids = option_ids;
+    }
+
+    pub fn poll_id(&self) -> String {
+        self.poll_id.clone()
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn option_ids(&self) -> Vec<isize> {
+        self.option_ids.clone()
     }
 }
 
@@ -2163,56 +2851,108 @@ impl Poll {
         }
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn question(&mut self, question: String) {
+    pub fn set_question(&mut self, question: String) {
         self.question = question;
     }
 
-    pub fn options(&mut self, options: Vec<PollOption>) {
+    pub fn set_options(&mut self, options: Vec<PollOption>) {
         self.options = options;
     }
 
-    pub fn total_voter_count(&mut self, total_voter_count: isize) {
+    pub fn set_total_voter_count(&mut self, total_voter_count: isize) {
         self.total_voter_count = total_voter_count;
     }
 
-    pub fn is_closed(&mut self, is_closed: bool) {
+    pub fn set_is_closed(&mut self, is_closed: bool) {
         self.is_closed = is_closed;
     }
 
-    pub fn is_anonymous(&mut self, is_anonymous: bool) {
+    pub fn set_is_anonymous(&mut self, is_anonymous: bool) {
         self.is_anonymous = is_anonymous;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn allows_multiple_answers(&mut self, allows_multiple_answers: bool) {
+    pub fn set_allows_multiple_answers(&mut self, allows_multiple_answers: bool) {
         self.allows_multiple_answers = allows_multiple_answers;
     }
 
-    pub fn correct_option_id(&mut self, correct_option_id: Option<isize>) {
+    pub fn set_correct_option_id(&mut self, correct_option_id: Option<isize>) {
         self.correct_option_id = correct_option_id;
     }
 
-    pub fn explanation(&mut self, explanation: Option<String>) {
+    pub fn set_explanation(&mut self, explanation: Option<String>) {
         self.explanation = explanation;
     }
 
-    pub fn explanation_entities(&mut self, explanation_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_explanation_entities(&mut self, explanation_entities: Option<Vec<MessageEntity>>) {
         self.explanation_entities = explanation_entities;
     }
 
-    pub fn open_period(&mut self, open_period: Option<isize>) {
+    pub fn set_open_period(&mut self, open_period: Option<isize>) {
         self.open_period = open_period;
     }
 
-    pub fn close_date(&mut self, close_date: Option<isize>) {
+    pub fn set_close_date(&mut self, close_date: Option<isize>) {
         self.close_date = close_date;
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn question(&self) -> String {
+        self.question.clone()
+    }
+
+    pub fn options(&self) -> Vec<PollOption> {
+        self.options.clone()
+    }
+
+    pub fn total_voter_count(&self) -> isize {
+        self.total_voter_count
+    }
+
+    pub fn is_closed(&self) -> bool {
+        self.is_closed
+    }
+
+    pub fn is_anonymous(&self) -> bool {
+        self.is_anonymous
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn allows_multiple_answers(&self) -> bool {
+        self.allows_multiple_answers
+    }
+
+    pub fn correct_option_id(&self) -> Option<isize> {
+        self.correct_option_id.clone()
+    }
+
+    pub fn explanation(&self) -> Option<String> {
+        self.explanation.clone()
+    }
+
+    pub fn explanation_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.explanation_entities.clone()
+    }
+
+    pub fn open_period(&self) -> Option<isize> {
+        self.open_period.clone()
+    }
+
+    pub fn close_date(&self) -> Option<isize> {
+        self.close_date.clone()
     }
 }
 
@@ -2228,28 +2968,52 @@ impl Location {
         }
     }
 
-    pub fn longitude(&mut self, longitude: f64) {
+    pub fn set_longitude(&mut self, longitude: f64) {
         self.longitude = longitude;
     }
 
-    pub fn latitude(&mut self, latitude: f64) {
+    pub fn set_latitude(&mut self, latitude: f64) {
         self.latitude = latitude;
     }
 
-    pub fn horizontal_accuracy(&mut self, horizontal_accuracy: Option<f64>) {
+    pub fn set_horizontal_accuracy(&mut self, horizontal_accuracy: Option<f64>) {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn live_period(&mut self, live_period: Option<isize>) {
+    pub fn set_live_period(&mut self, live_period: Option<isize>) {
         self.live_period = live_period;
     }
 
-    pub fn heading(&mut self, heading: Option<isize>) {
+    pub fn set_heading(&mut self, heading: Option<isize>) {
         self.heading = heading;
     }
 
-    pub fn proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
         self.proximity_alert_radius = proximity_alert_radius;
+    }
+
+    pub fn longitude(&self) -> f64 {
+        self.longitude
+    }
+
+    pub fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn horizontal_accuracy(&self) -> Option<f64> {
+        self.horizontal_accuracy.clone()
+    }
+
+    pub fn live_period(&self) -> Option<isize> {
+        self.live_period.clone()
+    }
+
+    pub fn heading(&self) -> Option<isize> {
+        self.heading.clone()
+    }
+
+    pub fn proximity_alert_radius(&self) -> Option<isize> {
+        self.proximity_alert_radius.clone()
     }
 }
 
@@ -2266,32 +3030,60 @@ impl Venue {
         }
     }
 
-    pub fn location(&mut self, location: Location) {
+    pub fn set_location(&mut self, location: Location) {
         self.location = location;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn address(&mut self, address: String) {
+    pub fn set_address(&mut self, address: String) {
         self.address = address;
     }
 
-    pub fn foursquare_id(&mut self, foursquare_id: Option<String>) {
+    pub fn set_foursquare_id(&mut self, foursquare_id: Option<String>) {
         self.foursquare_id = foursquare_id;
     }
 
-    pub fn foursquare_type(&mut self, foursquare_type: Option<String>) {
+    pub fn set_foursquare_type(&mut self, foursquare_type: Option<String>) {
         self.foursquare_type = foursquare_type;
     }
 
-    pub fn google_place_id(&mut self, google_place_id: Option<String>) {
+    pub fn set_google_place_id(&mut self, google_place_id: Option<String>) {
         self.google_place_id = google_place_id;
     }
 
-    pub fn google_place_type(&mut self, google_place_type: Option<String>) {
+    pub fn set_google_place_type(&mut self, google_place_type: Option<String>) {
         self.google_place_type = google_place_type;
+    }
+
+    pub fn location(&self) -> Location {
+        self.location.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn address(&self) -> String {
+        self.address.clone()
+    }
+
+    pub fn foursquare_id(&self) -> Option<String> {
+        self.foursquare_id.clone()
+    }
+
+    pub fn foursquare_type(&self) -> Option<String> {
+        self.foursquare_type.clone()
+    }
+
+    pub fn google_place_id(&self) -> Option<String> {
+        self.google_place_id.clone()
+    }
+
+    pub fn google_place_type(&self) -> Option<String> {
+        self.google_place_type.clone()
     }
 }
 
@@ -2304,16 +3096,28 @@ impl ProximityAlertTriggered {
         }
     }
 
-    pub fn traveler(&mut self, traveler: User) {
+    pub fn set_traveler(&mut self, traveler: User) {
         self.traveler = traveler;
     }
 
-    pub fn watcher(&mut self, watcher: User) {
+    pub fn set_watcher(&mut self, watcher: User) {
         self.watcher = watcher;
     }
 
-    pub fn distance(&mut self, distance: isize) {
+    pub fn set_distance(&mut self, distance: isize) {
         self.distance = distance;
+    }
+
+    pub fn traveler(&self) -> User {
+        self.traveler.clone()
+    }
+
+    pub fn watcher(&self) -> User {
+        self.watcher.clone()
+    }
+
+    pub fn distance(&self) -> isize {
+        self.distance
     }
 }
 
@@ -2324,8 +3128,12 @@ impl MessageAutoDeleteTimerChanged {
         }
     }
 
-    pub fn message_auto_delete_time(&mut self, message_auto_delete_time: isize) {
+    pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: isize) {
         self.message_auto_delete_time = message_auto_delete_time;
+    }
+
+    pub fn message_auto_delete_time(&self) -> isize {
+        self.message_auto_delete_time
     }
 }
 
@@ -2334,8 +3142,12 @@ impl VoiceChatEnded {
         Self { duration }
     }
 
-    pub fn duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: isize) {
         self.duration = duration;
+    }
+
+    pub fn duration(&self) -> isize {
+        self.duration
     }
 }
 
@@ -2344,8 +3156,12 @@ impl VoiceChatParticipantsInvited {
         Self { users: None }
     }
 
-    pub fn users(&mut self, users: Option<Vec<User>>) {
+    pub fn set_users(&mut self, users: Option<Vec<User>>) {
         self.users = users;
+    }
+
+    pub fn users(&self) -> Option<Vec<User>> {
+        self.users.clone()
     }
 }
 
@@ -2357,12 +3173,20 @@ impl UserProfilePhotos {
         }
     }
 
-    pub fn total_count(&mut self, total_count: isize) {
+    pub fn set_total_count(&mut self, total_count: isize) {
         self.total_count = total_count;
     }
 
-    pub fn photos(&mut self, photos: Vec<PhotoSize>) {
+    pub fn set_photos(&mut self, photos: Vec<PhotoSize>) {
         self.photos = photos;
+    }
+
+    pub fn total_count(&self) -> isize {
+        self.total_count
+    }
+
+    pub fn photos(&self) -> Vec<PhotoSize> {
+        self.photos.clone()
     }
 }
 
@@ -2376,20 +3200,36 @@ impl File {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
     }
 
-    pub fn file_path(&mut self, file_path: Option<String>) {
+    pub fn set_file_path(&mut self, file_path: Option<String>) {
         self.file_path = file_path;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
+    }
+
+    pub fn file_path(&self) -> Option<String> {
+        self.file_path.clone()
     }
 }
 
@@ -2403,20 +3243,36 @@ impl ReplyKeyboardMarkup {
         }
     }
 
-    pub fn keyboard(&mut self, keyboard: Vec<KeyboardButton>) {
+    pub fn set_keyboard(&mut self, keyboard: Vec<KeyboardButton>) {
         self.keyboard = keyboard;
     }
 
-    pub fn resize_keyboard(&mut self, resize_keyboard: Option<bool>) {
+    pub fn set_resize_keyboard(&mut self, resize_keyboard: Option<bool>) {
         self.resize_keyboard = resize_keyboard;
     }
 
-    pub fn one_time_keyboard(&mut self, one_time_keyboard: Option<bool>) {
+    pub fn set_one_time_keyboard(&mut self, one_time_keyboard: Option<bool>) {
         self.one_time_keyboard = one_time_keyboard;
     }
 
-    pub fn selective(&mut self, selective: Option<bool>) {
+    pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
+    }
+
+    pub fn keyboard(&self) -> Vec<KeyboardButton> {
+        self.keyboard.clone()
+    }
+
+    pub fn resize_keyboard(&self) -> Option<bool> {
+        self.resize_keyboard.clone()
+    }
+
+    pub fn one_time_keyboard(&self) -> Option<bool> {
+        self.one_time_keyboard.clone()
+    }
+
+    pub fn selective(&self) -> Option<bool> {
+        self.selective.clone()
     }
 }
 
@@ -2430,20 +3286,36 @@ impl KeyboardButton {
         }
     }
 
-    pub fn text(&mut self, text: String) {
+    pub fn set_text(&mut self, text: String) {
         self.text = text;
     }
 
-    pub fn request_contact(&mut self, request_contact: Option<bool>) {
+    pub fn set_request_contact(&mut self, request_contact: Option<bool>) {
         self.request_contact = request_contact;
     }
 
-    pub fn request_location(&mut self, request_location: Option<bool>) {
+    pub fn set_request_location(&mut self, request_location: Option<bool>) {
         self.request_location = request_location;
     }
 
-    pub fn request_poll(&mut self, request_poll: Option<KeyboardButtonPollType>) {
+    pub fn set_request_poll(&mut self, request_poll: Option<KeyboardButtonPollType>) {
         self.request_poll = request_poll;
+    }
+
+    pub fn text(&self) -> String {
+        self.text.clone()
+    }
+
+    pub fn request_contact(&self) -> Option<bool> {
+        self.request_contact.clone()
+    }
+
+    pub fn request_location(&self) -> Option<bool> {
+        self.request_location.clone()
+    }
+
+    pub fn request_poll(&self) -> Option<KeyboardButtonPollType> {
+        self.request_poll.clone()
     }
 }
 
@@ -2452,8 +3324,12 @@ impl KeyboardButtonPollType {
         Self { type_field: None }
     }
 
-    pub fn type_field(&mut self, type_field: Option<String>) {
+    pub fn set_type_field(&mut self, type_field: Option<String>) {
         self.type_field = type_field;
+    }
+
+    pub fn type_field(&self) -> Option<String> {
+        self.type_field.clone()
     }
 }
 
@@ -2465,12 +3341,20 @@ impl ReplyKeyboardRemove {
         }
     }
 
-    pub fn remove_keyboard(&mut self, remove_keyboard: bool) {
+    pub fn set_remove_keyboard(&mut self, remove_keyboard: bool) {
         self.remove_keyboard = remove_keyboard;
     }
 
-    pub fn selective(&mut self, selective: Option<bool>) {
+    pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
+    }
+
+    pub fn remove_keyboard(&self) -> bool {
+        self.remove_keyboard
+    }
+
+    pub fn selective(&self) -> Option<bool> {
+        self.selective.clone()
     }
 }
 
@@ -2479,8 +3363,12 @@ impl InlineKeyboardMarkup {
         Self { inline_keyboard }
     }
 
-    pub fn inline_keyboard(&mut self, inline_keyboard: Vec<InlineKeyboardButton>) {
+    pub fn set_inline_keyboard(&mut self, inline_keyboard: Vec<InlineKeyboardButton>) {
         self.inline_keyboard = inline_keyboard;
+    }
+
+    pub fn inline_keyboard(&self) -> Vec<InlineKeyboardButton> {
+        self.inline_keyboard.clone()
     }
 }
 
@@ -2498,39 +3386,71 @@ impl InlineKeyboardButton {
         }
     }
 
-    pub fn text(&mut self, text: String) {
+    pub fn set_text(&mut self, text: String) {
         self.text = text;
     }
 
-    pub fn url(&mut self, url: Option<String>) {
+    pub fn set_url(&mut self, url: Option<String>) {
         self.url = url;
     }
 
-    pub fn login_url(&mut self, login_url: Option<LoginUrl>) {
+    pub fn set_login_url(&mut self, login_url: Option<LoginUrl>) {
         self.login_url = login_url;
     }
 
-    pub fn callback_data(&mut self, callback_data: Option<String>) {
+    pub fn set_callback_data(&mut self, callback_data: Option<String>) {
         self.callback_data = callback_data;
     }
 
-    pub fn switch_inline_query(&mut self, switch_inline_query: Option<String>) {
+    pub fn set_switch_inline_query(&mut self, switch_inline_query: Option<String>) {
         self.switch_inline_query = switch_inline_query;
     }
 
-    pub fn switch_inline_query_current_chat(
+    pub fn set_switch_inline_query_current_chat(
         &mut self,
         switch_inline_query_current_chat: Option<String>,
     ) {
         self.switch_inline_query_current_chat = switch_inline_query_current_chat;
     }
 
-    pub fn callback_game(&mut self, callback_game: Option<CallbackGame>) {
+    pub fn set_callback_game(&mut self, callback_game: Option<CallbackGame>) {
         self.callback_game = callback_game;
     }
 
-    pub fn pay(&mut self, pay: Option<bool>) {
+    pub fn set_pay(&mut self, pay: Option<bool>) {
         self.pay = pay;
+    }
+
+    pub fn text(&self) -> String {
+        self.text.clone()
+    }
+
+    pub fn url(&self) -> Option<String> {
+        self.url.clone()
+    }
+
+    pub fn login_url(&self) -> Option<LoginUrl> {
+        self.login_url.clone()
+    }
+
+    pub fn callback_data(&self) -> Option<String> {
+        self.callback_data.clone()
+    }
+
+    pub fn switch_inline_query(&self) -> Option<String> {
+        self.switch_inline_query.clone()
+    }
+
+    pub fn switch_inline_query_current_chat(&self) -> Option<String> {
+        self.switch_inline_query_current_chat.clone()
+    }
+
+    pub fn callback_game(&self) -> Option<CallbackGame> {
+        self.callback_game.clone()
+    }
+
+    pub fn pay(&self) -> Option<bool> {
+        self.pay.clone()
     }
 }
 
@@ -2544,20 +3464,36 @@ impl LoginUrl {
         }
     }
 
-    pub fn url(&mut self, url: String) {
+    pub fn set_url(&mut self, url: String) {
         self.url = url;
     }
 
-    pub fn forward_text(&mut self, forward_text: Option<String>) {
+    pub fn set_forward_text(&mut self, forward_text: Option<String>) {
         self.forward_text = forward_text;
     }
 
-    pub fn bot_username(&mut self, bot_username: Option<String>) {
+    pub fn set_bot_username(&mut self, bot_username: Option<String>) {
         self.bot_username = bot_username;
     }
 
-    pub fn request_write_access(&mut self, request_write_access: Option<bool>) {
+    pub fn set_request_write_access(&mut self, request_write_access: Option<bool>) {
         self.request_write_access = request_write_access;
+    }
+
+    pub fn url(&self) -> String {
+        self.url.clone()
+    }
+
+    pub fn forward_text(&self) -> Option<String> {
+        self.forward_text.clone()
+    }
+
+    pub fn bot_username(&self) -> Option<String> {
+        self.bot_username.clone()
+    }
+
+    pub fn request_write_access(&self) -> Option<bool> {
+        self.request_write_access.clone()
     }
 }
 
@@ -2574,32 +3510,60 @@ impl CallbackQuery {
         }
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn from(&mut self, from: User) {
+    pub fn set_from(&mut self, from: User) {
         self.from = from;
     }
 
-    pub fn chat_instance(&mut self, chat_instance: String) {
+    pub fn set_chat_instance(&mut self, chat_instance: String) {
         self.chat_instance = chat_instance;
     }
 
-    pub fn message(&mut self, message: Option<Message>) {
+    pub fn set_message(&mut self, message: Option<Message>) {
         self.message = message;
     }
 
-    pub fn inline_message_id(&mut self, inline_message_id: Option<String>) {
+    pub fn set_inline_message_id(&mut self, inline_message_id: Option<String>) {
         self.inline_message_id = inline_message_id;
     }
 
-    pub fn data(&mut self, data: Option<String>) {
+    pub fn set_data(&mut self, data: Option<String>) {
         self.data = data;
     }
 
-    pub fn game_short_name(&mut self, game_short_name: Option<String>) {
+    pub fn set_game_short_name(&mut self, game_short_name: Option<String>) {
         self.game_short_name = game_short_name;
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn chat_instance(&self) -> String {
+        self.chat_instance.clone()
+    }
+
+    pub fn message(&self) -> Option<Message> {
+        self.message.clone()
+    }
+
+    pub fn inline_message_id(&self) -> Option<String> {
+        self.inline_message_id.clone()
+    }
+
+    pub fn data(&self) -> Option<String> {
+        self.data.clone()
+    }
+
+    pub fn game_short_name(&self) -> Option<String> {
+        self.game_short_name.clone()
     }
 }
 
@@ -2611,12 +3575,20 @@ impl ForceReply {
         }
     }
 
-    pub fn force_reply(&mut self, force_reply: bool) {
+    pub fn set_force_reply(&mut self, force_reply: bool) {
         self.force_reply = force_reply;
     }
 
-    pub fn selective(&mut self, selective: Option<bool>) {
+    pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
+    }
+
+    pub fn force_reply(&self) -> bool {
+        self.force_reply
+    }
+
+    pub fn selective(&self) -> Option<bool> {
+        self.selective.clone()
     }
 }
 
@@ -2635,20 +3607,36 @@ impl ChatPhoto {
         }
     }
 
-    pub fn small_file_id(&mut self, small_file_id: String) {
+    pub fn set_small_file_id(&mut self, small_file_id: String) {
         self.small_file_id = small_file_id;
     }
 
-    pub fn small_file_unique_id(&mut self, small_file_unique_id: String) {
+    pub fn set_small_file_unique_id(&mut self, small_file_unique_id: String) {
         self.small_file_unique_id = small_file_unique_id;
     }
 
-    pub fn big_file_id(&mut self, big_file_id: String) {
+    pub fn set_big_file_id(&mut self, big_file_id: String) {
         self.big_file_id = big_file_id;
     }
 
-    pub fn big_file_unique_id(&mut self, big_file_unique_id: String) {
+    pub fn set_big_file_unique_id(&mut self, big_file_unique_id: String) {
         self.big_file_unique_id = big_file_unique_id;
+    }
+
+    pub fn small_file_id(&self) -> String {
+        self.small_file_id.clone()
+    }
+
+    pub fn small_file_unique_id(&self) -> String {
+        self.small_file_unique_id.clone()
+    }
+
+    pub fn big_file_id(&self) -> String {
+        self.big_file_id.clone()
+    }
+
+    pub fn big_file_unique_id(&self) -> String {
+        self.big_file_unique_id.clone()
     }
 }
 
@@ -2664,28 +3652,52 @@ impl ChatInviteLink {
         }
     }
 
-    pub fn invite_link(&mut self, invite_link: String) {
+    pub fn set_invite_link(&mut self, invite_link: String) {
         self.invite_link = invite_link;
     }
 
-    pub fn creator(&mut self, creator: User) {
+    pub fn set_creator(&mut self, creator: User) {
         self.creator = creator;
     }
 
-    pub fn is_primary(&mut self, is_primary: bool) {
+    pub fn set_is_primary(&mut self, is_primary: bool) {
         self.is_primary = is_primary;
     }
 
-    pub fn is_revoked(&mut self, is_revoked: bool) {
+    pub fn set_is_revoked(&mut self, is_revoked: bool) {
         self.is_revoked = is_revoked;
     }
 
-    pub fn expire_date(&mut self, expire_date: Option<isize>) {
+    pub fn set_expire_date(&mut self, expire_date: Option<isize>) {
         self.expire_date = expire_date;
     }
 
-    pub fn member_limit(&mut self, member_limit: Option<isize>) {
+    pub fn set_member_limit(&mut self, member_limit: Option<isize>) {
         self.member_limit = member_limit;
+    }
+
+    pub fn invite_link(&self) -> String {
+        self.invite_link.clone()
+    }
+
+    pub fn creator(&self) -> User {
+        self.creator.clone()
+    }
+
+    pub fn is_primary(&self) -> bool {
+        self.is_primary
+    }
+
+    pub fn is_revoked(&self) -> bool {
+        self.is_revoked
+    }
+
+    pub fn expire_date(&self) -> Option<isize> {
+        self.expire_date.clone()
+    }
+
+    pub fn member_limit(&self) -> Option<isize> {
+        self.member_limit.clone()
     }
 }
 
@@ -2717,92 +3729,180 @@ impl ChatMember {
         }
     }
 
-    pub fn user(&mut self, user: User) {
+    pub fn set_user(&mut self, user: User) {
         self.user = user;
     }
 
-    pub fn status(&mut self, status: String) {
+    pub fn set_status(&mut self, status: String) {
         self.status = status;
     }
 
-    pub fn custom_title(&mut self, custom_title: Option<String>) {
+    pub fn set_custom_title(&mut self, custom_title: Option<String>) {
         self.custom_title = custom_title;
     }
 
-    pub fn is_anonymous(&mut self, is_anonymous: Option<bool>) {
+    pub fn set_is_anonymous(&mut self, is_anonymous: Option<bool>) {
         self.is_anonymous = is_anonymous;
     }
 
-    pub fn can_be_edited(&mut self, can_be_edited: Option<bool>) {
+    pub fn set_can_be_edited(&mut self, can_be_edited: Option<bool>) {
         self.can_be_edited = can_be_edited;
     }
 
-    pub fn can_manage_chat(&mut self, can_manage_chat: Option<bool>) {
+    pub fn set_can_manage_chat(&mut self, can_manage_chat: Option<bool>) {
         self.can_manage_chat = can_manage_chat;
     }
 
-    pub fn can_post_messages(&mut self, can_post_messages: Option<bool>) {
+    pub fn set_can_post_messages(&mut self, can_post_messages: Option<bool>) {
         self.can_post_messages = can_post_messages;
     }
 
-    pub fn can_edit_messages(&mut self, can_edit_messages: Option<bool>) {
+    pub fn set_can_edit_messages(&mut self, can_edit_messages: Option<bool>) {
         self.can_edit_messages = can_edit_messages;
     }
 
-    pub fn can_delete_messages(&mut self, can_delete_messages: Option<bool>) {
+    pub fn set_can_delete_messages(&mut self, can_delete_messages: Option<bool>) {
         self.can_delete_messages = can_delete_messages;
     }
 
-    pub fn can_manage_voice_chats(&mut self, can_manage_voice_chats: Option<bool>) {
+    pub fn set_can_manage_voice_chats(&mut self, can_manage_voice_chats: Option<bool>) {
         self.can_manage_voice_chats = can_manage_voice_chats;
     }
 
-    pub fn can_restrict_members(&mut self, can_restrict_members: Option<bool>) {
+    pub fn set_can_restrict_members(&mut self, can_restrict_members: Option<bool>) {
         self.can_restrict_members = can_restrict_members;
     }
 
-    pub fn can_promote_members(&mut self, can_promote_members: Option<bool>) {
+    pub fn set_can_promote_members(&mut self, can_promote_members: Option<bool>) {
         self.can_promote_members = can_promote_members;
     }
 
-    pub fn can_change_info(&mut self, can_change_info: Option<bool>) {
+    pub fn set_can_change_info(&mut self, can_change_info: Option<bool>) {
         self.can_change_info = can_change_info;
     }
 
-    pub fn can_invite_users(&mut self, can_invite_users: Option<bool>) {
+    pub fn set_can_invite_users(&mut self, can_invite_users: Option<bool>) {
         self.can_invite_users = can_invite_users;
     }
 
-    pub fn can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
+    pub fn set_can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
         self.can_pin_messages = can_pin_messages;
     }
 
-    pub fn is_member(&mut self, is_member: Option<bool>) {
+    pub fn set_is_member(&mut self, is_member: Option<bool>) {
         self.is_member = is_member;
     }
 
-    pub fn can_send_messages(&mut self, can_send_messages: Option<bool>) {
+    pub fn set_can_send_messages(&mut self, can_send_messages: Option<bool>) {
         self.can_send_messages = can_send_messages;
     }
 
-    pub fn can_send_media_messages(&mut self, can_send_media_messages: Option<bool>) {
+    pub fn set_can_send_media_messages(&mut self, can_send_media_messages: Option<bool>) {
         self.can_send_media_messages = can_send_media_messages;
     }
 
-    pub fn can_send_polls(&mut self, can_send_polls: Option<bool>) {
+    pub fn set_can_send_polls(&mut self, can_send_polls: Option<bool>) {
         self.can_send_polls = can_send_polls;
     }
 
-    pub fn can_send_other_messages(&mut self, can_send_other_messages: Option<bool>) {
+    pub fn set_can_send_other_messages(&mut self, can_send_other_messages: Option<bool>) {
         self.can_send_other_messages = can_send_other_messages;
     }
 
-    pub fn can_add_web_page_previews(&mut self, can_add_web_page_previews: Option<bool>) {
+    pub fn set_can_add_web_page_previews(&mut self, can_add_web_page_previews: Option<bool>) {
         self.can_add_web_page_previews = can_add_web_page_previews;
     }
 
-    pub fn until_date(&mut self, until_date: Option<isize>) {
+    pub fn set_until_date(&mut self, until_date: Option<isize>) {
         self.until_date = until_date;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn status(&self) -> String {
+        self.status.clone()
+    }
+
+    pub fn custom_title(&self) -> Option<String> {
+        self.custom_title.clone()
+    }
+
+    pub fn is_anonymous(&self) -> Option<bool> {
+        self.is_anonymous.clone()
+    }
+
+    pub fn can_be_edited(&self) -> Option<bool> {
+        self.can_be_edited.clone()
+    }
+
+    pub fn can_manage_chat(&self) -> Option<bool> {
+        self.can_manage_chat.clone()
+    }
+
+    pub fn can_post_messages(&self) -> Option<bool> {
+        self.can_post_messages.clone()
+    }
+
+    pub fn can_edit_messages(&self) -> Option<bool> {
+        self.can_edit_messages.clone()
+    }
+
+    pub fn can_delete_messages(&self) -> Option<bool> {
+        self.can_delete_messages.clone()
+    }
+
+    pub fn can_manage_voice_chats(&self) -> Option<bool> {
+        self.can_manage_voice_chats.clone()
+    }
+
+    pub fn can_restrict_members(&self) -> Option<bool> {
+        self.can_restrict_members.clone()
+    }
+
+    pub fn can_promote_members(&self) -> Option<bool> {
+        self.can_promote_members.clone()
+    }
+
+    pub fn can_change_info(&self) -> Option<bool> {
+        self.can_change_info.clone()
+    }
+
+    pub fn can_invite_users(&self) -> Option<bool> {
+        self.can_invite_users.clone()
+    }
+
+    pub fn can_pin_messages(&self) -> Option<bool> {
+        self.can_pin_messages.clone()
+    }
+
+    pub fn is_member(&self) -> Option<bool> {
+        self.is_member.clone()
+    }
+
+    pub fn can_send_messages(&self) -> Option<bool> {
+        self.can_send_messages.clone()
+    }
+
+    pub fn can_send_media_messages(&self) -> Option<bool> {
+        self.can_send_media_messages.clone()
+    }
+
+    pub fn can_send_polls(&self) -> Option<bool> {
+        self.can_send_polls.clone()
+    }
+
+    pub fn can_send_other_messages(&self) -> Option<bool> {
+        self.can_send_other_messages.clone()
+    }
+
+    pub fn can_add_web_page_previews(&self) -> Option<bool> {
+        self.can_add_web_page_previews.clone()
+    }
+
+    pub fn until_date(&self) -> Option<isize> {
+        self.until_date.clone()
     }
 }
 
@@ -2824,28 +3924,52 @@ impl ChatMemberUpdated {
         }
     }
 
-    pub fn chat(&mut self, chat: Chat) {
+    pub fn set_chat(&mut self, chat: Chat) {
         self.chat = chat;
     }
 
-    pub fn from(&mut self, from: User) {
+    pub fn set_from(&mut self, from: User) {
         self.from = from;
     }
 
-    pub fn date(&mut self, date: isize) {
+    pub fn set_date(&mut self, date: isize) {
         self.date = date;
     }
 
-    pub fn old_chat_member(&mut self, old_chat_member: ChatMember) {
+    pub fn set_old_chat_member(&mut self, old_chat_member: ChatMember) {
         self.old_chat_member = old_chat_member;
     }
 
-    pub fn new_chat_member(&mut self, new_chat_member: ChatMember) {
+    pub fn set_new_chat_member(&mut self, new_chat_member: ChatMember) {
         self.new_chat_member = new_chat_member;
     }
 
-    pub fn invite_link(&mut self, invite_link: Option<ChatInviteLink>) {
+    pub fn set_invite_link(&mut self, invite_link: Option<ChatInviteLink>) {
         self.invite_link = invite_link;
+    }
+
+    pub fn chat(&self) -> Chat {
+        self.chat.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn date(&self) -> isize {
+        self.date
+    }
+
+    pub fn old_chat_member(&self) -> ChatMember {
+        self.old_chat_member.clone()
+    }
+
+    pub fn new_chat_member(&self) -> ChatMember {
+        self.new_chat_member.clone()
+    }
+
+    pub fn invite_link(&self) -> Option<ChatInviteLink> {
+        self.invite_link.clone()
     }
 }
 
@@ -2863,36 +3987,68 @@ impl ChatPermissions {
         }
     }
 
-    pub fn can_send_messages(&mut self, can_send_messages: Option<bool>) {
+    pub fn set_can_send_messages(&mut self, can_send_messages: Option<bool>) {
         self.can_send_messages = can_send_messages;
     }
 
-    pub fn can_send_media_messages(&mut self, can_send_media_messages: Option<bool>) {
+    pub fn set_can_send_media_messages(&mut self, can_send_media_messages: Option<bool>) {
         self.can_send_media_messages = can_send_media_messages;
     }
 
-    pub fn can_send_polls(&mut self, can_send_polls: Option<bool>) {
+    pub fn set_can_send_polls(&mut self, can_send_polls: Option<bool>) {
         self.can_send_polls = can_send_polls;
     }
 
-    pub fn can_send_other_messages(&mut self, can_send_other_messages: Option<bool>) {
+    pub fn set_can_send_other_messages(&mut self, can_send_other_messages: Option<bool>) {
         self.can_send_other_messages = can_send_other_messages;
     }
 
-    pub fn can_add_web_page_previews(&mut self, can_add_web_page_previews: Option<bool>) {
+    pub fn set_can_add_web_page_previews(&mut self, can_add_web_page_previews: Option<bool>) {
         self.can_add_web_page_previews = can_add_web_page_previews;
     }
 
-    pub fn can_change_info(&mut self, can_change_info: Option<bool>) {
+    pub fn set_can_change_info(&mut self, can_change_info: Option<bool>) {
         self.can_change_info = can_change_info;
     }
 
-    pub fn can_invite_users(&mut self, can_invite_users: Option<bool>) {
+    pub fn set_can_invite_users(&mut self, can_invite_users: Option<bool>) {
         self.can_invite_users = can_invite_users;
     }
 
-    pub fn can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
+    pub fn set_can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
         self.can_pin_messages = can_pin_messages;
+    }
+
+    pub fn can_send_messages(&self) -> Option<bool> {
+        self.can_send_messages.clone()
+    }
+
+    pub fn can_send_media_messages(&self) -> Option<bool> {
+        self.can_send_media_messages.clone()
+    }
+
+    pub fn can_send_polls(&self) -> Option<bool> {
+        self.can_send_polls.clone()
+    }
+
+    pub fn can_send_other_messages(&self) -> Option<bool> {
+        self.can_send_other_messages.clone()
+    }
+
+    pub fn can_add_web_page_previews(&self) -> Option<bool> {
+        self.can_add_web_page_previews.clone()
+    }
+
+    pub fn can_change_info(&self) -> Option<bool> {
+        self.can_change_info.clone()
+    }
+
+    pub fn can_invite_users(&self) -> Option<bool> {
+        self.can_invite_users.clone()
+    }
+
+    pub fn can_pin_messages(&self) -> Option<bool> {
+        self.can_pin_messages.clone()
     }
 }
 
@@ -2901,12 +4057,20 @@ impl ChatLocation {
         Self { location, address }
     }
 
-    pub fn location(&mut self, location: Location) {
+    pub fn set_location(&mut self, location: Location) {
         self.location = location;
     }
 
-    pub fn address(&mut self, address: String) {
+    pub fn set_address(&mut self, address: String) {
         self.address = address;
+    }
+
+    pub fn location(&self) -> Location {
+        self.location.clone()
+    }
+
+    pub fn address(&self) -> String {
+        self.address.clone()
     }
 }
 
@@ -2918,12 +4082,20 @@ impl BotCommand {
         }
     }
 
-    pub fn command(&mut self, command: String) {
+    pub fn set_command(&mut self, command: String) {
         self.command = command;
     }
 
-    pub fn description(&mut self, description: String) {
+    pub fn set_description(&mut self, description: String) {
         self.description = description;
+    }
+
+    pub fn command(&self) -> String {
+        self.command.clone()
+    }
+
+    pub fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -2935,12 +4107,20 @@ impl ResponseParameters {
         }
     }
 
-    pub fn migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<isize>) {
+    pub fn set_migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<isize>) {
         self.migrate_to_chat_id = migrate_to_chat_id;
     }
 
-    pub fn retry_after(&mut self, retry_after: Option<isize>) {
+    pub fn set_retry_after(&mut self, retry_after: Option<isize>) {
         self.retry_after = retry_after;
+    }
+
+    pub fn migrate_to_chat_id(&self) -> Option<isize> {
+        self.migrate_to_chat_id.clone()
+    }
+
+    pub fn retry_after(&self) -> Option<isize> {
+        self.retry_after.clone()
     }
 }
 
@@ -2955,24 +4135,44 @@ impl InputMediaPhoto {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn media(&mut self, media: String) {
+    pub fn set_media(&mut self, media: String) {
         self.media = media;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> String {
+        self.media.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
     }
 }
 
@@ -2992,44 +4192,84 @@ impl InputMediaVideo {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn media(&mut self, media: String) {
+    pub fn set_media(&mut self, media: String) {
         self.media = media;
     }
 
-    pub fn thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
         self.thumb = thumb;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn width(&mut self, width: Option<isize>) {
+    pub fn set_width(&mut self, width: Option<isize>) {
         self.width = width;
     }
 
-    pub fn height(&mut self, height: Option<isize>) {
+    pub fn set_height(&mut self, height: Option<isize>) {
         self.height = height;
     }
 
-    pub fn duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<isize>) {
         self.duration = duration;
     }
 
-    pub fn supports_streaming(&mut self, supports_streaming: Option<bool>) {
+    pub fn set_supports_streaming(&mut self, supports_streaming: Option<bool>) {
         self.supports_streaming = supports_streaming;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> String {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<ThumbEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn width(&self) -> Option<isize> {
+        self.width.clone()
+    }
+
+    pub fn height(&self) -> Option<isize> {
+        self.height.clone()
+    }
+
+    pub fn duration(&self) -> Option<isize> {
+        self.duration.clone()
+    }
+
+    pub fn supports_streaming(&self) -> Option<bool> {
+        self.supports_streaming.clone()
     }
 }
 
@@ -3048,40 +4288,76 @@ impl InputMediaAnimation {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn media(&mut self, media: String) {
+    pub fn set_media(&mut self, media: String) {
         self.media = media;
     }
 
-    pub fn thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
         self.thumb = thumb;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn width(&mut self, width: Option<isize>) {
+    pub fn set_width(&mut self, width: Option<isize>) {
         self.width = width;
     }
 
-    pub fn height(&mut self, height: Option<isize>) {
+    pub fn set_height(&mut self, height: Option<isize>) {
         self.height = height;
     }
 
-    pub fn duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<isize>) {
         self.duration = duration;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> String {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<ThumbEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn width(&self) -> Option<isize> {
+        self.width.clone()
+    }
+
+    pub fn height(&self) -> Option<isize> {
+        self.height.clone()
+    }
+
+    pub fn duration(&self) -> Option<isize> {
+        self.duration.clone()
     }
 }
 
@@ -3100,40 +4376,76 @@ impl InputMediaAudio {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn media(&mut self, media: String) {
+    pub fn set_media(&mut self, media: String) {
         self.media = media;
     }
 
-    pub fn thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
         self.thumb = thumb;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<isize>) {
         self.duration = duration;
     }
 
-    pub fn performer(&mut self, performer: Option<String>) {
+    pub fn set_performer(&mut self, performer: Option<String>) {
         self.performer = performer;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> String {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<ThumbEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn duration(&self) -> Option<isize> {
+        self.duration.clone()
+    }
+
+    pub fn performer(&self) -> Option<String> {
+        self.performer.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
     }
 }
 
@@ -3150,32 +4462,63 @@ impl InputMediaDocument {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn media(&mut self, media: String) {
+    pub fn set_media(&mut self, media: String) {
         self.media = media;
     }
 
-    pub fn thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
         self.thumb = thumb;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn disable_content_type_detection(&mut self, disable_content_type_detection: Option<bool>) {
+    pub fn set_disable_content_type_detection(
+        &mut self,
+        disable_content_type_detection: Option<bool>,
+    ) {
         self.disable_content_type_detection = disable_content_type_detection;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> String {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<ThumbEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn disable_content_type_detection(&self) -> Option<bool> {
+        self.disable_content_type_detection.clone()
     }
 }
 
@@ -3201,44 +4544,84 @@ impl Sticker {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: isize) {
         self.width = width;
     }
 
-    pub fn height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: isize) {
         self.height = height;
     }
 
-    pub fn is_animated(&mut self, is_animated: bool) {
+    pub fn set_is_animated(&mut self, is_animated: bool) {
         self.is_animated = is_animated;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
     }
 
-    pub fn emoji(&mut self, emoji: Option<String>) {
+    pub fn set_emoji(&mut self, emoji: Option<String>) {
         self.emoji = emoji;
     }
 
-    pub fn set_name(&mut self, set_name: Option<String>) {
+    pub fn set_set_name(&mut self, set_name: Option<String>) {
         self.set_name = set_name;
     }
 
-    pub fn mask_position(&mut self, mask_position: Option<MaskPosition>) {
+    pub fn set_mask_position(&mut self, mask_position: Option<MaskPosition>) {
         self.mask_position = mask_position;
     }
 
-    pub fn file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<isize>) {
         self.file_size = file_size;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn width(&self) -> isize {
+        self.width
+    }
+
+    pub fn height(&self) -> isize {
+        self.height
+    }
+
+    pub fn is_animated(&self) -> bool {
+        self.is_animated
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
+    }
+
+    pub fn emoji(&self) -> Option<String> {
+        self.emoji.clone()
+    }
+
+    pub fn set_name(&self) -> Option<String> {
+        self.set_name.clone()
+    }
+
+    pub fn mask_position(&self) -> Option<MaskPosition> {
+        self.mask_position.clone()
+    }
+
+    pub fn file_size(&self) -> Option<isize> {
+        self.file_size.clone()
     }
 }
 
@@ -3260,28 +4643,52 @@ impl StickerSet {
         }
     }
 
-    pub fn name(&mut self, name: String) {
+    pub fn set_name(&mut self, name: String) {
         self.name = name;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn is_animated(&mut self, is_animated: bool) {
+    pub fn set_is_animated(&mut self, is_animated: bool) {
         self.is_animated = is_animated;
     }
 
-    pub fn contains_masks(&mut self, contains_masks: bool) {
+    pub fn set_contains_masks(&mut self, contains_masks: bool) {
         self.contains_masks = contains_masks;
     }
 
-    pub fn stickers(&mut self, stickers: Vec<Sticker>) {
+    pub fn set_stickers(&mut self, stickers: Vec<Sticker>) {
         self.stickers = stickers;
     }
 
-    pub fn thumb(&mut self, thumb: Option<PhotoSize>) {
+    pub fn set_thumb(&mut self, thumb: Option<PhotoSize>) {
         self.thumb = thumb;
+    }
+
+    pub fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn is_animated(&self) -> bool {
+        self.is_animated
+    }
+
+    pub fn contains_masks(&self) -> bool {
+        self.contains_masks
+    }
+
+    pub fn stickers(&self) -> Vec<Sticker> {
+        self.stickers.clone()
+    }
+
+    pub fn thumb(&self) -> Option<PhotoSize> {
+        self.thumb.clone()
     }
 }
 
@@ -3295,20 +4702,36 @@ impl MaskPosition {
         }
     }
 
-    pub fn point(&mut self, point: String) {
+    pub fn set_point(&mut self, point: String) {
         self.point = point;
     }
 
-    pub fn x_shift(&mut self, x_shift: f64) {
+    pub fn set_x_shift(&mut self, x_shift: f64) {
         self.x_shift = x_shift;
     }
 
-    pub fn y_shift(&mut self, y_shift: f64) {
+    pub fn set_y_shift(&mut self, y_shift: f64) {
         self.y_shift = y_shift;
     }
 
-    pub fn scale(&mut self, scale: f64) {
+    pub fn set_scale(&mut self, scale: f64) {
         self.scale = scale;
+    }
+
+    pub fn point(&self) -> String {
+        self.point.clone()
+    }
+
+    pub fn x_shift(&self) -> f64 {
+        self.x_shift
+    }
+
+    pub fn y_shift(&self) -> f64 {
+        self.y_shift
+    }
+
+    pub fn scale(&self) -> f64 {
+        self.scale
     }
 }
 
@@ -3323,24 +4746,44 @@ impl InlineQuery {
         }
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn from(&mut self, from: User) {
+    pub fn set_from(&mut self, from: User) {
         self.from = from;
     }
 
-    pub fn query(&mut self, query: String) {
+    pub fn set_query(&mut self, query: String) {
         self.query = query;
     }
 
-    pub fn offset(&mut self, offset: String) {
+    pub fn set_offset(&mut self, offset: String) {
         self.offset = offset;
     }
 
-    pub fn location(&mut self, location: Option<Location>) {
+    pub fn set_location(&mut self, location: Option<Location>) {
         self.location = location;
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn query(&self) -> String {
+        self.query.clone()
+    }
+
+    pub fn offset(&self) -> String {
+        self.offset.clone()
+    }
+
+    pub fn location(&self) -> Option<Location> {
+        self.location.clone()
     }
 }
 
@@ -3366,48 +4809,92 @@ impl InlineQueryResultArticle {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: InputMessageContent) {
+    pub fn set_input_message_content(&mut self, input_message_content: InputMessageContent) {
         self.input_message_content = input_message_content;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn url(&mut self, url: Option<String>) {
+    pub fn set_url(&mut self, url: Option<String>) {
         self.url = url;
     }
 
-    pub fn hide_url(&mut self, hide_url: Option<bool>) {
+    pub fn set_hide_url(&mut self, hide_url: Option<bool>) {
         self.hide_url = hide_url;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: Option<String>) {
+    pub fn set_thumb_url(&mut self, thumb_url: Option<String>) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
         self.thumb_height = thumb_height;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn input_message_content(&self) -> InputMessageContent {
+        self.input_message_content.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn url(&self) -> Option<String> {
+        self.url.clone()
+    }
+
+    pub fn hide_url(&self) -> Option<bool> {
+        self.hide_url.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn thumb_url(&self) -> Option<String> {
+        self.thumb_url.clone()
+    }
+
+    pub fn thumb_width(&self) -> Option<isize> {
+        self.thumb_width.clone()
+    }
+
+    pub fn thumb_height(&self) -> Option<isize> {
+        self.thumb_height.clone()
     }
 }
 
@@ -3430,56 +4917,111 @@ impl InlineQueryResultPhoto {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn photo_url(&mut self, photo_url: String) {
+    pub fn set_photo_url(&mut self, photo_url: String) {
         self.photo_url = photo_url;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: String) {
+    pub fn set_thumb_url(&mut self, thumb_url: String) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn photo_width(&mut self, photo_width: Option<isize>) {
+    pub fn set_photo_width(&mut self, photo_width: Option<isize>) {
         self.photo_width = photo_width;
     }
 
-    pub fn photo_height(&mut self, photo_height: Option<isize>) {
+    pub fn set_photo_height(&mut self, photo_height: Option<isize>) {
         self.photo_height = photo_height;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn photo_url(&self) -> String {
+        self.photo_url.clone()
+    }
+
+    pub fn thumb_url(&self) -> String {
+        self.thumb_url.clone()
+    }
+
+    pub fn photo_width(&self) -> Option<isize> {
+        self.photo_width.clone()
+    }
+
+    pub fn photo_height(&self) -> Option<isize> {
+        self.photo_height.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -3503,60 +5045,119 @@ impl InlineQueryResultGif {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn gif_url(&mut self, gif_url: String) {
+    pub fn set_gif_url(&mut self, gif_url: String) {
         self.gif_url = gif_url;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: String) {
+    pub fn set_thumb_url(&mut self, thumb_url: String) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn gif_width(&mut self, gif_width: Option<isize>) {
+    pub fn set_gif_width(&mut self, gif_width: Option<isize>) {
         self.gif_width = gif_width;
     }
 
-    pub fn gif_height(&mut self, gif_height: Option<isize>) {
+    pub fn set_gif_height(&mut self, gif_height: Option<isize>) {
         self.gif_height = gif_height;
     }
 
-    pub fn gif_duration(&mut self, gif_duration: Option<isize>) {
+    pub fn set_gif_duration(&mut self, gif_duration: Option<isize>) {
         self.gif_duration = gif_duration;
     }
 
-    pub fn thumb_mime_type(&mut self, thumb_mime_type: Option<String>) {
+    pub fn set_thumb_mime_type(&mut self, thumb_mime_type: Option<String>) {
         self.thumb_mime_type = thumb_mime_type;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn gif_url(&self) -> String {
+        self.gif_url.clone()
+    }
+
+    pub fn thumb_url(&self) -> String {
+        self.thumb_url.clone()
+    }
+
+    pub fn gif_width(&self) -> Option<isize> {
+        self.gif_width.clone()
+    }
+
+    pub fn gif_height(&self) -> Option<isize> {
+        self.gif_height.clone()
+    }
+
+    pub fn gif_duration(&self) -> Option<isize> {
+        self.gif_duration.clone()
+    }
+
+    pub fn thumb_mime_type(&self) -> Option<String> {
+        self.thumb_mime_type.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -3580,60 +5181,119 @@ impl InlineQueryResultMpeg4Gif {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn mpeg4_url(&mut self, mpeg4_url: String) {
+    pub fn set_mpeg4_url(&mut self, mpeg4_url: String) {
         self.mpeg4_url = mpeg4_url;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: String) {
+    pub fn set_thumb_url(&mut self, thumb_url: String) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn mpeg4_width(&mut self, mpeg4_width: Option<isize>) {
+    pub fn set_mpeg4_width(&mut self, mpeg4_width: Option<isize>) {
         self.mpeg4_width = mpeg4_width;
     }
 
-    pub fn mpeg4_height(&mut self, mpeg4_height: Option<isize>) {
+    pub fn set_mpeg4_height(&mut self, mpeg4_height: Option<isize>) {
         self.mpeg4_height = mpeg4_height;
     }
 
-    pub fn mpeg4_duration(&mut self, mpeg4_duration: Option<isize>) {
+    pub fn set_mpeg4_duration(&mut self, mpeg4_duration: Option<isize>) {
         self.mpeg4_duration = mpeg4_duration;
     }
 
-    pub fn thumb_mime_type(&mut self, thumb_mime_type: Option<String>) {
+    pub fn set_thumb_mime_type(&mut self, thumb_mime_type: Option<String>) {
         self.thumb_mime_type = thumb_mime_type;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn mpeg4_url(&self) -> String {
+        self.mpeg4_url.clone()
+    }
+
+    pub fn thumb_url(&self) -> String {
+        self.thumb_url.clone()
+    }
+
+    pub fn mpeg4_width(&self) -> Option<isize> {
+        self.mpeg4_width.clone()
+    }
+
+    pub fn mpeg4_height(&self) -> Option<isize> {
+        self.mpeg4_height.clone()
+    }
+
+    pub fn mpeg4_duration(&self) -> Option<isize> {
+        self.mpeg4_duration.clone()
+    }
+
+    pub fn thumb_mime_type(&self) -> Option<String> {
+        self.thumb_mime_type.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -3665,64 +5325,127 @@ impl InlineQueryResultVideo {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn video_url(&mut self, video_url: String) {
+    pub fn set_video_url(&mut self, video_url: String) {
         self.video_url = video_url;
     }
 
-    pub fn mime_type(&mut self, mime_type: String) {
+    pub fn set_mime_type(&mut self, mime_type: String) {
         self.mime_type = mime_type;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: String) {
+    pub fn set_thumb_url(&mut self, thumb_url: String) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn video_width(&mut self, video_width: Option<isize>) {
+    pub fn set_video_width(&mut self, video_width: Option<isize>) {
         self.video_width = video_width;
     }
 
-    pub fn video_height(&mut self, video_height: Option<isize>) {
+    pub fn set_video_height(&mut self, video_height: Option<isize>) {
         self.video_height = video_height;
     }
 
-    pub fn video_duration(&mut self, video_duration: Option<isize>) {
+    pub fn set_video_duration(&mut self, video_duration: Option<isize>) {
         self.video_duration = video_duration;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn video_url(&self) -> String {
+        self.video_url.clone()
+    }
+
+    pub fn mime_type(&self) -> String {
+        self.mime_type.clone()
+    }
+
+    pub fn thumb_url(&self) -> String {
+        self.thumb_url.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn video_width(&self) -> Option<isize> {
+        self.video_width.clone()
+    }
+
+    pub fn video_height(&self) -> Option<isize> {
+        self.video_height.clone()
+    }
+
+    pub fn video_duration(&self) -> Option<isize> {
+        self.video_duration.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -3743,48 +5466,95 @@ impl InlineQueryResultAudio {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn audio_url(&mut self, audio_url: String) {
+    pub fn set_audio_url(&mut self, audio_url: String) {
         self.audio_url = audio_url;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn performer(&mut self, performer: Option<String>) {
+    pub fn set_performer(&mut self, performer: Option<String>) {
         self.performer = performer;
     }
 
-    pub fn audio_duration(&mut self, audio_duration: Option<isize>) {
+    pub fn set_audio_duration(&mut self, audio_duration: Option<isize>) {
         self.audio_duration = audio_duration;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn audio_url(&self) -> String {
+        self.audio_url.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn performer(&self) -> Option<String> {
+        self.performer.clone()
+    }
+
+    pub fn audio_duration(&self) -> Option<isize> {
+        self.audio_duration.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -3804,44 +5574,87 @@ impl InlineQueryResultVoice {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn voice_url(&mut self, voice_url: String) {
+    pub fn set_voice_url(&mut self, voice_url: String) {
         self.voice_url = voice_url;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn voice_duration(&mut self, voice_duration: Option<isize>) {
+    pub fn set_voice_duration(&mut self, voice_duration: Option<isize>) {
         self.voice_duration = voice_duration;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn voice_url(&self) -> String {
+        self.voice_url.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn voice_duration(&self) -> Option<isize> {
+        self.voice_duration.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -3871,60 +5684,119 @@ impl InlineQueryResultDocument {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn document_url(&mut self, document_url: String) {
+    pub fn set_document_url(&mut self, document_url: String) {
         self.document_url = document_url;
     }
 
-    pub fn mime_type(&mut self, mime_type: String) {
+    pub fn set_mime_type(&mut self, mime_type: String) {
         self.mime_type = mime_type;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: Option<String>) {
+    pub fn set_thumb_url(&mut self, thumb_url: Option<String>) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
         self.thumb_height = thumb_height;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn document_url(&self) -> String {
+        self.document_url.clone()
+    }
+
+    pub fn mime_type(&self) -> String {
+        self.mime_type.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
+    }
+
+    pub fn thumb_url(&self) -> Option<String> {
+        self.thumb_url.clone()
+    }
+
+    pub fn thumb_width(&self) -> Option<isize> {
+        self.thumb_width.clone()
+    }
+
+    pub fn thumb_height(&self) -> Option<isize> {
+        self.thumb_height.clone()
     }
 }
 
@@ -3954,60 +5826,119 @@ impl InlineQueryResultLocation {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn latitude(&mut self, latitude: f64) {
+    pub fn set_latitude(&mut self, latitude: f64) {
         self.latitude = latitude;
     }
 
-    pub fn longitude(&mut self, longitude: f64) {
+    pub fn set_longitude(&mut self, longitude: f64) {
         self.longitude = longitude;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn horizontal_accuracy(&mut self, horizontal_accuracy: Option<f64>) {
+    pub fn set_horizontal_accuracy(&mut self, horizontal_accuracy: Option<f64>) {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn live_period(&mut self, live_period: Option<isize>) {
+    pub fn set_live_period(&mut self, live_period: Option<isize>) {
         self.live_period = live_period;
     }
 
-    pub fn heading(&mut self, heading: Option<isize>) {
+    pub fn set_heading(&mut self, heading: Option<isize>) {
         self.heading = heading;
     }
 
-    pub fn proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
         self.proximity_alert_radius = proximity_alert_radius;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: Option<String>) {
+    pub fn set_thumb_url(&mut self, thumb_url: Option<String>) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
         self.thumb_height = thumb_height;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn longitude(&self) -> f64 {
+        self.longitude
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn horizontal_accuracy(&self) -> Option<f64> {
+        self.horizontal_accuracy.clone()
+    }
+
+    pub fn live_period(&self) -> Option<isize> {
+        self.live_period.clone()
+    }
+
+    pub fn heading(&self) -> Option<isize> {
+        self.heading.clone()
+    }
+
+    pub fn proximity_alert_radius(&self) -> Option<isize> {
+        self.proximity_alert_radius.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
+    }
+
+    pub fn thumb_url(&self) -> Option<String> {
+        self.thumb_url.clone()
+    }
+
+    pub fn thumb_width(&self) -> Option<isize> {
+        self.thumb_width.clone()
+    }
+
+    pub fn thumb_height(&self) -> Option<isize> {
+        self.thumb_height.clone()
     }
 }
 
@@ -4039,64 +5970,127 @@ impl InlineQueryResultVenue {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn latitude(&mut self, latitude: f64) {
+    pub fn set_latitude(&mut self, latitude: f64) {
         self.latitude = latitude;
     }
 
-    pub fn longitude(&mut self, longitude: f64) {
+    pub fn set_longitude(&mut self, longitude: f64) {
         self.longitude = longitude;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn address(&mut self, address: String) {
+    pub fn set_address(&mut self, address: String) {
         self.address = address;
     }
 
-    pub fn foursquare_id(&mut self, foursquare_id: Option<String>) {
+    pub fn set_foursquare_id(&mut self, foursquare_id: Option<String>) {
         self.foursquare_id = foursquare_id;
     }
 
-    pub fn foursquare_type(&mut self, foursquare_type: Option<String>) {
+    pub fn set_foursquare_type(&mut self, foursquare_type: Option<String>) {
         self.foursquare_type = foursquare_type;
     }
 
-    pub fn google_place_id(&mut self, google_place_id: Option<String>) {
+    pub fn set_google_place_id(&mut self, google_place_id: Option<String>) {
         self.google_place_id = google_place_id;
     }
 
-    pub fn google_place_type(&mut self, google_place_type: Option<String>) {
+    pub fn set_google_place_type(&mut self, google_place_type: Option<String>) {
         self.google_place_type = google_place_type;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: Option<String>) {
+    pub fn set_thumb_url(&mut self, thumb_url: Option<String>) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
         self.thumb_height = thumb_height;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn longitude(&self) -> f64 {
+        self.longitude
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn address(&self) -> String {
+        self.address.clone()
+    }
+
+    pub fn foursquare_id(&self) -> Option<String> {
+        self.foursquare_id.clone()
+    }
+
+    pub fn foursquare_type(&self) -> Option<String> {
+        self.foursquare_type.clone()
+    }
+
+    pub fn google_place_id(&self) -> Option<String> {
+        self.google_place_id.clone()
+    }
+
+    pub fn google_place_type(&self) -> Option<String> {
+        self.google_place_type.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
+    }
+
+    pub fn thumb_url(&self) -> Option<String> {
+        self.thumb_url.clone()
+    }
+
+    pub fn thumb_width(&self) -> Option<isize> {
+        self.thumb_width.clone()
+    }
+
+    pub fn thumb_height(&self) -> Option<isize> {
+        self.thumb_height.clone()
     }
 }
 
@@ -4117,48 +6111,95 @@ impl InlineQueryResultContact {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn phone_number(&mut self, phone_number: String) {
+    pub fn set_phone_number(&mut self, phone_number: String) {
         self.phone_number = phone_number;
     }
 
-    pub fn first_name(&mut self, first_name: String) {
+    pub fn set_first_name(&mut self, first_name: String) {
         self.first_name = first_name;
     }
 
-    pub fn last_name(&mut self, last_name: Option<String>) {
+    pub fn set_last_name(&mut self, last_name: Option<String>) {
         self.last_name = last_name;
     }
 
-    pub fn vcard(&mut self, vcard: Option<String>) {
+    pub fn set_vcard(&mut self, vcard: Option<String>) {
         self.vcard = vcard;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
     }
 
-    pub fn thumb_url(&mut self, thumb_url: Option<String>) {
+    pub fn set_thumb_url(&mut self, thumb_url: Option<String>) {
         self.thumb_url = thumb_url;
     }
 
-    pub fn thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
         self.thumb_height = thumb_height;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn phone_number(&self) -> String {
+        self.phone_number.clone()
+    }
+
+    pub fn first_name(&self) -> String {
+        self.first_name.clone()
+    }
+
+    pub fn last_name(&self) -> Option<String> {
+        self.last_name.clone()
+    }
+
+    pub fn vcard(&self) -> Option<String> {
+        self.vcard.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
+    }
+
+    pub fn thumb_url(&self) -> Option<String> {
+        self.thumb_url.clone()
+    }
+
+    pub fn thumb_width(&self) -> Option<isize> {
+        self.thumb_width.clone()
+    }
+
+    pub fn thumb_height(&self) -> Option<isize> {
+        self.thumb_height.clone()
     }
 }
 
@@ -4172,20 +6213,36 @@ impl InlineQueryResultGame {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn game_short_name(&mut self, game_short_name: String) {
+    pub fn set_game_short_name(&mut self, game_short_name: String) {
         self.game_short_name = game_short_name;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn game_short_name(&self) -> String {
+        self.game_short_name.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
     }
 }
 
@@ -4205,44 +6262,87 @@ impl InlineQueryResultCachedPhoto {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn photo_file_id(&mut self, photo_file_id: String) {
+    pub fn set_photo_file_id(&mut self, photo_file_id: String) {
         self.photo_file_id = photo_file_id;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn photo_file_id(&self) -> String {
+        self.photo_file_id.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4261,40 +6361,79 @@ impl InlineQueryResultCachedGif {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn gif_file_id(&mut self, gif_file_id: String) {
+    pub fn set_gif_file_id(&mut self, gif_file_id: String) {
         self.gif_file_id = gif_file_id;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn gif_file_id(&self) -> String {
+        self.gif_file_id.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4313,40 +6452,79 @@ impl InlineQueryResultCachedMpeg4Gif {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn mpeg4_file_id(&mut self, mpeg4_file_id: String) {
+    pub fn set_mpeg4_file_id(&mut self, mpeg4_file_id: String) {
         self.mpeg4_file_id = mpeg4_file_id;
     }
 
-    pub fn title(&mut self, title: Option<String>) {
+    pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn mpeg4_file_id(&self) -> String {
+        self.mpeg4_file_id.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4361,24 +6539,47 @@ impl InlineQueryResultCachedSticker {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn sticker_file_id(&mut self, sticker_file_id: String) {
+    pub fn set_sticker_file_id(&mut self, sticker_file_id: String) {
         self.sticker_file_id = sticker_file_id;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn sticker_file_id(&self) -> String {
+        self.sticker_file_id.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4398,44 +6599,87 @@ impl InlineQueryResultCachedDocument {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn document_file_id(&mut self, document_file_id: String) {
+    pub fn set_document_file_id(&mut self, document_file_id: String) {
         self.document_file_id = document_file_id;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn document_file_id(&self) -> String {
+        self.document_file_id.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4455,44 +6699,87 @@ impl InlineQueryResultCachedVideo {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn video_file_id(&mut self, video_file_id: String) {
+    pub fn set_video_file_id(&mut self, video_file_id: String) {
         self.video_file_id = video_file_id;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn description(&mut self, description: Option<String>) {
+    pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn video_file_id(&self) -> String {
+        self.video_file_id.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn description(&self) -> Option<String> {
+        self.description.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4511,40 +6798,79 @@ impl InlineQueryResultCachedVoice {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn voice_file_id(&mut self, voice_file_id: String) {
+    pub fn set_voice_file_id(&mut self, voice_file_id: String) {
         self.voice_file_id = voice_file_id;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn voice_file_id(&self) -> String {
+        self.voice_file_id.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4562,36 +6888,71 @@ impl InlineQueryResultCachedAudio {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn audio_file_id(&mut self, audio_file_id: String) {
+    pub fn set_audio_file_id(&mut self, audio_file_id: String) {
         self.audio_file_id = audio_file_id;
     }
 
-    pub fn caption(&mut self, caption: Option<String>) {
+    pub fn set_caption(&mut self, caption: Option<String>) {
         self.caption = caption;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
     }
 
-    pub fn reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn input_message_content(&mut self, input_message_content: Option<InputMessageContent>) {
+    pub fn set_input_message_content(
+        &mut self,
+        input_message_content: Option<InputMessageContent>,
+    ) {
         self.input_message_content = input_message_content;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn audio_file_id(&self) -> String {
+        self.audio_file_id.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
+        self.reply_markup.clone()
+    }
+
+    pub fn input_message_content(&self) -> Option<InputMessageContent> {
+        self.input_message_content.clone()
     }
 }
 
@@ -4605,20 +6966,36 @@ impl InputTextMessageContent {
         }
     }
 
-    pub fn message_text(&mut self, message_text: String) {
+    pub fn set_message_text(&mut self, message_text: String) {
         self.message_text = message_text;
     }
 
-    pub fn parse_mode(&mut self, parse_mode: Option<String>) {
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
         self.parse_mode = parse_mode;
     }
 
-    pub fn entities(&mut self, entities: Option<Vec<MessageEntity>>) {
+    pub fn set_entities(&mut self, entities: Option<Vec<MessageEntity>>) {
         self.entities = entities;
     }
 
-    pub fn disable_web_page_preview(&mut self, disable_web_page_preview: Option<bool>) {
+    pub fn set_disable_web_page_preview(&mut self, disable_web_page_preview: Option<bool>) {
         self.disable_web_page_preview = disable_web_page_preview;
+    }
+
+    pub fn message_text(&self) -> String {
+        self.message_text.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn entities(&self) -> Option<Vec<MessageEntity>> {
+        self.entities.clone()
+    }
+
+    pub fn disable_web_page_preview(&self) -> Option<bool> {
+        self.disable_web_page_preview.clone()
     }
 }
 
@@ -4634,28 +7011,52 @@ impl InputLocationMessageContent {
         }
     }
 
-    pub fn latitude(&mut self, latitude: f64) {
+    pub fn set_latitude(&mut self, latitude: f64) {
         self.latitude = latitude;
     }
 
-    pub fn longitude(&mut self, longitude: f64) {
+    pub fn set_longitude(&mut self, longitude: f64) {
         self.longitude = longitude;
     }
 
-    pub fn horizontal_accuracy(&mut self, horizontal_accuracy: Option<f64>) {
+    pub fn set_horizontal_accuracy(&mut self, horizontal_accuracy: Option<f64>) {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn live_period(&mut self, live_period: Option<isize>) {
+    pub fn set_live_period(&mut self, live_period: Option<isize>) {
         self.live_period = live_period;
     }
 
-    pub fn heading(&mut self, heading: Option<isize>) {
+    pub fn set_heading(&mut self, heading: Option<isize>) {
         self.heading = heading;
     }
 
-    pub fn proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
         self.proximity_alert_radius = proximity_alert_radius;
+    }
+
+    pub fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn longitude(&self) -> f64 {
+        self.longitude
+    }
+
+    pub fn horizontal_accuracy(&self) -> Option<f64> {
+        self.horizontal_accuracy.clone()
+    }
+
+    pub fn live_period(&self) -> Option<isize> {
+        self.live_period.clone()
+    }
+
+    pub fn heading(&self) -> Option<isize> {
+        self.heading.clone()
+    }
+
+    pub fn proximity_alert_radius(&self) -> Option<isize> {
+        self.proximity_alert_radius.clone()
     }
 }
 
@@ -4673,36 +7074,68 @@ impl InputVenueMessageContent {
         }
     }
 
-    pub fn latitude(&mut self, latitude: f64) {
+    pub fn set_latitude(&mut self, latitude: f64) {
         self.latitude = latitude;
     }
 
-    pub fn longitude(&mut self, longitude: f64) {
+    pub fn set_longitude(&mut self, longitude: f64) {
         self.longitude = longitude;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn address(&mut self, address: String) {
+    pub fn set_address(&mut self, address: String) {
         self.address = address;
     }
 
-    pub fn foursquare_id(&mut self, foursquare_id: Option<String>) {
+    pub fn set_foursquare_id(&mut self, foursquare_id: Option<String>) {
         self.foursquare_id = foursquare_id;
     }
 
-    pub fn foursquare_type(&mut self, foursquare_type: Option<String>) {
+    pub fn set_foursquare_type(&mut self, foursquare_type: Option<String>) {
         self.foursquare_type = foursquare_type;
     }
 
-    pub fn google_place_id(&mut self, google_place_id: Option<String>) {
+    pub fn set_google_place_id(&mut self, google_place_id: Option<String>) {
         self.google_place_id = google_place_id;
     }
 
-    pub fn google_place_type(&mut self, google_place_type: Option<String>) {
+    pub fn set_google_place_type(&mut self, google_place_type: Option<String>) {
         self.google_place_type = google_place_type;
+    }
+
+    pub fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn longitude(&self) -> f64 {
+        self.longitude
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn address(&self) -> String {
+        self.address.clone()
+    }
+
+    pub fn foursquare_id(&self) -> Option<String> {
+        self.foursquare_id.clone()
+    }
+
+    pub fn foursquare_type(&self) -> Option<String> {
+        self.foursquare_type.clone()
+    }
+
+    pub fn google_place_id(&self) -> Option<String> {
+        self.google_place_id.clone()
+    }
+
+    pub fn google_place_type(&self) -> Option<String> {
+        self.google_place_type.clone()
     }
 }
 
@@ -4716,20 +7149,36 @@ impl InputContactMessageContent {
         }
     }
 
-    pub fn phone_number(&mut self, phone_number: String) {
+    pub fn set_phone_number(&mut self, phone_number: String) {
         self.phone_number = phone_number;
     }
 
-    pub fn first_name(&mut self, first_name: String) {
+    pub fn set_first_name(&mut self, first_name: String) {
         self.first_name = first_name;
     }
 
-    pub fn last_name(&mut self, last_name: Option<String>) {
+    pub fn set_last_name(&mut self, last_name: Option<String>) {
         self.last_name = last_name;
     }
 
-    pub fn vcard(&mut self, vcard: Option<String>) {
+    pub fn set_vcard(&mut self, vcard: Option<String>) {
         self.vcard = vcard;
+    }
+
+    pub fn phone_number(&self) -> String {
+        self.phone_number.clone()
+    }
+
+    pub fn first_name(&self) -> String {
+        self.first_name.clone()
+    }
+
+    pub fn last_name(&self) -> Option<String> {
+        self.last_name.clone()
+    }
+
+    pub fn vcard(&self) -> Option<String> {
+        self.vcard.clone()
     }
 }
 
@@ -4744,24 +7193,44 @@ impl ChosenInlineResult {
         }
     }
 
-    pub fn result_id(&mut self, result_id: String) {
+    pub fn set_result_id(&mut self, result_id: String) {
         self.result_id = result_id;
     }
 
-    pub fn from(&mut self, from: User) {
+    pub fn set_from(&mut self, from: User) {
         self.from = from;
     }
 
-    pub fn query(&mut self, query: String) {
+    pub fn set_query(&mut self, query: String) {
         self.query = query;
     }
 
-    pub fn location(&mut self, location: Option<Location>) {
+    pub fn set_location(&mut self, location: Option<Location>) {
         self.location = location;
     }
 
-    pub fn inline_message_id(&mut self, inline_message_id: Option<String>) {
+    pub fn set_inline_message_id(&mut self, inline_message_id: Option<String>) {
         self.inline_message_id = inline_message_id;
+    }
+
+    pub fn result_id(&self) -> String {
+        self.result_id.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn query(&self) -> String {
+        self.query.clone()
+    }
+
+    pub fn location(&self) -> Option<Location> {
+        self.location.clone()
+    }
+
+    pub fn inline_message_id(&self) -> Option<String> {
+        self.inline_message_id.clone()
     }
 }
 
@@ -4770,12 +7239,20 @@ impl LabeledPrice {
         Self { label, amount }
     }
 
-    pub fn label(&mut self, label: String) {
+    pub fn set_label(&mut self, label: String) {
         self.label = label;
     }
 
-    pub fn amount(&mut self, amount: isize) {
+    pub fn set_amount(&mut self, amount: isize) {
         self.amount = amount;
+    }
+
+    pub fn label(&self) -> String {
+        self.label.clone()
+    }
+
+    pub fn amount(&self) -> isize {
+        self.amount
     }
 }
 
@@ -4796,24 +7273,44 @@ impl Invoice {
         }
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn description(&mut self, description: String) {
+    pub fn set_description(&mut self, description: String) {
         self.description = description;
     }
 
-    pub fn start_parameter(&mut self, start_parameter: String) {
+    pub fn set_start_parameter(&mut self, start_parameter: String) {
         self.start_parameter = start_parameter;
     }
 
-    pub fn currency(&mut self, currency: String) {
+    pub fn set_currency(&mut self, currency: String) {
         self.currency = currency;
     }
 
-    pub fn total_amount(&mut self, total_amount: isize) {
+    pub fn set_total_amount(&mut self, total_amount: isize) {
         self.total_amount = total_amount;
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn description(&self) -> String {
+        self.description.clone()
+    }
+
+    pub fn start_parameter(&self) -> String {
+        self.start_parameter.clone()
+    }
+
+    pub fn currency(&self) -> String {
+        self.currency.clone()
+    }
+
+    pub fn total_amount(&self) -> isize {
+        self.total_amount
     }
 }
 
@@ -4836,28 +7333,52 @@ impl ShippingAddress {
         }
     }
 
-    pub fn country_code(&mut self, country_code: String) {
+    pub fn set_country_code(&mut self, country_code: String) {
         self.country_code = country_code;
     }
 
-    pub fn state(&mut self, state: String) {
+    pub fn set_state(&mut self, state: String) {
         self.state = state;
     }
 
-    pub fn city(&mut self, city: String) {
+    pub fn set_city(&mut self, city: String) {
         self.city = city;
     }
 
-    pub fn street_line1(&mut self, street_line1: String) {
+    pub fn set_street_line1(&mut self, street_line1: String) {
         self.street_line1 = street_line1;
     }
 
-    pub fn street_line2(&mut self, street_line2: String) {
+    pub fn set_street_line2(&mut self, street_line2: String) {
         self.street_line2 = street_line2;
     }
 
-    pub fn post_code(&mut self, post_code: String) {
+    pub fn set_post_code(&mut self, post_code: String) {
         self.post_code = post_code;
+    }
+
+    pub fn country_code(&self) -> String {
+        self.country_code.clone()
+    }
+
+    pub fn state(&self) -> String {
+        self.state.clone()
+    }
+
+    pub fn city(&self) -> String {
+        self.city.clone()
+    }
+
+    pub fn street_line1(&self) -> String {
+        self.street_line1.clone()
+    }
+
+    pub fn street_line2(&self) -> String {
+        self.street_line2.clone()
+    }
+
+    pub fn post_code(&self) -> String {
+        self.post_code.clone()
     }
 }
 
@@ -4871,20 +7392,36 @@ impl OrderInfo {
         }
     }
 
-    pub fn name(&mut self, name: Option<String>) {
+    pub fn set_name(&mut self, name: Option<String>) {
         self.name = name;
     }
 
-    pub fn phone_number(&mut self, phone_number: Option<String>) {
+    pub fn set_phone_number(&mut self, phone_number: Option<String>) {
         self.phone_number = phone_number;
     }
 
-    pub fn email(&mut self, email: Option<String>) {
+    pub fn set_email(&mut self, email: Option<String>) {
         self.email = email;
     }
 
-    pub fn shipping_address(&mut self, shipping_address: Option<ShippingAddress>) {
+    pub fn set_shipping_address(&mut self, shipping_address: Option<ShippingAddress>) {
         self.shipping_address = shipping_address;
+    }
+
+    pub fn name(&self) -> Option<String> {
+        self.name.clone()
+    }
+
+    pub fn phone_number(&self) -> Option<String> {
+        self.phone_number.clone()
+    }
+
+    pub fn email(&self) -> Option<String> {
+        self.email.clone()
+    }
+
+    pub fn shipping_address(&self) -> Option<ShippingAddress> {
+        self.shipping_address.clone()
     }
 }
 
@@ -4893,16 +7430,28 @@ impl ShippingOption {
         Self { id, title, prices }
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn prices(&mut self, prices: Vec<LabeledPrice>) {
+    pub fn set_prices(&mut self, prices: Vec<LabeledPrice>) {
         self.prices = prices;
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn prices(&self) -> Vec<LabeledPrice> {
+        self.prices.clone()
     }
 }
 
@@ -4925,32 +7474,60 @@ impl SuccessfulPayment {
         }
     }
 
-    pub fn currency(&mut self, currency: String) {
+    pub fn set_currency(&mut self, currency: String) {
         self.currency = currency;
     }
 
-    pub fn total_amount(&mut self, total_amount: isize) {
+    pub fn set_total_amount(&mut self, total_amount: isize) {
         self.total_amount = total_amount;
     }
 
-    pub fn invoice_payload(&mut self, invoice_payload: String) {
+    pub fn set_invoice_payload(&mut self, invoice_payload: String) {
         self.invoice_payload = invoice_payload;
     }
 
-    pub fn telegram_payment_charge_id(&mut self, telegram_payment_charge_id: String) {
+    pub fn set_telegram_payment_charge_id(&mut self, telegram_payment_charge_id: String) {
         self.telegram_payment_charge_id = telegram_payment_charge_id;
     }
 
-    pub fn provider_payment_charge_id(&mut self, provider_payment_charge_id: String) {
+    pub fn set_provider_payment_charge_id(&mut self, provider_payment_charge_id: String) {
         self.provider_payment_charge_id = provider_payment_charge_id;
     }
 
-    pub fn shipping_option_id(&mut self, shipping_option_id: Option<String>) {
+    pub fn set_shipping_option_id(&mut self, shipping_option_id: Option<String>) {
         self.shipping_option_id = shipping_option_id;
     }
 
-    pub fn order_info(&mut self, order_info: Option<OrderInfo>) {
+    pub fn set_order_info(&mut self, order_info: Option<OrderInfo>) {
         self.order_info = order_info;
+    }
+
+    pub fn currency(&self) -> String {
+        self.currency.clone()
+    }
+
+    pub fn total_amount(&self) -> isize {
+        self.total_amount
+    }
+
+    pub fn invoice_payload(&self) -> String {
+        self.invoice_payload.clone()
+    }
+
+    pub fn telegram_payment_charge_id(&self) -> String {
+        self.telegram_payment_charge_id.clone()
+    }
+
+    pub fn provider_payment_charge_id(&self) -> String {
+        self.provider_payment_charge_id.clone()
+    }
+
+    pub fn shipping_option_id(&self) -> Option<String> {
+        self.shipping_option_id.clone()
+    }
+
+    pub fn order_info(&self) -> Option<OrderInfo> {
+        self.order_info.clone()
     }
 }
 
@@ -4969,20 +7546,36 @@ impl ShippingQuery {
         }
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn from(&mut self, from: User) {
+    pub fn set_from(&mut self, from: User) {
         self.from = from;
     }
 
-    pub fn invoice_payload(&mut self, invoice_payload: String) {
+    pub fn set_invoice_payload(&mut self, invoice_payload: String) {
         self.invoice_payload = invoice_payload;
     }
 
-    pub fn shipping_address(&mut self, shipping_address: ShippingAddress) {
+    pub fn set_shipping_address(&mut self, shipping_address: ShippingAddress) {
         self.shipping_address = shipping_address;
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn invoice_payload(&self) -> String {
+        self.invoice_payload.clone()
+    }
+
+    pub fn shipping_address(&self) -> ShippingAddress {
+        self.shipping_address.clone()
     }
 }
 
@@ -5005,32 +7598,60 @@ impl PreCheckoutQuery {
         }
     }
 
-    pub fn id(&mut self, id: String) {
+    pub fn set_id(&mut self, id: String) {
         self.id = id;
     }
 
-    pub fn from(&mut self, from: User) {
+    pub fn set_from(&mut self, from: User) {
         self.from = from;
     }
 
-    pub fn currency(&mut self, currency: String) {
+    pub fn set_currency(&mut self, currency: String) {
         self.currency = currency;
     }
 
-    pub fn total_amount(&mut self, total_amount: isize) {
+    pub fn set_total_amount(&mut self, total_amount: isize) {
         self.total_amount = total_amount;
     }
 
-    pub fn invoice_payload(&mut self, invoice_payload: String) {
+    pub fn set_invoice_payload(&mut self, invoice_payload: String) {
         self.invoice_payload = invoice_payload;
     }
 
-    pub fn shipping_option_id(&mut self, shipping_option_id: Option<String>) {
+    pub fn set_shipping_option_id(&mut self, shipping_option_id: Option<String>) {
         self.shipping_option_id = shipping_option_id;
     }
 
-    pub fn order_info(&mut self, order_info: Option<OrderInfo>) {
+    pub fn set_order_info(&mut self, order_info: Option<OrderInfo>) {
         self.order_info = order_info;
+    }
+
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn currency(&self) -> String {
+        self.currency.clone()
+    }
+
+    pub fn total_amount(&self) -> isize {
+        self.total_amount
+    }
+
+    pub fn invoice_payload(&self) -> String {
+        self.invoice_payload.clone()
+    }
+
+    pub fn shipping_option_id(&self) -> Option<String> {
+        self.shipping_option_id.clone()
+    }
+
+    pub fn order_info(&self) -> Option<OrderInfo> {
+        self.order_info.clone()
     }
 }
 
@@ -5039,12 +7660,20 @@ impl PassportData {
         Self { data, credentials }
     }
 
-    pub fn data(&mut self, data: Vec<EncryptedPassportElement>) {
+    pub fn set_data(&mut self, data: Vec<EncryptedPassportElement>) {
         self.data = data;
     }
 
-    pub fn credentials(&mut self, credentials: EncryptedCredentials) {
+    pub fn set_credentials(&mut self, credentials: EncryptedCredentials) {
         self.credentials = credentials;
+    }
+
+    pub fn data(&self) -> Vec<EncryptedPassportElement> {
+        self.data.clone()
+    }
+
+    pub fn credentials(&self) -> EncryptedCredentials {
+        self.credentials.clone()
     }
 }
 
@@ -5063,20 +7692,36 @@ impl PassportFile {
         }
     }
 
-    pub fn file_id(&mut self, file_id: String) {
+    pub fn set_file_id(&mut self, file_id: String) {
         self.file_id = file_id;
     }
 
-    pub fn file_unique_id(&mut self, file_unique_id: String) {
+    pub fn set_file_unique_id(&mut self, file_unique_id: String) {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn file_size(&mut self, file_size: isize) {
+    pub fn set_file_size(&mut self, file_size: isize) {
         self.file_size = file_size;
     }
 
-    pub fn file_date(&mut self, file_date: isize) {
+    pub fn set_file_date(&mut self, file_date: isize) {
         self.file_date = file_date;
+    }
+
+    pub fn file_id(&self) -> String {
+        self.file_id.clone()
+    }
+
+    pub fn file_unique_id(&self) -> String {
+        self.file_unique_id.clone()
+    }
+
+    pub fn file_size(&self) -> isize {
+        self.file_size
+    }
+
+    pub fn file_date(&self) -> isize {
+        self.file_date
     }
 }
 
@@ -5096,44 +7741,84 @@ impl EncryptedPassportElement {
         }
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn hash(&mut self, hash: String) {
+    pub fn set_hash(&mut self, hash: String) {
         self.hash = hash;
     }
 
-    pub fn data(&mut self, data: Option<String>) {
+    pub fn set_data(&mut self, data: Option<String>) {
         self.data = data;
     }
 
-    pub fn phone_number(&mut self, phone_number: Option<String>) {
+    pub fn set_phone_number(&mut self, phone_number: Option<String>) {
         self.phone_number = phone_number;
     }
 
-    pub fn email(&mut self, email: Option<String>) {
+    pub fn set_email(&mut self, email: Option<String>) {
         self.email = email;
     }
 
-    pub fn files(&mut self, files: Option<Vec<PassportFile>>) {
+    pub fn set_files(&mut self, files: Option<Vec<PassportFile>>) {
         self.files = files;
     }
 
-    pub fn front_side(&mut self, front_side: Option<PassportFile>) {
+    pub fn set_front_side(&mut self, front_side: Option<PassportFile>) {
         self.front_side = front_side;
     }
 
-    pub fn reverse_side(&mut self, reverse_side: Option<PassportFile>) {
+    pub fn set_reverse_side(&mut self, reverse_side: Option<PassportFile>) {
         self.reverse_side = reverse_side;
     }
 
-    pub fn selfie(&mut self, selfie: Option<PassportFile>) {
+    pub fn set_selfie(&mut self, selfie: Option<PassportFile>) {
         self.selfie = selfie;
     }
 
-    pub fn translation(&mut self, translation: Option<Vec<PassportFile>>) {
+    pub fn set_translation(&mut self, translation: Option<Vec<PassportFile>>) {
         self.translation = translation;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn hash(&self) -> String {
+        self.hash.clone()
+    }
+
+    pub fn data(&self) -> Option<String> {
+        self.data.clone()
+    }
+
+    pub fn phone_number(&self) -> Option<String> {
+        self.phone_number.clone()
+    }
+
+    pub fn email(&self) -> Option<String> {
+        self.email.clone()
+    }
+
+    pub fn files(&self) -> Option<Vec<PassportFile>> {
+        self.files.clone()
+    }
+
+    pub fn front_side(&self) -> Option<PassportFile> {
+        self.front_side.clone()
+    }
+
+    pub fn reverse_side(&self) -> Option<PassportFile> {
+        self.reverse_side.clone()
+    }
+
+    pub fn selfie(&self) -> Option<PassportFile> {
+        self.selfie.clone()
+    }
+
+    pub fn translation(&self) -> Option<Vec<PassportFile>> {
+        self.translation.clone()
     }
 }
 
@@ -5142,16 +7827,28 @@ impl EncryptedCredentials {
         Self { data, hash, secret }
     }
 
-    pub fn data(&mut self, data: String) {
+    pub fn set_data(&mut self, data: String) {
         self.data = data;
     }
 
-    pub fn hash(&mut self, hash: String) {
+    pub fn set_hash(&mut self, hash: String) {
         self.hash = hash;
     }
 
-    pub fn secret(&mut self, secret: String) {
+    pub fn set_secret(&mut self, secret: String) {
         self.secret = secret;
+    }
+
+    pub fn data(&self) -> String {
+        self.data.clone()
+    }
+
+    pub fn hash(&self) -> String {
+        self.hash.clone()
+    }
+
+    pub fn secret(&self) -> String {
+        self.secret.clone()
     }
 }
 
@@ -5172,24 +7869,44 @@ impl PassportElementErrorDataField {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn field_name(&mut self, field_name: String) {
+    pub fn set_field_name(&mut self, field_name: String) {
         self.field_name = field_name;
     }
 
-    pub fn data_hash(&mut self, data_hash: String) {
+    pub fn set_data_hash(&mut self, data_hash: String) {
         self.data_hash = data_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn field_name(&self) -> String {
+        self.field_name.clone()
+    }
+
+    pub fn data_hash(&self) -> String {
+        self.data_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5203,20 +7920,36 @@ impl PassportElementErrorFrontSide {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hash(&mut self, file_hash: String) {
+    pub fn set_file_hash(&mut self, file_hash: String) {
         self.file_hash = file_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hash(&self) -> String {
+        self.file_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5230,20 +7963,36 @@ impl PassportElementErrorReverseSide {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hash(&mut self, file_hash: String) {
+    pub fn set_file_hash(&mut self, file_hash: String) {
         self.file_hash = file_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hash(&self) -> String {
+        self.file_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5257,20 +8006,36 @@ impl PassportElementErrorSelfie {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hash(&mut self, file_hash: String) {
+    pub fn set_file_hash(&mut self, file_hash: String) {
         self.file_hash = file_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hash(&self) -> String {
+        self.file_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5284,20 +8049,36 @@ impl PassportElementErrorFile {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hash(&mut self, file_hash: String) {
+    pub fn set_file_hash(&mut self, file_hash: String) {
         self.file_hash = file_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hash(&self) -> String {
+        self.file_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5316,20 +8097,36 @@ impl PassportElementErrorFiles {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hashes(&mut self, file_hashes: Vec<String>) {
+    pub fn set_file_hashes(&mut self, file_hashes: Vec<String>) {
         self.file_hashes = file_hashes;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hashes(&self) -> Vec<String> {
+        self.file_hashes.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5343,20 +8140,36 @@ impl PassportElementErrorTranslationFile {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hash(&mut self, file_hash: String) {
+    pub fn set_file_hash(&mut self, file_hash: String) {
         self.file_hash = file_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hash(&self) -> String {
+        self.file_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5375,20 +8188,36 @@ impl PassportElementErrorTranslationFiles {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn file_hashes(&mut self, file_hashes: Vec<String>) {
+    pub fn set_file_hashes(&mut self, file_hashes: Vec<String>) {
         self.file_hashes = file_hashes;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn file_hashes(&self) -> Vec<String> {
+        self.file_hashes.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5402,20 +8231,36 @@ impl PassportElementErrorUnspecified {
         }
     }
 
-    pub fn source(&mut self, source: String) {
+    pub fn set_source(&mut self, source: String) {
         self.source = source;
     }
 
-    pub fn type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: String) {
         self.type_field = type_field;
     }
 
-    pub fn element_hash(&mut self, element_hash: String) {
+    pub fn set_element_hash(&mut self, element_hash: String) {
         self.element_hash = element_hash;
     }
 
-    pub fn message(&mut self, message: String) {
+    pub fn set_message(&mut self, message: String) {
         self.message = message;
+    }
+
+    pub fn source(&self) -> String {
+        self.source.clone()
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn element_hash(&self) -> String {
+        self.element_hash.clone()
+    }
+
+    pub fn message(&self) -> String {
+        self.message.clone()
     }
 }
 
@@ -5431,28 +8276,52 @@ impl Game {
         }
     }
 
-    pub fn title(&mut self, title: String) {
+    pub fn set_title(&mut self, title: String) {
         self.title = title;
     }
 
-    pub fn description(&mut self, description: String) {
+    pub fn set_description(&mut self, description: String) {
         self.description = description;
     }
 
-    pub fn photo(&mut self, photo: Vec<PhotoSize>) {
+    pub fn set_photo(&mut self, photo: Vec<PhotoSize>) {
         self.photo = photo;
     }
 
-    pub fn text(&mut self, text: Option<String>) {
+    pub fn set_text(&mut self, text: Option<String>) {
         self.text = text;
     }
 
-    pub fn text_entities(&mut self, text_entities: Option<Vec<MessageEntity>>) {
+    pub fn set_text_entities(&mut self, text_entities: Option<Vec<MessageEntity>>) {
         self.text_entities = text_entities;
     }
 
-    pub fn animation(&mut self, animation: Option<Animation>) {
+    pub fn set_animation(&mut self, animation: Option<Animation>) {
         self.animation = animation;
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn description(&self) -> String {
+        self.description.clone()
+    }
+
+    pub fn photo(&self) -> Vec<PhotoSize> {
+        self.photo.clone()
+    }
+
+    pub fn text(&self) -> Option<String> {
+        self.text.clone()
+    }
+
+    pub fn text_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.text_entities.clone()
+    }
+
+    pub fn animation(&self) -> Option<Animation> {
+        self.animation.clone()
     }
 }
 
@@ -5465,15 +8334,27 @@ impl GameHighScore {
         }
     }
 
-    pub fn position(&mut self, position: isize) {
+    pub fn set_position(&mut self, position: isize) {
         self.position = position;
     }
 
-    pub fn user(&mut self, user: User) {
+    pub fn set_user(&mut self, user: User) {
         self.user = user;
     }
 
-    pub fn score(&mut self, score: isize) {
+    pub fn set_score(&mut self, score: isize) {
         self.score = score;
+    }
+
+    pub fn position(&self) -> isize {
+        self.position
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn score(&self) -> isize {
+        self.score
     }
 }
