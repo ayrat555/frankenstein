@@ -51,6 +51,7 @@ pub enum PassportElementError {
 // https://github.com/ayrat555/frankenstein_creator
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum ChatIdEnum {
     IsizeVariant(isize),
     StringVariant(String),
