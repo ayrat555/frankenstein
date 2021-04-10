@@ -378,6 +378,7 @@ pub struct SendPollParams {
     question: String,
     options: Vec<String>,
     is_anonymous: Option<bool>,
+    #[serde(rename = "type")]
     type_field: Option<String>,
     allows_multiple_answers: Option<bool>,
     correct_option_id: Option<isize>,

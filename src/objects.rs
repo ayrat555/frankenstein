@@ -29,124 +29,223 @@ pub enum ThumbEnum {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Update {
     update_id: isize,
+
     message: Option<Message>,
+
     edited_message: Option<Message>,
+
     channel_post: Option<Message>,
+
     edited_channel_post: Option<Message>,
+
     inline_query: Option<InlineQuery>,
+
     chosen_inline_result: Option<ChosenInlineResult>,
+
     callback_query: Option<CallbackQuery>,
+
     shipping_query: Option<ShippingQuery>,
+
     pre_checkout_query: Option<PreCheckoutQuery>,
+
     poll: Option<Poll>,
+
     poll_answer: Option<PollAnswer>,
+
     my_chat_member: Option<ChatMemberUpdated>,
+
     chat_member: Option<ChatMemberUpdated>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WebhookInfo {
     url: String,
+
     has_custom_certificate: bool,
+
     pending_update_count: isize,
+
     ip_address: Option<String>,
+
     last_error_date: Option<isize>,
+
     last_error_message: Option<String>,
+
     max_connections: Option<isize>,
+
     allowed_updates: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
     id: isize,
+
     is_bot: bool,
+
     first_name: String,
+
     last_name: Option<String>,
+
     username: Option<String>,
+
     language_code: Option<String>,
+
     can_join_groups: Option<bool>,
+
     can_read_all_group_messages: Option<bool>,
+
     supports_inline_queries: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Chat {
     id: isize,
+    #[serde(rename = "type")]
     type_field: String,
+
     title: Option<String>,
+
     username: Option<String>,
+
     first_name: Option<String>,
+
     last_name: Option<String>,
+
     photo: Option<ChatPhoto>,
+
     bio: Option<String>,
+
     description: Option<String>,
+
     invite_link: Option<String>,
+
     pinned_message: Option<Box<Message>>,
+
     permissions: Option<ChatPermissions>,
+
     slow_mode_delay: Option<isize>,
+
     message_auto_delete_time: Option<isize>,
+
     sticker_set_name: Option<String>,
+
     can_set_sticker_set: Option<bool>,
+
     linked_chat_id: Option<isize>,
+
     location: Option<ChatLocation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Message {
     message_id: isize,
+
     from: Option<User>,
+
     sender_chat: Option<Chat>,
+
     date: isize,
+
     chat: Chat,
+
     forward_from: Option<User>,
+
     forward_from_chat: Option<Chat>,
+
     forward_from_message_id: Option<isize>,
+
     forward_signature: Option<String>,
+
     forward_sender_name: Option<String>,
+
     forward_date: Option<isize>,
+
     reply_to_message: Option<Box<Message>>,
+
     via_bot: Option<User>,
+
     edit_date: Option<isize>,
+
     media_group_id: Option<String>,
+
     author_signature: Option<String>,
+
     text: Option<String>,
+
     entities: Option<Vec<MessageEntity>>,
+
     animation: Option<Animation>,
+
     audio: Option<Audio>,
+
     document: Option<Document>,
+
     photo: Option<Vec<PhotoSize>>,
+
     sticker: Option<Sticker>,
+
     video: Option<Video>,
+
     video_note: Option<VideoNote>,
+
     voice: Option<Voice>,
+
     caption: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     contact: Option<Contact>,
+
     dice: Option<Dice>,
+
     game: Option<Game>,
+
     poll: Option<Poll>,
+
     venue: Option<Venue>,
+
     location: Option<Location>,
+
     new_chat_members: Option<Vec<User>>,
+
     left_chat_member: Option<User>,
+
     new_chat_title: Option<String>,
+
     new_chat_photo: Option<Vec<PhotoSize>>,
+
     delete_chat_photo: Option<bool>,
+
     group_chat_created: Option<bool>,
+
     supergroup_chat_created: Option<bool>,
+
     channel_chat_created: Option<bool>,
+
     message_auto_delete_timer_changed: Option<MessageAutoDeleteTimerChanged>,
+
     migrate_to_chat_id: Option<isize>,
+
     migrate_from_chat_id: Option<isize>,
+
     pinned_message: Option<Box<Message>>,
+
     invoice: Option<Invoice>,
+
     successful_payment: Option<SuccessfulPayment>,
+
     connected_website: Option<String>,
+
     passport_data: Option<PassportData>,
+
     proximity_alert_triggered: Option<ProximityAlertTriggered>,
+
     voice_chat_started: Option<VoiceChatStarted>,
+
     voice_chat_ended: Option<VoiceChatEnded>,
+
     voice_chat_participants_invited: Option<VoiceChatParticipantsInvited>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -157,161 +256,242 @@ pub struct MessageId {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MessageEntity {
+    #[serde(rename = "type")]
     type_field: String,
+
     offset: isize,
+
     length: isize,
+
     url: Option<String>,
+
     user: Option<User>,
+
     language: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PhotoSize {
     file_id: String,
+
     file_unique_id: String,
+
     width: isize,
+
     height: isize,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Animation {
     file_id: String,
+
     file_unique_id: String,
+
     width: isize,
+
     height: isize,
+
     duration: isize,
+
     thumb: Option<PhotoSize>,
+
     file_name: Option<String>,
+
     mime_type: Option<String>,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Audio {
     file_id: String,
+
     file_unique_id: String,
+
     duration: isize,
+
     performer: Option<String>,
+
     title: Option<String>,
+
     file_name: Option<String>,
+
     mime_type: Option<String>,
+
     file_size: Option<isize>,
+
     thumb: Option<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Document {
     file_id: String,
+
     file_unique_id: String,
+
     thumb: Option<PhotoSize>,
+
     file_name: Option<String>,
+
     mime_type: Option<String>,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Video {
     file_id: String,
+
     file_unique_id: String,
+
     width: isize,
+
     height: isize,
+
     duration: isize,
+
     thumb: Option<PhotoSize>,
+
     file_name: Option<String>,
+
     mime_type: Option<String>,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VideoNote {
     file_id: String,
+
     file_unique_id: String,
+
     length: isize,
+
     duration: isize,
+
     thumb: Option<PhotoSize>,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Voice {
     file_id: String,
+
     file_unique_id: String,
+
     duration: isize,
+
     mime_type: Option<String>,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Contact {
     phone_number: String,
+
     first_name: String,
+
     last_name: Option<String>,
+
     user_id: Option<isize>,
+
     vcard: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Dice {
     emoji: String,
+
     value: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PollOption {
     text: String,
+
     voter_count: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PollAnswer {
     poll_id: String,
+
     user: User,
+
     option_ids: Vec<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Poll {
     id: String,
+
     question: String,
+
     options: Vec<PollOption>,
+
     total_voter_count: isize,
+
     is_closed: bool,
+
     is_anonymous: bool,
+    #[serde(rename = "type")]
     type_field: String,
+
     allows_multiple_answers: bool,
+
     correct_option_id: Option<isize>,
+
     explanation: Option<String>,
+
     explanation_entities: Option<Vec<MessageEntity>>,
+
     open_period: Option<isize>,
+
     close_date: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Location {
     longitude: f64,
+
     latitude: f64,
+
     horizontal_accuracy: Option<f64>,
+
     live_period: Option<isize>,
+
     heading: Option<isize>,
+
     proximity_alert_radius: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Venue {
     location: Location,
+
     title: String,
+
     address: String,
+
     foursquare_id: Option<String>,
+
     foursquare_type: Option<String>,
+
     google_place_id: Option<String>,
+
     google_place_type: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProximityAlertTriggered {
     traveler: User,
+
     watcher: User,
+
     distance: isize,
 }
 
@@ -333,41 +513,53 @@ pub struct VoiceChatParticipantsInvited {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserProfilePhotos {
     total_count: isize,
+
     photos: Vec<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct File {
     file_id: String,
+
     file_unique_id: String,
+
     file_size: Option<isize>,
+
     file_path: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReplyKeyboardMarkup {
     keyboard: Vec<KeyboardButton>,
+
     resize_keyboard: Option<bool>,
+
     one_time_keyboard: Option<bool>,
+
     selective: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct KeyboardButton {
     text: String,
+
     request_contact: Option<bool>,
+
     request_location: Option<bool>,
+
     request_poll: Option<KeyboardButtonPollType>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct KeyboardButtonPollType {
+    #[serde(rename = "type")]
     type_field: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReplyKeyboardRemove {
     remove_keyboard: bool,
+
     selective: Option<bool>,
 }
 
@@ -379,760 +571,1201 @@ pub struct InlineKeyboardMarkup {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineKeyboardButton {
     text: String,
+
     url: Option<String>,
+
     login_url: Option<LoginUrl>,
+
     callback_data: Option<String>,
+
     switch_inline_query: Option<String>,
+
     switch_inline_query_current_chat: Option<String>,
+
     callback_game: Option<CallbackGame>,
+
     pay: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LoginUrl {
     url: String,
+
     forward_text: Option<String>,
+
     bot_username: Option<String>,
+
     request_write_access: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CallbackQuery {
     id: String,
+
     from: User,
+
     message: Option<Message>,
+
     inline_message_id: Option<String>,
+
     chat_instance: String,
+
     data: Option<String>,
+
     game_short_name: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForceReply {
     force_reply: bool,
+
     selective: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatPhoto {
     small_file_id: String,
+
     small_file_unique_id: String,
+
     big_file_id: String,
+
     big_file_unique_id: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatInviteLink {
     invite_link: String,
+
     creator: User,
+
     is_primary: bool,
+
     is_revoked: bool,
+
     expire_date: Option<isize>,
+
     member_limit: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatMember {
     user: User,
+
     status: String,
+
     custom_title: Option<String>,
+
     is_anonymous: Option<bool>,
+
     can_be_edited: Option<bool>,
+
     can_manage_chat: Option<bool>,
+
     can_post_messages: Option<bool>,
+
     can_edit_messages: Option<bool>,
+
     can_delete_messages: Option<bool>,
+
     can_manage_voice_chats: Option<bool>,
+
     can_restrict_members: Option<bool>,
+
     can_promote_members: Option<bool>,
+
     can_change_info: Option<bool>,
+
     can_invite_users: Option<bool>,
+
     can_pin_messages: Option<bool>,
+
     is_member: Option<bool>,
+
     can_send_messages: Option<bool>,
+
     can_send_media_messages: Option<bool>,
+
     can_send_polls: Option<bool>,
+
     can_send_other_messages: Option<bool>,
+
     can_add_web_page_previews: Option<bool>,
+
     until_date: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatMemberUpdated {
     chat: Chat,
+
     from: User,
+
     date: isize,
+
     old_chat_member: ChatMember,
+
     new_chat_member: ChatMember,
+
     invite_link: Option<ChatInviteLink>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatPermissions {
     can_send_messages: Option<bool>,
+
     can_send_media_messages: Option<bool>,
+
     can_send_polls: Option<bool>,
+
     can_send_other_messages: Option<bool>,
+
     can_add_web_page_previews: Option<bool>,
+
     can_change_info: Option<bool>,
+
     can_invite_users: Option<bool>,
+
     can_pin_messages: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatLocation {
     location: Location,
+
     address: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BotCommand {
     command: String,
+
     description: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResponseParameters {
     migrate_to_chat_id: Option<isize>,
+
     retry_after: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputMediaPhoto {
+    #[serde(rename = "type")]
     type_field: String,
+
     media: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputMediaVideo {
+    #[serde(rename = "type")]
     type_field: String,
+
     media: String,
+
     thumb: Option<ThumbEnum>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     width: Option<isize>,
+
     height: Option<isize>,
+
     duration: Option<isize>,
+
     supports_streaming: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputMediaAnimation {
+    #[serde(rename = "type")]
     type_field: String,
+
     media: String,
+
     thumb: Option<ThumbEnum>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     width: Option<isize>,
+
     height: Option<isize>,
+
     duration: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputMediaAudio {
+    #[serde(rename = "type")]
     type_field: String,
+
     media: String,
+
     thumb: Option<ThumbEnum>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     duration: Option<isize>,
+
     performer: Option<String>,
+
     title: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputMediaDocument {
+    #[serde(rename = "type")]
     type_field: String,
+
     media: String,
+
     thumb: Option<ThumbEnum>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     disable_content_type_detection: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Sticker {
     file_id: String,
+
     file_unique_id: String,
+
     width: isize,
+
     height: isize,
+
     is_animated: bool,
+
     thumb: Option<PhotoSize>,
+
     emoji: Option<String>,
+
     set_name: Option<String>,
+
     mask_position: Option<MaskPosition>,
+
     file_size: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StickerSet {
     name: String,
+
     title: String,
+
     is_animated: bool,
+
     contains_masks: bool,
+
     stickers: Vec<Sticker>,
+
     thumb: Option<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaskPosition {
     point: String,
+
     x_shift: f64,
+
     y_shift: f64,
+
     scale: f64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQuery {
     id: String,
+
     from: User,
+
     location: Option<Location>,
+
     query: String,
+
     offset: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultArticle {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     title: String,
+
     input_message_content: InputMessageContent,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     url: Option<String>,
+
     hide_url: Option<bool>,
+
     description: Option<String>,
+
     thumb_url: Option<String>,
+
     thumb_width: Option<isize>,
+
     thumb_height: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultPhoto {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     photo_url: String,
+
     thumb_url: String,
+
     photo_width: Option<isize>,
+
     photo_height: Option<isize>,
+
     title: Option<String>,
+
     description: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultGif {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     gif_url: String,
+
     gif_width: Option<isize>,
+
     gif_height: Option<isize>,
+
     gif_duration: Option<isize>,
+
     thumb_url: String,
+
     thumb_mime_type: Option<String>,
+
     title: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultMpeg4Gif {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     mpeg4_url: String,
+
     mpeg4_width: Option<isize>,
+
     mpeg4_height: Option<isize>,
+
     mpeg4_duration: Option<isize>,
+
     thumb_url: String,
+
     thumb_mime_type: Option<String>,
+
     title: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultVideo {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     video_url: String,
+
     mime_type: String,
+
     thumb_url: String,
+
     title: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     video_width: Option<isize>,
+
     video_height: Option<isize>,
+
     video_duration: Option<isize>,
+
     description: Option<String>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultAudio {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     audio_url: String,
+
     title: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     performer: Option<String>,
+
     audio_duration: Option<isize>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultVoice {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     voice_url: String,
+
     title: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     voice_duration: Option<isize>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultDocument {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     title: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     document_url: String,
+
     mime_type: String,
+
     description: Option<String>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
+
     thumb_url: Option<String>,
+
     thumb_width: Option<isize>,
+
     thumb_height: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultLocation {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     latitude: f64,
+
     longitude: f64,
+
     title: String,
+
     horizontal_accuracy: Option<f64>,
+
     live_period: Option<isize>,
+
     heading: Option<isize>,
+
     proximity_alert_radius: Option<isize>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
+
     thumb_url: Option<String>,
+
     thumb_width: Option<isize>,
+
     thumb_height: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultVenue {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     latitude: f64,
+
     longitude: f64,
+
     title: String,
+
     address: String,
+
     foursquare_id: Option<String>,
+
     foursquare_type: Option<String>,
+
     google_place_id: Option<String>,
+
     google_place_type: Option<String>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
+
     thumb_url: Option<String>,
+
     thumb_width: Option<isize>,
+
     thumb_height: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultContact {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     phone_number: String,
+
     first_name: String,
+
     last_name: Option<String>,
+
     vcard: Option<String>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
+
     thumb_url: Option<String>,
+
     thumb_width: Option<isize>,
+
     thumb_height: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultGame {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     game_short_name: String,
+
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedPhoto {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     photo_file_id: String,
+
     title: Option<String>,
+
     description: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedGif {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     gif_file_id: String,
+
     title: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedMpeg4Gif {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     mpeg4_file_id: String,
+
     title: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedSticker {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     sticker_file_id: String,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedDocument {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     title: String,
+
     document_file_id: String,
+
     description: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedVideo {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     video_file_id: String,
+
     title: String,
+
     description: Option<String>,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedVoice {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     voice_file_id: String,
+
     title: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InlineQueryResultCachedAudio {
+    #[serde(rename = "type")]
     type_field: String,
+
     id: String,
+
     audio_file_id: String,
+
     caption: Option<String>,
+
     parse_mode: Option<String>,
+
     caption_entities: Option<Vec<MessageEntity>>,
+
     reply_markup: Option<InlineKeyboardMarkup>,
+
     input_message_content: Option<InputMessageContent>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputTextMessageContent {
     message_text: String,
+
     parse_mode: Option<String>,
+
     entities: Option<Vec<MessageEntity>>,
+
     disable_web_page_preview: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputLocationMessageContent {
     latitude: f64,
+
     longitude: f64,
+
     horizontal_accuracy: Option<f64>,
+
     live_period: Option<isize>,
+
     heading: Option<isize>,
+
     proximity_alert_radius: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputVenueMessageContent {
     latitude: f64,
+
     longitude: f64,
+
     title: String,
+
     address: String,
+
     foursquare_id: Option<String>,
+
     foursquare_type: Option<String>,
+
     google_place_id: Option<String>,
+
     google_place_type: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InputContactMessageContent {
     phone_number: String,
+
     first_name: String,
+
     last_name: Option<String>,
+
     vcard: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChosenInlineResult {
     result_id: String,
+
     from: User,
+
     location: Option<Location>,
+
     inline_message_id: Option<String>,
+
     query: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LabeledPrice {
     label: String,
+
     amount: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Invoice {
     title: String,
+
     description: String,
+
     start_parameter: String,
+
     currency: String,
+
     total_amount: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShippingAddress {
     country_code: String,
+
     state: String,
+
     city: String,
+
     street_line1: String,
+
     street_line2: String,
+
     post_code: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OrderInfo {
     name: Option<String>,
+
     phone_number: Option<String>,
+
     email: Option<String>,
+
     shipping_address: Option<ShippingAddress>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShippingOption {
     id: String,
+
     title: String,
+
     prices: Vec<LabeledPrice>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SuccessfulPayment {
     currency: String,
+
     total_amount: isize,
+
     invoice_payload: String,
+
     shipping_option_id: Option<String>,
+
     order_info: Option<OrderInfo>,
+
     telegram_payment_charge_id: String,
+
     provider_payment_charge_id: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ShippingQuery {
     id: String,
+
     from: User,
+
     invoice_payload: String,
+
     shipping_address: ShippingAddress,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PreCheckoutQuery {
     id: String,
+
     from: User,
+
     currency: String,
+
     total_amount: isize,
+
     invoice_payload: String,
+
     shipping_option_id: Option<String>,
+
     order_info: Option<OrderInfo>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportData {
     data: Vec<EncryptedPassportElement>,
+
     credentials: EncryptedCredentials,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportFile {
     file_id: String,
+
     file_unique_id: String,
+
     file_size: isize,
+
     file_date: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EncryptedPassportElement {
+    #[serde(rename = "type")]
     type_field: String,
+
     data: Option<String>,
+
     phone_number: Option<String>,
+
     email: Option<String>,
+
     files: Option<Vec<PassportFile>>,
+
     front_side: Option<PassportFile>,
+
     reverse_side: Option<PassportFile>,
+
     selfie: Option<PassportFile>,
+
     translation: Option<Vec<PassportFile>>,
+
     hash: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EncryptedCredentials {
     data: String,
+
     hash: String,
+
     secret: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorDataField {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     field_name: String,
+
     data_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorFrontSide {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorReverseSide {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorSelfie {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorFile {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorFiles {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hashes: Vec<String>,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorTranslationFile {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorTranslationFiles {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     file_hashes: Vec<String>,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PassportElementErrorUnspecified {
     source: String,
+    #[serde(rename = "type")]
     type_field: String,
+
     element_hash: String,
+
     message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Game {
     title: String,
+
     description: String,
+
     photo: Vec<PhotoSize>,
+
     text: Option<String>,
+
     text_entities: Option<Vec<MessageEntity>>,
+
     animation: Option<Animation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameHighScore {
     position: isize,
+
     user: User,
+
     score: isize,
 }
 
