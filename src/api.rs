@@ -1,5 +1,7 @@
+use crate::api_params::DeleteWebhookParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::SendMessageParams;
+use crate::api_params::SetWebhookParams;
 use crate::objects::Message;
 use crate::objects::Update;
 use isahc::{prelude::*, Request};
@@ -12,16 +14,25 @@ pub struct API {
     api_url: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ApiResponse1 {
+#[derive(Debug, Deserialize)]
+pub struct MethodResponse<T> {
     ok: bool,
-    result: Vec<Update>,
+    result: T,
+    description: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct ApiResponse2 {
+pub struct ErrorResponse {
     ok: bool,
-    result: Message,
+    description: String,
+    error_code: u64,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(untagged)]
+pub enum ApiResponse<T> {
+    Generic(ErrorResponse),
+    ApiResult(MethodResponse<T>),
 }
 
 impl API {
@@ -31,31 +42,45 @@ impl API {
         Self { api_url }
     }
 
-    pub fn get_updates(&self, params: GetUpdatesParams) -> Result<ApiResponse1, isahc::Error> {
-        let url = format!("{}/{}", self.api_url, "getUpdates");
-
-        let json = serde_json::to_string(&params).unwrap();
-        let mut response = isahc::post(url, json)?;
-
-        let response: ApiResponse1 = serde_json::from_reader(response.body_mut()).unwrap();
-
-        Ok(response)
+    pub fn get_updates(
+        &self,
+        params: GetUpdatesParams,
+    ) -> Result<ApiResponse<Vec<Update>>, isahc::Error> {
+        self.request("getUpdates", params)
     }
 
-    pub fn send_message(&self, params: SendMessageParams) -> Result<Value, isahc::Error> {
-        let url = format!("{}/{}", self.api_url, "sendMessage");
+    pub fn send_message(
+        &self,
+        params: SendMessageParams,
+    ) -> Result<ApiResponse<Message>, isahc::Error> {
+        self.request("sendMessage", params)
+    }
 
+    pub fn set_webhook(&self, params: SetWebhookParams) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("setWebhook", params)
+    }
+
+    pub fn delete_webhook(
+        &self,
+        params: DeleteWebhookParams,
+    ) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("deleteWebhook", params)
+    }
+
+    fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+        &self,
+        method: &str,
+        params: T1,
+    ) -> Result<T2, isahc::Error> {
+        let url = format!("{}/{}", self.api_url, method);
         let json = serde_json::to_string(&params).unwrap();
-
-        println!("json: {}", json);
-        // let mut response = isahc::post(url, json).header("Content-Type", "application/json")
 
         let mut response = Request::post(url)
             .header("Content-Type", "application/json")
             .body(json)?
             .send()?;
 
-        let response: Value = serde_json::from_reader(response.body_mut()).unwrap();
+        let response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
 
         Ok(response)
     }
