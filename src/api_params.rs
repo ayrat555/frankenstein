@@ -2,6 +2,7 @@ use crate::objects::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum InlineQueryResult {
     InlineQueryResultCachedAudioVariant(InlineQueryResultCachedAudio),
     InlineQueryResultCachedDocumentVariant(InlineQueryResultCachedDocument),
@@ -26,6 +27,7 @@ pub enum InlineQueryResult {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum InputMedia {
     InputMediaAnimationVariant(InputMediaAnimation),
     InputMediaDocumentVariant(InputMediaDocument),
@@ -35,6 +37,7 @@ pub enum InputMedia {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum PassportElementError {
     PassportElementErrorDataFieldVariant(PassportElementErrorDataField),
     PassportElementErrorFrontSideVariant(PassportElementErrorFrontSide),
@@ -58,6 +61,7 @@ pub enum ChatIdEnum {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum ReplyMarkupEnum {
     InlineKeyboardMarkupVariant(InlineKeyboardMarkup),
     ReplyKeyboardMarkupVariant(ReplyKeyboardMarkup),
@@ -66,54 +70,63 @@ pub enum ReplyMarkupEnum {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum FromChatIdEnum {
     IsizeVariant(isize),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum PhotoEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum AudioEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum DocumentEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum VideoEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum AnimationEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum VoiceEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum VideoNoteEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum MediaEnum {
     InputMediaAudioVariant(InputMediaAudio),
     InputMediaDocumentVariant(InputMediaDocument),
@@ -122,12 +135,14 @@ pub enum MediaEnum {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum StickerEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum PngStickerEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
@@ -135,286 +150,601 @@ pub enum PngStickerEnum {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetUpdatesParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     offset: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     limit: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     timeout: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allowed_updates: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetWebhookParams {
     url: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     certificate: Option<InputFile>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     ip_address: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     max_connections: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allowed_updates: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     drop_pending_updates: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeleteWebhookParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     drop_pending_updates: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendMessageParams {
     chat_id: ChatIdEnum,
+
     text: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_web_page_preview: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ForwardMessageParams {
     chat_id: ChatIdEnum,
+
     from_chat_id: FromChatIdEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
     message_id: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CopyMessageParams {
     chat_id: ChatIdEnum,
+
     from_chat_id: FromChatIdEnum,
+
     message_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendPhotoParams {
     chat_id: ChatIdEnum,
+
     photo: PhotoEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendAudioParams {
     chat_id: ChatIdEnum,
+
     audio: AudioEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     performer: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendDocumentParams {
     chat_id: ChatIdEnum,
+
     document: DocumentEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_content_type_detection: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendVideoParams {
     chat_id: ChatIdEnum,
+
     video: VideoEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     supports_streaming: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendAnimationParams {
     chat_id: ChatIdEnum,
+
     animation: AnimationEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendVoiceParams {
     chat_id: ChatIdEnum,
+
     voice: VoiceEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendVideoNoteParams {
     chat_id: ChatIdEnum,
+
     video_note: VideoNoteEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     length: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendMediaGroupParams {
     chat_id: ChatIdEnum,
+
     media: Vec<MediaEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendLocationParams {
     chat_id: ChatIdEnum,
+
     latitude: f64,
+
     longitude: f64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     horizontal_accuracy: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     live_period: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     heading: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_radius: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EditMessageLiveLocationParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<ChatIdEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+
     latitude: f64,
+
     longitude: f64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     horizontal_accuracy: Option<f64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     heading: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_radius: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StopMessageLiveLocationParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<ChatIdEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendVenueParams {
     chat_id: ChatIdEnum,
+
     latitude: f64,
+
     longitude: f64,
+
     title: String,
+
     address: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_type: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_type: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendContactParams {
     chat_id: ChatIdEnum,
+
     phone_number: String,
+
     first_name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     vcard: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendPollParams {
     chat_id: ChatIdEnum,
+
     question: String,
+
     options: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_anonymous: Option<bool>,
     #[serde(rename = "type")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     type_field: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allows_multiple_answers: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     correct_option_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     explanation: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     explanation_parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     explanation_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     open_period: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     close_date: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_closed: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendDiceParams {
     chat_id: ChatIdEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     emoji: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendChatActionParams {
     chat_id: ChatIdEnum,
+
     action: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetUserProfilePhotosParams {
     user_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     offset: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     limit: Option<isize>,
 }
 
@@ -426,53 +756,91 @@ pub struct GetFileParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct KickChatMemberParams {
     chat_id: ChatIdEnum,
+
     user_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     until_date: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     revoke_messages: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UnbanChatMemberParams {
     chat_id: ChatIdEnum,
+
     user_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     only_if_banned: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RestrictChatMemberParams {
     chat_id: ChatIdEnum,
+
     user_id: isize,
+
     permissions: ChatPermissions,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     until_date: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PromoteChatMemberParams {
     chat_id: ChatIdEnum,
+
     user_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_anonymous: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_manage_chat: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_post_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_edit_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_delete_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_manage_voice_chats: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_restrict_members: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_promote_members: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_change_info: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_invite_users: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_pin_messages: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetChatAdministratorCustomTitleParams {
     chat_id: ChatIdEnum,
+
     user_id: isize,
+
     custom_title: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetChatPermissionsParams {
     chat_id: ChatIdEnum,
+
     permissions: ChatPermissions,
 }
 
@@ -484,27 +852,38 @@ pub struct ExportChatInviteLinkParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CreateChatInviteLinkParams {
     chat_id: ChatIdEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     expire_date: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     member_limit: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EditChatInviteLinkParams {
     chat_id: ChatIdEnum,
+
     invite_link: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     expire_date: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     member_limit: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RevokeChatInviteLinkParams {
     chat_id: ChatIdEnum,
+
     invite_link: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetChatPhotoParams {
     chat_id: ChatIdEnum,
+
     photo: InputFile,
 }
 
@@ -516,25 +895,33 @@ pub struct DeleteChatPhotoParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetChatTitleParams {
     chat_id: ChatIdEnum,
+
     title: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetChatDescriptionParams {
     chat_id: ChatIdEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PinChatMessageParams {
     chat_id: ChatIdEnum,
+
     message_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UnpinChatMessageParams {
     chat_id: ChatIdEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
 }
 
@@ -566,12 +953,14 @@ pub struct GetChatMembersCountParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetChatMemberParams {
     chat_id: ChatIdEnum,
+
     user_id: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetChatStickerSetParams {
     chat_id: ChatIdEnum,
+
     sticker_set_name: String,
 }
 
@@ -583,9 +972,17 @@ pub struct DeleteChatStickerSetParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnswerCallbackQueryParams {
     callback_query_id: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     text: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     show_alert: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     url: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     cache_time: Option<isize>,
 }
 
@@ -596,64 +993,119 @@ pub struct SetMyCommandsParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EditMessageTextParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<ChatIdEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+
     text: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_web_page_preview: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EditMessageCaptionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<ChatIdEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EditMessageMediaParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<ChatIdEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+
     media: InputMedia,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EditMessageReplyMarkupParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<ChatIdEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StopPollParams {
     chat_id: ChatIdEnum,
+
     message_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeleteMessageParams {
     chat_id: ChatIdEnum,
+
     message_id: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendStickerParams {
     chat_id: ChatIdEnum,
+
     sticker: StickerEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<ReplyMarkupEnum>,
 }
 
@@ -665,34 +1117,55 @@ pub struct GetStickerSetParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UploadStickerFileParams {
     user_id: isize,
+
     png_sticker: InputFile,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CreateNewStickerSetParams {
     user_id: isize,
+
     name: String,
+
     title: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     png_sticker: Option<PngStickerEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     tgs_sticker: Option<InputFile>,
+
     emojis: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     contains_masks: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     mask_position: Option<MaskPosition>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AddStickerToSetParams {
     user_id: isize,
+
     name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     png_sticker: Option<PngStickerEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     tgs_sticker: Option<InputFile>,
+
     emojis: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     mask_position: Option<MaskPosition>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetStickerPositionInSetParams {
     sticker: String,
+
     position: isize,
 }
 
@@ -704,96 +1177,184 @@ pub struct DeleteStickerFromSetParams {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetStickerSetThumbParams {
     name: String,
+
     user_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnswerInlineQueryParams {
     inline_query_id: String,
+
     results: Vec<InlineQueryResult>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     cache_time: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_personal: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     next_offset: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     switch_pm_text: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     switch_pm_parameter: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendInvoiceParams {
     chat_id: isize,
+
     title: String,
+
     description: String,
+
     payload: String,
+
     provider_token: String,
+
     start_parameter: String,
+
     currency: String,
+
     prices: Vec<LabeledPrice>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     provider_data: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo_url: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo_size: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo_width: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo_height: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     need_name: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     need_phone_number: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     need_email: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     need_shipping_address: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     send_phone_number_to_provider: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     send_email_to_provider: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_flexible: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnswerShippingQueryParams {
     shipping_query_id: String,
+
     ok: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     shipping_options: Option<Vec<ShippingOption>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     error_message: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AnswerPreCheckoutQueryParams {
     pre_checkout_query_id: String,
+
     ok: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     error_message: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetPassportDataErrorsParams {
     user_id: isize,
+
     errors: Vec<PassportElementError>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SendGameParams {
     chat_id: isize,
+
     game_short_name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     allow_sending_without_reply: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SetGameScoreParams {
     user_id: isize,
+
     score: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     force: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_edit_message: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetGameHighScoresParams {
     user_id: isize,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_id: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
 }
 

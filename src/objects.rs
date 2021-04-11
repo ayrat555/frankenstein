@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum InputMessageContent {
     InputTextMessageContentVariant(InputTextMessageContent),
     InputLocationMessageContentVariant(InputLocationMessageContent),
@@ -21,6 +22,7 @@ pub struct CallbackGame {}
 // frankenstein_creator (https://github.com/ayrat555/frankenstein_creator)
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum ThumbEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
@@ -30,30 +32,43 @@ pub enum ThumbEnum {
 pub struct Update {
     update_id: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     message: Option<Message>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     edited_message: Option<Message>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     channel_post: Option<Message>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     edited_channel_post: Option<Message>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_query: Option<InlineQuery>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     chosen_inline_result: Option<ChosenInlineResult>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     callback_query: Option<CallbackQuery>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     shipping_query: Option<ShippingQuery>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pre_checkout_query: Option<PreCheckoutQuery>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     poll: Option<Poll>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     poll_answer: Option<PollAnswer>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     my_chat_member: Option<ChatMemberUpdated>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     chat_member: Option<ChatMemberUpdated>,
 }
 
@@ -65,14 +80,19 @@ pub struct WebhookInfo {
 
     pending_update_count: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     ip_address: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_error_date: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_error_message: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     max_connections: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     allowed_updates: Option<Vec<String>>,
 }
 
@@ -84,16 +104,22 @@ pub struct User {
 
     first_name: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     username: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     language_code: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_join_groups: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_read_all_group_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     supports_inline_queries: Option<bool>,
 }
 
@@ -103,36 +129,52 @@ pub struct Chat {
     #[serde(rename = "type")]
     type_field: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     username: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     first_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo: Option<ChatPhoto>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     bio: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     invite_link: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pinned_message: Option<Box<Message>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     permissions: Option<ChatPermissions>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     slow_mode_delay: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_auto_delete_time: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     sticker_set_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_set_sticker_set: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     linked_chat_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     location: Option<ChatLocation>,
 }
 
@@ -140,112 +182,164 @@ pub struct Chat {
 pub struct Message {
     message_id: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     from: Option<User>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     sender_chat: Option<Chat>,
 
     date: isize,
 
     chat: Chat,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_from: Option<User>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_from_chat: Option<Chat>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_from_message_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_signature: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_sender_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_date: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_to_message: Option<Box<Message>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     via_bot: Option<User>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     edit_date: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     media_group_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     author_signature: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     text: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     animation: Option<Animation>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     audio: Option<Audio>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     document: Option<Document>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo: Option<Vec<PhotoSize>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     sticker: Option<Sticker>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     video: Option<Video>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     video_note: Option<VideoNote>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     voice: Option<Voice>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     contact: Option<Contact>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     dice: Option<Dice>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     game: Option<Game>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     poll: Option<Poll>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     venue: Option<Venue>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     location: Option<Location>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     new_chat_members: Option<Vec<User>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     left_chat_member: Option<User>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     new_chat_title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     new_chat_photo: Option<Vec<PhotoSize>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     delete_chat_photo: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     group_chat_created: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     supergroup_chat_created: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     channel_chat_created: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     message_auto_delete_timer_changed: Option<MessageAutoDeleteTimerChanged>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     migrate_to_chat_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     migrate_from_chat_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pinned_message: Option<Box<Message>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     invoice: Option<Invoice>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     successful_payment: Option<SuccessfulPayment>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     connected_website: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     passport_data: Option<PassportData>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_triggered: Option<ProximityAlertTriggered>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     voice_chat_started: Option<VoiceChatStarted>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     voice_chat_ended: Option<VoiceChatEnded>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     voice_chat_participants_invited: Option<VoiceChatParticipantsInvited>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -263,10 +357,13 @@ pub struct MessageEntity {
 
     length: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     user: Option<User>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     language: Option<String>,
 }
 
@@ -280,6 +377,7 @@ pub struct PhotoSize {
 
     height: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -295,12 +393,16 @@ pub struct Animation {
 
     duration: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -312,16 +414,22 @@ pub struct Audio {
 
     duration: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     performer: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 }
 
@@ -331,12 +439,16 @@ pub struct Document {
 
     file_unique_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -352,12 +464,16 @@ pub struct Video {
 
     duration: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -371,8 +487,10 @@ pub struct VideoNote {
 
     duration: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -384,8 +502,10 @@ pub struct Voice {
 
     duration: isize,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -395,10 +515,13 @@ pub struct Contact {
 
     first_name: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     user_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     vcard: Option<String>,
 }
 
@@ -443,14 +566,19 @@ pub struct Poll {
 
     allows_multiple_answers: bool,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     correct_option_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     explanation: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     explanation_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     open_period: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     close_date: Option<isize>,
 }
 
@@ -460,12 +588,16 @@ pub struct Location {
 
     latitude: f64,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     horizontal_accuracy: Option<f64>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     live_period: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     heading: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_radius: Option<isize>,
 }
 
@@ -477,12 +609,16 @@ pub struct Venue {
 
     address: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_type: Option<String>,
 }
 
@@ -507,6 +643,7 @@ pub struct VoiceChatEnded {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VoiceChatParticipantsInvited {
+    #[serde(skip_serializing_if = "Option::is_none")]
     users: Option<Vec<User>>,
 }
 
@@ -523,8 +660,10 @@ pub struct File {
 
     file_unique_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_path: Option<String>,
 }
 
@@ -532,10 +671,13 @@ pub struct File {
 pub struct ReplyKeyboardMarkup {
     keyboard: Vec<KeyboardButton>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     resize_keyboard: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     one_time_keyboard: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     selective: Option<bool>,
 }
 
@@ -543,16 +685,20 @@ pub struct ReplyKeyboardMarkup {
 pub struct KeyboardButton {
     text: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     request_contact: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     request_location: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     request_poll: Option<KeyboardButtonPollType>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct KeyboardButtonPollType {
     #[serde(rename = "type")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     type_field: Option<String>,
 }
 
@@ -560,6 +706,7 @@ pub struct KeyboardButtonPollType {
 pub struct ReplyKeyboardRemove {
     remove_keyboard: bool,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     selective: Option<bool>,
 }
 
@@ -572,18 +719,25 @@ pub struct InlineKeyboardMarkup {
 pub struct InlineKeyboardButton {
     text: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     login_url: Option<LoginUrl>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     callback_data: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     switch_inline_query: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     switch_inline_query_current_chat: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     callback_game: Option<CallbackGame>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pay: Option<bool>,
 }
 
@@ -591,10 +745,13 @@ pub struct InlineKeyboardButton {
 pub struct LoginUrl {
     url: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     forward_text: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     bot_username: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     request_write_access: Option<bool>,
 }
 
@@ -604,14 +761,18 @@ pub struct CallbackQuery {
 
     from: User,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     message: Option<Message>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
 
     chat_instance: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     data: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     game_short_name: Option<String>,
 }
 
@@ -619,6 +780,7 @@ pub struct CallbackQuery {
 pub struct ForceReply {
     force_reply: bool,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     selective: Option<bool>,
 }
 
@@ -643,8 +805,10 @@ pub struct ChatInviteLink {
 
     is_revoked: bool,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     expire_date: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     member_limit: Option<isize>,
 }
 
@@ -654,44 +818,64 @@ pub struct ChatMember {
 
     status: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     custom_title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_anonymous: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_be_edited: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_manage_chat: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_post_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_edit_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_delete_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_manage_voice_chats: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_restrict_members: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_promote_members: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_change_info: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_invite_users: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_pin_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     is_member: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_media_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_polls: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_other_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_add_web_page_previews: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     until_date: Option<isize>,
 }
 
@@ -707,25 +891,34 @@ pub struct ChatMemberUpdated {
 
     new_chat_member: ChatMember,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     invite_link: Option<ChatInviteLink>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChatPermissions {
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_media_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_polls: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_send_other_messages: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_add_web_page_previews: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_change_info: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_invite_users: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     can_pin_messages: Option<bool>,
 }
 
@@ -745,8 +938,10 @@ pub struct BotCommand {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResponseParameters {
+    #[serde(skip_serializing_if = "Option::is_none")]
     migrate_to_chat_id: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     retry_after: Option<isize>,
 }
 
@@ -757,10 +952,13 @@ pub struct InputMediaPhoto {
 
     media: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 }
 
@@ -771,20 +969,28 @@ pub struct InputMediaVideo {
 
     media: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     supports_streaming: Option<bool>,
 }
 
@@ -795,18 +1001,25 @@ pub struct InputMediaAnimation {
 
     media: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
 }
 
@@ -817,18 +1030,25 @@ pub struct InputMediaAudio {
 
     media: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     performer: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 }
 
@@ -839,14 +1059,19 @@ pub struct InputMediaDocument {
 
     media: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<ThumbEnum>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_content_type_detection: Option<bool>,
 }
 
@@ -862,14 +1087,19 @@ pub struct Sticker {
 
     is_animated: bool,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     emoji: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     set_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mask_position: Option<MaskPosition>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     file_size: Option<isize>,
 }
 
@@ -885,6 +1115,7 @@ pub struct StickerSet {
 
     stickers: Vec<Sticker>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb: Option<PhotoSize>,
 }
 
@@ -905,6 +1136,7 @@ pub struct InlineQuery {
 
     from: User,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     location: Option<Location>,
 
     query: String,
@@ -923,18 +1155,25 @@ pub struct InlineQueryResultArticle {
 
     input_message_content: InputMessageContent,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     hide_url: Option<bool>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_height: Option<isize>,
 }
 
@@ -949,22 +1188,31 @@ pub struct InlineQueryResultPhoto {
 
     thumb_url: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     photo_height: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -977,26 +1225,36 @@ pub struct InlineQueryResultGif {
 
     gif_url: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     gif_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     gif_height: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     gif_duration: Option<isize>,
 
     thumb_url: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1009,26 +1267,36 @@ pub struct InlineQueryResultMpeg4Gif {
 
     mpeg4_url: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mpeg4_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mpeg4_height: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     mpeg4_duration: Option<isize>,
 
     thumb_url: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_mime_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1047,22 +1315,31 @@ pub struct InlineQueryResultVideo {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     video_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     video_height: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     video_duration: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1077,18 +1354,25 @@ pub struct InlineQueryResultAudio {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     performer: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     audio_duration: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1103,16 +1387,22 @@ pub struct InlineQueryResultVoice {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     voice_duration: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1125,26 +1415,35 @@ pub struct InlineQueryResultDocument {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
     document_url: String,
 
     mime_type: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_height: Option<isize>,
 }
 
@@ -1161,22 +1460,31 @@ pub struct InlineQueryResultLocation {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     horizontal_accuracy: Option<f64>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     live_period: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     heading: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_radius: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_height: Option<isize>,
 }
 
@@ -1195,22 +1503,31 @@ pub struct InlineQueryResultVenue {
 
     address: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_height: Option<isize>,
 }
 
@@ -1225,18 +1542,25 @@ pub struct InlineQueryResultContact {
 
     first_name: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     vcard: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_url: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_width: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     thumb_height: Option<isize>,
 }
 
@@ -1249,6 +1573,7 @@ pub struct InlineQueryResultGame {
 
     game_short_name: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1261,18 +1586,25 @@ pub struct InlineQueryResultCachedPhoto {
 
     photo_file_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1285,16 +1617,22 @@ pub struct InlineQueryResultCachedGif {
 
     gif_file_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1307,16 +1645,22 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 
     mpeg4_file_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1329,8 +1673,10 @@ pub struct InlineQueryResultCachedSticker {
 
     sticker_file_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1345,16 +1691,22 @@ pub struct InlineQueryResultCachedDocument {
 
     document_file_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1369,16 +1721,22 @@ pub struct InlineQueryResultCachedVideo {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1393,14 +1751,19 @@ pub struct InlineQueryResultCachedVoice {
 
     title: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1413,14 +1776,19 @@ pub struct InlineQueryResultCachedAudio {
 
     audio_file_id: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reply_markup: Option<InlineKeyboardMarkup>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     input_message_content: Option<InputMessageContent>,
 }
 
@@ -1428,10 +1796,13 @@ pub struct InlineQueryResultCachedAudio {
 pub struct InputTextMessageContent {
     message_text: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     parse_mode: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     disable_web_page_preview: Option<bool>,
 }
 
@@ -1441,12 +1812,16 @@ pub struct InputLocationMessageContent {
 
     longitude: f64,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     horizontal_accuracy: Option<f64>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     live_period: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     heading: Option<isize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_radius: Option<isize>,
 }
 
@@ -1460,12 +1835,16 @@ pub struct InputVenueMessageContent {
 
     address: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     foursquare_type: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     google_place_type: Option<String>,
 }
 
@@ -1475,8 +1854,10 @@ pub struct InputContactMessageContent {
 
     first_name: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     vcard: Option<String>,
 }
 
@@ -1486,8 +1867,10 @@ pub struct ChosenInlineResult {
 
     from: User,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     location: Option<Location>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
 
     query: String,
@@ -1530,12 +1913,16 @@ pub struct ShippingAddress {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OrderInfo {
+    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     phone_number: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     email: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     shipping_address: Option<ShippingAddress>,
 }
 
@@ -1556,8 +1943,10 @@ pub struct SuccessfulPayment {
 
     invoice_payload: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     shipping_option_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     order_info: Option<OrderInfo>,
 
     telegram_payment_charge_id: String,
@@ -1588,8 +1977,10 @@ pub struct PreCheckoutQuery {
 
     invoice_payload: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     shipping_option_id: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     order_info: Option<OrderInfo>,
 }
 
@@ -1616,20 +2007,28 @@ pub struct EncryptedPassportElement {
     #[serde(rename = "type")]
     type_field: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     data: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     phone_number: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     email: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     files: Option<Vec<PassportFile>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     front_side: Option<PassportFile>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     reverse_side: Option<PassportFile>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     selfie: Option<PassportFile>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     translation: Option<Vec<PassportFile>>,
 
     hash: String,
@@ -1753,10 +2152,13 @@ pub struct Game {
 
     photo: Vec<PhotoSize>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     text: Option<String>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     text_entities: Option<Vec<MessageEntity>>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
     animation: Option<Animation>,
 }
 
