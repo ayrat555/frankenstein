@@ -74,7 +74,8 @@ pub struct Update {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct WebhookInfo {
-    url: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    url: Option<String>,
 
     has_custom_certificate: bool,
 
@@ -2305,9 +2306,8 @@ impl Update {
 }
 
 impl WebhookInfo {
-    pub fn new(url: String, has_custom_certificate: bool, pending_update_count: isize) -> Self {
+    pub fn new(has_custom_certificate: bool, pending_update_count: isize) -> Self {
         Self {
-            url,
             has_custom_certificate,
             pending_update_count,
             ip_address: None,
@@ -2315,10 +2315,11 @@ impl WebhookInfo {
             last_error_message: None,
             max_connections: None,
             allowed_updates: None,
+            url: None,
         }
     }
 
-    pub fn set_url(&mut self, url: String) {
+    pub fn set_url(&mut self, url: Option<String>) {
         self.url = url;
     }
 
@@ -2350,7 +2351,7 @@ impl WebhookInfo {
         self.allowed_updates = allowed_updates;
     }
 
-    pub fn url(&self) -> String {
+    pub fn url(&self) -> Option<String> {
         self.url.clone()
     }
 
