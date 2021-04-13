@@ -1,13 +1,14 @@
 use crate::api_params::DeleteWebhookParams;
+use crate::api_params::ForwardMessageParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::SendMessageParams;
 use crate::api_params::SetWebhookParams;
 use crate::objects::Message;
 use crate::objects::Update;
+use crate::objects::User;
 use crate::objects::WebhookInfo;
 use isahc::{prelude::*, Request};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 static BASE_API_URL: &'static str = "https://api.telegram.org/bot";
 
@@ -74,8 +75,27 @@ impl API {
         self.request("deleteWebhook", Some(params))
     }
 
-    pub fn get_webhook_info(&self) -> Result<WebhookInfo, isahc::Error> {
+    pub fn get_webhook_info(&self) -> Result<ApiResponse<WebhookInfo>, isahc::Error> {
         self.request_without_body("getWebhookInfo")
+    }
+
+    pub fn get_me(&self) -> Result<ApiResponse<User>, isahc::Error> {
+        self.request_without_body("getMe")
+    }
+
+    pub fn log_out(&self) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request_without_body("logOut")
+    }
+
+    pub fn close(&self) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request_without_body("close")
+    }
+
+    pub fn forward_message(
+        &self,
+        params: ForwardMessageParams,
+    ) -> Result<ApiResponse<Message>, isahc::Error> {
+        self.request("forwardMessage", Some(params))
     }
 
     fn request_without_body<T2: serde::de::DeserializeOwned>(
@@ -104,9 +124,9 @@ impl API {
             }
         };
 
-        let response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
+        let parsed_response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
 
-        Ok(response)
+        Ok(parsed_response)
     }
 }
 
@@ -206,6 +226,79 @@ mod tests {
         let api = api_with_mock("/deleteWebhook", response_string);
 
         let response = api.delete_webhook(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_webhook_info_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"url\":\"\",\"has_custom_certificate\":false,\"pending_update_count\":0,\"allowed_updates\":[\"message\"]}}";
+        let api = api_with_mock("/getWebhookInfo", response_string);
+
+        let response = api.get_webhook_info().unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_me_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_inline_queries\":false}}";
+        let api = api_with_mock("/getMe", response_string);
+
+        let response = api.get_me().unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn log_out_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let api = api_with_mock("/logOut", response_string);
+
+        let response = api.log_out().unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn close_failure() {
+        let response_string = "{\"ok\":false,\"description\":\"Unauthorized\",\"error_code\":401}";
+
+        let api = api_with_mock("/close", response_string);
+
+        let response = api.close().unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn close_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let api = api_with_mock("/close", response_string);
+
+        let response = api.close().unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn forward_message_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2747,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618294971,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello\"}}";
+        let params = ForwardMessageParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            ChatIdEnum::IsizeVariant(275808073),
+            2747,
+        );
+
+        let api = api_with_mock("/forwardMessage", response_string);
+
+        let response = api.forward_message(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);

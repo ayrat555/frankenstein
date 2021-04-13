@@ -71,13 +71,6 @@ pub enum ReplyMarkupEnum {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum FromChatIdEnum {
-    IsizeVariant(isize),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
 pub enum PhotoEnum {
     InputFileVariant(InputFile),
     StringVariant(String),
@@ -221,7 +214,7 @@ pub struct SendMessageParams {
 pub struct ForwardMessageParams {
     chat_id: ChatIdEnum,
 
-    from_chat_id: FromChatIdEnum,
+    from_chat_id: ChatIdEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
@@ -233,7 +226,7 @@ pub struct ForwardMessageParams {
 pub struct CopyMessageParams {
     chat_id: ChatIdEnum,
 
-    from_chat_id: FromChatIdEnum,
+    from_chat_id: ChatIdEnum,
 
     message_id: isize,
 
@@ -1567,7 +1560,7 @@ impl SendMessageParams {
 }
 
 impl ForwardMessageParams {
-    pub fn new(chat_id: ChatIdEnum, from_chat_id: FromChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: isize) -> Self {
         Self {
             chat_id,
             from_chat_id,
@@ -1580,7 +1573,7 @@ impl ForwardMessageParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_from_chat_id(&mut self, from_chat_id: FromChatIdEnum) {
+    pub fn set_from_chat_id(&mut self, from_chat_id: ChatIdEnum) {
         self.from_chat_id = from_chat_id;
     }
 
@@ -1596,7 +1589,7 @@ impl ForwardMessageParams {
         self.chat_id.clone()
     }
 
-    pub fn from_chat_id(&self) -> FromChatIdEnum {
+    pub fn from_chat_id(&self) -> ChatIdEnum {
         self.from_chat_id.clone()
     }
 
@@ -1610,7 +1603,7 @@ impl ForwardMessageParams {
 }
 
 impl CopyMessageParams {
-    pub fn new(chat_id: ChatIdEnum, from_chat_id: FromChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: isize) -> Self {
         Self {
             chat_id,
             from_chat_id,
@@ -1629,7 +1622,7 @@ impl CopyMessageParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_from_chat_id(&mut self, from_chat_id: FromChatIdEnum) {
+    pub fn set_from_chat_id(&mut self, from_chat_id: ChatIdEnum) {
         self.from_chat_id = from_chat_id;
     }
 
@@ -1669,7 +1662,7 @@ impl CopyMessageParams {
         self.chat_id.clone()
     }
 
-    pub fn from_chat_id(&self) -> FromChatIdEnum {
+    pub fn from_chat_id(&self) -> ChatIdEnum {
         self.from_chat_id.clone()
     }
 
