@@ -1,9 +1,15 @@
+use crate::api_params::CopyMessageParams;
 use crate::api_params::DeleteWebhookParams;
+use crate::api_params::EditMessageLiveLocationParams;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::GetUpdatesParams;
+use crate::api_params::SendLocationParams;
 use crate::api_params::SendMessageParams;
+use crate::api_params::SendVenueParams;
 use crate::api_params::SetWebhookParams;
+use crate::api_params::StopMessageLiveLocationParams;
 use crate::objects::Message;
+use crate::objects::MessageId;
 use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::WebhookInfo;
@@ -37,6 +43,13 @@ pub struct ErrorResponse {
 pub enum ApiResponse<T> {
     Error(ErrorResponse),
     ApiResult(MethodResponse<T>),
+}
+
+#[derive(PartialEq, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum MessageLiveLocationResponse {
+    Message(ApiResponse<Message>),
+    Bool(ApiResponse<bool>),
 }
 
 impl API {
@@ -96,6 +109,41 @@ impl API {
         params: ForwardMessageParams,
     ) -> Result<ApiResponse<Message>, isahc::Error> {
         self.request("forwardMessage", Some(params))
+    }
+
+    pub fn copy_message(
+        &self,
+        params: CopyMessageParams,
+    ) -> Result<ApiResponse<MessageId>, isahc::Error> {
+        self.request("copyMessage", Some(params))
+    }
+
+    pub fn send_location(
+        &self,
+        params: SendLocationParams,
+    ) -> Result<ApiResponse<Message>, isahc::Error> {
+        self.request("sendLocation", Some(params))
+    }
+
+    pub fn edit_message_live_location(
+        &self,
+        params: EditMessageLiveLocationParams,
+    ) -> Result<MessageLiveLocationResponse, isahc::Error> {
+        self.request("editMessageLiveLocation", Some(params))
+    }
+
+    pub fn stop_message_live_location(
+        &self,
+        params: StopMessageLiveLocationParams,
+    ) -> Result<MessageLiveLocationResponse, isahc::Error> {
+        self.request("stopMessageLiveLocation", Some(params))
+    }
+
+    pub fn send_venue(
+        &self,
+        params: SendVenueParams,
+    ) -> Result<ApiResponse<Message>, isahc::Error> {
+        self.request("sendVenue", Some(params))
     }
 
     fn request_without_body<T2: serde::de::DeserializeOwned>(
@@ -299,6 +347,84 @@ mod tests {
         let api = api_with_mock("/forwardMessage", response_string);
 
         let response = api.forward_message(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn copy_message_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2749}}";
+        let params = CopyMessageParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            ChatIdEnum::IsizeVariant(275808073),
+            2747,
+        );
+
+        let api = api_with_mock("/copyMessage", response_string);
+
+        let response = api.copy_message(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_location_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2750,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382060,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
+        let params = SendLocationParams::new(ChatIdEnum::IsizeVariant(275808073), 49.7, 6.95);
+        let api = api_with_mock("/sendLocation", response_string);
+
+        let response = api.send_location(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn edit_message_live_location_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
+        let mut params = EditMessageLiveLocationParams::new(49.8, 6.96);
+        params.set_message_id(Some(2752));
+        params.set_chat_id(Some(ChatIdEnum::IsizeVariant(275808073)));
+
+        let api = api_with_mock("/editMessageLiveLocation", response_string);
+
+        let response = api.edit_message_live_location(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn stop_message_live_location_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
+        let mut params = StopMessageLiveLocationParams::new();
+        params.set_message_id(Some(2752));
+        params.set_chat_id(Some(ChatIdEnum::IsizeVariant(275808073)));
+
+        let api = api_with_mock("/stopMessageLiveLocation", response_string);
+
+        let response = api.stop_message_live_location(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_venue_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2754,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618410490,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"venue\":{\"location\":{\"longitude\":6.949981,\"latitude\":49.700002},\"title\":\"Meow\",\"address\":\"Hoof\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
+        let params = SendVenueParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            49.7,
+            6.95,
+            "Meow".to_string(),
+            "Hoof".to_string(),
+        );
+
+        let api = api_with_mock("/sendVenue", response_string);
+
+        let response = api.send_venue(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
