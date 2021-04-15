@@ -651,7 +651,7 @@ pub struct VoiceChatParticipantsInvited {
 pub struct UserProfilePhotos {
     total_count: isize,
 
-    photos: Vec<PhotoSize>,
+    photos: Vec<Vec<PhotoSize>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -4201,7 +4201,7 @@ impl VoiceChatParticipantsInvited {
 }
 
 impl UserProfilePhotos {
-    pub fn new(total_count: isize, photos: Vec<PhotoSize>) -> Self {
+    pub fn new(total_count: isize, photos: Vec<Vec<PhotoSize>>) -> Self {
         Self {
             total_count,
             photos,
@@ -4212,7 +4212,7 @@ impl UserProfilePhotos {
         self.total_count = total_count;
     }
 
-    pub fn set_photos(&mut self, photos: Vec<PhotoSize>) {
+    pub fn set_photos(&mut self, photos: Vec<Vec<PhotoSize>>) {
         self.photos = photos;
     }
 
@@ -4220,7 +4220,7 @@ impl UserProfilePhotos {
         self.total_count
     }
 
-    pub fn photos(&self) -> Vec<PhotoSize> {
+    pub fn photos(&self) -> Vec<Vec<PhotoSize>> {
         self.photos.clone()
     }
 }
