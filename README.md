@@ -1,3 +1,5 @@
+<p align="center"><img src="frankenstein_logo.png" alt="frankenstein" height="300px"></p>
+
 # [WIP] frankenstein
 
 Telegram bot API client for Rust. Not a framework, just a client.
