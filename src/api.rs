@@ -1,11 +1,18 @@
 use crate::api_params::CopyMessageParams;
+use crate::api_params::CreateChatInviteLinkParams;
+use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteWebhookParams;
+use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageLiveLocationParams;
+use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::KickChatMemberParams;
+use crate::api_params::PromoteChatMemberParams;
+use crate::api_params::RestrictChatMemberParams;
+use crate::api_params::RevokeChatInviteLinkParams;
 use crate::api_params::SendChatActionParams;
 use crate::api_params::SendContactParams;
 use crate::api_params::SendDiceParams;
@@ -13,9 +20,12 @@ use crate::api_params::SendLocationParams;
 use crate::api_params::SendMessageParams;
 use crate::api_params::SendPollParams;
 use crate::api_params::SendVenueParams;
+use crate::api_params::SetChatAdministratorCustomTitleParams;
+use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
+use crate::objects::ChatInviteLink;
 use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
@@ -203,10 +213,73 @@ impl API {
         self.request("unbanChatMember", Some(params))
     }
 
-    fn request_without_body<T2: serde::de::DeserializeOwned>(
+    pub fn restrict_chat_member(
+        &self,
+        params: RestrictChatMemberParams,
+    ) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("restrictChatMember", Some(params))
+    }
+
+    pub fn promote_chat_member(
+        &self,
+        params: PromoteChatMemberParams,
+    ) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("promoteChatMember", Some(params))
+    }
+
+    pub fn set_chat_administrator_custom_title(
+        &self,
+        params: SetChatAdministratorCustomTitleParams,
+    ) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("setChatAdministratorCustomTitle", Some(params))
+    }
+
+    pub fn set_chat_permissions(
+        &self,
+        params: SetChatPermissionsParams,
+    ) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("setChatPermissions", Some(params))
+    }
+
+    pub fn export_chat_invite_link(
+        &self,
+        params: ExportChatInviteLinkParams,
+    ) -> Result<ApiResponse<String>, isahc::Error> {
+        self.request("exportChatInviteLink", Some(params))
+    }
+
+    pub fn create_chat_invite_link(
+        &self,
+        params: CreateChatInviteLinkParams,
+    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+        self.request("createChatInviteLink", Some(params))
+    }
+
+    pub fn edit_chat_invite_link(
+        &self,
+        params: EditChatInviteLinkParams,
+    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+        self.request("editChatInviteLink", Some(params))
+    }
+
+    pub fn revoke_chat_invite_link(
+        &self,
+        params: RevokeChatInviteLinkParams,
+    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+        self.request("revokeChatInviteLink", Some(params))
+    }
+
+    pub fn delete_chat_photo(
+        &self,
+        params: DeleteChatPhotoParams,
+    ) -> Result<ApiResponse<bool>, isahc::Error> {
+        self.request("deleteChatPhoto", Some(params))
+    }
+
+    fn request_without_body<T: serde::de::DeserializeOwned>(
         &self,
         method: &str,
-    ) -> Result<T2, isahc::Error> {
+    ) -> Result<T, isahc::Error> {
         let params: Option<()> = None;
 
         self.request(method, params)
@@ -239,6 +312,7 @@ impl API {
 mod tests {
     use super::*;
     use crate::api_params::*;
+    use crate::objects::*;
     use httpmock::Method::POST;
     use httpmock::MockServer;
 
@@ -598,6 +672,148 @@ mod tests {
         let api = api_with_mock("/unbanChatMember", response_string);
 
         let response = api.unban_chat_member(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn restrict_chat_member_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut perm = ChatPermissions::new();
+        perm.set_can_add_web_page_previews(Some(true));
+        let params = RestrictChatMemberParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            275808073,
+            perm,
+        );
+
+        let api = api_with_mock("/restrictChatMember", response_string);
+
+        let response = api.restrict_chat_member(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn promote_chat_member_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params =
+            PromoteChatMemberParams::new(ChatIdEnum::IsizeVariant(-1001368460856), 275808073);
+        params.set_can_change_info(Some(true));
+
+        let api = api_with_mock("/promoteChatMember", response_string);
+
+        let response = api.promote_chat_member(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_chat_administrator_custom_title_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = SetChatAdministratorCustomTitleParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            275808073,
+            "King".to_string(),
+        );
+
+        let api = api_with_mock("/setChatAdministratorCustomTitle", response_string);
+
+        let response = api.set_chat_administrator_custom_title(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_chat_permissions_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut perm = ChatPermissions::new();
+        perm.set_can_add_web_page_previews(Some(true));
+
+        let params = SetChatPermissionsParams::new(ChatIdEnum::IsizeVariant(-1001368460856), perm);
+
+        let api = api_with_mock("/setChatPermissions", response_string);
+
+        let response = api.set_chat_permissions(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn export_chat_invite_link_success() {
+        let response_string = "{\"ok\":true,\"result\":\"https://t.me/joinchat/txIUDwjfk7M2ODEy\"}";
+
+        let params = ExportChatInviteLinkParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let api = api_with_mock("/exportChatInviteLink", response_string);
+
+        let response = api.export_chat_invite_link(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn create_chat_invite_link_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/yFEnSaeiQm83ZTNi\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"is_primary\":false,\"is_revoked\":false}}";
+
+        let params = CreateChatInviteLinkParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let api = api_with_mock("/createChatInviteLink", response_string);
+
+        let response = api.create_chat_invite_link(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn edit_chat_invite_link_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/O458bA8hQ0MzNmQy\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"is_primary\":false,\"is_revoked\":false}}";
+
+        let params = EditChatInviteLinkParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            "https://t.me/joinchat/O458bA8hQ0MzNmQy".to_string(),
+        );
+
+        let api = api_with_mock("/editChatInviteLink", response_string);
+
+        let response = api.edit_chat_invite_link(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn revoke_chat_invite_link_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/O458bA8hQ0MzNmQy\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"is_primary\":false,\"is_revoked\":true}}";
+
+        let params = RevokeChatInviteLinkParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            "https://t.me/joinchat/O458bA8hQ0MzNmQy".to_string(),
+        );
+
+        let api = api_with_mock("/revokeChatInviteLink", response_string);
+
+        let response = api.revoke_chat_invite_link(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn delete_chat_photo_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = DeleteChatPhotoParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let api = api_with_mock("/deleteChatPhoto", response_string);
+
+        let response = api.delete_chat_photo(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
