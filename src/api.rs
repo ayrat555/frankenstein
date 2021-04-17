@@ -26,7 +26,7 @@ use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::objects::ChatInviteLink;
-use crate::objects::File;
+// use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Update;
@@ -34,7 +34,12 @@ use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
 use isahc::{prelude::*, Request};
+use multipart::client::lazy::Multipart;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::fs::File;
+use std::io::Read;
+use std::path::PathBuf;
 
 static BASE_API_URL: &'static str = "https://api.telegram.org/bot";
 
@@ -195,9 +200,9 @@ impl API {
         self.request("getUserProfilePhotos", Some(params))
     }
 
-    pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, isahc::Error> {
-        self.request("getFile", Some(params))
-    }
+    // pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, isahc::Error> {
+    //     self.request("getFile", Some(params))
+    // }
 
     pub fn kick_chat_member(
         &self,
@@ -283,6 +288,54 @@ impl API {
         let params: Option<()> = None;
 
         self.request(method, params)
+    }
+
+    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+        &self,
+        method: &str,
+        params: T1,
+        file_path: PathBuf,
+    ) -> Result<T2, isahc::Error> {
+        let json_string = serde_json::to_string(&params).unwrap();
+        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
+
+        let mut form = Multipart::new();
+        for (key, val) in json_struct.as_object().unwrap().iter() {
+            let val = match val {
+                &Value::String(ref val) => format!("{}", val),
+                etc => format!("{}", etc),
+            };
+
+            form.add_text(key, val);
+        }
+
+        let file = File::open(&file_path).unwrap();
+        let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
+        let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
+        let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
+        let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
+
+        form.add_stream(
+            "data",
+            file,
+            file_path.file_name().unwrap().to_str(),
+            Some(mime),
+        );
+
+        let url = format!("{}/{}", self.api_url, method);
+        let form_data = form.prepare().unwrap();
+        let body = isahc::Body::from_reader(form_data);
+        let response = Request::post(url)
+            .header(
+                "Content-Type",
+                &format!("multipart/form-data; boundary={}", form_data.boundary()),
+            )
+            .body(body)?
+            .send()?;
+
+        let parsed_response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
+
+        Ok(parsed_response)
     }
 
     fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
