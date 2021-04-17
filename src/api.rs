@@ -26,19 +26,16 @@ use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::objects::ChatInviteLink;
-// use crate::objects::File;
+use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
-use isahc::{prelude::*, Request};
 use multipart::client::lazy::Multipart;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::fs::File;
-use std::io::Read;
 use std::path::PathBuf;
 
 static BASE_API_URL: &'static str = "https://api.telegram.org/bot";
@@ -91,200 +88,197 @@ impl API {
     pub fn get_updates(
         &self,
         params: GetUpdatesParams,
-    ) -> Result<ApiResponse<Vec<Update>>, isahc::Error> {
+    ) -> Result<ApiResponse<Vec<Update>>, ureq::Error> {
         self.request("getUpdates", Some(params))
     }
 
     pub fn send_message(
         &self,
         params: SendMessageParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendMessage", Some(params))
     }
 
-    pub fn set_webhook(&self, params: SetWebhookParams) -> Result<ApiResponse<bool>, isahc::Error> {
+    pub fn set_webhook(&self, params: SetWebhookParams) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setWebhook", Some(params))
     }
 
     pub fn delete_webhook(
         &self,
         params: DeleteWebhookParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteWebhook", Some(params))
     }
 
-    pub fn get_webhook_info(&self) -> Result<ApiResponse<WebhookInfo>, isahc::Error> {
+    pub fn get_webhook_info(&self) -> Result<ApiResponse<WebhookInfo>, ureq::Error> {
         self.request_without_body("getWebhookInfo")
     }
 
-    pub fn get_me(&self) -> Result<ApiResponse<User>, isahc::Error> {
+    pub fn get_me(&self) -> Result<ApiResponse<User>, ureq::Error> {
         self.request_without_body("getMe")
     }
 
-    pub fn log_out(&self) -> Result<ApiResponse<bool>, isahc::Error> {
+    pub fn log_out(&self) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request_without_body("logOut")
     }
 
-    pub fn close(&self) -> Result<ApiResponse<bool>, isahc::Error> {
+    pub fn close(&self) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request_without_body("close")
     }
 
     pub fn forward_message(
         &self,
         params: ForwardMessageParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("forwardMessage", Some(params))
     }
 
     pub fn copy_message(
         &self,
         params: CopyMessageParams,
-    ) -> Result<ApiResponse<MessageId>, isahc::Error> {
+    ) -> Result<ApiResponse<MessageId>, ureq::Error> {
         self.request("copyMessage", Some(params))
     }
 
     pub fn send_location(
         &self,
         params: SendLocationParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendLocation", Some(params))
     }
 
     pub fn edit_message_live_location(
         &self,
         params: EditMessageLiveLocationParams,
-    ) -> Result<MessageLiveLocationResponse, isahc::Error> {
+    ) -> Result<MessageLiveLocationResponse, ureq::Error> {
         self.request("editMessageLiveLocation", Some(params))
     }
 
     pub fn stop_message_live_location(
         &self,
         params: StopMessageLiveLocationParams,
-    ) -> Result<MessageLiveLocationResponse, isahc::Error> {
+    ) -> Result<MessageLiveLocationResponse, ureq::Error> {
         self.request("stopMessageLiveLocation", Some(params))
     }
 
-    pub fn send_venue(
-        &self,
-        params: SendVenueParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    pub fn send_venue(&self, params: SendVenueParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendVenue", Some(params))
     }
 
     pub fn send_contact(
         &self,
         params: SendContactParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendContact", Some(params))
     }
 
-    pub fn send_poll(&self, params: SendPollParams) -> Result<ApiResponse<Message>, isahc::Error> {
+    pub fn send_poll(&self, params: SendPollParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendPoll", Some(params))
     }
 
-    pub fn send_dice(&self, params: SendDiceParams) -> Result<ApiResponse<Message>, isahc::Error> {
+    pub fn send_dice(&self, params: SendDiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendDice", Some(params))
     }
 
     pub fn send_chat_action(
         &self,
         params: SendChatActionParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("sendChatAction", Some(params))
     }
 
     pub fn get_user_profile_photos(
         &self,
         params: GetUserProfilePhotosParams,
-    ) -> Result<ApiResponse<UserProfilePhotos>, isahc::Error> {
+    ) -> Result<ApiResponse<UserProfilePhotos>, ureq::Error> {
         self.request("getUserProfilePhotos", Some(params))
     }
 
-    // pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, isahc::Error> {
-    //     self.request("getFile", Some(params))
-    // }
+    pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, ureq::Error> {
+        self.request("getFile", Some(params))
+    }
 
     pub fn kick_chat_member(
         &self,
         params: KickChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("kickChatMember", Some(params))
     }
 
     pub fn unban_chat_member(
         &self,
         params: UnbanChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("unbanChatMember", Some(params))
     }
 
     pub fn restrict_chat_member(
         &self,
         params: RestrictChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("restrictChatMember", Some(params))
     }
 
     pub fn promote_chat_member(
         &self,
         params: PromoteChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("promoteChatMember", Some(params))
     }
 
     pub fn set_chat_administrator_custom_title(
         &self,
         params: SetChatAdministratorCustomTitleParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatAdministratorCustomTitle", Some(params))
     }
 
     pub fn set_chat_permissions(
         &self,
         params: SetChatPermissionsParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatPermissions", Some(params))
     }
 
     pub fn export_chat_invite_link(
         &self,
         params: ExportChatInviteLinkParams,
-    ) -> Result<ApiResponse<String>, isahc::Error> {
+    ) -> Result<ApiResponse<String>, ureq::Error> {
         self.request("exportChatInviteLink", Some(params))
     }
 
     pub fn create_chat_invite_link(
         &self,
         params: CreateChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("createChatInviteLink", Some(params))
     }
 
     pub fn edit_chat_invite_link(
         &self,
         params: EditChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("editChatInviteLink", Some(params))
     }
 
     pub fn revoke_chat_invite_link(
         &self,
         params: RevokeChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("revokeChatInviteLink", Some(params))
     }
 
     pub fn delete_chat_photo(
         &self,
         params: DeleteChatPhotoParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteChatPhoto", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
         &self,
         method: &str,
-    ) -> Result<T, isahc::Error> {
+    ) -> Result<T, ureq::Error> {
         let params: Option<()> = None;
 
         self.request(method, params)
@@ -295,7 +289,7 @@ impl API {
         method: &str,
         params: T1,
         file_path: PathBuf,
-    ) -> Result<T2, isahc::Error> {
+    ) -> Result<T2, ureq::Error> {
         let json_string = serde_json::to_string(&params).unwrap();
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
@@ -309,9 +303,7 @@ impl API {
             form.add_text(key, val);
         }
 
-        let file = File::open(&file_path).unwrap();
-        let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
-        let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
+        let file = std::fs::File::open(&file_path).unwrap();
         let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
         let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
 
@@ -324,16 +316,14 @@ impl API {
 
         let url = format!("{}/{}", self.api_url, method);
         let form_data = form.prepare().unwrap();
-        let body = isahc::Body::from_reader(form_data);
-        let response = Request::post(url)
-            .header(
+        let response = ureq::post(&url)
+            .set(
                 "Content-Type",
                 &format!("multipart/form-data; boundary={}", form_data.boundary()),
             )
-            .body(body)?
-            .send()?;
+            .send(form_data)?;
 
-        let parsed_response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
+        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
 
         Ok(parsed_response)
     }
@@ -342,20 +332,21 @@ impl API {
         &self,
         method: &str,
         params: Option<T1>,
-    ) -> Result<T2, isahc::Error> {
+    ) -> Result<T2, ureq::Error> {
         let url = format!("{}/{}", self.api_url, method);
 
-        let request_builder = Request::post(url).header("Content-Type", "application/json");
+        let prepared_request = ureq::post(&url).set("Content-Type", "application/json");
 
-        let mut response = match params {
-            None => request_builder.body(())?.send()?,
+        let response = match params {
+            None => prepared_request.call()?,
             Some(data) => {
                 let json = serde_json::to_string(&data).unwrap();
-                request_builder.body(json)?.send()?
+
+                prepared_request.send_string(&json)?
             }
         };
 
-        let parsed_response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
+        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
 
         Ok(parsed_response)
     }
