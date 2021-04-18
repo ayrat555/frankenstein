@@ -10,6 +10,7 @@ use crate::api_params::GetFileParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::KickChatMemberParams;
+use crate::api_params::PhotoEnum;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
@@ -18,6 +19,7 @@ use crate::api_params::SendContactParams;
 use crate::api_params::SendDiceParams;
 use crate::api_params::SendLocationParams;
 use crate::api_params::SendMessageParams;
+use crate::api_params::SendPhotoParams;
 use crate::api_params::SendPollParams;
 use crate::api_params::SendVenueParams;
 use crate::api_params::SetChatAdministratorCustomTitleParams;
@@ -33,8 +35,10 @@ use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
-use isahc::{prelude::*, Request};
+use multipart::client::lazy::Multipart;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::path::PathBuf;
 
 static BASE_API_URL: &'static str = "https://api.telegram.org/bot";
 
@@ -86,223 +90,277 @@ impl API {
     pub fn get_updates(
         &self,
         params: GetUpdatesParams,
-    ) -> Result<ApiResponse<Vec<Update>>, isahc::Error> {
+    ) -> Result<ApiResponse<Vec<Update>>, ureq::Error> {
         self.request("getUpdates", Some(params))
     }
 
     pub fn send_message(
         &self,
         params: SendMessageParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendMessage", Some(params))
     }
 
-    pub fn set_webhook(&self, params: SetWebhookParams) -> Result<ApiResponse<bool>, isahc::Error> {
+    pub fn set_webhook(&self, params: SetWebhookParams) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setWebhook", Some(params))
     }
 
     pub fn delete_webhook(
         &self,
         params: DeleteWebhookParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteWebhook", Some(params))
     }
 
-    pub fn get_webhook_info(&self) -> Result<ApiResponse<WebhookInfo>, isahc::Error> {
+    pub fn get_webhook_info(&self) -> Result<ApiResponse<WebhookInfo>, ureq::Error> {
         self.request_without_body("getWebhookInfo")
     }
 
-    pub fn get_me(&self) -> Result<ApiResponse<User>, isahc::Error> {
+    pub fn get_me(&self) -> Result<ApiResponse<User>, ureq::Error> {
         self.request_without_body("getMe")
     }
 
-    pub fn log_out(&self) -> Result<ApiResponse<bool>, isahc::Error> {
+    pub fn log_out(&self) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request_without_body("logOut")
     }
 
-    pub fn close(&self) -> Result<ApiResponse<bool>, isahc::Error> {
+    pub fn close(&self) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request_without_body("close")
     }
 
     pub fn forward_message(
         &self,
         params: ForwardMessageParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("forwardMessage", Some(params))
     }
 
     pub fn copy_message(
         &self,
         params: CopyMessageParams,
-    ) -> Result<ApiResponse<MessageId>, isahc::Error> {
+    ) -> Result<ApiResponse<MessageId>, ureq::Error> {
         self.request("copyMessage", Some(params))
+    }
+
+    pub fn send_photo(&self, params: SendPhotoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+        match params.photo() {
+            PhotoEnum::StringVariant(_) => self.request("sendPhoto", Some(params)),
+            PhotoEnum::InputFileVariant(input_file) => {
+                self.request_with_form_data("sendPhoto", params, "photo", input_file.path())
+            }
+        }
     }
 
     pub fn send_location(
         &self,
         params: SendLocationParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendLocation", Some(params))
     }
 
     pub fn edit_message_live_location(
         &self,
         params: EditMessageLiveLocationParams,
-    ) -> Result<MessageLiveLocationResponse, isahc::Error> {
+    ) -> Result<MessageLiveLocationResponse, ureq::Error> {
         self.request("editMessageLiveLocation", Some(params))
     }
 
     pub fn stop_message_live_location(
         &self,
         params: StopMessageLiveLocationParams,
-    ) -> Result<MessageLiveLocationResponse, isahc::Error> {
+    ) -> Result<MessageLiveLocationResponse, ureq::Error> {
         self.request("stopMessageLiveLocation", Some(params))
     }
 
-    pub fn send_venue(
-        &self,
-        params: SendVenueParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    pub fn send_venue(&self, params: SendVenueParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendVenue", Some(params))
     }
 
     pub fn send_contact(
         &self,
         params: SendContactParams,
-    ) -> Result<ApiResponse<Message>, isahc::Error> {
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendContact", Some(params))
     }
 
-    pub fn send_poll(&self, params: SendPollParams) -> Result<ApiResponse<Message>, isahc::Error> {
+    pub fn send_poll(&self, params: SendPollParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendPoll", Some(params))
     }
 
-    pub fn send_dice(&self, params: SendDiceParams) -> Result<ApiResponse<Message>, isahc::Error> {
+    pub fn send_dice(&self, params: SendDiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendDice", Some(params))
     }
 
     pub fn send_chat_action(
         &self,
         params: SendChatActionParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("sendChatAction", Some(params))
     }
 
     pub fn get_user_profile_photos(
         &self,
         params: GetUserProfilePhotosParams,
-    ) -> Result<ApiResponse<UserProfilePhotos>, isahc::Error> {
+    ) -> Result<ApiResponse<UserProfilePhotos>, ureq::Error> {
         self.request("getUserProfilePhotos", Some(params))
     }
 
-    pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, isahc::Error> {
+    pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, ureq::Error> {
         self.request("getFile", Some(params))
     }
 
     pub fn kick_chat_member(
         &self,
         params: KickChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("kickChatMember", Some(params))
     }
 
     pub fn unban_chat_member(
         &self,
         params: UnbanChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("unbanChatMember", Some(params))
     }
 
     pub fn restrict_chat_member(
         &self,
         params: RestrictChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("restrictChatMember", Some(params))
     }
 
     pub fn promote_chat_member(
         &self,
         params: PromoteChatMemberParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("promoteChatMember", Some(params))
     }
 
     pub fn set_chat_administrator_custom_title(
         &self,
         params: SetChatAdministratorCustomTitleParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatAdministratorCustomTitle", Some(params))
     }
 
     pub fn set_chat_permissions(
         &self,
         params: SetChatPermissionsParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatPermissions", Some(params))
     }
 
     pub fn export_chat_invite_link(
         &self,
         params: ExportChatInviteLinkParams,
-    ) -> Result<ApiResponse<String>, isahc::Error> {
+    ) -> Result<ApiResponse<String>, ureq::Error> {
         self.request("exportChatInviteLink", Some(params))
     }
 
     pub fn create_chat_invite_link(
         &self,
         params: CreateChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("createChatInviteLink", Some(params))
     }
 
     pub fn edit_chat_invite_link(
         &self,
         params: EditChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("editChatInviteLink", Some(params))
     }
 
     pub fn revoke_chat_invite_link(
         &self,
         params: RevokeChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, isahc::Error> {
+    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("revokeChatInviteLink", Some(params))
     }
 
     pub fn delete_chat_photo(
         &self,
         params: DeleteChatPhotoParams,
-    ) -> Result<ApiResponse<bool>, isahc::Error> {
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteChatPhoto", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
         &self,
         method: &str,
-    ) -> Result<T, isahc::Error> {
+    ) -> Result<T, ureq::Error> {
         let params: Option<()> = None;
 
         self.request(method, params)
+    }
+
+    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+        &self,
+        method: &str,
+        params: T1,
+        parameter_name: &str,
+        file_path: PathBuf,
+    ) -> Result<T2, ureq::Error> {
+        let json_string = serde_json::to_string(&params).unwrap();
+        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
+
+        let mut form = Multipart::new();
+        for (key, val) in json_struct.as_object().unwrap().iter() {
+            if key != parameter_name {
+                let val = match val {
+                    &Value::String(ref val) => format!("{}", val),
+                    etc => format!("{}", etc),
+                };
+
+                form.add_text(key, val);
+            }
+        }
+
+        let file = std::fs::File::open(&file_path).unwrap();
+        let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
+        let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
+
+        form.add_stream(
+            parameter_name,
+            file,
+            file_path.file_name().unwrap().to_str(),
+            Some(mime),
+        );
+
+        let url = format!("{}/{}", self.api_url, method);
+        let form_data = form.prepare().unwrap();
+        let response = ureq::post(&url)
+            .set(
+                "Content-Type",
+                &format!("multipart/form-data; boundary={}", form_data.boundary()),
+            )
+            .send(form_data)?;
+
+        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
+
+        Ok(parsed_response)
     }
 
     fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
         &self,
         method: &str,
         params: Option<T1>,
-    ) -> Result<T2, isahc::Error> {
+    ) -> Result<T2, ureq::Error> {
         let url = format!("{}/{}", self.api_url, method);
 
-        let request_builder = Request::post(url).header("Content-Type", "application/json");
+        let prepared_request = ureq::post(&url).set("Content-Type", "application/json");
 
-        let mut response = match params {
-            None => request_builder.body(())?.send()?,
+        let response = match params {
+            None => prepared_request.call()?,
             Some(data) => {
                 let json = serde_json::to_string(&data).unwrap();
-                request_builder.body(json)?.send()?
+
+                prepared_request.send_string(&json)?
             }
         };
 
-        let parsed_response: T2 = serde_json::from_reader(response.body_mut()).unwrap();
+        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
 
         Ok(parsed_response)
     }
@@ -313,8 +371,6 @@ mod tests {
     use super::*;
     use crate::api_params::*;
     use crate::objects::*;
-    use httpmock::Method::POST;
-    use httpmock::MockServer;
 
     #[test]
     fn new_sets_correct_url() {
@@ -334,7 +390,11 @@ mod tests {
         let mut params = GetUpdatesParams::new();
         params.set_allowed_updates(Some(vec!["message".to_string()]));
 
-        let api = api_with_mock("/getUpdates", response_string);
+        let _m = mockito::mock("POST", "/getUpdates")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.get_updates(params).unwrap();
 
@@ -363,7 +423,11 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello!\"}}";
         let params =
             SendMessageParams::new(ChatIdEnum::IsizeVariant(275808073), "Hello!".to_string());
-        let api = api_with_mock("/sendMessage", response_string);
+        let _m = mockito::mock("POST", "/sendMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_message(params).unwrap();
 
@@ -376,7 +440,11 @@ mod tests {
         let response_string =
             "{\"ok\":false,\"description\":\"Bad Request: chat not found\",\"error_code\":400}";
         let params = SendMessageParams::new(ChatIdEnum::IsizeVariant(1), "Hello!".to_string());
-        let api = api_with_mock("/sendMessage", response_string);
+        let _m = mockito::mock("POST", "/sendMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_message(params).unwrap();
 
@@ -389,7 +457,11 @@ mod tests {
         let response_string =
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
         let params = SetWebhookParams::new("".to_string());
-        let api = api_with_mock("/setWebhook", response_string);
+        let _m = mockito::mock("POST", "/setWebhook")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.set_webhook(params).unwrap();
 
@@ -402,7 +474,11 @@ mod tests {
         let response_string =
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
         let params = DeleteWebhookParams::new();
-        let api = api_with_mock("/deleteWebhook", response_string);
+        let _m = mockito::mock("POST", "/deleteWebhook")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.delete_webhook(params).unwrap();
 
@@ -413,7 +489,11 @@ mod tests {
     #[test]
     fn get_webhook_info_success() {
         let response_string = "{\"ok\":true,\"result\":{\"url\":\"\",\"has_custom_certificate\":false,\"pending_update_count\":0,\"allowed_updates\":[\"message\"]}}";
-        let api = api_with_mock("/getWebhookInfo", response_string);
+        let _m = mockito::mock("POST", "/getWebhookInfo")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.get_webhook_info().unwrap();
 
@@ -424,7 +504,11 @@ mod tests {
     #[test]
     fn get_me_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_inline_queries\":false}}";
-        let api = api_with_mock("/getMe", response_string);
+        let _m = mockito::mock("POST", "/getMe")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.get_me().unwrap();
 
@@ -435,7 +519,11 @@ mod tests {
     #[test]
     fn log_out_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let api = api_with_mock("/logOut", response_string);
+        let _m = mockito::mock("POST", "/logOut")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.log_out().unwrap();
 
@@ -447,7 +535,11 @@ mod tests {
     fn close_failure() {
         let response_string = "{\"ok\":false,\"description\":\"Unauthorized\",\"error_code\":401}";
 
-        let api = api_with_mock("/close", response_string);
+        let _m = mockito::mock("POST", "/close")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.close().unwrap();
 
@@ -458,7 +550,11 @@ mod tests {
     #[test]
     fn close_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let api = api_with_mock("/close", response_string);
+        let _m = mockito::mock("POST", "/close")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.close().unwrap();
 
@@ -475,7 +571,11 @@ mod tests {
             2747,
         );
 
-        let api = api_with_mock("/forwardMessage", response_string);
+        let _m = mockito::mock("POST", "/forwardMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.forward_message(params).unwrap();
 
@@ -492,7 +592,11 @@ mod tests {
             2747,
         );
 
-        let api = api_with_mock("/copyMessage", response_string);
+        let _m = mockito::mock("POST", "/copyMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.copy_message(params).unwrap();
 
@@ -504,7 +608,12 @@ mod tests {
     fn send_location_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2750,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382060,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
         let params = SendLocationParams::new(ChatIdEnum::IsizeVariant(275808073), 49.7, 6.95);
-        let api = api_with_mock("/sendLocation", response_string);
+
+        let _m = mockito::mock("POST", "/sendLocation")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_location(params).unwrap();
 
@@ -519,7 +628,11 @@ mod tests {
         params.set_message_id(Some(2752));
         params.set_chat_id(Some(ChatIdEnum::IsizeVariant(275808073)));
 
-        let api = api_with_mock("/editMessageLiveLocation", response_string);
+        let _m = mockito::mock("POST", "/editMessageLiveLocation")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.edit_message_live_location(params).unwrap();
 
@@ -534,7 +647,11 @@ mod tests {
         params.set_message_id(Some(2752));
         params.set_chat_id(Some(ChatIdEnum::IsizeVariant(275808073)));
 
-        let api = api_with_mock("/stopMessageLiveLocation", response_string);
+        let _m = mockito::mock("POST", "/stopMessageLiveLocation")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.stop_message_live_location(params).unwrap();
 
@@ -553,7 +670,11 @@ mod tests {
             "Hoof".to_string(),
         );
 
-        let api = api_with_mock("/sendVenue", response_string);
+        let _m = mockito::mock("POST", "/sendVenue")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_venue(params).unwrap();
 
@@ -570,7 +691,11 @@ mod tests {
             "Meow".to_string(),
         );
 
-        let api = api_with_mock("/sendContact", response_string);
+        let _m = mockito::mock("POST", "/sendContact")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_contact(params).unwrap();
 
@@ -587,7 +712,11 @@ mod tests {
             vec!["1".to_string(), "2".to_string()],
         );
 
-        let api = api_with_mock("/sendPoll", response_string);
+        let _m = mockito::mock("POST", "/sendPoll")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_poll(params).unwrap();
 
@@ -600,7 +729,11 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2757,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"dice\":{\"emoji\":\"🎲\",\"value\":5}}}";
         let params = SendDiceParams::new(ChatIdEnum::IsizeVariant(275808073));
 
-        let api = api_with_mock("/sendDice", response_string);
+        let _m = mockito::mock("POST", "/sendDice")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_dice(params).unwrap();
 
@@ -614,7 +747,11 @@ mod tests {
         let params =
             SendChatActionParams::new(ChatIdEnum::IsizeVariant(275808073), "typing".to_string());
 
-        let api = api_with_mock("/sendChatAction", response_string);
+        let _m = mockito::mock("POST", "/sendChatAction")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.send_chat_action(params).unwrap();
 
@@ -627,7 +764,11 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"total_count\":3,\"photos\":[[{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"width\":160,\"height\":160,\"file_size\":8068},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYgADhEkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhEkCAAE\",\"width\":320,\"height\":320,\"file_size\":22765},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYwADhUkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhUkCAAE\",\"width\":640,\"height\":640,\"file_size\":65663}],[{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYQADZj0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZj0KAAE\",\"width\":160,\"height\":160,\"file_size\":13459},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYgADZz0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZz0KAAE\",\"width\":320,\"height\":320,\"file_size\":41243},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYwADaD0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEaD0KAAE\",\"width\":640,\"height\":640,\"file_size\":114427}],[{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYQADdkwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEdkwAAg\",\"width\":160,\"height\":160,\"file_size\":6631},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYgADd0wAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEd0wAAg\",\"width\":320,\"height\":320,\"file_size\":20495},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYwADeEwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEeEwAAg\",\"width\":640,\"height\":640,\"file_size\":54395}]]}}";
         let params = GetUserProfilePhotosParams::new(275808073);
 
-        let api = api_with_mock("/getUserProfilePhotos", response_string);
+        let _m = mockito::mock("POST", "/getUserProfilePhotos")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.get_user_profile_photos(params).unwrap();
 
@@ -642,7 +783,11 @@ mod tests {
         "AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA".to_string()
     );
 
-        let api = api_with_mock("/getFile", response_string);
+        let _m = mockito::mock("POST", "/getFile")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.get_file(params).unwrap();
 
@@ -655,7 +800,11 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = KickChatMemberParams::new(ChatIdEnum::IsizeVariant(-1001368460856), 275808073);
 
-        let api = api_with_mock("/kickChatMember", response_string);
+        let _m = mockito::mock("POST", "/kickChatMember")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.kick_chat_member(params).unwrap();
 
@@ -669,7 +818,11 @@ mod tests {
         let params =
             UnbanChatMemberParams::new(ChatIdEnum::IsizeVariant(-1001368460856), 275808072);
 
-        let api = api_with_mock("/unbanChatMember", response_string);
+        let _m = mockito::mock("POST", "/unbanChatMember")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.unban_chat_member(params).unwrap();
 
@@ -688,7 +841,11 @@ mod tests {
             perm,
         );
 
-        let api = api_with_mock("/restrictChatMember", response_string);
+        let _m = mockito::mock("POST", "/restrictChatMember")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.restrict_chat_member(params).unwrap();
 
@@ -703,7 +860,11 @@ mod tests {
             PromoteChatMemberParams::new(ChatIdEnum::IsizeVariant(-1001368460856), 275808073);
         params.set_can_change_info(Some(true));
 
-        let api = api_with_mock("/promoteChatMember", response_string);
+        let _m = mockito::mock("POST", "/promoteChatMember")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.promote_chat_member(params).unwrap();
 
@@ -720,7 +881,11 @@ mod tests {
             "King".to_string(),
         );
 
-        let api = api_with_mock("/setChatAdministratorCustomTitle", response_string);
+        let _m = mockito::mock("POST", "/setChatAdministratorCustomTitle")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.set_chat_administrator_custom_title(params).unwrap();
 
@@ -736,7 +901,11 @@ mod tests {
 
         let params = SetChatPermissionsParams::new(ChatIdEnum::IsizeVariant(-1001368460856), perm);
 
-        let api = api_with_mock("/setChatPermissions", response_string);
+        let _m = mockito::mock("POST", "/setChatPermissions")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.set_chat_permissions(params).unwrap();
 
@@ -750,7 +919,11 @@ mod tests {
 
         let params = ExportChatInviteLinkParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
 
-        let api = api_with_mock("/exportChatInviteLink", response_string);
+        let _m = mockito::mock("POST", "/exportChatInviteLink")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.export_chat_invite_link(params).unwrap();
 
@@ -764,7 +937,11 @@ mod tests {
 
         let params = CreateChatInviteLinkParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
 
-        let api = api_with_mock("/createChatInviteLink", response_string);
+        let _m = mockito::mock("POST", "/createChatInviteLink")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.create_chat_invite_link(params).unwrap();
 
@@ -781,7 +958,11 @@ mod tests {
             "https://t.me/joinchat/O458bA8hQ0MzNmQy".to_string(),
         );
 
-        let api = api_with_mock("/editChatInviteLink", response_string);
+        let _m = mockito::mock("POST", "/editChatInviteLink")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.edit_chat_invite_link(params).unwrap();
 
@@ -798,7 +979,11 @@ mod tests {
             "https://t.me/joinchat/O458bA8hQ0MzNmQy".to_string(),
         );
 
-        let api = api_with_mock("/revokeChatInviteLink", response_string);
+        let _m = mockito::mock("POST", "/revokeChatInviteLink")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.revoke_chat_invite_link(params).unwrap();
 
@@ -811,7 +996,11 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = DeleteChatPhotoParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
 
-        let api = api_with_mock("/deleteChatPhoto", response_string);
+        let _m = mockito::mock("POST", "/deleteChatPhoto")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
         let response = api.delete_chat_photo(params).unwrap();
 
@@ -819,14 +1008,25 @@ mod tests {
         assert_eq!(response_string, json);
     }
 
-    fn api_with_mock(path: &str, response: &str) -> API {
-        let server = MockServer::start();
+    #[test]
+    fn send_photo_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2763,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618730180,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA20AA0U3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0U3AwAB\",\"width\":320,\"height\":320,\"file_size\":19968},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3gAA0Y3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0Y3AwAB\",\"width\":799,\"height\":800,\"file_size\":63581},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3kAA0M3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0M3AwAB\",\"width\":847,\"height\":848,\"file_size\":63763}]}}";
+        let params = SendPhotoParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            PhotoEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
 
-        server.mock(|when, then| {
-            when.method(POST).path(path);
-            then.status(200).body(response);
-        });
+        let _m = mockito::mock("POST", "/sendPhoto")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
 
-        API::new_url(server.url(""))
+        let response = api.send_photo(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
     }
 }
