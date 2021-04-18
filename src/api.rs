@@ -1,7 +1,9 @@
+use crate::api_params::AudioEnum;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteWebhookParams;
+use crate::api_params::DocumentEnum;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageLiveLocationParams;
 use crate::api_params::ExportChatInviteLinkParams;
@@ -14,9 +16,11 @@ use crate::api_params::PhotoEnum;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
+use crate::api_params::SendAudioParams;
 use crate::api_params::SendChatActionParams;
 use crate::api_params::SendContactParams;
 use crate::api_params::SendDiceParams;
+use crate::api_params::SendDocumentParams;
 use crate::api_params::SendLocationParams;
 use crate::api_params::SendMessageParams;
 use crate::api_params::SendPhotoParams;
@@ -143,10 +147,37 @@ impl API {
     }
 
     pub fn send_photo(&self, params: SendPhotoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendPhoto";
+
         match params.photo() {
-            PhotoEnum::StringVariant(_) => self.request("sendPhoto", Some(params)),
+            PhotoEnum::StringVariant(_) => self.request(method_name, Some(params)),
             PhotoEnum::InputFileVariant(input_file) => {
-                self.request_with_form_data("sendPhoto", params, "photo", input_file.path())
+                self.request_with_form_data(method_name, params, "photo", input_file.path())
+            }
+        }
+    }
+
+    pub fn send_audio(&self, params: SendAudioParams) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendAudio";
+
+        match params.audio() {
+            AudioEnum::StringVariant(_) => self.request(method_name, Some(params)),
+            AudioEnum::InputFileVariant(input_file) => {
+                self.request_with_form_data(method_name, params, "audio", input_file.path())
+            }
+        }
+    }
+
+    pub fn send_document(
+        &self,
+        params: SendDocumentParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendDocument";
+
+        match params.document() {
+            DocumentEnum::StringVariant(_) => self.request(method_name, Some(params)),
+            DocumentEnum::InputFileVariant(input_file) => {
+                self.request_with_form_data(method_name, params, "document", input_file.path())
             }
         }
     }
@@ -1025,6 +1056,70 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.send_photo(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_audio_file_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendAudioParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            AudioEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        let _m = mockito::mock("POST", "/sendAudio")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_audio(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_audio_file_id_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendAudioParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            AudioEnum::StringVariant(
+                "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ"
+                    .to_string(),
+            ),
+        );
+        let _m = mockito::mock("POST", "/sendAudio")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_audio(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_document_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendDocumentParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            DocumentEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        let _m = mockito::mock("POST", "/sendDocument")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_document(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
