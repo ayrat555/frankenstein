@@ -1,3 +1,4 @@
+use crate::api_params::AnimationEnum;
 use crate::api_params::AudioEnum;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
@@ -16,6 +17,7 @@ use crate::api_params::PhotoEnum;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
+use crate::api_params::SendAnimationParams;
 use crate::api_params::SendAudioParams;
 use crate::api_params::SendChatActionParams;
 use crate::api_params::SendContactParams;
@@ -26,11 +28,17 @@ use crate::api_params::SendMessageParams;
 use crate::api_params::SendPhotoParams;
 use crate::api_params::SendPollParams;
 use crate::api_params::SendVenueParams;
+use crate::api_params::SendVideoNoteParams;
+use crate::api_params::SendVideoParams;
+use crate::api_params::SendVoiceParams;
 use crate::api_params::SetChatAdministratorCustomTitleParams;
 use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
+use crate::api_params::VideoEnum;
+use crate::api_params::VideoNoteEnum;
+use crate::api_params::VoiceEnum;
 use crate::objects::ChatInviteLink;
 use crate::objects::File;
 use crate::objects::Message;
@@ -182,14 +190,94 @@ impl API {
         params: SendDocumentParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendDocument";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        match params.document() {
-            DocumentEnum::StringVariant(_) => self.request(method_name, Some(params)),
-            DocumentEnum::InputFileVariant(input_file) => self.request_with_form_data(
-                method_name,
-                params,
-                vec![("document", input_file.path())],
-            ),
+        if let DocumentEnum::InputFileVariant(input_file) = params.document() {
+            files.push(("document", input_file.path()));
+        }
+
+        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+            files.push(("thumb", input_file.path()));
+        }
+
+        if files.len() > 0 {
+            self.request_with_form_data(method_name, params, files)
+        } else {
+            self.request(method_name, Some(params))
+        }
+    }
+
+    pub fn send_video(&self, params: SendVideoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendVideo";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let VideoEnum::InputFileVariant(input_file) = params.video() {
+            files.push(("video", input_file.path()));
+        }
+
+        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+            files.push(("thumb", input_file.path()));
+        }
+
+        if files.len() > 0 {
+            self.request_with_form_data(method_name, params, files)
+        } else {
+            self.request(method_name, Some(params))
+        }
+    }
+
+    pub fn send_animation(
+        &self,
+        params: SendAnimationParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendAnimation";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let AnimationEnum::InputFileVariant(input_file) = params.animation() {
+            files.push(("animation", input_file.path()));
+        }
+
+        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+            files.push(("thumb", input_file.path()));
+        }
+
+        if files.len() > 0 {
+            self.request_with_form_data(method_name, params, files)
+        } else {
+            self.request(method_name, Some(params))
+        }
+    }
+
+    pub fn send_voice(&self, params: SendVoiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendVoice";
+
+        match params.voice() {
+            VoiceEnum::StringVariant(_) => self.request(method_name, Some(params)),
+            VoiceEnum::InputFileVariant(input_file) => {
+                self.request_with_form_data(method_name, params, vec![("voice", input_file.path())])
+            }
+        }
+    }
+
+    pub fn send_video_note(
+        &self,
+        params: SendVideoNoteParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
+        let method_name = "sendVideoNote";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let VideoNoteEnum::InputFileVariant(input_file) = params.video_note() {
+            files.push(("video_note", input_file.path()));
+        }
+
+        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+            files.push(("thumb", input_file.path()));
+        }
+
+        if files.len() > 0 {
+            self.request_with_form_data(method_name, params, files)
+        } else {
+            self.request(method_name, Some(params))
         }
     }
 
@@ -1157,6 +1245,90 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.send_document(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_video_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendVideoParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            VideoEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        let _m = mockito::mock("POST", "/sendVideo")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_video(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_animation_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendAnimationParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            AnimationEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        let _m = mockito::mock("POST", "/sendAnimation")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_animation(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_voice_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendVoiceParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            VoiceEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        let _m = mockito::mock("POST", "/sendVoice")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_voice(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_video_note_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let params = SendVideoNoteParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            VideoNoteEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        let _m = mockito::mock("POST", "/sendVideoNote")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_video_note(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
