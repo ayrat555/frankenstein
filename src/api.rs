@@ -35,6 +35,7 @@ use crate::objects::ChatInviteLink;
 use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
+use crate::objects::ThumbEnum;
 use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
@@ -152,19 +153,27 @@ impl API {
         match params.photo() {
             PhotoEnum::StringVariant(_) => self.request(method_name, Some(params)),
             PhotoEnum::InputFileVariant(input_file) => {
-                self.request_with_form_data(method_name, params, "photo", input_file.path())
+                self.request_with_form_data(method_name, params, vec![("photo", input_file.path())])
             }
         }
     }
 
     pub fn send_audio(&self, params: SendAudioParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendAudio";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        match params.audio() {
-            AudioEnum::StringVariant(_) => self.request(method_name, Some(params)),
-            AudioEnum::InputFileVariant(input_file) => {
-                self.request_with_form_data(method_name, params, "audio", input_file.path())
-            }
+        if let AudioEnum::InputFileVariant(input_file) = params.audio() {
+            files.push(("audio", input_file.path()));
+        }
+
+        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+            files.push(("thumb", input_file.path()));
+        }
+
+        if files.len() > 0 {
+            self.request_with_form_data(method_name, params, files)
+        } else {
+            self.request(method_name, Some(params))
         }
     }
 
@@ -176,9 +185,11 @@ impl API {
 
         match params.document() {
             DocumentEnum::StringVariant(_) => self.request(method_name, Some(params)),
-            DocumentEnum::InputFileVariant(input_file) => {
-                self.request_with_form_data(method_name, params, "document", input_file.path())
-            }
+            DocumentEnum::InputFileVariant(input_file) => self.request_with_form_data(
+                method_name,
+                params,
+                vec![("document", input_file.path())],
+            ),
         }
     }
 
@@ -326,53 +337,6 @@ impl API {
         self.request(method, params)
     }
 
-    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
-        &self,
-        method: &str,
-        params: T1,
-        parameter_name: &str,
-        file_path: PathBuf,
-    ) -> Result<T2, ureq::Error> {
-        let json_string = serde_json::to_string(&params).unwrap();
-        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-
-        let mut form = Multipart::new();
-        for (key, val) in json_struct.as_object().unwrap().iter() {
-            if key != parameter_name {
-                let val = match val {
-                    &Value::String(ref val) => format!("{}", val),
-                    etc => format!("{}", etc),
-                };
-
-                form.add_text(key, val);
-            }
-        }
-
-        let file = std::fs::File::open(&file_path).unwrap();
-        let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
-        let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
-
-        form.add_stream(
-            parameter_name,
-            file,
-            file_path.file_name().unwrap().to_str(),
-            Some(mime),
-        );
-
-        let url = format!("{}/{}", self.api_url, method);
-        let form_data = form.prepare().unwrap();
-        let response = ureq::post(&url)
-            .set(
-                "Content-Type",
-                &format!("multipart/form-data; boundary={}", form_data.boundary()),
-            )
-            .send(form_data)?;
-
-        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
-
-        Ok(parsed_response)
-    }
-
     fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
         &self,
         method: &str,
@@ -390,6 +354,55 @@ impl API {
                 prepared_request.send_string(&json)?
             }
         };
+
+        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
+
+        Ok(parsed_response)
+    }
+
+    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+        &self,
+        method: &str,
+        params: T1,
+        files: Vec<(&str, PathBuf)>, // parameter_name: &str,
+                                     // file_path: PathBuf
+    ) -> Result<T2, ureq::Error> {
+        let json_string = serde_json::to_string(&params).unwrap();
+        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+        let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
+            .iter()
+            .map(|(key, path)| (*key, path.file_name().unwrap().to_str(), path.clone()))
+            .collect();
+
+        let mut form = Multipart::new();
+        for (key, val) in json_struct.as_object().unwrap().iter() {
+            if !file_keys.contains(&key.as_str()) {
+                let val = match val {
+                    &Value::String(ref val) => format!("{}", val),
+                    etc => format!("{}", etc),
+                };
+
+                form.add_text(key, val);
+            }
+        }
+
+        for (parameter_name, file_name, file_path) in files_with_names {
+            let file = std::fs::File::open(&file_path).unwrap();
+            let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
+            let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
+
+            form.add_stream(parameter_name, file, file_name, Some(mime));
+        }
+
+        let url = format!("{}/{}", self.api_url, method);
+        let form_data = form.prepare().unwrap();
+        let response = ureq::post(&url)
+            .set(
+                "Content-Type",
+                &format!("multipart/form-data; boundary={}", form_data.boundary()),
+            )
+            .send(form_data)?;
 
         let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
 
@@ -1070,6 +1083,30 @@ mod tests {
                 "./frankenstein_logo.png",
             ))),
         );
+        let _m = mockito::mock("POST", "/sendAudio")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_audio(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_audio_file_with_thumb_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let mut params = SendAudioParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            AudioEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+        params.set_thumb(Some(ThumbEnum::InputFileVariant(InputFile::new(
+            std::path::PathBuf::from("./frankenstein_logo.png"),
+        ))));
         let _m = mockito::mock("POST", "/sendAudio")
             .with_status(200)
             .with_body(response_string)
