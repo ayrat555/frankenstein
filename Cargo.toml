@@ -12,4 +12,4 @@ multipart = "0.17"
 mime_guess = "2.0"
 
 [dev-dependencies]
-httpmock = "0.5.7"
+mockito = "0.30"
