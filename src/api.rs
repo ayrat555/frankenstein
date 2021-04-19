@@ -14,6 +14,7 @@ use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::KickChatMemberParams;
 use crate::api_params::PhotoEnum;
+use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
@@ -32,7 +33,10 @@ use crate::api_params::SendVideoNoteParams;
 use crate::api_params::SendVideoParams;
 use crate::api_params::SendVoiceParams;
 use crate::api_params::SetChatAdministratorCustomTitleParams;
+use crate::api_params::SetChatDescriptionParams;
 use crate::api_params::SetChatPermissionsParams;
+use crate::api_params::SetChatPhotoParams;
+use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
@@ -157,13 +161,13 @@ impl API {
 
     pub fn send_photo(&self, params: SendPhotoParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendPhoto";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        match params.photo() {
-            PhotoEnum::StringVariant(_) => self.request(method_name, Some(params)),
-            PhotoEnum::InputFileVariant(input_file) => {
-                self.request_with_form_data(method_name, params, vec![("photo", input_file.path())])
-            }
+        if let PhotoEnum::InputFileVariant(input_file) = params.photo() {
+            files.push(("photo", input_file.path()));
         }
+
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_audio(&self, params: SendAudioParams) -> Result<ApiResponse<Message>, ureq::Error> {
@@ -178,11 +182,7 @@ impl API {
             files.push(("thumb", input_file.path()));
         }
 
-        if files.len() > 0 {
-            self.request_with_form_data(method_name, params, files)
-        } else {
-            self.request(method_name, Some(params))
-        }
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_document(
@@ -200,11 +200,7 @@ impl API {
             files.push(("thumb", input_file.path()));
         }
 
-        if files.len() > 0 {
-            self.request_with_form_data(method_name, params, files)
-        } else {
-            self.request(method_name, Some(params))
-        }
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_video(&self, params: SendVideoParams) -> Result<ApiResponse<Message>, ureq::Error> {
@@ -219,11 +215,7 @@ impl API {
             files.push(("thumb", input_file.path()));
         }
 
-        if files.len() > 0 {
-            self.request_with_form_data(method_name, params, files)
-        } else {
-            self.request(method_name, Some(params))
-        }
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_animation(
@@ -241,22 +233,18 @@ impl API {
             files.push(("thumb", input_file.path()));
         }
 
-        if files.len() > 0 {
-            self.request_with_form_data(method_name, params, files)
-        } else {
-            self.request(method_name, Some(params))
-        }
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_voice(&self, params: SendVoiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendVoice";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        match params.voice() {
-            VoiceEnum::StringVariant(_) => self.request(method_name, Some(params)),
-            VoiceEnum::InputFileVariant(input_file) => {
-                self.request_with_form_data(method_name, params, vec![("voice", input_file.path())])
-            }
+        if let VoiceEnum::InputFileVariant(input_file) = params.voice() {
+            files.push(("voice", input_file.path()));
         }
+
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_video_note(
@@ -274,11 +262,7 @@ impl API {
             files.push(("thumb", input_file.path()));
         }
 
-        if files.len() > 0 {
-            self.request_with_form_data(method_name, params, files)
-        } else {
-            self.request(method_name, Some(params))
-        }
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     pub fn send_location(
@@ -409,11 +393,41 @@ impl API {
         self.request("revokeChatInviteLink", Some(params))
     }
 
+    pub fn set_chat_photo(
+        &self,
+        params: SetChatPhotoParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        let photo = params.photo();
+
+        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path())])
+    }
+
     pub fn delete_chat_photo(
         &self,
         params: DeleteChatPhotoParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteChatPhoto", Some(params))
+    }
+
+    pub fn set_chat_title(
+        &self,
+        params: SetChatTitleParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("setChatTitle", Some(params))
+    }
+
+    pub fn set_chat_description(
+        &self,
+        params: SetChatDescriptionParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("setChatDescription", Some(params))
+    }
+
+    pub fn pin_chat_message(
+        &self,
+        params: PinChatMessageParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("pinChatMessage", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
@@ -448,12 +462,27 @@ impl API {
         Ok(parsed_response)
     }
 
+    fn request_with_possible_form_data<
+        T1: serde::ser::Serialize,
+        T2: serde::de::DeserializeOwned,
+    >(
+        &self,
+        method_name: &str,
+        params: T1,
+        files: Vec<(&str, PathBuf)>,
+    ) -> Result<T2, ureq::Error> {
+        if files.len() > 0 {
+            self.request_with_form_data(method_name, params, files)
+        } else {
+            self.request(method_name, Some(params))
+        }
+    }
+
     fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
         &self,
         method: &str,
         params: T1,
-        files: Vec<(&str, PathBuf)>, // parameter_name: &str,
-                                     // file_path: PathBuf
+        files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, ureq::Error> {
         let json_string = serde_json::to_string(&params).unwrap();
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
@@ -1329,6 +1358,81 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.send_video_note(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_chat_photo_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = SetChatPhotoParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            InputFile::new(std::path::PathBuf::from("./frankenstein_logo.png")),
+        );
+
+        let _m = mockito::mock("POST", "/setChatPhoto")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.set_chat_photo(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_chat_title_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = SetChatTitleParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            "Frankenstein".to_string(),
+        );
+
+        let _m = mockito::mock("POST", "/setChatTitle")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.set_chat_title(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_chat_description_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params = SetChatDescriptionParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+        params.set_description(Some("Frankenstein group".to_string()));
+
+        let _m = mockito::mock("POST", "/setChatDescription")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.set_chat_description(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn pin_chat_message_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = PinChatMessageParams::new(ChatIdEnum::IsizeVariant(275808073), 2766);
+
+        let _m = mockito::mock("POST", "/pinChatMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.pin_chat_message(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
