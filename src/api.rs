@@ -9,10 +9,15 @@ use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageLiveLocationParams;
 use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::ForwardMessageParams;
+use crate::api_params::GetChatAdministratorsParams;
+use crate::api_params::GetChatMemberParams;
+use crate::api_params::GetChatMembersCountParams;
+use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::KickChatMemberParams;
+use crate::api_params::LeaveChatParams;
 use crate::api_params::PhotoEnum;
 use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
@@ -40,10 +45,13 @@ use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
+use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::VideoEnum;
 use crate::api_params::VideoNoteEnum;
 use crate::api_params::VoiceEnum;
+use crate::objects::Chat;
 use crate::objects::ChatInviteLink;
+use crate::objects::ChatMember;
 use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
@@ -428,6 +436,42 @@ impl API {
         params: PinChatMessageParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("pinChatMessage", Some(params))
+    }
+
+    pub fn unpin_chat_message(
+        &self,
+        params: UnpinChatMessageParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("unpinChatMessage", Some(params))
+    }
+
+    pub fn leave_chat(&self, params: LeaveChatParams) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("leaveChat", Some(params))
+    }
+
+    pub fn get_chat(&self, params: GetChatParams) -> Result<ApiResponse<Chat>, ureq::Error> {
+        self.request("getChat", Some(params))
+    }
+
+    pub fn get_chat_administrators(
+        &self,
+        params: GetChatAdministratorsParams,
+    ) -> Result<ApiResponse<Vec<ChatMember>>, ureq::Error> {
+        self.request("getChatAdministrators", Some(params))
+    }
+
+    pub fn get_chat_members_count(
+        &self,
+        params: GetChatMembersCountParams,
+    ) -> Result<ApiResponse<usize>, ureq::Error> {
+        self.request("getChatMembersCount", Some(params))
+    }
+
+    pub fn get_chat_member(
+        &self,
+        params: GetChatMemberParams,
+    ) -> Result<ApiResponse<ChatMember>, ureq::Error> {
+        self.request("getChatMember", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
@@ -1433,6 +1477,108 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.pin_chat_message(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn unpin_chat_message_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = UnpinChatMessageParams::new(ChatIdEnum::IsizeVariant(275808073));
+
+        let _m = mockito::mock("POST", "/unpinChatMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.unpin_chat_message(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn leave_chat_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = LeaveChatParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let _m = mockito::mock("POST", "/leaveChat")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.leave_chat(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_chat_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\",\"photo\":{\"small_file_id\":\"AQADAgAT-kgrmy4AAwIAA8jhydkW____s1Cm6Dc_w8Ge7QUAAR8E\",\"small_file_unique_id\":\"AQAD-kgrmy4AA57tBQAB\",\"big_file_id\":\"AQADAgAT-kgrmy4AAwMAA8jhydkW____s1Cm6Dc_w8Gg7QUAAR8E\",\"big_file_unique_id\":\"AQAD-kgrmy4AA6DtBQAB\"},\"description\":\"Frankenstein group\",\"invite_link\":\"https://t.me/joinchat/smSXMzNKTwA0ZjFi\",\"permissions\":{\"can_send_messages\":true,\"can_send_media_messages\":true,\"can_send_polls\":true,\"can_send_other_messages\":true,\"can_add_web_page_previews\":true,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true}}}";
+        let params = GetChatParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let _m = mockito::mock("POST", "/getChat")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.get_chat(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_chat_administrators_success() {
+        let response_string = "{\"ok\":true,\"result\":[{\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"status\":\"administrator\",\"is_anonymous\":false,\"can_be_edited\":false,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_voice_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":true,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true},{\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"status\":\"creator\",\"is_anonymous\":false}]}";
+        let params = GetChatAdministratorsParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let _m = mockito::mock("POST", "/getChatAdministrators")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.get_chat_administrators(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_chat_members_count_success() {
+        let response_string = "{\"ok\":true,\"result\":4}";
+        let params = GetChatMembersCountParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let _m = mockito::mock("POST", "/getChatMembersCount")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.get_chat_members_count(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_chat_member_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"status\":\"creator\",\"is_anonymous\":false}}";
+        let params = GetChatMemberParams::new(ChatIdEnum::IsizeVariant(-1001368460856), 275808073);
+
+        let _m = mockito::mock("POST", "/getChatMember")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.get_chat_member(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
