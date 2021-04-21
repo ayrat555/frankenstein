@@ -1,8 +1,10 @@
 use crate::api_params::AnimationEnum;
+use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AudioEnum;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::DeleteChatPhotoParams;
+use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::DocumentEnum;
 use crate::api_params::EditChatInviteLinkParams;
@@ -41,7 +43,9 @@ use crate::api_params::SetChatAdministratorCustomTitleParams;
 use crate::api_params::SetChatDescriptionParams;
 use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetChatPhotoParams;
+use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
+use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::UnbanChatMemberParams;
@@ -49,6 +53,7 @@ use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::VideoEnum;
 use crate::api_params::VideoNoteEnum;
 use crate::api_params::VoiceEnum;
+use crate::objects::BotCommand;
 use crate::objects::Chat;
 use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
@@ -472,6 +477,38 @@ impl API {
         params: GetChatMemberParams,
     ) -> Result<ApiResponse<ChatMember>, ureq::Error> {
         self.request("getChatMember", Some(params))
+    }
+
+    pub fn set_chat_sticker_set(
+        &self,
+        params: SetChatStickerSetParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("setChatStickerSet", Some(params))
+    }
+
+    pub fn delete_chat_sticker_set(
+        &self,
+        params: DeleteChatStickerSetParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("deleteChatStickerSet", Some(params))
+    }
+
+    pub fn answer_callback_query(
+        &self,
+        params: AnswerCallbackQueryParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("answerCallbackQuery", Some(params))
+    }
+
+    pub fn set_my_commands(
+        &self,
+        params: SetMyCommandsParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("setMyCommands", Some(params))
+    }
+
+    pub fn get_my_commands(&self) -> Result<ApiResponse<Vec<BotCommand>>, ureq::Error> {
+        self.request_without_body("getMyCommands")
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
@@ -1579,6 +1616,97 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.get_chat_member(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_chat_sticker_set_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = SetChatStickerSetParams::new(
+            ChatIdEnum::IsizeVariant(-1001368460856),
+            "GBTDPack".to_string(),
+        );
+
+        let _m = mockito::mock("POST", "/setChatStickerSet")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.set_chat_sticker_set(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn delete_chat_sticker_set_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = DeleteChatStickerSetParams::new(ChatIdEnum::IsizeVariant(-1001368460856));
+
+        let _m = mockito::mock("POST", "/deleteChatStickerSet")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.delete_chat_sticker_set(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn answer_callback_query_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params = AnswerCallbackQueryParams::new("id".to_string());
+        params.set_text(Some("text".to_string()));
+
+        let _m = mockito::mock("POST", "/answerCallbackQuery")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.answer_callback_query(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn set_my_commands_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = SetMyCommandsParams::new(vec![
+            BotCommand::new("meow".to_string(), "mewo".to_string()),
+            BotCommand::new("meow1".to_string(), "mewo1".to_string()),
+        ]);
+
+        let _m = mockito::mock("POST", "/setMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.set_my_commands(params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_my_commands_success() {
+        let response_string = "{\"ok\":true,\"result\":[{\"command\":\"meow\",\"description\":\"mewo\"},{\"command\":\"meow1\",\"description\":\"mewo1\"}]}";
+
+        let _m = mockito::mock("POST", "/getMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.get_my_commands().unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
