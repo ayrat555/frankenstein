@@ -120,25 +120,25 @@ impl API {
 
     pub fn get_updates(
         &self,
-        params: GetUpdatesParams,
+        params: &GetUpdatesParams,
     ) -> Result<ApiResponse<Vec<Update>>, ureq::Error> {
         self.request("getUpdates", Some(params))
     }
 
     pub fn send_message(
         &self,
-        params: SendMessageParams,
+        params: &SendMessageParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendMessage", Some(params))
     }
 
-    pub fn set_webhook(&self, params: SetWebhookParams) -> Result<ApiResponse<bool>, ureq::Error> {
+    pub fn set_webhook(&self, params: &SetWebhookParams) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setWebhook", Some(params))
     }
 
     pub fn delete_webhook(
         &self,
-        params: DeleteWebhookParams,
+        params: &DeleteWebhookParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteWebhook", Some(params))
     }
@@ -161,19 +161,19 @@ impl API {
 
     pub fn forward_message(
         &self,
-        params: ForwardMessageParams,
+        params: &ForwardMessageParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("forwardMessage", Some(params))
     }
 
     pub fn copy_message(
         &self,
-        params: CopyMessageParams,
+        params: &CopyMessageParams,
     ) -> Result<ApiResponse<MessageId>, ureq::Error> {
         self.request("copyMessage", Some(params))
     }
 
-    pub fn send_photo(&self, params: SendPhotoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_photo(&self, params: &SendPhotoParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendPhoto";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -184,7 +184,7 @@ impl API {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_audio(&self, params: SendAudioParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_audio(&self, params: &SendAudioParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendAudio";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -201,7 +201,7 @@ impl API {
 
     pub fn send_document(
         &self,
-        params: SendDocumentParams,
+        params: &SendDocumentParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendDocument";
         let mut files: Vec<(&str, PathBuf)> = vec![];
@@ -217,7 +217,7 @@ impl API {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_video(&self, params: SendVideoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_video(&self, params: &SendVideoParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendVideo";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -234,7 +234,7 @@ impl API {
 
     pub fn send_animation(
         &self,
-        params: SendAnimationParams,
+        params: &SendAnimationParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendAnimation";
         let mut files: Vec<(&str, PathBuf)> = vec![];
@@ -250,7 +250,7 @@ impl API {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_voice(&self, params: SendVoiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_voice(&self, params: &SendVoiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendVoice";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -263,7 +263,7 @@ impl API {
 
     pub fn send_video_note(
         &self,
-        params: SendVideoNoteParams,
+        params: &SendVideoNoteParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendVideoNote";
         let mut files: Vec<(&str, PathBuf)> = vec![];
@@ -281,135 +281,135 @@ impl API {
 
     pub fn send_location(
         &self,
-        params: SendLocationParams,
+        params: &SendLocationParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendLocation", Some(params))
     }
 
     pub fn edit_message_live_location(
         &self,
-        params: EditMessageLiveLocationParams,
+        params: &EditMessageLiveLocationParams,
     ) -> Result<MessageLiveLocationResponse, ureq::Error> {
         self.request("editMessageLiveLocation", Some(params))
     }
 
     pub fn stop_message_live_location(
         &self,
-        params: StopMessageLiveLocationParams,
+        params: &StopMessageLiveLocationParams,
     ) -> Result<MessageLiveLocationResponse, ureq::Error> {
         self.request("stopMessageLiveLocation", Some(params))
     }
 
-    pub fn send_venue(&self, params: SendVenueParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_venue(&self, params: &SendVenueParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendVenue", Some(params))
     }
 
     pub fn send_contact(
         &self,
-        params: SendContactParams,
+        params: &SendContactParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendContact", Some(params))
     }
 
-    pub fn send_poll(&self, params: SendPollParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_poll(&self, params: &SendPollParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendPoll", Some(params))
     }
 
-    pub fn send_dice(&self, params: SendDiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_dice(&self, params: &SendDiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendDice", Some(params))
     }
 
     pub fn send_chat_action(
         &self,
-        params: SendChatActionParams,
+        params: &SendChatActionParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("sendChatAction", Some(params))
     }
 
     pub fn get_user_profile_photos(
         &self,
-        params: GetUserProfilePhotosParams,
+        params: &GetUserProfilePhotosParams,
     ) -> Result<ApiResponse<UserProfilePhotos>, ureq::Error> {
         self.request("getUserProfilePhotos", Some(params))
     }
 
-    pub fn get_file(&self, params: GetFileParams) -> Result<ApiResponse<File>, ureq::Error> {
+    pub fn get_file(&self, params: &GetFileParams) -> Result<ApiResponse<File>, ureq::Error> {
         self.request("getFile", Some(params))
     }
 
     pub fn kick_chat_member(
         &self,
-        params: KickChatMemberParams,
+        params: &KickChatMemberParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("kickChatMember", Some(params))
     }
 
     pub fn unban_chat_member(
         &self,
-        params: UnbanChatMemberParams,
+        params: &UnbanChatMemberParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("unbanChatMember", Some(params))
     }
 
     pub fn restrict_chat_member(
         &self,
-        params: RestrictChatMemberParams,
+        params: &RestrictChatMemberParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("restrictChatMember", Some(params))
     }
 
     pub fn promote_chat_member(
         &self,
-        params: PromoteChatMemberParams,
+        params: &PromoteChatMemberParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("promoteChatMember", Some(params))
     }
 
     pub fn set_chat_administrator_custom_title(
         &self,
-        params: SetChatAdministratorCustomTitleParams,
+        params: &SetChatAdministratorCustomTitleParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatAdministratorCustomTitle", Some(params))
     }
 
     pub fn set_chat_permissions(
         &self,
-        params: SetChatPermissionsParams,
+        params: &SetChatPermissionsParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatPermissions", Some(params))
     }
 
     pub fn export_chat_invite_link(
         &self,
-        params: ExportChatInviteLinkParams,
+        params: &ExportChatInviteLinkParams,
     ) -> Result<ApiResponse<String>, ureq::Error> {
         self.request("exportChatInviteLink", Some(params))
     }
 
     pub fn create_chat_invite_link(
         &self,
-        params: CreateChatInviteLinkParams,
+        params: &CreateChatInviteLinkParams,
     ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("createChatInviteLink", Some(params))
     }
 
     pub fn edit_chat_invite_link(
         &self,
-        params: EditChatInviteLinkParams,
+        params: &EditChatInviteLinkParams,
     ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("editChatInviteLink", Some(params))
     }
 
     pub fn revoke_chat_invite_link(
         &self,
-        params: RevokeChatInviteLinkParams,
+        params: &RevokeChatInviteLinkParams,
     ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
         self.request("revokeChatInviteLink", Some(params))
     }
 
     pub fn set_chat_photo(
         &self,
-        params: SetChatPhotoParams,
+        params: &SetChatPhotoParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         let photo = params.photo();
 
@@ -418,92 +418,92 @@ impl API {
 
     pub fn delete_chat_photo(
         &self,
-        params: DeleteChatPhotoParams,
+        params: &DeleteChatPhotoParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteChatPhoto", Some(params))
     }
 
     pub fn set_chat_title(
         &self,
-        params: SetChatTitleParams,
+        params: &SetChatTitleParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatTitle", Some(params))
     }
 
     pub fn set_chat_description(
         &self,
-        params: SetChatDescriptionParams,
+        params: &SetChatDescriptionParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatDescription", Some(params))
     }
 
     pub fn pin_chat_message(
         &self,
-        params: PinChatMessageParams,
+        params: &PinChatMessageParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("pinChatMessage", Some(params))
     }
 
     pub fn unpin_chat_message(
         &self,
-        params: UnpinChatMessageParams,
+        params: &UnpinChatMessageParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("unpinChatMessage", Some(params))
     }
 
-    pub fn leave_chat(&self, params: LeaveChatParams) -> Result<ApiResponse<bool>, ureq::Error> {
+    pub fn leave_chat(&self, params: &LeaveChatParams) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("leaveChat", Some(params))
     }
 
-    pub fn get_chat(&self, params: GetChatParams) -> Result<ApiResponse<Chat>, ureq::Error> {
+    pub fn get_chat(&self, params: &GetChatParams) -> Result<ApiResponse<Chat>, ureq::Error> {
         self.request("getChat", Some(params))
     }
 
     pub fn get_chat_administrators(
         &self,
-        params: GetChatAdministratorsParams,
+        params: &GetChatAdministratorsParams,
     ) -> Result<ApiResponse<Vec<ChatMember>>, ureq::Error> {
         self.request("getChatAdministrators", Some(params))
     }
 
     pub fn get_chat_members_count(
         &self,
-        params: GetChatMembersCountParams,
+        params: &GetChatMembersCountParams,
     ) -> Result<ApiResponse<usize>, ureq::Error> {
         self.request("getChatMembersCount", Some(params))
     }
 
     pub fn get_chat_member(
         &self,
-        params: GetChatMemberParams,
+        params: &GetChatMemberParams,
     ) -> Result<ApiResponse<ChatMember>, ureq::Error> {
         self.request("getChatMember", Some(params))
     }
 
     pub fn set_chat_sticker_set(
         &self,
-        params: SetChatStickerSetParams,
+        params: &SetChatStickerSetParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setChatStickerSet", Some(params))
     }
 
     pub fn delete_chat_sticker_set(
         &self,
-        params: DeleteChatStickerSetParams,
+        params: &DeleteChatStickerSetParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("deleteChatStickerSet", Some(params))
     }
 
     pub fn answer_callback_query(
         &self,
-        params: AnswerCallbackQueryParams,
+        params: &AnswerCallbackQueryParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("answerCallbackQuery", Some(params))
     }
 
     pub fn set_my_commands(
         &self,
-        params: SetMyCommandsParams,
+        params: &SetMyCommandsParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("setMyCommands", Some(params))
     }
@@ -514,7 +514,7 @@ impl API {
 
     pub fn answer_inline_query(
         &self,
-        params: AnswerInlineQueryParams,
+        params: &AnswerInlineQueryParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("answerInlineQuery", Some(params))
     }
@@ -557,7 +557,7 @@ impl API {
     >(
         &self,
         method_name: &str,
-        params: T1,
+        params: &T1,
         files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, ureq::Error> {
         if files.len() > 0 {
@@ -646,7 +646,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_updates(params).unwrap();
+        let response = api.get_updates(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
 
@@ -679,7 +679,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_message(params).unwrap();
+        let response = api.send_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -696,7 +696,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_message(params).unwrap();
+        let response = api.send_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -713,7 +713,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_webhook(params).unwrap();
+        let response = api.set_webhook(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -730,7 +730,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.delete_webhook(params).unwrap();
+        let response = api.delete_webhook(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -827,7 +827,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.forward_message(params).unwrap();
+        let response = api.forward_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -848,7 +848,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.copy_message(params).unwrap();
+        let response = api.copy_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -865,7 +865,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_location(params).unwrap();
+        let response = api.send_location(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -884,7 +884,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.edit_message_live_location(params).unwrap();
+        let response = api.edit_message_live_location(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -903,7 +903,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.stop_message_live_location(params).unwrap();
+        let response = api.stop_message_live_location(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -926,7 +926,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_venue(params).unwrap();
+        let response = api.send_venue(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -947,7 +947,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_contact(params).unwrap();
+        let response = api.send_contact(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -968,7 +968,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_poll(params).unwrap();
+        let response = api.send_poll(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -985,7 +985,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_dice(params).unwrap();
+        let response = api.send_dice(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1003,7 +1003,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_chat_action(params).unwrap();
+        let response = api.send_chat_action(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1020,7 +1020,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_user_profile_photos(params).unwrap();
+        let response = api.get_user_profile_photos(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1039,7 +1039,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_file(params).unwrap();
+        let response = api.get_file(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1056,7 +1056,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.kick_chat_member(params).unwrap();
+        let response = api.kick_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1074,7 +1074,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.unban_chat_member(params).unwrap();
+        let response = api.unban_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1097,7 +1097,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.restrict_chat_member(params).unwrap();
+        let response = api.restrict_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1116,7 +1116,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.promote_chat_member(params).unwrap();
+        let response = api.promote_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1137,7 +1137,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_chat_administrator_custom_title(params).unwrap();
+        let response = api.set_chat_administrator_custom_title(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1157,7 +1157,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_chat_permissions(params).unwrap();
+        let response = api.set_chat_permissions(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1175,7 +1175,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.export_chat_invite_link(params).unwrap();
+        let response = api.export_chat_invite_link(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1193,7 +1193,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.create_chat_invite_link(params).unwrap();
+        let response = api.create_chat_invite_link(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1214,7 +1214,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.edit_chat_invite_link(params).unwrap();
+        let response = api.edit_chat_invite_link(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1235,7 +1235,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.revoke_chat_invite_link(params).unwrap();
+        let response = api.revoke_chat_invite_link(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1252,7 +1252,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.delete_chat_photo(params).unwrap();
+        let response = api.delete_chat_photo(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1274,7 +1274,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_photo(params).unwrap();
+        let response = api.send_photo(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1295,7 +1295,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_audio(params).unwrap();
+        let response = api.send_audio(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1319,7 +1319,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_audio(params).unwrap();
+        let response = api.send_audio(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1341,7 +1341,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_audio(params).unwrap();
+        let response = api.send_audio(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1362,7 +1362,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_document(params).unwrap();
+        let response = api.send_document(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1383,7 +1383,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_video(params).unwrap();
+        let response = api.send_video(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1404,7 +1404,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_animation(params).unwrap();
+        let response = api.send_animation(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1425,7 +1425,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_voice(params).unwrap();
+        let response = api.send_voice(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1446,7 +1446,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.send_video_note(params).unwrap();
+        let response = api.send_video_note(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1466,7 +1466,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_chat_photo(params).unwrap();
+        let response = api.set_chat_photo(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1486,7 +1486,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_chat_title(params).unwrap();
+        let response = api.set_chat_title(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1504,7 +1504,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_chat_description(params).unwrap();
+        let response = api.set_chat_description(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1521,7 +1521,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.pin_chat_message(params).unwrap();
+        let response = api.pin_chat_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1538,7 +1538,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.unpin_chat_message(params).unwrap();
+        let response = api.unpin_chat_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1555,7 +1555,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.leave_chat(params).unwrap();
+        let response = api.leave_chat(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1572,7 +1572,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_chat(params).unwrap();
+        let response = api.get_chat(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1589,7 +1589,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_chat_administrators(params).unwrap();
+        let response = api.get_chat_administrators(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1606,7 +1606,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_chat_members_count(params).unwrap();
+        let response = api.get_chat_members_count(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1623,7 +1623,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.get_chat_member(params).unwrap();
+        let response = api.get_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1643,7 +1643,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_chat_sticker_set(params).unwrap();
+        let response = api.set_chat_sticker_set(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1660,7 +1660,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.delete_chat_sticker_set(params).unwrap();
+        let response = api.delete_chat_sticker_set(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1678,7 +1678,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.answer_callback_query(params).unwrap();
+        let response = api.answer_callback_query(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1698,7 +1698,7 @@ mod tests {
             .create();
         let api = API::new_url(mockito::server_url());
 
-        let response = api.set_my_commands(params).unwrap();
+        let response = api.set_my_commands(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1746,7 +1746,7 @@ mod tests {
 
         let api = API::new_url(mockito::server_url());
 
-        let response = api.answer_inline_query(params).unwrap();
+        let response = api.answer_inline_query(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
