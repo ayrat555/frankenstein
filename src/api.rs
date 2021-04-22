@@ -1,5 +1,6 @@
 use crate::api_params::AnimationEnum;
 use crate::api_params::AnswerCallbackQueryParams;
+use crate::api_params::AnswerInlineQueryParams;
 use crate::api_params::AudioEnum;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
@@ -509,6 +510,13 @@ impl API {
 
     pub fn get_my_commands(&self) -> Result<ApiResponse<Vec<BotCommand>>, ureq::Error> {
         self.request_without_body("getMyCommands")
+    }
+
+    pub fn answer_inline_query(
+        &self,
+        params: AnswerInlineQueryParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("answerInlineQuery", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
@@ -1707,6 +1715,38 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.get_my_commands().unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn answer_inline_query_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+
+        let venue_result = InlineQueryResultVenue::new(
+            "hey9sdfasdflasdfadsfasd".to_string(),
+            40.0,
+            40.0,
+            "title".to_string(),
+            "address".to_string(),
+        );
+
+        let params = AnswerInlineQueryParams::new(
+            "inline_query.id()".to_string(),
+            vec![InlineQueryResult::InlineQueryResultVenueVariant(
+                venue_result,
+            )],
+        );
+
+        let _m = mockito::mock("POST", "/answerInlineQuery")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.answer_inline_query(params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);

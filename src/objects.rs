@@ -5826,17 +5826,12 @@ impl InlineQuery {
 }
 
 impl InlineQueryResultArticle {
-    pub fn new(
-        type_field: String,
-        id: String,
-        title: String,
-        input_message_content: InputMessageContent,
-    ) -> Self {
+    pub fn new(id: String, title: String, input_message_content: InputMessageContent) -> Self {
         Self {
-            type_field,
             id,
             title,
             input_message_content,
+            type_field: "article".to_string(),
             reply_markup: None,
             url: None,
             hide_url: None,
@@ -5937,12 +5932,12 @@ impl InlineQueryResultArticle {
 }
 
 impl InlineQueryResultPhoto {
-    pub fn new(type_field: String, id: String, photo_url: String, thumb_url: String) -> Self {
+    pub fn new(id: String, photo_url: String, thumb_url: String) -> Self {
         Self {
-            type_field,
             id,
             photo_url,
             thumb_url,
+            type_field: "photo".to_string(),
             photo_width: None,
             photo_height: None,
             title: None,
@@ -6064,12 +6059,12 @@ impl InlineQueryResultPhoto {
 }
 
 impl InlineQueryResultGif {
-    pub fn new(type_field: String, id: String, gif_url: String, thumb_url: String) -> Self {
+    pub fn new(id: String, gif_url: String, thumb_url: String) -> Self {
         Self {
-            type_field,
             id,
             gif_url,
             thumb_url,
+            type_field: "gif".to_string(),
             gif_width: None,
             gif_height: None,
             gif_duration: None,
@@ -6200,12 +6195,12 @@ impl InlineQueryResultGif {
 }
 
 impl InlineQueryResultMpeg4Gif {
-    pub fn new(type_field: String, id: String, mpeg4_url: String, thumb_url: String) -> Self {
+    pub fn new(id: String, mpeg4_url: String, thumb_url: String) -> Self {
         Self {
-            type_field,
             id,
             mpeg4_url,
             thumb_url,
+            type_field: "mpeg4_gif".to_string(),
             mpeg4_width: None,
             mpeg4_height: None,
             mpeg4_duration: None,
@@ -6337,7 +6332,6 @@ impl InlineQueryResultMpeg4Gif {
 
 impl InlineQueryResultVideo {
     pub fn new(
-        type_field: String,
         id: String,
         video_url: String,
         mime_type: String,
@@ -6345,12 +6339,12 @@ impl InlineQueryResultVideo {
         title: String,
     ) -> Self {
         Self {
-            type_field,
             id,
             video_url,
             mime_type,
             thumb_url,
             title,
+            type_field: "video".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -6488,12 +6482,12 @@ impl InlineQueryResultVideo {
 }
 
 impl InlineQueryResultAudio {
-    pub fn new(type_field: String, id: String, audio_url: String, title: String) -> Self {
+    pub fn new(id: String, audio_url: String, title: String) -> Self {
         Self {
-            type_field,
             id,
             audio_url,
             title,
+            type_field: "audio".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -6597,12 +6591,12 @@ impl InlineQueryResultAudio {
 }
 
 impl InlineQueryResultVoice {
-    pub fn new(type_field: String, id: String, voice_url: String, title: String) -> Self {
+    pub fn new(id: String, voice_url: String, title: String) -> Self {
         Self {
-            type_field,
             id,
             voice_url,
             title,
+            type_field: "voice".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -6697,19 +6691,13 @@ impl InlineQueryResultVoice {
 }
 
 impl InlineQueryResultDocument {
-    pub fn new(
-        type_field: String,
-        id: String,
-        title: String,
-        document_url: String,
-        mime_type: String,
-    ) -> Self {
+    pub fn new(id: String, title: String, document_url: String, mime_type: String) -> Self {
         Self {
-            type_field,
             id,
             title,
             document_url,
             mime_type,
+            type_field: "document".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -6839,19 +6827,13 @@ impl InlineQueryResultDocument {
 }
 
 impl InlineQueryResultLocation {
-    pub fn new(
-        type_field: String,
-        id: String,
-        latitude: f64,
-        longitude: f64,
-        title: String,
-    ) -> Self {
+    pub fn new(id: String, latitude: f64, longitude: f64, title: String) -> Self {
         Self {
-            type_field,
             id,
             latitude,
             longitude,
             title,
+            type_field: "location".to_string(),
             horizontal_accuracy: None,
             live_period: None,
             heading: None,
@@ -6981,21 +6963,14 @@ impl InlineQueryResultLocation {
 }
 
 impl InlineQueryResultVenue {
-    pub fn new(
-        type_field: String,
-        id: String,
-        latitude: f64,
-        longitude: f64,
-        title: String,
-        address: String,
-    ) -> Self {
+    pub fn new(id: String, latitude: f64, longitude: f64, title: String, address: String) -> Self {
         Self {
-            type_field,
             id,
             latitude,
             longitude,
             title,
             address,
+            type_field: "venue".to_string(),
             foursquare_id: None,
             foursquare_type: None,
             google_place_id: None,
@@ -7133,12 +7108,12 @@ impl InlineQueryResultVenue {
 }
 
 impl InlineQueryResultContact {
-    pub fn new(type_field: String, id: String, phone_number: String, first_name: String) -> Self {
+    pub fn new(id: String, phone_number: String, first_name: String) -> Self {
         Self {
-            type_field,
             id,
             phone_number,
             first_name,
+            type_field: "contract".to_string(),
             last_name: None,
             vcard: None,
             reply_markup: None,
@@ -7242,11 +7217,11 @@ impl InlineQueryResultContact {
 }
 
 impl InlineQueryResultGame {
-    pub fn new(type_field: String, id: String, game_short_name: String) -> Self {
+    pub fn new(id: String, game_short_name: String) -> Self {
         Self {
-            type_field,
             id,
             game_short_name,
+            type_field: "game".to_string(),
             reply_markup: None,
         }
     }
@@ -7285,11 +7260,11 @@ impl InlineQueryResultGame {
 }
 
 impl InlineQueryResultCachedPhoto {
-    pub fn new(type_field: String, id: String, photo_file_id: String) -> Self {
+    pub fn new(id: String, photo_file_id: String) -> Self {
         Self {
-            type_field,
             id,
             photo_file_id,
+            type_field: "photo".to_string(),
             title: None,
             description: None,
             caption: None,
@@ -7385,11 +7360,11 @@ impl InlineQueryResultCachedPhoto {
 }
 
 impl InlineQueryResultCachedGif {
-    pub fn new(type_field: String, id: String, gif_file_id: String) -> Self {
+    pub fn new(id: String, gif_file_id: String) -> Self {
         Self {
-            type_field,
             id,
             gif_file_id,
+            type_field: "gif".to_string(),
             title: None,
             caption: None,
             parse_mode: None,
@@ -7476,11 +7451,11 @@ impl InlineQueryResultCachedGif {
 }
 
 impl InlineQueryResultCachedMpeg4Gif {
-    pub fn new(type_field: String, id: String, mpeg4_file_id: String) -> Self {
+    pub fn new(id: String, mpeg4_file_id: String) -> Self {
         Self {
-            type_field,
             id,
             mpeg4_file_id,
+            type_field: "mpeg4_gif".to_string(),
             title: None,
             caption: None,
             parse_mode: None,
@@ -7567,11 +7542,11 @@ impl InlineQueryResultCachedMpeg4Gif {
 }
 
 impl InlineQueryResultCachedSticker {
-    pub fn new(type_field: String, id: String, sticker_file_id: String) -> Self {
+    pub fn new(id: String, sticker_file_id: String) -> Self {
         Self {
-            type_field,
             id,
             sticker_file_id,
+            type_field: "sticker".to_string(),
             reply_markup: None,
             input_message_content: None,
         }
@@ -7622,12 +7597,12 @@ impl InlineQueryResultCachedSticker {
 }
 
 impl InlineQueryResultCachedDocument {
-    pub fn new(type_field: String, id: String, title: String, document_file_id: String) -> Self {
+    pub fn new(id: String, title: String, document_file_id: String) -> Self {
         Self {
-            type_field,
             id,
             title,
             document_file_id,
+            type_field: "document".to_string(),
             description: None,
             caption: None,
             parse_mode: None,
@@ -7722,12 +7697,12 @@ impl InlineQueryResultCachedDocument {
 }
 
 impl InlineQueryResultCachedVideo {
-    pub fn new(type_field: String, id: String, video_file_id: String, title: String) -> Self {
+    pub fn new(id: String, video_file_id: String, title: String) -> Self {
         Self {
-            type_field,
             id,
             video_file_id,
             title,
+            type_field: "video".to_string(),
             description: None,
             caption: None,
             parse_mode: None,
@@ -7822,12 +7797,12 @@ impl InlineQueryResultCachedVideo {
 }
 
 impl InlineQueryResultCachedVoice {
-    pub fn new(type_field: String, id: String, voice_file_id: String, title: String) -> Self {
+    pub fn new(id: String, voice_file_id: String, title: String) -> Self {
         Self {
-            type_field,
             id,
             voice_file_id,
             title,
+            type_field: "voice".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -7913,11 +7888,11 @@ impl InlineQueryResultCachedVoice {
 }
 
 impl InlineQueryResultCachedAudio {
-    pub fn new(type_field: String, id: String, audio_file_id: String) -> Self {
+    pub fn new(id: String, audio_file_id: String) -> Self {
         Self {
-            type_field,
             id,
             audio_file_id,
+            type_field: "audio".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
