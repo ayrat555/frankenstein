@@ -6,10 +6,14 @@ use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
+use crate::api_params::DeleteMessageParams;
 use crate::api_params::DeleteWebhookParams;
+use crate::api_params::SendStickerParams;
 use crate::api_params::DocumentEnum;
 use crate::api_params::EditChatInviteLinkParams;
+use crate::api_params::EditMessageCaptionParams;
 use crate::api_params::EditMessageLiveLocationParams;
+use crate::api_params::EditMessageTextParams;
 use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::GetChatAdministratorsParams;
@@ -49,6 +53,7 @@ use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
+use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::VideoEnum;
@@ -61,6 +66,7 @@ use crate::objects::ChatMember;
 use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
+use crate::objects::Poll;
 use crate::objects::ThumbEnum;
 use crate::objects::Update;
 use crate::objects::User;
@@ -102,7 +108,7 @@ pub enum ApiResponse<T> {
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum MessageLiveLocationResponse {
+pub enum EditMessageResponse {
     Message(ApiResponse<Message>),
     Bool(ApiResponse<bool>),
 }
@@ -173,7 +179,10 @@ impl API {
         self.request("copyMessage", Some(params))
     }
 
-    pub fn send_photo(&self, params: &SendPhotoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_photo(
+        &self,
+        params: &SendPhotoParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendPhoto";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -184,7 +193,10 @@ impl API {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_audio(&self, params: &SendAudioParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_audio(
+        &self,
+        params: &SendAudioParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendAudio";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -217,7 +229,10 @@ impl API {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_video(&self, params: &SendVideoParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_video(
+        &self,
+        params: &SendVideoParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendVideo";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -250,7 +265,10 @@ impl API {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_voice(&self, params: &SendVoiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_voice(
+        &self,
+        params: &SendVoiceParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         let method_name = "sendVoice";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -289,18 +307,21 @@ impl API {
     pub fn edit_message_live_location(
         &self,
         params: &EditMessageLiveLocationParams,
-    ) -> Result<MessageLiveLocationResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, ureq::Error> {
         self.request("editMessageLiveLocation", Some(params))
     }
 
     pub fn stop_message_live_location(
         &self,
         params: &StopMessageLiveLocationParams,
-    ) -> Result<MessageLiveLocationResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, ureq::Error> {
         self.request("stopMessageLiveLocation", Some(params))
     }
 
-    pub fn send_venue(&self, params: &SendVenueParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_venue(
+        &self,
+        params: &SendVenueParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
         self.request("sendVenue", Some(params))
     }
 
@@ -517,6 +538,38 @@ impl API {
         params: &AnswerInlineQueryParams,
     ) -> Result<ApiResponse<bool>, ureq::Error> {
         self.request("answerInlineQuery", Some(params))
+    }
+
+    pub fn edit_message_text(
+        &self,
+        params: &EditMessageTextParams,
+    ) -> Result<EditMessageResponse, ureq::Error> {
+        self.request("editMessageText", Some(params))
+    }
+
+    pub fn edit_message_caption(
+        &self,
+        params: &EditMessageCaptionParams,
+    ) -> Result<EditMessageResponse, ureq::Error> {
+        self.request("editMessageCaption", Some(params))
+    }
+
+    pub fn stop_poll(&self, params: &StopPollParams) -> Result<ApiResponse<Poll>, ureq::Error> {
+        self.request("stopPoll", Some(params))
+    }
+
+    pub fn delete_message(
+        &self,
+        params: &DeleteMessageParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("deleteMessage", Some(params))
+    }
+
+    pub fn send_sticker(
+        &self,
+        params: &SendStickerParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
+        self.request("sendSticker", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
@@ -1747,6 +1800,85 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.answer_inline_query(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn edit_message_text_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619158446,\"text\":\"Hi!!\"}}";
+
+        let mut params = EditMessageTextParams::new("Hi!!".to_string());
+
+        params.set_chat_id(Some(ChatIdEnum::IsizeVariant(275808073)));
+        params.set_message_id(Some(2782));
+
+        let _m = mockito::mock("POST", "/editMessageText")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.edit_message_text(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn edit_message_caption_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2784,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619159414,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619159461,\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA20AA1hCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3gAA1lCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3kAA1pCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}],\"caption\":\"Caption\"}}";
+
+        let mut params = EditMessageCaptionParams::new();
+
+        params.set_chat_id(Some(ChatIdEnum::IsizeVariant(275808073)));
+        params.set_message_id(Some(2784));
+        params.set_caption(Some("Caption".to_string()));
+
+        let _m = mockito::mock("POST", "/editMessageCaption")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.edit_message_caption(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn stop_poll_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"id\":\"5195109123171024927\",\"question\":\"are you?\",\"options\":[{\"text\":\"1\",\"voter_count\":1},{\"text\":\"2\",\"voter_count\":0}],\"total_voter_count\":1,\"is_closed\":true,\"is_anonymous\":true,\"type\":\"regular\",\"allows_multiple_answers\":false}}";
+
+        let params = StopPollParams::new(ChatIdEnum::IsizeVariant(-1001368460856), 495);
+
+        let _m = mockito::mock("POST", "/stopPoll")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.stop_poll(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn delete_message_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+
+        let params = DeleteMessageParams::new(ChatIdEnum::IsizeVariant(275808073), 2784);
+
+        let _m = mockito::mock("POST", "/deleteMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.delete_message(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
