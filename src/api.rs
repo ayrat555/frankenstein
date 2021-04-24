@@ -8,7 +8,6 @@ use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteMessageParams;
 use crate::api_params::DeleteWebhookParams;
-use crate::api_params::SendStickerParams;
 use crate::api_params::DocumentEnum;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageCaptionParams;
@@ -21,6 +20,7 @@ use crate::api_params::GetChatMemberParams;
 use crate::api_params::GetChatMembersCountParams;
 use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
+use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::KickChatMemberParams;
@@ -40,6 +40,7 @@ use crate::api_params::SendLocationParams;
 use crate::api_params::SendMessageParams;
 use crate::api_params::SendPhotoParams;
 use crate::api_params::SendPollParams;
+use crate::api_params::SendStickerParams;
 use crate::api_params::SendVenueParams;
 use crate::api_params::SendVideoNoteParams;
 use crate::api_params::SendVideoParams;
@@ -52,6 +53,7 @@ use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetWebhookParams;
+use crate::api_params::StickerEnum;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
@@ -67,6 +69,7 @@ use crate::objects::File;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
+use crate::objects::StickerSet;
 use crate::objects::ThumbEnum;
 use crate::objects::Update;
 use crate::objects::User;
@@ -210,6 +213,24 @@ impl API {
 
         self.request_with_possible_form_data(method_name, params, files)
     }
+
+    // pub fn send_media_group(
+    //     &self,
+    //     params: &SendMediaGroupParams,
+    // ) -> Result<ApiResponse<Vec<Message>>, ureq::Error> {
+    //     let method_name = "sendAudio";
+    //     let mut files: Vec<(&str, PathBuf)> = vec![];
+
+    //     if let AudioEnum::InputFileVariant(input_file) = params.audio() {
+    //         files.push(("audio", input_file.path()));
+    //     }
+
+    //     if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+    //         files.push(("thumb", input_file.path()));
+    //     }
+
+    //     self.request_with_possible_form_data(method_name, params, files)
+    // }
 
     pub fn send_document(
         &self,
@@ -569,7 +590,21 @@ impl API {
         &self,
         params: &SendStickerParams,
     ) -> Result<ApiResponse<Message>, ureq::Error> {
-        self.request("sendSticker", Some(params))
+        let method_name = "sendSticker";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let StickerEnum::InputFileVariant(input_file) = params.sticker() {
+            files.push(("sticker", input_file.path()));
+        }
+
+        self.request_with_possible_form_data(method_name, params, files)
+    }
+
+    pub fn get_sticker_set(
+        &self,
+        params: &GetStickerSetParams,
+    ) -> Result<ApiResponse<StickerSet>, ureq::Error> {
+        self.request("getStickerSet", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
@@ -1879,6 +1914,44 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.delete_message(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_sticker_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"width\":512,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
+        let params = SendStickerParams::new(
+            ChatIdEnum::IsizeVariant(275808073),
+            StickerEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+                "./frankenstein_logo.png",
+            ))),
+        );
+
+        let _m = mockito::mock("POST", "/sendSticker")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_sticker(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_sticker_set_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"name\":\"unocards\",\"title\":\"UNO Bot\",\"is_animated\":false,\"contains_masks\":false,\"stickers\":[{\"file_id\":\"CAACAgQAAxUAAWCDxAQVJ6X7FGiBD5NyjN5DDvgfAALZAQACX1eZAAEqnpNt3SpG_x8E\",\"file_unique_id\":\"AgAD2QEAAl9XmQAB\",\"width\":342,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCBAADFQABYIPEBBUnpfsUaIEPk3KM3kMO-B8AAtkBAAJfV5kAASqek23dKkb_P75BGQAEAQAHbQADBBEAAh8E\",\"file_unique_id\":\"AQADP75BGQAEBBEAAg\",\"width\":85,\"height\":128,\"file_size\":2452},\"emoji\":\"dd\",\"set_name\":\"unocards\",\"file_size\":8898}]}}";
+        let params = GetStickerSetParams::new("unocards".to_string());
+        let _m = mockito::mock("POST", "/getStickerSet")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.get_sticker_set(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
