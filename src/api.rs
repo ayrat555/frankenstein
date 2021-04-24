@@ -1,14 +1,11 @@
-use crate::api_params::AnimationEnum;
 use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
-use crate::api_params::AudioEnum;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteMessageParams;
 use crate::api_params::DeleteWebhookParams;
-use crate::api_params::DocumentEnum;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageCaptionParams;
 use crate::api_params::EditMessageLiveLocationParams;
@@ -25,7 +22,7 @@ use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::KickChatMemberParams;
 use crate::api_params::LeaveChatParams;
-use crate::api_params::PhotoEnum;
+use crate::api_params::MediaEnum;
 use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::RestrictChatMemberParams;
@@ -37,6 +34,7 @@ use crate::api_params::SendContactParams;
 use crate::api_params::SendDiceParams;
 use crate::api_params::SendDocumentParams;
 use crate::api_params::SendLocationParams;
+use crate::api_params::SendMediaGroupParams;
 use crate::api_params::SendMessageParams;
 use crate::api_params::SendPhotoParams;
 use crate::api_params::SendPollParams;
@@ -53,24 +51,20 @@ use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetWebhookParams;
-use crate::api_params::StickerEnum;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::api_params::UnpinChatMessageParams;
-use crate::api_params::VideoEnum;
-use crate::api_params::VideoNoteEnum;
-use crate::api_params::VoiceEnum;
 use crate::objects::BotCommand;
 use crate::objects::Chat;
 use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
 use crate::objects::File;
+use crate::objects::FileEnum;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
 use crate::objects::StickerSet;
-use crate::objects::ThumbEnum;
 use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
@@ -189,7 +183,7 @@ impl API {
         let method_name = "sendPhoto";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let PhotoEnum::InputFileVariant(input_file) = params.photo() {
+        if let FileEnum::InputFileVariant(input_file) = params.photo() {
             files.push(("photo", input_file.path()));
         }
 
@@ -203,34 +197,123 @@ impl API {
         let method_name = "sendAudio";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let AudioEnum::InputFileVariant(input_file) = params.audio() {
+        if let FileEnum::InputFileVariant(input_file) = params.audio() {
             files.push(("audio", input_file.path()));
         }
 
-        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    // pub fn send_media_group(
-    //     &self,
-    //     params: &SendMediaGroupParams,
-    // ) -> Result<ApiResponse<Vec<Message>>, ureq::Error> {
-    //     let method_name = "sendAudio";
-    //     let mut files: Vec<(&str, PathBuf)> = vec![];
+    pub fn send_media_group(
+        &self,
+        params: &SendMediaGroupParams,
+    ) -> Result<ApiResponse<Vec<Message>>, ureq::Error> {
+        let method_name = "sendMediaGroup";
+        let mut files: Vec<(String, PathBuf)> = vec![];
+        let mut new_medias: Vec<MediaEnum> = vec![];
+        let mut file_idx = 0;
 
-    //     if let AudioEnum::InputFileVariant(input_file) = params.audio() {
-    //         files.push(("audio", input_file.path()));
-    //     }
+        for media in params.media() {
+            match media {
+                MediaEnum::InputMediaAudioVariant(audio) => {
+                    let mut new_audio = audio.clone();
 
-    //     if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
-    //         files.push(("thumb", input_file.path()));
-    //     }
+                    if let FileEnum::InputFileVariant(input_file) = audio.media() {
+                        let name = format!("file{}", file_idx);
+                        let attach_name = format!("attach://{}", name);
+                        file_idx = file_idx + 1;
 
-    //     self.request_with_possible_form_data(method_name, params, files)
-    // }
+                        new_audio.set_media(FileEnum::StringVariant(attach_name));
+
+                        files.push((name, input_file.path()));
+                    };
+
+                    if let Some(FileEnum::InputFileVariant(input_file)) = audio.thumb() {
+                        let name = format!("file{}", file_idx);
+                        let attach_name = format!("attach://{}", name);
+                        file_idx = file_idx + 1;
+
+                        new_audio.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+
+                        files.push((name, input_file.path()));
+                    };
+
+                    new_medias.push(MediaEnum::InputMediaAudioVariant(new_audio));
+                }
+
+                MediaEnum::InputMediaDocumentVariant(document) => {
+                    let mut new_document = document.clone();
+
+                    if let FileEnum::InputFileVariant(input_file) = document.media() {
+                        let name = format!("file{}", file_idx);
+                        let attach_name = format!("attach://{}", name);
+                        file_idx = file_idx + 1;
+
+                        new_document.set_media(FileEnum::StringVariant(attach_name));
+
+                        files.push((name, input_file.path()));
+                    };
+
+                    new_medias.push(MediaEnum::InputMediaDocumentVariant(new_document));
+                }
+                MediaEnum::InputMediaPhotoVariant(photo) => {
+                    let mut new_photo = photo.clone();
+
+                    if let FileEnum::InputFileVariant(input_file) = photo.media() {
+                        let name = format!("file{}", file_idx);
+                        let attach_name = format!("attach://{}", name);
+                        file_idx = file_idx + 1;
+
+                        new_photo.set_media(FileEnum::StringVariant(attach_name));
+
+                        files.push((name, input_file.path()));
+                    };
+
+                    new_medias.push(MediaEnum::InputMediaPhotoVariant(new_photo));
+                }
+
+                MediaEnum::InputMediaVideoVariant(video) => {
+                    let mut new_video = video.clone();
+
+                    if let FileEnum::InputFileVariant(input_file) = video.media() {
+                        let name = format!("file{}", file_idx);
+                        let attach_name = format!("attach://{}", name);
+                        file_idx = file_idx + 1;
+
+                        new_video.set_media(FileEnum::StringVariant(attach_name));
+
+                        files.push((name, input_file.path()));
+                    };
+
+                    if let Some(FileEnum::InputFileVariant(input_file)) = video.thumb() {
+                        let name = format!("file{}", file_idx);
+                        let attach_name = format!("attach://{}", name);
+                        file_idx = file_idx + 1;
+
+                        new_video.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+
+                        files.push((name, input_file.path()));
+                    };
+
+                    new_medias.push(MediaEnum::InputMediaVideoVariant(new_video));
+                }
+            };
+        }
+
+        let mut new_params = params.clone();
+        new_params.set_media(new_medias);
+
+        let files_with_str_names: Vec<(&str, PathBuf)> = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+
+        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+    }
 
     pub fn send_document(
         &self,
@@ -239,11 +322,11 @@ impl API {
         let method_name = "sendDocument";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let DocumentEnum::InputFileVariant(input_file) = params.document() {
+        if let FileEnum::InputFileVariant(input_file) = params.document() {
             files.push(("document", input_file.path()));
         }
 
-        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -257,11 +340,11 @@ impl API {
         let method_name = "sendVideo";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let VideoEnum::InputFileVariant(input_file) = params.video() {
+        if let FileEnum::InputFileVariant(input_file) = params.video() {
             files.push(("video", input_file.path()));
         }
 
-        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -275,11 +358,11 @@ impl API {
         let method_name = "sendAnimation";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let AnimationEnum::InputFileVariant(input_file) = params.animation() {
+        if let FileEnum::InputFileVariant(input_file) = params.animation() {
             files.push(("animation", input_file.path()));
         }
 
-        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -293,7 +376,7 @@ impl API {
         let method_name = "sendVoice";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let VoiceEnum::InputFileVariant(input_file) = params.voice() {
+        if let FileEnum::InputFileVariant(input_file) = params.voice() {
             files.push(("voice", input_file.path()));
         }
 
@@ -307,11 +390,11 @@ impl API {
         let method_name = "sendVideoNote";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let VideoNoteEnum::InputFileVariant(input_file) = params.video_note() {
+        if let FileEnum::InputFileVariant(input_file) = params.video_note() {
             files.push(("video_note", input_file.path()));
         }
 
-        if let Some(ThumbEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -593,7 +676,7 @@ impl API {
         let method_name = "sendSticker";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let StickerEnum::InputFileVariant(input_file) = params.sticker() {
+        if let FileEnum::InputFileVariant(input_file) = params.sticker() {
             files.push(("sticker", input_file.path()));
         }
 
@@ -1351,7 +1434,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2763,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618730180,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA20AA0U3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0U3AwAB\",\"width\":320,\"height\":320,\"file_size\":19968},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3gAA0Y3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0Y3AwAB\",\"width\":799,\"height\":800,\"file_size\":63581},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3kAA0M3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0M3AwAB\",\"width\":847,\"height\":848,\"file_size\":63763}]}}";
         let params = SendPhotoParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            PhotoEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1373,7 +1456,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendAudioParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            AudioEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1394,11 +1477,11 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let mut params = SendAudioParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            AudioEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
-        params.set_thumb(Some(ThumbEnum::InputFileVariant(InputFile::new(
+        params.set_thumb(Some(FileEnum::InputFileVariant(InputFile::new(
             std::path::PathBuf::from("./frankenstein_logo.png"),
         ))));
         let _m = mockito::mock("POST", "/sendAudio")
@@ -1418,7 +1501,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendAudioParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            AudioEnum::StringVariant(
+            FileEnum::StringVariant(
                 "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ"
                     .to_string(),
             ),
@@ -1440,7 +1523,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendDocumentParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            DocumentEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1461,7 +1544,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendVideoParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            VideoEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1482,7 +1565,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendAnimationParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            AnimationEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1503,7 +1586,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendVoiceParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            VoiceEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1524,7 +1607,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let params = SendVideoNoteParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            VideoNoteEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1924,7 +2007,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"width\":512,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
         let params = SendStickerParams::new(
             ChatIdEnum::IsizeVariant(275808073),
-            StickerEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
                 "./frankenstein_logo.png",
             ))),
         );
@@ -1952,6 +2035,35 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.get_sticker_set(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn send_media_group_sucees() {
+        let response_string = "{\"ok\":true,\"result\":[{\"message_id\":510,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]},{\"message_id\":511,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}]}";
+
+        let file = FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            "./frankenstein_logo.png",
+        )));
+
+        let photo = InputMediaPhoto::new(file);
+
+        let medias = vec![
+            MediaEnum::InputMediaPhotoVariant(photo.clone()),
+            MediaEnum::InputMediaPhotoVariant(photo.clone()),
+        ];
+
+        let params = SendMediaGroupParams::new(ChatIdEnum::IsizeVariant(-1001368460856), medias);
+
+        let _m = mockito::mock("POST", "/sendMediaGroup")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.send_media_group(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);

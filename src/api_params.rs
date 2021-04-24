@@ -71,74 +71,11 @@ pub enum ReplyMarkupEnum {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum PhotoEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum AudioEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum DocumentEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum VideoEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum AnimationEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum VoiceEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum VideoNoteEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
 pub enum MediaEnum {
     InputMediaAudioVariant(InputMediaAudio),
     InputMediaDocumentVariant(InputMediaDocument),
     InputMediaPhotoVariant(InputMediaPhoto),
     InputMediaVideoVariant(InputMediaVideo),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum StickerEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum PngStickerEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -256,7 +193,7 @@ pub struct CopyMessageParams {
 pub struct SendPhotoParams {
     chat_id: ChatIdEnum,
 
-    photo: PhotoEnum,
+    photo: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
@@ -284,7 +221,7 @@ pub struct SendPhotoParams {
 pub struct SendAudioParams {
     chat_id: ChatIdEnum,
 
-    audio: AudioEnum,
+    audio: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
@@ -305,7 +242,7 @@ pub struct SendAudioParams {
     title: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    thumb: Option<ThumbEnum>,
+    thumb: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
@@ -324,10 +261,10 @@ pub struct SendAudioParams {
 pub struct SendDocumentParams {
     chat_id: ChatIdEnum,
 
-    document: DocumentEnum,
+    document: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    thumb: Option<ThumbEnum>,
+    thumb: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
@@ -358,7 +295,7 @@ pub struct SendDocumentParams {
 pub struct SendVideoParams {
     chat_id: ChatIdEnum,
 
-    video: VideoEnum,
+    video: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
@@ -370,7 +307,7 @@ pub struct SendVideoParams {
     height: Option<isize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    thumb: Option<ThumbEnum>,
+    thumb: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
@@ -401,7 +338,7 @@ pub struct SendVideoParams {
 pub struct SendAnimationParams {
     chat_id: ChatIdEnum,
 
-    animation: AnimationEnum,
+    animation: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
@@ -413,7 +350,7 @@ pub struct SendAnimationParams {
     height: Option<isize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    thumb: Option<ThumbEnum>,
+    thumb: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
@@ -441,7 +378,7 @@ pub struct SendAnimationParams {
 pub struct SendVoiceParams {
     chat_id: ChatIdEnum,
 
-    voice: VoiceEnum,
+    voice: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     caption: Option<String>,
@@ -472,7 +409,7 @@ pub struct SendVoiceParams {
 pub struct SendVideoNoteParams {
     chat_id: ChatIdEnum,
 
-    video_note: VideoNoteEnum,
+    video_note: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     duration: Option<isize>,
@@ -481,7 +418,7 @@ pub struct SendVideoNoteParams {
     length: Option<isize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    thumb: Option<ThumbEnum>,
+    thumb: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
@@ -1087,7 +1024,7 @@ pub struct DeleteMessageParams {
 pub struct SendStickerParams {
     chat_id: ChatIdEnum,
 
-    sticker: StickerEnum,
+    sticker: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     disable_notification: Option<bool>,
@@ -1123,7 +1060,7 @@ pub struct CreateNewStickerSetParams {
     title: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    png_sticker: Option<PngStickerEnum>,
+    png_sticker: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     tgs_sticker: Option<InputFile>,
@@ -1144,7 +1081,7 @@ pub struct AddStickerToSetParams {
     name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    png_sticker: Option<PngStickerEnum>,
+    png_sticker: Option<FileEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     tgs_sticker: Option<InputFile>,
@@ -1174,7 +1111,7 @@ pub struct SetStickerSetThumbParams {
     user_id: isize,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    thumb: Option<ThumbEnum>,
+    thumb: Option<FileEnum>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1349,6 +1286,136 @@ pub struct GetGameHighScoresParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     inline_message_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputMediaPhoto {
+    #[serde(rename = "type")]
+    type_field: String,
+
+    media: FileEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption_entities: Option<Vec<MessageEntity>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputMediaVideo {
+    #[serde(rename = "type")]
+    type_field: String,
+
+    media: FileEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    thumb: Option<FileEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    width: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    height: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    supports_streaming: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputMediaAnimation {
+    #[serde(rename = "type")]
+    type_field: String,
+
+    media: FileEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    thumb: Option<FileEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    width: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    height: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    duration: Option<isize>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputMediaAudio {
+    #[serde(rename = "type")]
+    type_field: String,
+
+    media: FileEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    thumb: Option<FileEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    duration: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    performer: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    title: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputMediaDocument {
+    #[serde(rename = "type")]
+    type_field: String,
+
+    media: FileEnum,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    thumb: Option<FileEnum>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    disable_content_type_detection: Option<bool>,
 }
 
 impl GetUpdatesParams {
@@ -1700,7 +1767,7 @@ impl CopyMessageParams {
 }
 
 impl SendPhotoParams {
-    pub fn new(chat_id: ChatIdEnum, photo: PhotoEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, photo: FileEnum) -> Self {
         Self {
             chat_id,
             photo,
@@ -1718,7 +1785,7 @@ impl SendPhotoParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_photo(&mut self, photo: PhotoEnum) {
+    pub fn set_photo(&mut self, photo: FileEnum) {
         self.photo = photo;
     }
 
@@ -1754,7 +1821,7 @@ impl SendPhotoParams {
         self.chat_id.clone()
     }
 
-    pub fn photo(&self) -> PhotoEnum {
+    pub fn photo(&self) -> FileEnum {
         self.photo.clone()
     }
 
@@ -1788,7 +1855,7 @@ impl SendPhotoParams {
 }
 
 impl SendAudioParams {
-    pub fn new(chat_id: ChatIdEnum, audio: AudioEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, audio: FileEnum) -> Self {
         Self {
             chat_id,
             audio,
@@ -1810,7 +1877,7 @@ impl SendAudioParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_audio(&mut self, audio: AudioEnum) {
+    pub fn set_audio(&mut self, audio: FileEnum) {
         self.audio = audio;
     }
 
@@ -1838,7 +1905,7 @@ impl SendAudioParams {
         self.title = title;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
         self.thumb = thumb;
     }
 
@@ -1862,7 +1929,7 @@ impl SendAudioParams {
         self.chat_id.clone()
     }
 
-    pub fn audio(&self) -> AudioEnum {
+    pub fn audio(&self) -> FileEnum {
         self.audio.clone()
     }
 
@@ -1890,7 +1957,7 @@ impl SendAudioParams {
         self.title.clone()
     }
 
-    pub fn thumb(&self) -> Option<ThumbEnum> {
+    pub fn thumb(&self) -> Option<FileEnum> {
         self.thumb.clone()
     }
 
@@ -1912,7 +1979,7 @@ impl SendAudioParams {
 }
 
 impl SendDocumentParams {
-    pub fn new(chat_id: ChatIdEnum, document: DocumentEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, document: FileEnum) -> Self {
         Self {
             chat_id,
             document,
@@ -1932,11 +1999,11 @@ impl SendDocumentParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_document(&mut self, document: DocumentEnum) {
+    pub fn set_document(&mut self, document: FileEnum) {
         self.document = document;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
         self.thumb = thumb;
     }
 
@@ -1979,11 +2046,11 @@ impl SendDocumentParams {
         self.chat_id.clone()
     }
 
-    pub fn document(&self) -> DocumentEnum {
+    pub fn document(&self) -> FileEnum {
         self.document.clone()
     }
 
-    pub fn thumb(&self) -> Option<ThumbEnum> {
+    pub fn thumb(&self) -> Option<FileEnum> {
         self.thumb.clone()
     }
 
@@ -2021,7 +2088,7 @@ impl SendDocumentParams {
 }
 
 impl SendVideoParams {
-    pub fn new(chat_id: ChatIdEnum, video: VideoEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, video: FileEnum) -> Self {
         Self {
             chat_id,
             video,
@@ -2044,7 +2111,7 @@ impl SendVideoParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_video(&mut self, video: VideoEnum) {
+    pub fn set_video(&mut self, video: FileEnum) {
         self.video = video;
     }
 
@@ -2060,7 +2127,7 @@ impl SendVideoParams {
         self.height = height;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
         self.thumb = thumb;
     }
 
@@ -2100,7 +2167,7 @@ impl SendVideoParams {
         self.chat_id.clone()
     }
 
-    pub fn video(&self) -> VideoEnum {
+    pub fn video(&self) -> FileEnum {
         self.video.clone()
     }
 
@@ -2116,7 +2183,7 @@ impl SendVideoParams {
         self.height.clone()
     }
 
-    pub fn thumb(&self) -> Option<ThumbEnum> {
+    pub fn thumb(&self) -> Option<FileEnum> {
         self.thumb.clone()
     }
 
@@ -2154,7 +2221,7 @@ impl SendVideoParams {
 }
 
 impl SendAnimationParams {
-    pub fn new(chat_id: ChatIdEnum, animation: AnimationEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, animation: FileEnum) -> Self {
         Self {
             chat_id,
             animation,
@@ -2176,7 +2243,7 @@ impl SendAnimationParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_animation(&mut self, animation: AnimationEnum) {
+    pub fn set_animation(&mut self, animation: FileEnum) {
         self.animation = animation;
     }
 
@@ -2192,7 +2259,7 @@ impl SendAnimationParams {
         self.height = height;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
         self.thumb = thumb;
     }
 
@@ -2228,7 +2295,7 @@ impl SendAnimationParams {
         self.chat_id.clone()
     }
 
-    pub fn animation(&self) -> AnimationEnum {
+    pub fn animation(&self) -> FileEnum {
         self.animation.clone()
     }
 
@@ -2244,7 +2311,7 @@ impl SendAnimationParams {
         self.height.clone()
     }
 
-    pub fn thumb(&self) -> Option<ThumbEnum> {
+    pub fn thumb(&self) -> Option<FileEnum> {
         self.thumb.clone()
     }
 
@@ -2278,7 +2345,7 @@ impl SendAnimationParams {
 }
 
 impl SendVoiceParams {
-    pub fn new(chat_id: ChatIdEnum, voice: VoiceEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, voice: FileEnum) -> Self {
         Self {
             chat_id,
             voice,
@@ -2297,7 +2364,7 @@ impl SendVoiceParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_voice(&mut self, voice: VoiceEnum) {
+    pub fn set_voice(&mut self, voice: FileEnum) {
         self.voice = voice;
     }
 
@@ -2337,7 +2404,7 @@ impl SendVoiceParams {
         self.chat_id.clone()
     }
 
-    pub fn voice(&self) -> VoiceEnum {
+    pub fn voice(&self) -> FileEnum {
         self.voice.clone()
     }
 
@@ -2375,7 +2442,7 @@ impl SendVoiceParams {
 }
 
 impl SendVideoNoteParams {
-    pub fn new(chat_id: ChatIdEnum, video_note: VideoNoteEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, video_note: FileEnum) -> Self {
         Self {
             chat_id,
             video_note,
@@ -2393,7 +2460,7 @@ impl SendVideoNoteParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_video_note(&mut self, video_note: VideoNoteEnum) {
+    pub fn set_video_note(&mut self, video_note: FileEnum) {
         self.video_note = video_note;
     }
 
@@ -2405,7 +2472,7 @@ impl SendVideoNoteParams {
         self.length = length;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
         self.thumb = thumb;
     }
 
@@ -2429,7 +2496,7 @@ impl SendVideoNoteParams {
         self.chat_id.clone()
     }
 
-    pub fn video_note(&self) -> VideoNoteEnum {
+    pub fn video_note(&self) -> FileEnum {
         self.video_note.clone()
     }
 
@@ -2441,7 +2508,7 @@ impl SendVideoNoteParams {
         self.length.clone()
     }
 
-    pub fn thumb(&self) -> Option<ThumbEnum> {
+    pub fn thumb(&self) -> Option<FileEnum> {
         self.thumb.clone()
     }
 
@@ -4322,7 +4389,7 @@ impl DeleteMessageParams {
 }
 
 impl SendStickerParams {
-    pub fn new(chat_id: ChatIdEnum, sticker: StickerEnum) -> Self {
+    pub fn new(chat_id: ChatIdEnum, sticker: FileEnum) -> Self {
         Self {
             chat_id,
             sticker,
@@ -4337,7 +4404,7 @@ impl SendStickerParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_sticker(&mut self, sticker: StickerEnum) {
+    pub fn set_sticker(&mut self, sticker: FileEnum) {
         self.sticker = sticker;
     }
 
@@ -4361,7 +4428,7 @@ impl SendStickerParams {
         self.chat_id.clone()
     }
 
-    pub fn sticker(&self) -> StickerEnum {
+    pub fn sticker(&self) -> FileEnum {
         self.sticker.clone()
     }
 
@@ -4451,7 +4518,7 @@ impl CreateNewStickerSetParams {
         self.emojis = emojis;
     }
 
-    pub fn set_png_sticker(&mut self, png_sticker: Option<PngStickerEnum>) {
+    pub fn set_png_sticker(&mut self, png_sticker: Option<FileEnum>) {
         self.png_sticker = png_sticker;
     }
 
@@ -4483,7 +4550,7 @@ impl CreateNewStickerSetParams {
         self.emojis.clone()
     }
 
-    pub fn png_sticker(&self) -> Option<PngStickerEnum> {
+    pub fn png_sticker(&self) -> Option<FileEnum> {
         self.png_sticker.clone()
     }
 
@@ -4524,7 +4591,7 @@ impl AddStickerToSetParams {
         self.emojis = emojis;
     }
 
-    pub fn set_png_sticker(&mut self, png_sticker: Option<PngStickerEnum>) {
+    pub fn set_png_sticker(&mut self, png_sticker: Option<FileEnum>) {
         self.png_sticker = png_sticker;
     }
 
@@ -4548,7 +4615,7 @@ impl AddStickerToSetParams {
         self.emojis.clone()
     }
 
-    pub fn png_sticker(&self) -> Option<PngStickerEnum> {
+    pub fn png_sticker(&self) -> Option<FileEnum> {
         self.png_sticker.clone()
     }
 
@@ -4614,7 +4681,7 @@ impl SetStickerSetThumbParams {
         self.user_id = user_id;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<ThumbEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
         self.thumb = thumb;
     }
 
@@ -4626,7 +4693,7 @@ impl SetStickerSetThumbParams {
         self.user_id
     }
 
-    pub fn thumb(&self) -> Option<ThumbEnum> {
+    pub fn thumb(&self) -> Option<FileEnum> {
         self.thumb.clone()
     }
 }
@@ -5206,5 +5273,403 @@ impl GetGameHighScoresParams {
 
     pub fn inline_message_id(&self) -> Option<String> {
         self.inline_message_id.clone()
+    }
+}
+
+impl InputMediaPhoto {
+    pub fn new(media: FileEnum) -> Self {
+        Self {
+            media,
+            type_field: "photo".to_string(),
+            caption: None,
+            parse_mode: None,
+            caption_entities: None,
+        }
+    }
+
+    pub fn set_type_field(&mut self, type_field: String) {
+        self.type_field = type_field;
+    }
+
+    pub fn set_media(&mut self, media: FileEnum) {
+        self.media = media;
+    }
+
+    pub fn set_caption(&mut self, caption: Option<String>) {
+        self.caption = caption;
+    }
+
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
+        self.parse_mode = parse_mode;
+    }
+
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+        self.caption_entities = caption_entities;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> FileEnum {
+        self.media.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+}
+
+impl InputMediaVideo {
+    pub fn new(media: FileEnum) -> Self {
+        Self {
+            media,
+            type_field: "video".to_string(),
+            thumb: None,
+            caption: None,
+            parse_mode: None,
+            caption_entities: None,
+            width: None,
+            height: None,
+            duration: None,
+            supports_streaming: None,
+        }
+    }
+
+    pub fn set_type_field(&mut self, type_field: String) {
+        self.type_field = type_field;
+    }
+
+    pub fn set_media(&mut self, media: FileEnum) {
+        self.media = media;
+    }
+
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+        self.thumb = thumb;
+    }
+
+    pub fn set_caption(&mut self, caption: Option<String>) {
+        self.caption = caption;
+    }
+
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
+        self.parse_mode = parse_mode;
+    }
+
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+        self.caption_entities = caption_entities;
+    }
+
+    pub fn set_width(&mut self, width: Option<isize>) {
+        self.width = width;
+    }
+
+    pub fn set_height(&mut self, height: Option<isize>) {
+        self.height = height;
+    }
+
+    pub fn set_duration(&mut self, duration: Option<isize>) {
+        self.duration = duration;
+    }
+
+    pub fn set_supports_streaming(&mut self, supports_streaming: Option<bool>) {
+        self.supports_streaming = supports_streaming;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> FileEnum {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<FileEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn width(&self) -> Option<isize> {
+        self.width.clone()
+    }
+
+    pub fn height(&self) -> Option<isize> {
+        self.height.clone()
+    }
+
+    pub fn duration(&self) -> Option<isize> {
+        self.duration.clone()
+    }
+
+    pub fn supports_streaming(&self) -> Option<bool> {
+        self.supports_streaming.clone()
+    }
+}
+
+impl InputMediaAnimation {
+    pub fn new(media: FileEnum) -> Self {
+        Self {
+            media,
+            type_field: "animation".to_string(),
+            thumb: None,
+            caption: None,
+            parse_mode: None,
+            caption_entities: None,
+            width: None,
+            height: None,
+            duration: None,
+        }
+    }
+
+    pub fn set_type_field(&mut self, type_field: String) {
+        self.type_field = type_field;
+    }
+
+    pub fn set_media(&mut self, media: FileEnum) {
+        self.media = media;
+    }
+
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+        self.thumb = thumb;
+    }
+
+    pub fn set_caption(&mut self, caption: Option<String>) {
+        self.caption = caption;
+    }
+
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
+        self.parse_mode = parse_mode;
+    }
+
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+        self.caption_entities = caption_entities;
+    }
+
+    pub fn set_width(&mut self, width: Option<isize>) {
+        self.width = width;
+    }
+
+    pub fn set_height(&mut self, height: Option<isize>) {
+        self.height = height;
+    }
+
+    pub fn set_duration(&mut self, duration: Option<isize>) {
+        self.duration = duration;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> FileEnum {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<FileEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn width(&self) -> Option<isize> {
+        self.width.clone()
+    }
+
+    pub fn height(&self) -> Option<isize> {
+        self.height.clone()
+    }
+
+    pub fn duration(&self) -> Option<isize> {
+        self.duration.clone()
+    }
+}
+
+impl InputMediaAudio {
+    pub fn new(media: FileEnum) -> Self {
+        Self {
+            media,
+            type_field: "audio".to_string(),
+            thumb: None,
+            caption: None,
+            parse_mode: None,
+            caption_entities: None,
+            duration: None,
+            performer: None,
+            title: None,
+        }
+    }
+
+    pub fn set_type_field(&mut self, type_field: String) {
+        self.type_field = type_field;
+    }
+
+    pub fn set_media(&mut self, media: FileEnum) {
+        self.media = media;
+    }
+
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+        self.thumb = thumb;
+    }
+
+    pub fn set_caption(&mut self, caption: Option<String>) {
+        self.caption = caption;
+    }
+
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
+        self.parse_mode = parse_mode;
+    }
+
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+        self.caption_entities = caption_entities;
+    }
+
+    pub fn set_duration(&mut self, duration: Option<isize>) {
+        self.duration = duration;
+    }
+
+    pub fn set_performer(&mut self, performer: Option<String>) {
+        self.performer = performer;
+    }
+
+    pub fn set_title(&mut self, title: Option<String>) {
+        self.title = title;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> FileEnum {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<FileEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn duration(&self) -> Option<isize> {
+        self.duration.clone()
+    }
+
+    pub fn performer(&self) -> Option<String> {
+        self.performer.clone()
+    }
+
+    pub fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+}
+
+impl InputMediaDocument {
+    pub fn new(media: FileEnum) -> Self {
+        Self {
+            media,
+            type_field: "document".to_string(),
+            thumb: None,
+            caption: None,
+            parse_mode: None,
+            caption_entities: None,
+            disable_content_type_detection: None,
+        }
+    }
+
+    pub fn set_type_field(&mut self, type_field: String) {
+        self.type_field = type_field;
+    }
+
+    pub fn set_media(&mut self, media: FileEnum) {
+        self.media = media;
+    }
+
+    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+        self.thumb = thumb;
+    }
+
+    pub fn set_caption(&mut self, caption: Option<String>) {
+        self.caption = caption;
+    }
+
+    pub fn set_parse_mode(&mut self, parse_mode: Option<String>) {
+        self.parse_mode = parse_mode;
+    }
+
+    pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
+        self.caption_entities = caption_entities;
+    }
+
+    pub fn set_disable_content_type_detection(
+        &mut self,
+        disable_content_type_detection: Option<bool>,
+    ) {
+        self.disable_content_type_detection = disable_content_type_detection;
+    }
+
+    pub fn type_field(&self) -> String {
+        self.type_field.clone()
+    }
+
+    pub fn media(&self) -> FileEnum {
+        self.media.clone()
+    }
+
+    pub fn thumb(&self) -> Option<FileEnum> {
+        self.thumb.clone()
+    }
+
+    pub fn caption(&self) -> Option<String> {
+        self.caption.clone()
+    }
+
+    pub fn parse_mode(&self) -> Option<String> {
+        self.parse_mode.clone()
+    }
+
+    pub fn caption_entities(&self) -> Option<Vec<MessageEntity>> {
+        self.caption_entities.clone()
+    }
+
+    pub fn disable_content_type_detection(&self) -> Option<bool> {
+        self.disable_content_type_detection.clone()
     }
 }
