@@ -1,15 +1,19 @@
+use crate::api_params::AddStickerToSetParams;
 use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
+use crate::api_params::CreateNewStickerSetParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteMessageParams;
+use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageCaptionParams;
 use crate::api_params::EditMessageLiveLocationParams;
 use crate::api_params::EditMessageMediaParams;
+use crate::api_params::EditMessageReplyMarkupParams;
 use crate::api_params::EditMessageTextParams;
 use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::ForwardMessageParams;
@@ -52,11 +56,14 @@ use crate::api_params::SetChatPhotoParams;
 use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetMyCommandsParams;
+use crate::api_params::SetStickerPositionInSetParams;
+use crate::api_params::SetStickerSetThumbParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::api_params::UnpinChatMessageParams;
+use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
 use crate::objects::Chat;
 use crate::objects::ChatInviteLink;
@@ -787,6 +794,13 @@ impl API {
         self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
     }
 
+    pub fn edit_message_reply_markup(
+        &self,
+        params: &EditMessageReplyMarkupParams,
+    ) -> Result<EditMessageResponse, ureq::Error> {
+        self.request("editMessageReplyMarkup", Some(params))
+    }
+
     pub fn stop_poll(&self, params: &StopPollParams) -> Result<ApiResponse<Poll>, ureq::Error> {
         self.request("stopPoll", Some(params))
     }
@@ -817,6 +831,83 @@ impl API {
         params: &GetStickerSetParams,
     ) -> Result<ApiResponse<StickerSet>, ureq::Error> {
         self.request("getStickerSet", Some(params))
+    }
+
+    pub fn upload_sticker_file(
+        &self,
+        params: &UploadStickerFileParams,
+    ) -> Result<ApiResponse<File>, ureq::Error> {
+        let sticker = params.png_sticker();
+
+        self.request_with_form_data(
+            "uploadStickerFile",
+            params,
+            vec![("png_sticker", sticker.path())],
+        )
+    }
+
+    pub fn create_new_sticker_set(
+        &self,
+        params: &CreateNewStickerSetParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        let method_name = "createNewStickerSet";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.png_sticker() {
+            files.push(("png_sticker", input_file.path()));
+        }
+
+        if let Some(input_file) = params.tgs_sticker() {
+            files.push(("tgs_sticker", input_file.path()));
+        }
+
+        self.request_with_possible_form_data(method_name, params, files)
+    }
+
+    pub fn add_sticker_to_set(
+        &self,
+        params: &AddStickerToSetParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        let method_name = "addStickerToSet";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.png_sticker() {
+            files.push(("png_sticker", input_file.path()));
+        }
+
+        if let Some(input_file) = params.tgs_sticker() {
+            files.push(("tgs_sticker", input_file.path()));
+        }
+
+        self.request_with_possible_form_data(method_name, params, files)
+    }
+
+    pub fn set_sticker_position_in_set(
+        &self,
+        params: &SetStickerPositionInSetParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("setStickerPositionInSet", Some(params))
+    }
+
+    pub fn delete_sticker_from_set(
+        &self,
+        params: &DeleteStickerFromSetParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("deleteStickerFromSet", Some(params))
+    }
+
+    pub fn set_sticker_set_thumb(
+        &self,
+        params: &SetStickerSetThumbParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        let method_name = "setStickerSetThumb";
+        let mut files: Vec<(&str, PathBuf)> = vec![];
+
+        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+            files.push(("thumb", input_file.path()));
+        }
+
+        self.request_with_possible_form_data(method_name, params, files)
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
