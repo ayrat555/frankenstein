@@ -114,16 +114,67 @@ pub struct ErrorResponse {
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiResponse<T> {
-    Error(ErrorResponse),
-    ApiResult(MethodResponse<T>),
+pub enum EditMessageResponse {
+    Message(MethodResponse<Message>),
+    Bool(MethodResponse<bool>),
 }
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum EditMessageResponse {
-    Message(ApiResponse<Message>),
-    Bool(ApiResponse<bool>),
+pub enum Error {
+    HttpError(HttpError),
+    ApiError(ErrorResponse),
+}
+
+#[derive(PartialEq, Debug, Serialize, Deserialize)]
+pub struct HttpError {
+    pub code: u16,
+    pub message: String,
+}
+
+impl From<ureq::Error> for Error {
+    fn from(error: ureq::Error) -> Self {
+        match error {
+            ureq::Error::Status(status, response) => match response.into_string() {
+                Ok(string) => {
+                    let json_result: Result<ErrorResponse, serde_json::Error> =
+                        serde_json::from_str(&string);
+
+                    match json_result {
+                        Ok(result) => Error::ApiError(result),
+                        Err(_) => {
+                            let error = HttpError {
+                                code: status,
+                                message: string,
+                            };
+
+                            Error::HttpError(error)
+                        }
+                    }
+                }
+                Err(_) => {
+                    let message = "Failed to decode response".to_string();
+
+                    let error = HttpError {
+                        code: status,
+                        message: message,
+                    };
+
+                    Error::HttpError(error)
+                }
+            },
+            ureq::Error::Transport(transport_error) => {
+                let message = format!("{:?}", transport_error);
+
+                let error = HttpError {
+                    code: 500,
+                    message: message,
+                };
+
+                Error::HttpError(error)
+            }
+        }
+    }
 }
 
 impl Api {
@@ -140,62 +191,59 @@ impl Api {
     pub fn get_updates(
         &self,
         params: &GetUpdatesParams,
-    ) -> Result<ApiResponse<Vec<Update>>, ureq::Error> {
+    ) -> Result<MethodResponse<Vec<Update>>, Error> {
         self.request("getUpdates", Some(params))
     }
 
     pub fn send_message(
         &self,
         params: &SendMessageParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         self.request("sendMessage", Some(params))
     }
 
-    pub fn set_webhook(&self, params: &SetWebhookParams) -> Result<ApiResponse<bool>, ureq::Error> {
+    pub fn set_webhook(&self, params: &SetWebhookParams) -> Result<MethodResponse<bool>, Error> {
         self.request("setWebhook", Some(params))
     }
 
     pub fn delete_webhook(
         &self,
         params: &DeleteWebhookParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("deleteWebhook", Some(params))
     }
 
-    pub fn get_webhook_info(&self) -> Result<ApiResponse<WebhookInfo>, ureq::Error> {
+    pub fn get_webhook_info(&self) -> Result<MethodResponse<WebhookInfo>, Error> {
         self.request_without_body("getWebhookInfo")
     }
 
-    pub fn get_me(&self) -> Result<ApiResponse<User>, ureq::Error> {
+    pub fn get_me(&self) -> Result<MethodResponse<User>, Error> {
         self.request_without_body("getMe")
     }
 
-    pub fn log_out(&self) -> Result<ApiResponse<bool>, ureq::Error> {
+    pub fn log_out(&self) -> Result<MethodResponse<bool>, Error> {
         self.request_without_body("logOut")
     }
 
-    pub fn close(&self) -> Result<ApiResponse<bool>, ureq::Error> {
+    pub fn close(&self) -> Result<MethodResponse<bool>, Error> {
         self.request_without_body("close")
     }
 
     pub fn forward_message(
         &self,
         params: &ForwardMessageParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         self.request("forwardMessage", Some(params))
     }
 
     pub fn copy_message(
         &self,
         params: &CopyMessageParams,
-    ) -> Result<ApiResponse<MessageId>, ureq::Error> {
+    ) -> Result<MethodResponse<MessageId>, Error> {
         self.request("copyMessage", Some(params))
     }
 
-    pub fn send_photo(
-        &self,
-        params: &SendPhotoParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_photo(&self, params: &SendPhotoParams) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendPhoto";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -206,10 +254,7 @@ impl Api {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_audio(
-        &self,
-        params: &SendAudioParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_audio(&self, params: &SendAudioParams) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendAudio";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -227,7 +272,7 @@ impl Api {
     pub fn send_media_group(
         &self,
         params: &SendMediaGroupParams,
-    ) -> Result<ApiResponse<Vec<Message>>, ureq::Error> {
+    ) -> Result<MethodResponse<Vec<Message>>, Error> {
         let method_name = "sendMediaGroup";
         let mut files: Vec<(String, PathBuf)> = vec![];
         let mut new_medias: Vec<MediaEnum> = vec![];
@@ -334,7 +379,7 @@ impl Api {
     pub fn send_document(
         &self,
         params: &SendDocumentParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendDocument";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -349,10 +394,7 @@ impl Api {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_video(
-        &self,
-        params: &SendVideoParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_video(&self, params: &SendVideoParams) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendVideo";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -370,7 +412,7 @@ impl Api {
     pub fn send_animation(
         &self,
         params: &SendAnimationParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendAnimation";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -385,10 +427,7 @@ impl Api {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
-    pub fn send_voice(
-        &self,
-        params: &SendVoiceParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_voice(&self, params: &SendVoiceParams) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendVoice";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -402,7 +441,7 @@ impl Api {
     pub fn send_video_note(
         &self,
         params: &SendVideoNoteParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendVideoNote";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -420,138 +459,135 @@ impl Api {
     pub fn send_location(
         &self,
         params: &SendLocationParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         self.request("sendLocation", Some(params))
     }
 
     pub fn edit_message_live_location(
         &self,
         params: &EditMessageLiveLocationParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         self.request("editMessageLiveLocation", Some(params))
     }
 
     pub fn stop_message_live_location(
         &self,
         params: &StopMessageLiveLocationParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         self.request("stopMessageLiveLocation", Some(params))
     }
 
-    pub fn send_venue(
-        &self,
-        params: &SendVenueParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_venue(&self, params: &SendVenueParams) -> Result<MethodResponse<Message>, Error> {
         self.request("sendVenue", Some(params))
     }
 
     pub fn send_contact(
         &self,
         params: &SendContactParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         self.request("sendContact", Some(params))
     }
 
-    pub fn send_poll(&self, params: &SendPollParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_poll(&self, params: &SendPollParams) -> Result<MethodResponse<Message>, Error> {
         self.request("sendPoll", Some(params))
     }
 
-    pub fn send_dice(&self, params: &SendDiceParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_dice(&self, params: &SendDiceParams) -> Result<MethodResponse<Message>, Error> {
         self.request("sendDice", Some(params))
     }
 
     pub fn send_chat_action(
         &self,
         params: &SendChatActionParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("sendChatAction", Some(params))
     }
 
     pub fn get_user_profile_photos(
         &self,
         params: &GetUserProfilePhotosParams,
-    ) -> Result<ApiResponse<UserProfilePhotos>, ureq::Error> {
+    ) -> Result<MethodResponse<UserProfilePhotos>, Error> {
         self.request("getUserProfilePhotos", Some(params))
     }
 
-    pub fn get_file(&self, params: &GetFileParams) -> Result<ApiResponse<File>, ureq::Error> {
+    pub fn get_file(&self, params: &GetFileParams) -> Result<MethodResponse<File>, Error> {
         self.request("getFile", Some(params))
     }
 
     pub fn kick_chat_member(
         &self,
         params: &KickChatMemberParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("kickChatMember", Some(params))
     }
 
     pub fn unban_chat_member(
         &self,
         params: &UnbanChatMemberParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("unbanChatMember", Some(params))
     }
 
     pub fn restrict_chat_member(
         &self,
         params: &RestrictChatMemberParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("restrictChatMember", Some(params))
     }
 
     pub fn promote_chat_member(
         &self,
         params: &PromoteChatMemberParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("promoteChatMember", Some(params))
     }
 
     pub fn set_chat_administrator_custom_title(
         &self,
         params: &SetChatAdministratorCustomTitleParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setChatAdministratorCustomTitle", Some(params))
     }
 
     pub fn set_chat_permissions(
         &self,
         params: &SetChatPermissionsParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setChatPermissions", Some(params))
     }
 
     pub fn export_chat_invite_link(
         &self,
         params: &ExportChatInviteLinkParams,
-    ) -> Result<ApiResponse<String>, ureq::Error> {
+    ) -> Result<MethodResponse<String>, Error> {
         self.request("exportChatInviteLink", Some(params))
     }
 
     pub fn create_chat_invite_link(
         &self,
         params: &CreateChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
+    ) -> Result<MethodResponse<ChatInviteLink>, Error> {
         self.request("createChatInviteLink", Some(params))
     }
 
     pub fn edit_chat_invite_link(
         &self,
         params: &EditChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
+    ) -> Result<MethodResponse<ChatInviteLink>, Error> {
         self.request("editChatInviteLink", Some(params))
     }
 
     pub fn revoke_chat_invite_link(
         &self,
         params: &RevokeChatInviteLinkParams,
-    ) -> Result<ApiResponse<ChatInviteLink>, ureq::Error> {
+    ) -> Result<MethodResponse<ChatInviteLink>, Error> {
         self.request("revokeChatInviteLink", Some(params))
     }
 
     pub fn set_chat_photo(
         &self,
         params: &SetChatPhotoParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         let photo = params.photo();
 
         self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path())])
@@ -560,124 +596,124 @@ impl Api {
     pub fn delete_chat_photo(
         &self,
         params: &DeleteChatPhotoParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("deleteChatPhoto", Some(params))
     }
 
     pub fn set_chat_title(
         &self,
         params: &SetChatTitleParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setChatTitle", Some(params))
     }
 
     pub fn set_chat_description(
         &self,
         params: &SetChatDescriptionParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setChatDescription", Some(params))
     }
 
     pub fn pin_chat_message(
         &self,
         params: &PinChatMessageParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("pinChatMessage", Some(params))
     }
 
     pub fn unpin_chat_message(
         &self,
         params: &UnpinChatMessageParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("unpinChatMessage", Some(params))
     }
 
-    pub fn leave_chat(&self, params: &LeaveChatParams) -> Result<ApiResponse<bool>, ureq::Error> {
+    pub fn leave_chat(&self, params: &LeaveChatParams) -> Result<MethodResponse<bool>, Error> {
         self.request("leaveChat", Some(params))
     }
 
-    pub fn get_chat(&self, params: &GetChatParams) -> Result<ApiResponse<Chat>, ureq::Error> {
+    pub fn get_chat(&self, params: &GetChatParams) -> Result<MethodResponse<Chat>, Error> {
         self.request("getChat", Some(params))
     }
 
     pub fn get_chat_administrators(
         &self,
         params: &GetChatAdministratorsParams,
-    ) -> Result<ApiResponse<Vec<ChatMember>>, ureq::Error> {
+    ) -> Result<MethodResponse<Vec<ChatMember>>, Error> {
         self.request("getChatAdministrators", Some(params))
     }
 
     pub fn get_chat_members_count(
         &self,
         params: &GetChatMembersCountParams,
-    ) -> Result<ApiResponse<usize>, ureq::Error> {
+    ) -> Result<MethodResponse<usize>, Error> {
         self.request("getChatMembersCount", Some(params))
     }
 
     pub fn get_chat_member(
         &self,
         params: &GetChatMemberParams,
-    ) -> Result<ApiResponse<ChatMember>, ureq::Error> {
+    ) -> Result<MethodResponse<ChatMember>, Error> {
         self.request("getChatMember", Some(params))
     }
 
     pub fn set_chat_sticker_set(
         &self,
         params: &SetChatStickerSetParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setChatStickerSet", Some(params))
     }
 
     pub fn delete_chat_sticker_set(
         &self,
         params: &DeleteChatStickerSetParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("deleteChatStickerSet", Some(params))
     }
 
     pub fn answer_callback_query(
         &self,
         params: &AnswerCallbackQueryParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("answerCallbackQuery", Some(params))
     }
 
     pub fn set_my_commands(
         &self,
         params: &SetMyCommandsParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setMyCommands", Some(params))
     }
 
-    pub fn get_my_commands(&self) -> Result<ApiResponse<Vec<BotCommand>>, ureq::Error> {
+    pub fn get_my_commands(&self) -> Result<MethodResponse<Vec<BotCommand>>, Error> {
         self.request_without_body("getMyCommands")
     }
 
     pub fn answer_inline_query(
         &self,
         params: &AnswerInlineQueryParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("answerInlineQuery", Some(params))
     }
 
     pub fn edit_message_text(
         &self,
         params: &EditMessageTextParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         self.request("editMessageText", Some(params))
     }
 
     pub fn edit_message_caption(
         &self,
         params: &EditMessageCaptionParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         self.request("editMessageCaption", Some(params))
     }
 
     pub fn edit_message_media(
         &self,
         params: &EditMessageMediaParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         let method_name = "editMessageMedia";
         let mut files: Vec<(String, PathBuf)> = vec![];
 
@@ -804,25 +840,25 @@ impl Api {
     pub fn edit_message_reply_markup(
         &self,
         params: &EditMessageReplyMarkupParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         self.request("editMessageReplyMarkup", Some(params))
     }
 
-    pub fn stop_poll(&self, params: &StopPollParams) -> Result<ApiResponse<Poll>, ureq::Error> {
+    pub fn stop_poll(&self, params: &StopPollParams) -> Result<MethodResponse<Poll>, Error> {
         self.request("stopPoll", Some(params))
     }
 
     pub fn delete_message(
         &self,
         params: &DeleteMessageParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("deleteMessage", Some(params))
     }
 
     pub fn send_sticker(
         &self,
         params: &SendStickerParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         let method_name = "sendSticker";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -836,14 +872,14 @@ impl Api {
     pub fn get_sticker_set(
         &self,
         params: &GetStickerSetParams,
-    ) -> Result<ApiResponse<StickerSet>, ureq::Error> {
+    ) -> Result<MethodResponse<StickerSet>, Error> {
         self.request("getStickerSet", Some(params))
     }
 
     pub fn upload_sticker_file(
         &self,
         params: &UploadStickerFileParams,
-    ) -> Result<ApiResponse<File>, ureq::Error> {
+    ) -> Result<MethodResponse<File>, Error> {
         let sticker = params.png_sticker();
 
         self.request_with_form_data(
@@ -856,7 +892,7 @@ impl Api {
     pub fn create_new_sticker_set(
         &self,
         params: &CreateNewStickerSetParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         let method_name = "createNewStickerSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -874,7 +910,7 @@ impl Api {
     pub fn add_sticker_to_set(
         &self,
         params: &AddStickerToSetParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         let method_name = "addStickerToSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -892,21 +928,21 @@ impl Api {
     pub fn set_sticker_position_in_set(
         &self,
         params: &SetStickerPositionInSetParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("setStickerPositionInSet", Some(params))
     }
 
     pub fn delete_sticker_from_set(
         &self,
         params: &DeleteStickerFromSetParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("deleteStickerFromSet", Some(params))
     }
 
     pub fn set_sticker_set_thumb(
         &self,
         params: &SetStickerSetThumbParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         let method_name = "setStickerSetThumb";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
@@ -920,46 +956,46 @@ impl Api {
     pub fn send_invoice(
         &self,
         params: &SendInvoiceParams,
-    ) -> Result<ApiResponse<Message>, ureq::Error> {
+    ) -> Result<MethodResponse<Message>, Error> {
         self.request("sendInvoice", Some(params))
     }
 
     pub fn answer_shipping_query(
         &self,
         params: &AnswerShippingQueryParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("answerShippingQuery", Some(params))
     }
 
     pub fn answer_pre_checkout_query(
         &self,
         params: &AnswerPreCheckoutQueryParams,
-    ) -> Result<ApiResponse<bool>, ureq::Error> {
+    ) -> Result<MethodResponse<bool>, Error> {
         self.request("answerPreCheckoutQuery", Some(params))
     }
 
-    pub fn send_game(&self, params: &SendGameParams) -> Result<ApiResponse<Message>, ureq::Error> {
+    pub fn send_game(&self, params: &SendGameParams) -> Result<MethodResponse<Message>, Error> {
         self.request("sendGame", Some(params))
     }
 
     pub fn set_game_score(
         &self,
         params: &SetGameScoreParams,
-    ) -> Result<EditMessageResponse, ureq::Error> {
+    ) -> Result<EditMessageResponse, Error> {
         self.request("setGameScore", Some(params))
     }
 
     pub fn get_game_high_scores(
         &self,
         params: &GetGameHighScoresParams,
-    ) -> Result<ApiResponse<Vec<GameHighScore>>, ureq::Error> {
+    ) -> Result<MethodResponse<Vec<GameHighScore>>, Error> {
         self.request("getGameHighScores", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
         &self,
         method: &str,
-    ) -> Result<T, ureq::Error> {
+    ) -> Result<T, Error> {
         let params: Option<()> = None;
 
         self.request(method, params)
@@ -969,7 +1005,7 @@ impl Api {
         &self,
         method: &str,
         params: Option<T1>,
-    ) -> Result<T2, ureq::Error> {
+    ) -> Result<T2, Error> {
         let url = format!("{}/{}", self.api_url, method);
 
         let prepared_request = ureq::post(&url).set("Content-Type", "application/json");
@@ -996,7 +1032,7 @@ impl Api {
         method_name: &str,
         params: &T1,
         files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, ureq::Error> {
+    ) -> Result<T2, Error> {
         if files.is_empty() {
             self.request(method_name, Some(params))
         } else {
@@ -1009,7 +1045,7 @@ impl Api {
         method: &str,
         params: T1,
         files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, ureq::Error> {
+    ) -> Result<T2, Error> {
         let json_string = serde_json::to_string(&params).unwrap();
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
@@ -1088,21 +1124,11 @@ mod tests {
         let json = serde_json::to_string(&response).unwrap();
 
         assert_eq!(response_string, json);
+        assert_eq!(1, response.result.len());
 
-        match response {
-            ApiResponse::ApiResult(MethodResponse {
-                ok: true,
-                result: updates,
-                description: None,
-            }) => {
-                assert_eq!(1, updates.len());
+        let update = &response.result[0];
 
-                let update = &updates[0];
-
-                assert_eq!(379656753, update.update_id())
-            }
-            _ => assert!(false),
-        }
+        assert_eq!(379656753, update.update_id())
     }
 
     #[test]
@@ -1128,15 +1154,21 @@ mod tests {
             "{\"ok\":false,\"description\":\"Bad Request: chat not found\",\"error_code\":400}";
         let params = SendMessageParams::new(ChatIdEnum::IsizeVariant(1), "Hello!".to_string());
         let _m = mockito::mock("POST", "/sendMessage")
-            .with_status(200)
+            .with_status(400)
             .with_body(response_string)
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.send_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        if let Err(Error::ApiError(ErrorResponse {
+            ok: false,
+            description,
+            error_code: 400,
+        })) = api.send_message(&params)
+        {
+            assert_eq!("Bad Request: chat not found".to_string(), description);
+        } else {
+            assert!(false)
+        }
     }
 
     #[test]
@@ -1223,12 +1255,12 @@ mod tests {
         let response_string = "{\"ok\":false,\"description\":\"Unauthorized\",\"error_code\":401}";
 
         let _m = mockito::mock("POST", "/close")
-            .with_status(200)
+            .with_status(400)
             .with_body(response_string)
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.close().unwrap();
+        let response = api.close().err();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
