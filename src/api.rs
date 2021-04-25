@@ -1,6 +1,8 @@
 use crate::api_params::AddStickerToSetParams;
 use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
+use crate::api_params::AnswerPreCheckoutQueryParams;
+use crate::api_params::AnswerShippingQueryParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
@@ -22,6 +24,7 @@ use crate::api_params::GetChatMemberParams;
 use crate::api_params::GetChatMembersCountParams;
 use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
+use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
@@ -39,6 +42,8 @@ use crate::api_params::SendChatActionParams;
 use crate::api_params::SendContactParams;
 use crate::api_params::SendDiceParams;
 use crate::api_params::SendDocumentParams;
+use crate::api_params::SendGameParams;
+use crate::api_params::SendInvoiceParams;
 use crate::api_params::SendLocationParams;
 use crate::api_params::SendMediaGroupParams;
 use crate::api_params::SendMessageParams;
@@ -55,6 +60,7 @@ use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetChatPhotoParams;
 use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
+use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetStickerPositionInSetParams;
 use crate::api_params::SetStickerSetThumbParams;
@@ -70,6 +76,7 @@ use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
 use crate::objects::File;
 use crate::objects::FileEnum;
+use crate::objects::GameHighScore;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
@@ -908,6 +915,45 @@ impl API {
         }
 
         self.request_with_possible_form_data(method_name, params, files)
+    }
+
+    pub fn send_invoice(
+        &self,
+        params: &SendInvoiceParams,
+    ) -> Result<ApiResponse<Message>, ureq::Error> {
+        self.request("sendInvoice", Some(params))
+    }
+
+    pub fn answer_shipping_query(
+        &self,
+        params: &AnswerShippingQueryParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("answerShippingQuery", Some(params))
+    }
+
+    pub fn answer_pre_checkout_query(
+        &self,
+        params: &AnswerPreCheckoutQueryParams,
+    ) -> Result<ApiResponse<bool>, ureq::Error> {
+        self.request("answerPreCheckoutQuery", Some(params))
+    }
+
+    pub fn send_game(&self, params: &SendGameParams) -> Result<ApiResponse<Message>, ureq::Error> {
+        self.request("sendGame", Some(params))
+    }
+
+    pub fn set_game_score(
+        &self,
+        params: &SetGameScoreParams,
+    ) -> Result<EditMessageResponse, ureq::Error> {
+        self.request("setGameScore", Some(params))
+    }
+
+    pub fn get_game_high_scores(
+        &self,
+        params: &GetGameHighScoresParams,
+    ) -> Result<ApiResponse<Vec<GameHighScore>>, ureq::Error> {
+        self.request("getGameHighScores", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
