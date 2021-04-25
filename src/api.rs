@@ -9,6 +9,7 @@ use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditMessageCaptionParams;
 use crate::api_params::EditMessageLiveLocationParams;
+use crate::api_params::EditMessageMediaParams;
 use crate::api_params::EditMessageTextParams;
 use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::ForwardMessageParams;
@@ -20,6 +21,7 @@ use crate::api_params::GetFileParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
+use crate::api_params::InputMedia;
 use crate::api_params::KickChatMemberParams;
 use crate::api_params::LeaveChatParams;
 use crate::api_params::MediaEnum;
@@ -656,6 +658,133 @@ impl API {
         params: &EditMessageCaptionParams,
     ) -> Result<EditMessageResponse, ureq::Error> {
         self.request("editMessageCaption", Some(params))
+    }
+
+    pub fn edit_message_media(
+        &self,
+        params: &EditMessageMediaParams,
+    ) -> Result<EditMessageResponse, ureq::Error> {
+        let method_name = "editMessageMedia";
+        let mut files: Vec<(String, PathBuf)> = vec![];
+
+        let new_media = match params.media() {
+            InputMedia::InputMediaAnimationVariant(animation) => {
+                let mut new_animation = animation.clone();
+
+                if let FileEnum::InputFileVariant(input_file) = animation.media() {
+                    let name = "animation".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_animation.set_media(FileEnum::StringVariant(attach_name));
+
+                    files.push((name, input_file.path()));
+                };
+
+                if let Some(FileEnum::InputFileVariant(input_file)) = animation.thumb() {
+                    let name = "animation_thumb".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_animation.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+
+                    files.push((name, input_file.path()));
+                };
+
+                InputMedia::InputMediaAnimationVariant(new_animation)
+            }
+            InputMedia::InputMediaDocumentVariant(document) => {
+                let mut new_document = document.clone();
+
+                if let FileEnum::InputFileVariant(input_file) = document.media() {
+                    let name = "document".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_document.set_media(FileEnum::StringVariant(attach_name));
+
+                    files.push((name, input_file.path()));
+                };
+
+                if let Some(FileEnum::InputFileVariant(input_file)) = document.thumb() {
+                    let name = "document_thumb".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_document.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+
+                    files.push((name, input_file.path()));
+                };
+
+                InputMedia::InputMediaDocumentVariant(new_document)
+            }
+            InputMedia::InputMediaAudioVariant(audio) => {
+                let mut new_audio = audio.clone();
+
+                if let FileEnum::InputFileVariant(input_file) = audio.media() {
+                    let name = "audio".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_audio.set_media(FileEnum::StringVariant(attach_name));
+
+                    files.push((name, input_file.path()));
+                };
+
+                if let Some(FileEnum::InputFileVariant(input_file)) = audio.thumb() {
+                    let name = "audio_thumb".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_audio.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+
+                    files.push((name, input_file.path()));
+                };
+
+                InputMedia::InputMediaAudioVariant(new_audio)
+            }
+            InputMedia::InputMediaPhotoVariant(photo) => {
+                let mut new_photo = photo.clone();
+
+                if let FileEnum::InputFileVariant(input_file) = photo.media() {
+                    let name = "photo".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_photo.set_media(FileEnum::StringVariant(attach_name));
+
+                    files.push((name, input_file.path()));
+                };
+
+                InputMedia::InputMediaPhotoVariant(new_photo)
+            }
+            InputMedia::InputMediaVideoVariant(video) => {
+                let mut new_video = video.clone();
+
+                if let FileEnum::InputFileVariant(input_file) = video.media() {
+                    let name = "video".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_video.set_media(FileEnum::StringVariant(attach_name));
+
+                    files.push((name, input_file.path()));
+                };
+
+                if let Some(FileEnum::InputFileVariant(input_file)) = video.thumb() {
+                    let name = "video_thumb".to_string();
+                    let attach_name = format!("attach://{}", name);
+
+                    new_video.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+
+                    files.push((name, input_file.path()));
+                };
+
+                InputMedia::InputMediaVideoVariant(new_video)
+            }
+        };
+
+        let mut new_params = params.clone();
+        new_params.set_media(new_media);
+
+        let files_with_str_names: Vec<(&str, PathBuf)> = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+
+        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
     }
 
     pub fn stop_poll(&self, params: &StopPollParams) -> Result<ApiResponse<Poll>, ureq::Error> {
@@ -2041,7 +2170,7 @@ mod tests {
     }
 
     #[test]
-    fn send_media_group_sucees() {
+    fn send_media_group_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"message_id\":510,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]},{\"message_id\":511,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}]}";
 
         let file = FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
@@ -2064,6 +2193,32 @@ mod tests {
         let api = API::new_url(mockito::server_url());
 
         let response = api.send_media_group(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn edit_message_media_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":513,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"edit_date\":1619336788,\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}}";
+
+        let file = FileEnum::InputFileVariant(InputFile::new(std::path::PathBuf::from(
+            "./frankenstein_logo.png",
+        )));
+
+        let mut params = EditMessageMediaParams::new(InputMedia::InputMediaPhotoVariant(
+            InputMediaPhoto::new(file),
+        ));
+
+        params.set_chat_id(Some(ChatIdEnum::IsizeVariant(-1001368460856)));
+        params.set_message_id(Some(513));
+        let _m = mockito::mock("POST", "/editMessageMedia")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = API::new_url(mockito::server_url());
+
+        let response = api.edit_message_media(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
