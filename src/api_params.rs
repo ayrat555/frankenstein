@@ -1442,15 +1442,15 @@ impl GetUpdatesParams {
     }
 
     pub fn offset(&self) -> Option<isize> {
-        self.offset.clone()
+        self.offset
     }
 
     pub fn limit(&self) -> Option<isize> {
-        self.limit.clone()
+        self.limit
     }
 
     pub fn timeout(&self) -> Option<isize> {
-        self.timeout.clone()
+        self.timeout
     }
 
     pub fn allowed_updates(&self) -> Option<Vec<String>> {
@@ -1507,7 +1507,7 @@ impl SetWebhookParams {
     }
 
     pub fn max_connections(&self) -> Option<isize> {
-        self.max_connections.clone()
+        self.max_connections
     }
 
     pub fn allowed_updates(&self) -> Option<Vec<String>> {
@@ -1515,7 +1515,7 @@ impl SetWebhookParams {
     }
 
     pub fn drop_pending_updates(&self) -> Option<bool> {
-        self.drop_pending_updates.clone()
+        self.drop_pending_updates
     }
 }
 
@@ -1531,7 +1531,7 @@ impl DeleteWebhookParams {
     }
 
     pub fn drop_pending_updates(&self) -> Option<bool> {
-        self.drop_pending_updates.clone()
+        self.drop_pending_updates
     }
 }
 
@@ -1603,19 +1603,19 @@ impl SendMessageParams {
     }
 
     pub fn disable_web_page_preview(&self) -> Option<bool> {
-        self.disable_web_page_preview.clone()
+        self.disable_web_page_preview
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -1662,7 +1662,7 @@ impl ForwardMessageParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 }
 
@@ -1747,15 +1747,15 @@ impl CopyMessageParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -1835,15 +1835,15 @@ impl SendPhotoParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -1943,7 +1943,7 @@ impl SendAudioParams {
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn performer(&self) -> Option<String> {
@@ -1959,15 +1959,15 @@ impl SendAudioParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2064,19 +2064,19 @@ impl SendDocumentParams {
     }
 
     pub fn disable_content_type_detection(&self) -> Option<bool> {
-        self.disable_content_type_detection.clone()
+        self.disable_content_type_detection
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2169,15 +2169,15 @@ impl SendVideoParams {
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn width(&self) -> Option<isize> {
-        self.width.clone()
+        self.width
     }
 
     pub fn height(&self) -> Option<isize> {
-        self.height.clone()
+        self.height
     }
 
     pub fn thumb(&self) -> Option<FileEnum> {
@@ -2197,19 +2197,19 @@ impl SendVideoParams {
     }
 
     pub fn supports_streaming(&self) -> Option<bool> {
-        self.supports_streaming.clone()
+        self.supports_streaming
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2297,15 +2297,15 @@ impl SendAnimationParams {
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn width(&self) -> Option<isize> {
-        self.width.clone()
+        self.width
     }
 
     pub fn height(&self) -> Option<isize> {
-        self.height.clone()
+        self.height
     }
 
     pub fn thumb(&self) -> Option<FileEnum> {
@@ -2325,15 +2325,15 @@ impl SendAnimationParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2418,19 +2418,19 @@ impl SendVoiceParams {
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2498,11 +2498,11 @@ impl SendVideoNoteParams {
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn length(&self) -> Option<isize> {
-        self.length.clone()
+        self.length
     }
 
     pub fn thumb(&self) -> Option<FileEnum> {
@@ -2510,15 +2510,15 @@ impl SendVideoNoteParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2566,15 +2566,15 @@ impl SendMediaGroupParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 }
 
@@ -2652,31 +2652,31 @@ impl SendLocationParams {
     }
 
     pub fn horizontal_accuracy(&self) -> Option<f64> {
-        self.horizontal_accuracy.clone()
+        self.horizontal_accuracy
     }
 
     pub fn live_period(&self) -> Option<isize> {
-        self.live_period.clone()
+        self.live_period
     }
 
     pub fn heading(&self) -> Option<isize> {
-        self.heading.clone()
+        self.heading
     }
 
     pub fn proximity_alert_radius(&self) -> Option<isize> {
-        self.proximity_alert_radius.clone()
+        self.proximity_alert_radius
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -2748,7 +2748,7 @@ impl EditMessageLiveLocationParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -2756,15 +2756,15 @@ impl EditMessageLiveLocationParams {
     }
 
     pub fn horizontal_accuracy(&self) -> Option<f64> {
-        self.horizontal_accuracy.clone()
+        self.horizontal_accuracy
     }
 
     pub fn heading(&self) -> Option<isize> {
-        self.heading.clone()
+        self.heading
     }
 
     pub fn proximity_alert_radius(&self) -> Option<isize> {
-        self.proximity_alert_radius.clone()
+        self.proximity_alert_radius
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -2803,7 +2803,7 @@ impl StopMessageLiveLocationParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -2929,15 +2929,15 @@ impl SendVenueParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -3017,15 +3017,15 @@ impl SendContactParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -3137,7 +3137,7 @@ impl SendPollParams {
     }
 
     pub fn is_anonymous(&self) -> Option<bool> {
-        self.is_anonymous.clone()
+        self.is_anonymous
     }
 
     pub fn type_field(&self) -> Option<String> {
@@ -3145,11 +3145,11 @@ impl SendPollParams {
     }
 
     pub fn allows_multiple_answers(&self) -> Option<bool> {
-        self.allows_multiple_answers.clone()
+        self.allows_multiple_answers
     }
 
     pub fn correct_option_id(&self) -> Option<isize> {
-        self.correct_option_id.clone()
+        self.correct_option_id
     }
 
     pub fn explanation(&self) -> Option<String> {
@@ -3165,27 +3165,27 @@ impl SendPollParams {
     }
 
     pub fn open_period(&self) -> Option<isize> {
-        self.open_period.clone()
+        self.open_period
     }
 
     pub fn close_date(&self) -> Option<isize> {
-        self.close_date.clone()
+        self.close_date
     }
 
     pub fn is_closed(&self) -> Option<bool> {
-        self.is_closed.clone()
+        self.is_closed
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -3238,15 +3238,15 @@ impl SendDiceParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -3302,11 +3302,11 @@ impl GetUserProfilePhotosParams {
     }
 
     pub fn offset(&self) -> Option<isize> {
-        self.offset.clone()
+        self.offset
     }
 
     pub fn limit(&self) -> Option<isize> {
-        self.limit.clone()
+        self.limit
     }
 }
 
@@ -3359,11 +3359,11 @@ impl KickChatMemberParams {
     }
 
     pub fn until_date(&self) -> Option<isize> {
-        self.until_date.clone()
+        self.until_date
     }
 
     pub fn revoke_messages(&self) -> Option<bool> {
-        self.revoke_messages.clone()
+        self.revoke_messages
     }
 }
 
@@ -3397,7 +3397,7 @@ impl UnbanChatMemberParams {
     }
 
     pub fn only_if_banned(&self) -> Option<bool> {
-        self.only_if_banned.clone()
+        self.only_if_banned
     }
 }
 
@@ -3440,7 +3440,7 @@ impl RestrictChatMemberParams {
     }
 
     pub fn until_date(&self) -> Option<isize> {
-        self.until_date.clone()
+        self.until_date
     }
 }
 
@@ -3524,47 +3524,47 @@ impl PromoteChatMemberParams {
     }
 
     pub fn is_anonymous(&self) -> Option<bool> {
-        self.is_anonymous.clone()
+        self.is_anonymous
     }
 
     pub fn can_manage_chat(&self) -> Option<bool> {
-        self.can_manage_chat.clone()
+        self.can_manage_chat
     }
 
     pub fn can_post_messages(&self) -> Option<bool> {
-        self.can_post_messages.clone()
+        self.can_post_messages
     }
 
     pub fn can_edit_messages(&self) -> Option<bool> {
-        self.can_edit_messages.clone()
+        self.can_edit_messages
     }
 
     pub fn can_delete_messages(&self) -> Option<bool> {
-        self.can_delete_messages.clone()
+        self.can_delete_messages
     }
 
     pub fn can_manage_voice_chats(&self) -> Option<bool> {
-        self.can_manage_voice_chats.clone()
+        self.can_manage_voice_chats
     }
 
     pub fn can_restrict_members(&self) -> Option<bool> {
-        self.can_restrict_members.clone()
+        self.can_restrict_members
     }
 
     pub fn can_promote_members(&self) -> Option<bool> {
-        self.can_promote_members.clone()
+        self.can_promote_members
     }
 
     pub fn can_change_info(&self) -> Option<bool> {
-        self.can_change_info.clone()
+        self.can_change_info
     }
 
     pub fn can_invite_users(&self) -> Option<bool> {
-        self.can_invite_users.clone()
+        self.can_invite_users
     }
 
     pub fn can_pin_messages(&self) -> Option<bool> {
-        self.can_pin_messages.clone()
+        self.can_pin_messages
     }
 }
 
@@ -3667,11 +3667,11 @@ impl CreateChatInviteLinkParams {
     }
 
     pub fn expire_date(&self) -> Option<isize> {
-        self.expire_date.clone()
+        self.expire_date
     }
 
     pub fn member_limit(&self) -> Option<isize> {
-        self.member_limit.clone()
+        self.member_limit
     }
 }
 
@@ -3710,11 +3710,11 @@ impl EditChatInviteLinkParams {
     }
 
     pub fn expire_date(&self) -> Option<isize> {
-        self.expire_date.clone()
+        self.expire_date
     }
 
     pub fn member_limit(&self) -> Option<isize> {
-        self.member_limit.clone()
+        self.member_limit
     }
 }
 
@@ -3856,7 +3856,7 @@ impl PinChatMessageParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 }
 
@@ -3881,7 +3881,7 @@ impl UnpinChatMessageParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 }
 
@@ -4056,7 +4056,7 @@ impl AnswerCallbackQueryParams {
     }
 
     pub fn show_alert(&self) -> Option<bool> {
-        self.show_alert.clone()
+        self.show_alert
     }
 
     pub fn url(&self) -> Option<String> {
@@ -4064,7 +4064,7 @@ impl AnswerCallbackQueryParams {
     }
 
     pub fn cache_time(&self) -> Option<isize> {
-        self.cache_time.clone()
+        self.cache_time
     }
 }
 
@@ -4137,7 +4137,7 @@ impl EditMessageTextParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -4153,7 +4153,7 @@ impl EditMessageTextParams {
     }
 
     pub fn disable_web_page_preview(&self) -> Option<bool> {
-        self.disable_web_page_preview.clone()
+        self.disable_web_page_preview
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -4207,7 +4207,7 @@ impl EditMessageCaptionParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -4271,7 +4271,7 @@ impl EditMessageMediaParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -4314,7 +4314,7 @@ impl EditMessageReplyMarkupParams {
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -4430,15 +4430,15 @@ impl SendStickerParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
@@ -4556,7 +4556,7 @@ impl CreateNewStickerSetParams {
     }
 
     pub fn contains_masks(&self) -> Option<bool> {
-        self.contains_masks.clone()
+        self.contains_masks
     }
 
     pub fn mask_position(&self) -> Option<MaskPosition> {
@@ -4745,11 +4745,11 @@ impl AnswerInlineQueryParams {
     }
 
     pub fn cache_time(&self) -> Option<isize> {
-        self.cache_time.clone()
+        self.cache_time
     }
 
     pub fn is_personal(&self) -> Option<bool> {
-        self.is_personal.clone()
+        self.is_personal
     }
 
     pub fn next_offset(&self) -> Option<String> {
@@ -4944,55 +4944,55 @@ impl SendInvoiceParams {
     }
 
     pub fn photo_size(&self) -> Option<isize> {
-        self.photo_size.clone()
+        self.photo_size
     }
 
     pub fn photo_width(&self) -> Option<isize> {
-        self.photo_width.clone()
+        self.photo_width
     }
 
     pub fn photo_height(&self) -> Option<isize> {
-        self.photo_height.clone()
+        self.photo_height
     }
 
     pub fn need_name(&self) -> Option<bool> {
-        self.need_name.clone()
+        self.need_name
     }
 
     pub fn need_phone_number(&self) -> Option<bool> {
-        self.need_phone_number.clone()
+        self.need_phone_number
     }
 
     pub fn need_email(&self) -> Option<bool> {
-        self.need_email.clone()
+        self.need_email
     }
 
     pub fn need_shipping_address(&self) -> Option<bool> {
-        self.need_shipping_address.clone()
+        self.need_shipping_address
     }
 
     pub fn send_phone_number_to_provider(&self) -> Option<bool> {
-        self.send_phone_number_to_provider.clone()
+        self.send_phone_number_to_provider
     }
 
     pub fn send_email_to_provider(&self) -> Option<bool> {
-        self.send_email_to_provider.clone()
+        self.send_email_to_provider
     }
 
     pub fn is_flexible(&self) -> Option<bool> {
-        self.is_flexible.clone()
+        self.is_flexible
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -5144,15 +5144,15 @@ impl SendGameParams {
     }
 
     pub fn disable_notification(&self) -> Option<bool> {
-        self.disable_notification.clone()
+        self.disable_notification
     }
 
     pub fn reply_to_message_id(&self) -> Option<isize> {
-        self.reply_to_message_id.clone()
+        self.reply_to_message_id
     }
 
     pub fn allow_sending_without_reply(&self) -> Option<bool> {
-        self.allow_sending_without_reply.clone()
+        self.allow_sending_without_reply
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -5210,19 +5210,19 @@ impl SetGameScoreParams {
     }
 
     pub fn force(&self) -> Option<bool> {
-        self.force.clone()
+        self.force
     }
 
     pub fn disable_edit_message(&self) -> Option<bool> {
-        self.disable_edit_message.clone()
+        self.disable_edit_message
     }
 
     pub fn chat_id(&self) -> Option<isize> {
-        self.chat_id.clone()
+        self.chat_id
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -5261,11 +5261,11 @@ impl GetGameHighScoresParams {
     }
 
     pub fn chat_id(&self) -> Option<isize> {
-        self.chat_id.clone()
+        self.chat_id
     }
 
     pub fn message_id(&self) -> Option<isize> {
-        self.message_id.clone()
+        self.message_id
     }
 
     pub fn inline_message_id(&self) -> Option<String> {
@@ -5406,19 +5406,19 @@ impl InputMediaVideo {
     }
 
     pub fn width(&self) -> Option<isize> {
-        self.width.clone()
+        self.width
     }
 
     pub fn height(&self) -> Option<isize> {
-        self.height.clone()
+        self.height
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn supports_streaming(&self) -> Option<bool> {
-        self.supports_streaming.clone()
+        self.supports_streaming
     }
 }
 
@@ -5498,15 +5498,15 @@ impl InputMediaAnimation {
     }
 
     pub fn width(&self) -> Option<isize> {
-        self.width.clone()
+        self.width
     }
 
     pub fn height(&self) -> Option<isize> {
-        self.height.clone()
+        self.height
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 }
 
@@ -5586,7 +5586,7 @@ impl InputMediaAudio {
     }
 
     pub fn duration(&self) -> Option<isize> {
-        self.duration.clone()
+        self.duration
     }
 
     pub fn performer(&self) -> Option<String> {
@@ -5667,6 +5667,6 @@ impl InputMediaDocument {
     }
 
     pub fn disable_content_type_detection(&self) -> Option<bool> {
-        self.disable_content_type_detection.clone()
+        self.disable_content_type_detection
     }
 }

@@ -2237,7 +2237,7 @@ impl WebhookInfo {
     }
 
     pub fn last_error_date(&self) -> Option<isize> {
-        self.last_error_date.clone()
+        self.last_error_date
     }
 
     pub fn last_error_message(&self) -> Option<String> {
@@ -2245,7 +2245,7 @@ impl WebhookInfo {
     }
 
     pub fn max_connections(&self) -> Option<isize> {
-        self.max_connections.clone()
+        self.max_connections
     }
 
     pub fn allowed_updates(&self) -> Option<Vec<String>> {
@@ -2329,15 +2329,15 @@ impl User {
     }
 
     pub fn can_join_groups(&self) -> Option<bool> {
-        self.can_join_groups.clone()
+        self.can_join_groups
     }
 
     pub fn can_read_all_group_messages(&self) -> Option<bool> {
-        self.can_read_all_group_messages.clone()
+        self.can_read_all_group_messages
     }
 
     pub fn supports_inline_queries(&self) -> Option<bool> {
-        self.supports_inline_queries.clone()
+        self.supports_inline_queries
     }
 }
 
@@ -2486,11 +2486,11 @@ impl Chat {
     }
 
     pub fn slow_mode_delay(&self) -> Option<isize> {
-        self.slow_mode_delay.clone()
+        self.slow_mode_delay
     }
 
     pub fn message_auto_delete_time(&self) -> Option<isize> {
-        self.message_auto_delete_time.clone()
+        self.message_auto_delete_time
     }
 
     pub fn sticker_set_name(&self) -> Option<String> {
@@ -2498,11 +2498,11 @@ impl Chat {
     }
 
     pub fn can_set_sticker_set(&self) -> Option<bool> {
-        self.can_set_sticker_set.clone()
+        self.can_set_sticker_set
     }
 
     pub fn linked_chat_id(&self) -> Option<isize> {
-        self.linked_chat_id.clone()
+        self.linked_chat_id
     }
 
     pub fn location(&self) -> Option<ChatLocation> {
@@ -2829,7 +2829,7 @@ impl Message {
     }
 
     pub fn forward_from_message_id(&self) -> Option<isize> {
-        self.forward_from_message_id.clone()
+        self.forward_from_message_id
     }
 
     pub fn forward_signature(&self) -> Option<String> {
@@ -2841,7 +2841,7 @@ impl Message {
     }
 
     pub fn forward_date(&self) -> Option<isize> {
-        self.forward_date.clone()
+        self.forward_date
     }
 
     pub fn reply_to_message(&self) -> Option<Box<Message>> {
@@ -2853,7 +2853,7 @@ impl Message {
     }
 
     pub fn edit_date(&self) -> Option<isize> {
-        self.edit_date.clone()
+        self.edit_date
     }
 
     pub fn media_group_id(&self) -> Option<String> {
@@ -2953,19 +2953,19 @@ impl Message {
     }
 
     pub fn delete_chat_photo(&self) -> Option<bool> {
-        self.delete_chat_photo.clone()
+        self.delete_chat_photo
     }
 
     pub fn group_chat_created(&self) -> Option<bool> {
-        self.group_chat_created.clone()
+        self.group_chat_created
     }
 
     pub fn supergroup_chat_created(&self) -> Option<bool> {
-        self.supergroup_chat_created.clone()
+        self.supergroup_chat_created
     }
 
     pub fn channel_chat_created(&self) -> Option<bool> {
-        self.channel_chat_created.clone()
+        self.channel_chat_created
     }
 
     pub fn message_auto_delete_timer_changed(&self) -> Option<MessageAutoDeleteTimerChanged> {
@@ -2973,11 +2973,11 @@ impl Message {
     }
 
     pub fn migrate_to_chat_id(&self) -> Option<isize> {
-        self.migrate_to_chat_id.clone()
+        self.migrate_to_chat_id
     }
 
     pub fn migrate_from_chat_id(&self) -> Option<isize> {
-        self.migrate_from_chat_id.clone()
+        self.migrate_from_chat_id
     }
 
     pub fn pinned_message(&self) -> Option<Box<Message>> {
@@ -3144,7 +3144,7 @@ impl PhotoSize {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -3238,7 +3238,7 @@ impl Animation {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -3322,7 +3322,7 @@ impl Audio {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 
     pub fn thumb(&self) -> Option<PhotoSize> {
@@ -3387,7 +3387,7 @@ impl Document {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -3481,7 +3481,7 @@ impl Video {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -3542,7 +3542,7 @@ impl VideoNote {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -3594,7 +3594,7 @@ impl Voice {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -3642,7 +3642,7 @@ impl Contact {
     }
 
     pub fn user_id(&self) -> Option<isize> {
-        self.user_id.clone()
+        self.user_id
     }
 
     pub fn vcard(&self) -> Option<String> {
@@ -3841,7 +3841,7 @@ impl Poll {
     }
 
     pub fn correct_option_id(&self) -> Option<isize> {
-        self.correct_option_id.clone()
+        self.correct_option_id
     }
 
     pub fn explanation(&self) -> Option<String> {
@@ -3853,11 +3853,11 @@ impl Poll {
     }
 
     pub fn open_period(&self) -> Option<isize> {
-        self.open_period.clone()
+        self.open_period
     }
 
     pub fn close_date(&self) -> Option<isize> {
-        self.close_date.clone()
+        self.close_date
     }
 }
 
@@ -3906,19 +3906,19 @@ impl Location {
     }
 
     pub fn horizontal_accuracy(&self) -> Option<f64> {
-        self.horizontal_accuracy.clone()
+        self.horizontal_accuracy
     }
 
     pub fn live_period(&self) -> Option<isize> {
-        self.live_period.clone()
+        self.live_period
     }
 
     pub fn heading(&self) -> Option<isize> {
-        self.heading.clone()
+        self.heading
     }
 
     pub fn proximity_alert_radius(&self) -> Option<isize> {
-        self.proximity_alert_radius.clone()
+        self.proximity_alert_radius
     }
 }
 
@@ -4130,7 +4130,7 @@ impl File {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 
     pub fn file_path(&self) -> Option<String> {
@@ -4169,15 +4169,15 @@ impl ReplyKeyboardMarkup {
     }
 
     pub fn resize_keyboard(&self) -> Option<bool> {
-        self.resize_keyboard.clone()
+        self.resize_keyboard
     }
 
     pub fn one_time_keyboard(&self) -> Option<bool> {
-        self.one_time_keyboard.clone()
+        self.one_time_keyboard
     }
 
     pub fn selective(&self) -> Option<bool> {
-        self.selective.clone()
+        self.selective
     }
 }
 
@@ -4212,11 +4212,11 @@ impl KeyboardButton {
     }
 
     pub fn request_contact(&self) -> Option<bool> {
-        self.request_contact.clone()
+        self.request_contact
     }
 
     pub fn request_location(&self) -> Option<bool> {
-        self.request_location.clone()
+        self.request_location
     }
 
     pub fn request_poll(&self) -> Option<KeyboardButtonPollType> {
@@ -4259,7 +4259,7 @@ impl ReplyKeyboardRemove {
     }
 
     pub fn selective(&self) -> Option<bool> {
-        self.selective.clone()
+        self.selective
     }
 }
 
@@ -4355,7 +4355,7 @@ impl InlineKeyboardButton {
     }
 
     pub fn pay(&self) -> Option<bool> {
-        self.pay.clone()
+        self.pay
     }
 }
 
@@ -4398,7 +4398,7 @@ impl LoginUrl {
     }
 
     pub fn request_write_access(&self) -> Option<bool> {
-        self.request_write_access.clone()
+        self.request_write_access
     }
 }
 
@@ -4493,7 +4493,7 @@ impl ForceReply {
     }
 
     pub fn selective(&self) -> Option<bool> {
-        self.selective.clone()
+        self.selective
     }
 }
 
@@ -4598,11 +4598,11 @@ impl ChatInviteLink {
     }
 
     pub fn expire_date(&self) -> Option<isize> {
-        self.expire_date.clone()
+        self.expire_date
     }
 
     pub fn member_limit(&self) -> Option<isize> {
-        self.member_limit.clone()
+        self.member_limit
     }
 }
 
@@ -4735,79 +4735,79 @@ impl ChatMember {
     }
 
     pub fn is_anonymous(&self) -> Option<bool> {
-        self.is_anonymous.clone()
+        self.is_anonymous
     }
 
     pub fn can_be_edited(&self) -> Option<bool> {
-        self.can_be_edited.clone()
+        self.can_be_edited
     }
 
     pub fn can_manage_chat(&self) -> Option<bool> {
-        self.can_manage_chat.clone()
+        self.can_manage_chat
     }
 
     pub fn can_post_messages(&self) -> Option<bool> {
-        self.can_post_messages.clone()
+        self.can_post_messages
     }
 
     pub fn can_edit_messages(&self) -> Option<bool> {
-        self.can_edit_messages.clone()
+        self.can_edit_messages
     }
 
     pub fn can_delete_messages(&self) -> Option<bool> {
-        self.can_delete_messages.clone()
+        self.can_delete_messages
     }
 
     pub fn can_manage_voice_chats(&self) -> Option<bool> {
-        self.can_manage_voice_chats.clone()
+        self.can_manage_voice_chats
     }
 
     pub fn can_restrict_members(&self) -> Option<bool> {
-        self.can_restrict_members.clone()
+        self.can_restrict_members
     }
 
     pub fn can_promote_members(&self) -> Option<bool> {
-        self.can_promote_members.clone()
+        self.can_promote_members
     }
 
     pub fn can_change_info(&self) -> Option<bool> {
-        self.can_change_info.clone()
+        self.can_change_info
     }
 
     pub fn can_invite_users(&self) -> Option<bool> {
-        self.can_invite_users.clone()
+        self.can_invite_users
     }
 
     pub fn can_pin_messages(&self) -> Option<bool> {
-        self.can_pin_messages.clone()
+        self.can_pin_messages
     }
 
     pub fn is_member(&self) -> Option<bool> {
-        self.is_member.clone()
+        self.is_member
     }
 
     pub fn can_send_messages(&self) -> Option<bool> {
-        self.can_send_messages.clone()
+        self.can_send_messages
     }
 
     pub fn can_send_media_messages(&self) -> Option<bool> {
-        self.can_send_media_messages.clone()
+        self.can_send_media_messages
     }
 
     pub fn can_send_polls(&self) -> Option<bool> {
-        self.can_send_polls.clone()
+        self.can_send_polls
     }
 
     pub fn can_send_other_messages(&self) -> Option<bool> {
-        self.can_send_other_messages.clone()
+        self.can_send_other_messages
     }
 
     pub fn can_add_web_page_previews(&self) -> Option<bool> {
-        self.can_add_web_page_previews.clone()
+        self.can_add_web_page_previews
     }
 
     pub fn until_date(&self) -> Option<isize> {
-        self.until_date.clone()
+        self.until_date
     }
 }
 
@@ -4925,35 +4925,35 @@ impl ChatPermissions {
     }
 
     pub fn can_send_messages(&self) -> Option<bool> {
-        self.can_send_messages.clone()
+        self.can_send_messages
     }
 
     pub fn can_send_media_messages(&self) -> Option<bool> {
-        self.can_send_media_messages.clone()
+        self.can_send_media_messages
     }
 
     pub fn can_send_polls(&self) -> Option<bool> {
-        self.can_send_polls.clone()
+        self.can_send_polls
     }
 
     pub fn can_send_other_messages(&self) -> Option<bool> {
-        self.can_send_other_messages.clone()
+        self.can_send_other_messages
     }
 
     pub fn can_add_web_page_previews(&self) -> Option<bool> {
-        self.can_add_web_page_previews.clone()
+        self.can_add_web_page_previews
     }
 
     pub fn can_change_info(&self) -> Option<bool> {
-        self.can_change_info.clone()
+        self.can_change_info
     }
 
     pub fn can_invite_users(&self) -> Option<bool> {
-        self.can_invite_users.clone()
+        self.can_invite_users
     }
 
     pub fn can_pin_messages(&self) -> Option<bool> {
-        self.can_pin_messages.clone()
+        self.can_pin_messages
     }
 }
 
@@ -5021,11 +5021,11 @@ impl ResponseParameters {
     }
 
     pub fn migrate_to_chat_id(&self) -> Option<isize> {
-        self.migrate_to_chat_id.clone()
+        self.migrate_to_chat_id
     }
 
     pub fn retry_after(&self) -> Option<isize> {
-        self.retry_after.clone()
+        self.retry_after
     }
 }
 
@@ -5128,7 +5128,7 @@ impl Sticker {
     }
 
     pub fn file_size(&self) -> Option<isize> {
-        self.file_size.clone()
+        self.file_size
     }
 }
 
@@ -5380,7 +5380,7 @@ impl InlineQueryResultArticle {
     }
 
     pub fn hide_url(&self) -> Option<bool> {
-        self.hide_url.clone()
+        self.hide_url
     }
 
     pub fn description(&self) -> Option<String> {
@@ -5392,11 +5392,11 @@ impl InlineQueryResultArticle {
     }
 
     pub fn thumb_width(&self) -> Option<isize> {
-        self.thumb_width.clone()
+        self.thumb_width
     }
 
     pub fn thumb_height(&self) -> Option<isize> {
-        self.thumb_height.clone()
+        self.thumb_height
     }
 }
 
@@ -5491,11 +5491,11 @@ impl InlineQueryResultPhoto {
     }
 
     pub fn photo_width(&self) -> Option<isize> {
-        self.photo_width.clone()
+        self.photo_width
     }
 
     pub fn photo_height(&self) -> Option<isize> {
-        self.photo_height.clone()
+        self.photo_height
     }
 
     pub fn title(&self) -> Option<String> {
@@ -5623,15 +5623,15 @@ impl InlineQueryResultGif {
     }
 
     pub fn gif_width(&self) -> Option<isize> {
-        self.gif_width.clone()
+        self.gif_width
     }
 
     pub fn gif_height(&self) -> Option<isize> {
-        self.gif_height.clone()
+        self.gif_height
     }
 
     pub fn gif_duration(&self) -> Option<isize> {
-        self.gif_duration.clone()
+        self.gif_duration
     }
 
     pub fn thumb_mime_type(&self) -> Option<String> {
@@ -5759,15 +5759,15 @@ impl InlineQueryResultMpeg4Gif {
     }
 
     pub fn mpeg4_width(&self) -> Option<isize> {
-        self.mpeg4_width.clone()
+        self.mpeg4_width
     }
 
     pub fn mpeg4_height(&self) -> Option<isize> {
-        self.mpeg4_height.clone()
+        self.mpeg4_height
     }
 
     pub fn mpeg4_duration(&self) -> Option<isize> {
-        self.mpeg4_duration.clone()
+        self.mpeg4_duration
     }
 
     pub fn thumb_mime_type(&self) -> Option<String> {
@@ -5926,15 +5926,15 @@ impl InlineQueryResultVideo {
     }
 
     pub fn video_width(&self) -> Option<isize> {
-        self.video_width.clone()
+        self.video_width
     }
 
     pub fn video_height(&self) -> Option<isize> {
-        self.video_height.clone()
+        self.video_height
     }
 
     pub fn video_duration(&self) -> Option<isize> {
-        self.video_duration.clone()
+        self.video_duration
     }
 
     pub fn description(&self) -> Option<String> {
@@ -6047,7 +6047,7 @@ impl InlineQueryResultAudio {
     }
 
     pub fn audio_duration(&self) -> Option<isize> {
-        self.audio_duration.clone()
+        self.audio_duration
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -6147,7 +6147,7 @@ impl InlineQueryResultVoice {
     }
 
     pub fn voice_duration(&self) -> Option<isize> {
-        self.voice_duration.clone()
+        self.voice_duration
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -6287,11 +6287,11 @@ impl InlineQueryResultDocument {
     }
 
     pub fn thumb_width(&self) -> Option<isize> {
-        self.thumb_width.clone()
+        self.thumb_width
     }
 
     pub fn thumb_height(&self) -> Option<isize> {
-        self.thumb_height.clone()
+        self.thumb_height
     }
 }
 
@@ -6395,19 +6395,19 @@ impl InlineQueryResultLocation {
     }
 
     pub fn horizontal_accuracy(&self) -> Option<f64> {
-        self.horizontal_accuracy.clone()
+        self.horizontal_accuracy
     }
 
     pub fn live_period(&self) -> Option<isize> {
-        self.live_period.clone()
+        self.live_period
     }
 
     pub fn heading(&self) -> Option<isize> {
-        self.heading.clone()
+        self.heading
     }
 
     pub fn proximity_alert_radius(&self) -> Option<isize> {
-        self.proximity_alert_radius.clone()
+        self.proximity_alert_radius
     }
 
     pub fn reply_markup(&self) -> Option<InlineKeyboardMarkup> {
@@ -6423,11 +6423,11 @@ impl InlineQueryResultLocation {
     }
 
     pub fn thumb_width(&self) -> Option<isize> {
-        self.thumb_width.clone()
+        self.thumb_width
     }
 
     pub fn thumb_height(&self) -> Option<isize> {
-        self.thumb_height.clone()
+        self.thumb_height
     }
 }
 
@@ -6568,11 +6568,11 @@ impl InlineQueryResultVenue {
     }
 
     pub fn thumb_width(&self) -> Option<isize> {
-        self.thumb_width.clone()
+        self.thumb_width
     }
 
     pub fn thumb_height(&self) -> Option<isize> {
-        self.thumb_height.clone()
+        self.thumb_height
     }
 }
 
@@ -6677,11 +6677,11 @@ impl InlineQueryResultContact {
     }
 
     pub fn thumb_width(&self) -> Option<isize> {
-        self.thumb_width.clone()
+        self.thumb_width
     }
 
     pub fn thumb_height(&self) -> Option<isize> {
-        self.thumb_height.clone()
+        self.thumb_height
     }
 }
 
@@ -7477,7 +7477,7 @@ impl InputTextMessageContent {
     }
 
     pub fn disable_web_page_preview(&self) -> Option<bool> {
-        self.disable_web_page_preview.clone()
+        self.disable_web_page_preview
     }
 }
 
@@ -7526,19 +7526,19 @@ impl InputLocationMessageContent {
     }
 
     pub fn horizontal_accuracy(&self) -> Option<f64> {
-        self.horizontal_accuracy.clone()
+        self.horizontal_accuracy
     }
 
     pub fn live_period(&self) -> Option<isize> {
-        self.live_period.clone()
+        self.live_period
     }
 
     pub fn heading(&self) -> Option<isize> {
-        self.heading.clone()
+        self.heading
     }
 
     pub fn proximity_alert_radius(&self) -> Option<isize> {
-        self.proximity_alert_radius.clone()
+        self.proximity_alert_radius
     }
 }
 
