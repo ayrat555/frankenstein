@@ -19,6 +19,11 @@ pub struct InputFile {
 pub struct VoiceChatStarted {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct VoiceChatScheduled {
+    start_date: isize,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CallbackGame {}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -335,6 +340,9 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     voice_chat_ended: Option<VoiceChatEnded>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    voice_chat_scheduled: Option<VoiceChatScheduled>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     voice_chat_participants_invited: Option<VoiceChatParticipantsInvited>,
@@ -1008,6 +1016,9 @@ pub struct InlineQuery {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     location: Option<Location>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    chat_type: Option<String>,
 
     query: String,
 
@@ -2566,6 +2577,7 @@ impl Message {
             proximity_alert_triggered: None,
             voice_chat_started: None,
             voice_chat_ended: None,
+            voice_chat_scheduled: None,
             voice_chat_participants_invited: None,
             reply_markup: None,
         }
@@ -4056,6 +4068,20 @@ impl VoiceChatEnded {
     }
 }
 
+impl VoiceChatScheduled {
+    pub fn new(start_date: isize) -> Self {
+        Self { start_date }
+    }
+
+    pub fn set_start_date(&mut self, start_date: isize) {
+        self.start_date = start_date;
+    }
+
+    pub fn start_date(&self) -> isize {
+        self.start_date
+    }
+}
+
 impl VoiceChatParticipantsInvited {
     pub fn new() -> Self {
         Self { users: None }
@@ -5250,6 +5276,7 @@ impl InlineQuery {
             query,
             offset,
             location: None,
+            chat_type: None,
         }
     }
 
@@ -5273,6 +5300,10 @@ impl InlineQuery {
         self.location = location;
     }
 
+    pub fn set_chat_type(&mut self, chat_type: Option<String>) {
+        self.chat_type = chat_type;
+    }
+
     pub fn id(&self) -> String {
         self.id.clone()
     }
@@ -5291,6 +5322,10 @@ impl InlineQuery {
 
     pub fn location(&self) -> Option<Location> {
         self.location.clone()
+    }
+
+    pub fn chat_type(&self) -> Option<String> {
+        self.chat_type.clone()
     }
 }
 
