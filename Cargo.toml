@@ -2,7 +2,13 @@
 name = "frankenstein"
 version = "0.2.0"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>"]
+description = "Telegram bot API client for Rust"
 edition = "2018"
+license = "WTFPL"
+repository = "https://github.com/ayrat555/frankenstein"
+readme = "README.md"
+keywords = ["request",  "http", "client", "bot", "telegram"]
+categories = ["web-programming::http-client"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
