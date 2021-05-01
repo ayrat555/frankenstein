@@ -2866,8 +2866,16 @@ impl Message {
         self.voice_chat_participants_invited = voice_chat_participants_invited;
     }
 
+    pub fn set_voice_chat_scheduled(&mut self, voice_chat_scheduled: Option<VoiceChatScheduled>) {
+        self.voice_chat_scheduled = voice_chat_scheduled;
+    }
+
     pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
+    }
+
+    pub fn voice_chat_scheduled(&self) -> Option<VoiceChatScheduled> {
+        self.voice_chat_scheduled.clone()
     }
 
     pub fn message_id(&self) -> isize {
