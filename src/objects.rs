@@ -8,6 +8,7 @@ pub enum InputMessageContent {
     InputLocationMessageContentVariant(InputLocationMessageContent),
     InputVenueMessageContentVariant(InputLocationMessageContent),
     InputContactMessageContentVariant(InputLocationMessageContent),
+    InputInvoiceMessageContentVariant(InputInvoiceMessageContent),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1704,6 +1705,63 @@ pub struct InputLocationMessageContent {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     proximity_alert_radius: Option<isize>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputInvoiceMessageContent {
+    title: String,
+
+    description: String,
+
+    payload: String,
+
+    provider_token: String,
+
+    currency: String,
+
+    prices: Vec<LabeledPrice>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_tip_amount: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    suggested_tip_amounts: Option<Vec<isize>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    provider_data: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    photo_url: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    photo_size: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    photo_width: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    photo_height: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    need_name: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    need_phone_number: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    need_email: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    need_shipping_address: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    send_phone_number_to_provider: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    send_email_to_provider: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    is_flexible: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -7696,6 +7754,203 @@ impl InputContactMessageContent {
 
     pub fn vcard(&self) -> Option<String> {
         self.vcard.clone()
+    }
+}
+
+impl InputInvoiceMessageContent {
+    pub fn new(
+        title: String,
+        description: String,
+        payload: String,
+        provider_token: String,
+        currency: String,
+        prices: Vec<LabeledPrice>,
+    ) -> Self {
+        Self {
+            title,
+            description,
+            payload,
+            provider_token,
+            currency,
+            prices,
+            max_tip_amount: None,
+            suggested_tip_amounts: None,
+            provider_data: None,
+            photo_url: None,
+            photo_size: None,
+            photo_width: None,
+            photo_height: None,
+            need_name: None,
+            need_phone_number: None,
+            need_email: None,
+            need_shipping_address: None,
+            send_phone_number_to_provider: None,
+            send_email_to_provider: None,
+            is_flexible: None,
+        }
+    }
+
+    pub fn set_title(&mut self, title: String) {
+        self.title = title;
+    }
+
+    pub fn set_description(&mut self, description: String) {
+        self.description = description;
+    }
+
+    pub fn set_payload(&mut self, payload: String) {
+        self.payload = payload;
+    }
+
+    pub fn set_provider_token(&mut self, provider_token: String) {
+        self.provider_token = provider_token;
+    }
+
+    pub fn set_currency(&mut self, currency: String) {
+        self.currency = currency;
+    }
+
+    pub fn set_prices(&mut self, prices: Vec<LabeledPrice>) {
+        self.prices = prices;
+    }
+
+    pub fn set_max_tip_amount(&mut self, max_tip_amount: Option<isize>) {
+        self.max_tip_amount = max_tip_amount;
+    }
+
+    pub fn set_suggested_tip_amounts(&mut self, suggested_tip_amounts: Option<Vec<isize>>) {
+        self.suggested_tip_amounts = suggested_tip_amounts;
+    }
+
+    pub fn set_provider_data(&mut self, provider_data: Option<String>) {
+        self.provider_data = provider_data;
+    }
+
+    pub fn set_photo_url(&mut self, photo_url: Option<String>) {
+        self.photo_url = photo_url;
+    }
+
+    pub fn set_photo_size(&mut self, photo_size: Option<isize>) {
+        self.photo_size = photo_size;
+    }
+
+    pub fn set_photo_width(&mut self, photo_width: Option<isize>) {
+        self.photo_width = photo_width;
+    }
+
+    pub fn set_photo_height(&mut self, photo_height: Option<isize>) {
+        self.photo_height = photo_height;
+    }
+
+    pub fn set_need_name(&mut self, need_name: Option<bool>) {
+        self.need_name = need_name;
+    }
+
+    pub fn set_need_phone_number(&mut self, need_phone_number: Option<bool>) {
+        self.need_phone_number = need_phone_number;
+    }
+
+    pub fn set_need_email(&mut self, need_email: Option<bool>) {
+        self.need_email = need_email;
+    }
+
+    pub fn set_need_shipping_address(&mut self, need_shipping_address: Option<bool>) {
+        self.need_shipping_address = need_shipping_address;
+    }
+
+    pub fn set_send_phone_number_to_provider(
+        &mut self,
+        send_phone_number_to_provider: Option<bool>,
+    ) {
+        self.send_phone_number_to_provider = send_phone_number_to_provider;
+    }
+
+    pub fn set_send_email_to_provider(&mut self, send_email_to_provider: Option<bool>) {
+        self.send_email_to_provider = send_email_to_provider;
+    }
+
+    pub fn set_is_flexible(&mut self, is_flexible: Option<bool>) {
+        self.is_flexible = is_flexible;
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn description(&self) -> String {
+        self.description.clone()
+    }
+
+    pub fn payload(&self) -> String {
+        self.payload.clone()
+    }
+
+    pub fn provider_token(&self) -> String {
+        self.provider_token.clone()
+    }
+
+    pub fn currency(&self) -> String {
+        self.currency.clone()
+    }
+
+    pub fn prices(&self) -> Vec<LabeledPrice> {
+        self.prices.clone()
+    }
+
+    pub fn max_tip_amount(&self) -> Option<isize> {
+        self.max_tip_amount
+    }
+
+    pub fn suggested_tip_amounts(&self) -> Option<Vec<isize>> {
+        self.suggested_tip_amounts.clone()
+    }
+
+    pub fn provider_data(&self) -> Option<String> {
+        self.provider_data.clone()
+    }
+
+    pub fn photo_url(&self) -> Option<String> {
+        self.photo_url.clone()
+    }
+
+    pub fn photo_size(&self) -> Option<isize> {
+        self.photo_size
+    }
+
+    pub fn photo_width(&self) -> Option<isize> {
+        self.photo_width
+    }
+
+    pub fn photo_height(&self) -> Option<isize> {
+        self.photo_height
+    }
+
+    pub fn need_name(&self) -> Option<bool> {
+        self.need_name
+    }
+
+    pub fn need_phone_number(&self) -> Option<bool> {
+        self.need_phone_number
+    }
+
+    pub fn need_email(&self) -> Option<bool> {
+        self.need_email
+    }
+
+    pub fn need_shipping_address(&self) -> Option<bool> {
+        self.need_shipping_address
+    }
+
+    pub fn send_phone_number_to_provider(&self) -> Option<bool> {
+        self.send_phone_number_to_provider
+    }
+
+    pub fn send_email_to_provider(&self) -> Option<bool> {
+        self.send_email_to_provider
+    }
+
+    pub fn is_flexible(&self) -> Option<bool> {
+        self.is_flexible
     }
 }
 
