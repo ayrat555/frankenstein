@@ -1145,11 +1145,18 @@ pub struct SendInvoiceParams {
 
     provider_token: String,
 
-    start_parameter: String,
-
     currency: String,
 
     prices: Vec<LabeledPrice>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_tip_amount: Option<isize>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    suggested_tip_amounts: Option<Vec<isize>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    start_parameter: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     provider_data: Option<String>,
@@ -4772,7 +4779,6 @@ impl SendInvoiceParams {
         description: String,
         payload: String,
         provider_token: String,
-        start_parameter: String,
         currency: String,
         prices: Vec<LabeledPrice>,
     ) -> Self {
@@ -4782,9 +4788,10 @@ impl SendInvoiceParams {
             description,
             payload,
             provider_token,
-            start_parameter,
             currency,
             prices,
+            max_tip_amount: None,
+            suggested_tip_amounts: None,
             provider_data: None,
             photo_url: None,
             photo_size: None,
@@ -4796,6 +4803,7 @@ impl SendInvoiceParams {
             need_shipping_address: None,
             send_phone_number_to_provider: None,
             send_email_to_provider: None,
+            start_parameter: None,
             is_flexible: None,
             disable_notification: None,
             reply_to_message_id: None,
@@ -4824,7 +4832,7 @@ impl SendInvoiceParams {
         self.provider_token = provider_token;
     }
 
-    pub fn set_start_parameter(&mut self, start_parameter: String) {
+    pub fn set_start_parameter(&mut self, start_parameter: Option<String>) {
         self.start_parameter = start_parameter;
     }
 
@@ -4838,6 +4846,14 @@ impl SendInvoiceParams {
 
     pub fn set_provider_data(&mut self, provider_data: Option<String>) {
         self.provider_data = provider_data;
+    }
+
+    pub fn set_max_tip_amount(&mut self, max_tip_amount: Option<isize>) {
+        self.max_tip_amount = max_tip_amount;
+    }
+
+    pub fn set_suggested_tip_amounts(&mut self, suggested_tip_amounts: Option<Vec<isize>>) {
+        self.suggested_tip_amounts = suggested_tip_amounts;
     }
 
     pub fn set_photo_url(&mut self, photo_url: Option<String>) {
@@ -4923,7 +4939,7 @@ impl SendInvoiceParams {
         self.provider_token.clone()
     }
 
-    pub fn start_parameter(&self) -> String {
+    pub fn start_parameter(&self) -> Option<String> {
         self.start_parameter.clone()
     }
 
@@ -4933,6 +4949,14 @@ impl SendInvoiceParams {
 
     pub fn prices(&self) -> Vec<LabeledPrice> {
         self.prices.clone()
+    }
+
+    pub fn max_tip_amount(&self) -> Option<isize> {
+        self.max_tip_amount
+    }
+
+    pub fn suggested_tip_amounts(&self) -> Option<Vec<isize>> {
+        self.suggested_tip_amounts.clone()
     }
 
     pub fn provider_data(&self) -> Option<String> {
