@@ -1,7 +1,184 @@
 <p align="center"><img src="frankenstein_logo.png" alt="frankenstein" height="300px"></p>
 
-# frankenstein
+# Frankenstein
 
 Telegram bot API client for Rust.
 
-Almost all structs are automatically generated with [frankestein_creator](https://github.com/ayrat555/frankenstein_creator)
+It's a complete wrapper for Telegram bot API and it's up to date with version 5.2 of the API.
+
+Frankenstein data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method params. Almost all structs and enums are automatically generated from [Telegram Bot API docs](https://core.telegram.org/bots/api) with [frankestein_creator](https://github.com/ayrat555/frankenstein_creator)
+
+## Installation
+
+Add this to your Cargo.toml
+
+
+```toml
+[dependencies]
+frankenstein = "0.2.0"
+```
+
+## Usage
+
+### Data structures
+
+All objects described in the API docs have direct counterparts in the frankenstein. For example, in the docs there is [the user type](https://core.telegram.org/bots/api#user):
+```
+id	Integer	Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
+is_bot	Boolean	True, if this user is a bot
+first_name	String	User's or bot's first name
+last_name	String	Optional. User's or bot's last name
+username	String	Optional. User's or bot's username
+language_code	String	Optional. IETF language tag of the user's language
+can_join_groups	Boolean	Optional. True, if the bot can be invited to groups. Returned only in getMe.
+can_read_all_group_messages	Boolean	Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+supports_inline_queries	Boolean	Optional. True, if the bot supports inline queries. Returned only in getMe.
+```
+
+In frankenstein, it's described as:
+
+```rust
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct User {
+    id: isize,
+
+    is_bot: bool,
+
+    first_name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    last_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    username: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    language_code: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    can_join_groups: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    can_read_all_group_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    supports_inline_queries: Option<bool>,
+}
+```
+
+Optional fields are described as Option enum.
+
+Every struct has the `new` method which used for initialization. It accepts only required fields, optional fields are set to `None`:
+
+```rust
+pub fn new(id: isize, is_bot: bool, first_name: String) -> User {
+    Self {
+        id,
+        is_bot,
+        first_name,
+        last_name: None,
+        username: None,
+        language_code: None,
+        can_join_groups: None,
+        can_read_all_group_messages: None,
+        supports_inline_queries: None,
+    }
+}
+```
+
+Since all fields in structs are private, they have setter and getter methods for every field:
+
+```rust
+...
+
+ pub fn set_supports_inline_queries(&mut self, supports_inline_queries: Option<bool>) {
+     self.supports_inline_queries = supports_inline_queries;
+ }
+ pub fn id(&self) -> isize {
+     self.id
+ }
+
+...
+```
+
+
+For method parameters, the same approach is used. The only difference for parameters is the name of the struct in frankenstein ends with `Params` postfix.
+
+For example, parameters for `leaveChat` method:
+
+```rust
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct LeaveChatParams {
+    chat_id: ChatIdEnum,
+}
+```
+
+
+### Making requests
+
+To make a request to the telegram bot api:
+
+1. Initialize the `Api` struct:
+
+```rust
+use frankenstein::Api;
+
+...
+
+let token = "My_token".to_string()
+let api = Api::new(token);
+```
+
+2. Use this api object to make requests to the Bot API:
+
+```rust
+let mut update_params = GetUpdatesParams::new();
+update_params.set_allowed_updates(Some(vec!["message".to_string()]));
+
+let result = api.get_updates(&update_params);
+```
+
+Every function returns a `Result` enum with a successful response or failed response.
+
+See a complete example in the `examples` directory.
+
+### Uploading files
+
+Some methods in the API allow uploading files. In the frankenstein for this `FileEnum` struct is used:
+
+```rust
+pub enum FileEnum {
+    InputFileVariant(InputFile),
+    StringVariant(String),
+}
+
+pub struct InputFile {
+    path: std::path::PathBuf
+}
+```
+
+It has two variants:
+
+- `FileEnum::StringVariant` is used to pass id of the already uploaded file
+- `FileEnum::InputFileVariant` is used to upload a new file using multipart upload.
+
+
+### Documentation
+
+Frankenstain implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.2.0/frankenstein/api/struct.Api.html#impl)
+
+## Future features
+
+Currently the library is shipped with `ureq` http client. In the future, I'm planning to create a trait with api methods and only ship it with the library by default. Users will be free to use any http client they prefer. The only thing they'll have to do is to implement a couple of methods to make actual http requests.
+
+## Contributing
+
+1. [Fork it!](https://github.com/ayrat555/frankenstein/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+## Author
+
+Ayrat Badykov (@ayrat555)
