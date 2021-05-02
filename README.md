@@ -40,29 +40,29 @@ In frankenstein, it's described as:
 ```rust
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct User {
-    id: isize,
+    pub id: isize,
 
-    is_bot: bool,
+    pub is_bot: bool,
 
-    first_name: String,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    last_name: Option<String>,
+    pub first_name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    username: Option<String>,
+    pub last_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    language_code: Option<String>,
+    pub username: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    can_join_groups: Option<bool>,
+    pub language_code: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    can_read_all_group_messages: Option<bool>,
+    pub can_join_groups: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    supports_inline_queries: Option<bool>,
+    pub can_read_all_group_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub supports_inline_queries: Option<bool>,
 }
 ```
 
@@ -86,7 +86,7 @@ pub fn new(id: isize, is_bot: bool, first_name: String) -> User {
 }
 ```
 
-Since all fields in structs are private, they have setter and getter methods for every field:
+All fields have setter and getter methods :
 
 ```rust
 ...
@@ -169,7 +169,7 @@ Frankenstain implements all telegram bot api methods. To see which parameters yo
 
 ## Future features
 
-Currently the library is shipped with `ureq` http client. In the future, I'm planning to create a trait with api methods and only ship it with the library by default. Users will be free to use any http client they prefer. The only thing they'll have to do is to implement a couple of methods to make actual http requests.
+Currently the library ships with `ureq` http client. In the future, I'm planning to create a trait with api methods and only ship it with the library by default. Users will be free to use any http client they prefer. The only thing they'll have to do is to implement a couple of methods to make actual http requests.
 
 ## Contributing
 
