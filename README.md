@@ -15,7 +15,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.2.0"
+frankenstein = "0.2.1"
 ```
 
 ## Usage
