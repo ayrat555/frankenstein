@@ -2,6 +2,7 @@ use frankenstein::Api;
 use frankenstein::ChatIdEnum;
 use frankenstein::GetUpdatesParams;
 use frankenstein::SendMessageParams;
+use frankenstein::TelegramApi;
 
 static TOKEN: &str = "API_TOKEN";
 
@@ -26,7 +27,7 @@ fn main() {
                         );
                         send_message_params.set_reply_to_message_id(Some(message.message_id()));
 
-                        api.send_message(&send_message_params);
+                        let _ = api.send_message(&send_message_params);
 
                         update_params.set_offset(Some(update.update_id() + 1))
                     }
