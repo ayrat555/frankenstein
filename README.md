@@ -1,5 +1,7 @@
 <p align="center"><img src="frankenstein_logo.png" alt="frankenstein" height="300px"></p>
 
+[![Crates.io][s1]][ci] [![docs page][docs-badge]][docs]
+
 # Frankenstein
 
 Telegram bot API client for Rust.
@@ -182,3 +184,9 @@ Currently the library ships with `ureq` http client. In the future, I'm planning
 ## Author
 
 Ayrat Badykov (@ayrat555)
+
+
+[s1]: https://img.shields.io/crates/v/frankenstein.svg
+[docs-badge]: https://img.shields.io/badge/docs-website-blue.svg
+[ci]: https://crates.io/crates/frankenstein
+[docs]: https://docs.rs/frankenstein/
