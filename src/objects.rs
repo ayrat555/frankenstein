@@ -722,7 +722,7 @@ pub struct ReplyKeyboardRemove {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineKeyboardMarkup {
-    pub inline_keyboard: Vec<InlineKeyboardButton>,
+    pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -4357,15 +4357,15 @@ impl ReplyKeyboardRemove {
 }
 
 impl InlineKeyboardMarkup {
-    pub fn new(inline_keyboard: Vec<InlineKeyboardButton>) -> Self {
+    pub fn new(inline_keyboard: Vec<Vec<InlineKeyboardButton>>) -> Self {
         Self { inline_keyboard }
     }
 
-    pub fn set_inline_keyboard(&mut self, inline_keyboard: Vec<InlineKeyboardButton>) {
+    pub fn set_inline_keyboard(&mut self, inline_keyboard: Vec<Vec<InlineKeyboardButton>>) {
         self.inline_keyboard = inline_keyboard;
     }
 
-    pub fn inline_keyboard(&self) -> Vec<InlineKeyboardButton> {
+    pub fn inline_keyboard(&self) -> Vec<Vec<InlineKeyboardButton>> {
         self.inline_keyboard.clone()
     }
 }
