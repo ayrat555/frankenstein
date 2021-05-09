@@ -10,12 +10,26 @@ readme = "README.md"
 keywords = ["request",  "http", "client", "bot", "telegram"]
 categories = ["web-programming::http-client"]
 
+[features]
+default = ["impl"]
+impl = ["ureq", "multipart", "mime_guess"]
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-ureq = "2.0"
-multipart = "0.17"
-mime_guess = "2.0"
+
+[dependencies.ureq]
+version = "2.0"
+optional = true
+
+[dependencies.multipart]
+version = "0.17"
+optional = true
+
+[dependencies.mime_guess]
+version = "2.0"
+optional = true
 
 [dev-dependencies]
 mockito = "0.30"
+isahc = "1.3"

@@ -124,6 +124,7 @@ To make a request to the telegram bot api:
 
 ```rust
 use frankenstein::Api;
+use frankenstein::TelegramApi;
 
 ...
 
@@ -167,11 +168,26 @@ It has two variants:
 
 ### Documentation
 
-Frankenstain implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.2.0/frankenstein/api/struct.Api.html#impl)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.2.0/frankenstein/api/struct.Api.html#impl)
 
-## Future features
+## Replacing the default http client
 
-Currently the library ships with `ureq` http client. In the future, I'm planning to create a trait with api methods and only ship it with the library by default. Users will be free to use any http client they prefer. The only thing they'll have to do is to implement a couple of methods to make actual http requests.
+The library uses `ureq` http client by default, but it can be easily replaced with any http client of your choice:
+
+1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
+
+frankenstein = { version = "0.3", default-features = false }
+
+2. Implement `TelegramApi` trait which requires two functions:
+
+- `request_with_form_data` is used to upload files
+- `request` is used for requests without file uploads
+
+You can check [the default `TelegramApi` trait implementation](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/src/api_impl.rs) for `ureq`.
+
+Also, you can take a look at the [implementation for `isahc` http client](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/examples/api_trait_implementation.rs) in the examples directory.
+
+Without the default ureq implementation, `frankenstein` has only two dependencies - `serde` and `serde_json`.
 
 ## Contributing
 
