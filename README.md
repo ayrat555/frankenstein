@@ -168,7 +168,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.3.0/frankenstein/api/struct.Api.html#impl)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.3.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 ## Replacing the default http client
 
