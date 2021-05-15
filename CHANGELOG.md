@@ -1,3 +1,7 @@
+## 0.3.1 (2021-05-15)
+
+- Make serde_json optional dependency ([#6](https://github.com/ayrat555/frankenstein/pull/6))
+
 ## 0.3.0 (2021-05-09)
 
 - Create `TelegramApi` trait ([#5](https://github.com/ayrat555/frankenstein/pull/5))

@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.3.0"
+frankenstein = "0.3.1"
 ```
 
 ## Usage
@@ -168,7 +168,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.3.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.3.1/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 ## Replacing the default http client
 
@@ -189,7 +189,7 @@ You can check [the default `TelegramApi` trait implementation](https://github.co
 
 Also, you can take a look at the [implementation for `isahc` http client](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/examples/api_trait_implementation.rs) in the examples directory.
 
-Without the default ureq implementation, `frankenstein` has only two dependencies - `serde` and `serde_json`.
+Without the default ureq implementation, `frankenstein` has only one dependency - `serde`.
 
 ## Contributing
 
