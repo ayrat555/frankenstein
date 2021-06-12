@@ -42,7 +42,7 @@ In frankenstein, it's described as:
 ```rust
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct User {
-    pub id: isize,
+    pub id: i64,
 
     pub is_bot: bool,
 
@@ -73,7 +73,7 @@ Optional fields are described as Option enum.
 Every struct has the `new` method which used for initialization. It accepts only required fields, optional fields are set to `None`:
 
 ```rust
-pub fn new(id: isize, is_bot: bool, first_name: String) -> User {
+pub fn new(id: i64, is_bot: bool, first_name: String) -> User {
     Self {
         id,
         is_bot,
@@ -96,7 +96,7 @@ All fields have setter and getter methods :
  pub fn set_supports_inline_queries(&mut self, supports_inline_queries: Option<bool>) {
      self.supports_inline_queries = supports_inline_queries;
  }
- pub fn id(&self) -> isize {
+ pub fn id(&self) -> i64 {
      self.id
  }
 
