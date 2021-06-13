@@ -26,12 +26,14 @@ pub struct HttpError {
 }
 
 impl Api {
-    pub fn new(api_key: String) -> Api {
+    #[must_use]
+    pub fn new(api_key: &str) -> Api {
         let api_url = format!("{}{}", BASE_API_URL, api_key);
 
         Api { api_url }
     }
 
+    #[must_use]
     pub fn new_url(api_url: String) -> Api {
         Api { api_url }
     }
@@ -41,10 +43,7 @@ impl From<isahc::http::Error> for Error {
     fn from(error: isahc::http::Error) -> Self {
         let message = format!("{:?}", error);
 
-        let error = HttpError {
-            code: 500,
-            message: message,
-        };
+        let error = HttpError { code: 500, message };
 
         Error::HttpError(error)
     }
@@ -54,10 +53,7 @@ impl From<std::io::Error> for Error {
     fn from(error: std::io::Error) -> Self {
         let message = format!("{:?}", error);
 
-        let error = HttpError {
-            code: 500,
-            message: message,
-        };
+        let error = HttpError { code: 500, message };
 
         Error::HttpError(error)
     }
@@ -67,10 +63,7 @@ impl From<isahc::Error> for Error {
     fn from(error: isahc::Error) -> Self {
         let message = format!("{:?}", error);
 
-        let error = HttpError {
-            code: 500,
-            message: message,
-        };
+        let error = HttpError { code: 500, message };
 
         Error::HttpError(error)
     }
@@ -100,27 +93,19 @@ impl TelegramApi for Api {
 
         let parsed_result: Result<T2, serde_json::Error> = serde_json::from_str(&text);
 
-        match parsed_result {
-            Ok(result) => Ok(result),
-            Err(_) => {
-                let parsed_error: Result<ErrorResponse, serde_json::Error> =
-                    serde_json::from_str(&text);
+        parsed_result.map_err(|_| {
+            let parsed_error: Result<ErrorResponse, serde_json::Error> =
+                serde_json::from_str(&text);
 
-                match parsed_error {
-                    Ok(result) => Err(Error::ApiError(result)),
-                    Err(error) => {
-                        let message = format!("{:?}", error);
-
-                        let error = HttpError {
-                            code: 500,
-                            message: message,
-                        };
-
-                        Err(Error::HttpError(error))
-                    }
+            match parsed_error {
+                Ok(result) => Error::ApiError(result),
+                Err(error) => {
+                    let message = format!("{:?}", error);
+                    let error = HttpError { code: 500, message };
+                    Error::HttpError(error)
                 }
             }
-        }
+        })
     }
 
     // isahc doesn't support multipart uploads
@@ -141,9 +126,9 @@ impl TelegramApi for Api {
 }
 
 fn main() {
-    let api = Api::new(TOKEN.to_string());
+    let api = Api::new(TOKEN);
 
-    let params = SendMessageParams::new(ChatId::Integer(275808073), "Hello!".to_string());
+    let params = SendMessageParams::new(ChatId::Integer(275_808_073), "Hello!".to_string());
 
     let result = api.send_message(&params);
 
