@@ -84,7 +84,7 @@ pub struct WebhookInfo {
 
     pub has_custom_certificate: bool,
 
-    pub pending_update_count: isize,
+    pub pending_update_count: i64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ip_address: Option<String>,
@@ -96,7 +96,7 @@ pub struct WebhookInfo {
     pub last_error_message: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_connections: Option<isize>,
+    pub max_connections: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allowed_updates: Option<Vec<String>>,
@@ -167,10 +167,10 @@ pub struct Chat {
     pub permissions: Option<ChatPermissions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub slow_mode_delay: Option<isize>,
+    pub slow_mode_delay: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_auto_delete_time: Option<isize>,
+    pub message_auto_delete_time: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sticker_set_name: Option<String>,
@@ -363,9 +363,9 @@ pub struct MessageEntity {
     #[serde(rename = "type")]
     pub type_field: String,
 
-    pub offset: isize,
+    pub offset: i64,
 
-    pub length: isize,
+    pub length: i64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
@@ -493,7 +493,7 @@ pub struct VideoNote {
 
     pub file_unique_id: String,
 
-    pub length: isize,
+    pub length: i64,
 
     pub duration: u32,
 
@@ -539,14 +539,14 @@ pub struct Contact {
 pub struct Dice {
     pub emoji: String,
 
-    pub value: isize,
+    pub value: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PollOption {
     pub text: String,
 
-    pub voter_count: isize,
+    pub voter_count: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -555,7 +555,7 @@ pub struct PollAnswer {
 
     pub user: User,
 
-    pub option_ids: Vec<isize>,
+    pub option_ids: Vec<i64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -566,7 +566,7 @@ pub struct Poll {
 
     pub options: Vec<PollOption>,
 
-    pub total_voter_count: isize,
+    pub total_voter_count: i64,
 
     pub is_closed: bool,
 
@@ -577,7 +577,7 @@ pub struct Poll {
     pub allows_multiple_answers: bool,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub correct_option_id: Option<isize>,
+    pub correct_option_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub explanation: Option<String>,
@@ -586,7 +586,7 @@ pub struct Poll {
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub open_period: Option<isize>,
+    pub open_period: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub close_date: Option<u64>,
@@ -602,13 +602,13 @@ pub struct Location {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub live_period: Option<isize>,
+    pub live_period: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub heading: Option<isize>,
+    pub heading: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub proximity_alert_radius: Option<isize>,
+    pub proximity_alert_radius: Option<i64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -638,12 +638,12 @@ pub struct ProximityAlertTriggered {
 
     pub watcher: User,
 
-    pub distance: isize,
+    pub distance: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct MessageAutoDeleteTimerChanged {
-    pub message_auto_delete_time: isize,
+    pub message_auto_delete_time: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -659,7 +659,7 @@ pub struct VoiceChatParticipantsInvited {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct UserProfilePhotos {
-    pub total_count: isize,
+    pub total_count: i64,
 
     pub photos: Vec<Vec<PhotoSize>>,
 }
@@ -952,7 +952,7 @@ pub struct ResponseParameters {
     pub migrate_to_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub retry_after: Option<isize>,
+    pub retry_after: Option<i64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1347,13 +1347,13 @@ pub struct InlineQueryResultLocation {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub live_period: Option<isize>,
+    pub live_period: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub heading: Option<isize>,
+    pub heading: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub proximity_alert_radius: Option<isize>,
+    pub proximity_alert_radius: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<InlineKeyboardMarkup>,
@@ -1699,13 +1699,13 @@ pub struct InputLocationMessageContent {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub live_period: Option<isize>,
+    pub live_period: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub heading: Option<isize>,
+    pub heading: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub proximity_alert_radius: Option<isize>,
+    pub proximity_alert_radius: Option<i64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1723,10 +1723,10 @@ pub struct InputInvoiceMessageContent {
     pub prices: Vec<LabeledPrice>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_tip_amount: Option<isize>,
+    pub max_tip_amount: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub suggested_tip_amounts: Option<Vec<isize>>,
+    pub suggested_tip_amounts: Option<Vec<i64>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub provider_data: Option<String>,
@@ -1820,7 +1820,7 @@ pub struct ChosenInlineResult {
 pub struct LabeledPrice {
     pub label: String,
 
-    pub amount: isize,
+    pub amount: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1833,7 +1833,7 @@ pub struct Invoice {
 
     pub currency: String,
 
-    pub total_amount: isize,
+    pub total_amount: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1879,7 +1879,7 @@ pub struct ShippingOption {
 pub struct SuccessfulPayment {
     pub currency: String,
 
-    pub total_amount: isize,
+    pub total_amount: i64,
 
     pub invoice_payload: String,
 
@@ -1913,7 +1913,7 @@ pub struct PreCheckoutQuery {
 
     pub currency: String,
 
-    pub total_amount: isize,
+    pub total_amount: i64,
 
     pub invoice_payload: String,
 
@@ -2104,11 +2104,11 @@ pub struct Game {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GameHighScore {
-    pub position: isize,
+    pub position: i64,
 
     pub user: User,
 
-    pub score: isize,
+    pub score: i64,
 }
 
 impl Update {
@@ -2245,7 +2245,7 @@ impl Update {
 }
 
 impl WebhookInfo {
-    pub fn new(url: String, has_custom_certificate: bool, pending_update_count: isize) -> Self {
+    pub fn new(url: String, has_custom_certificate: bool, pending_update_count: i64) -> Self {
         Self {
             url,
             has_custom_certificate,
@@ -2266,7 +2266,7 @@ impl WebhookInfo {
         self.has_custom_certificate = has_custom_certificate;
     }
 
-    pub fn set_pending_update_count(&mut self, pending_update_count: isize) {
+    pub fn set_pending_update_count(&mut self, pending_update_count: i64) {
         self.pending_update_count = pending_update_count;
     }
 
@@ -2282,7 +2282,7 @@ impl WebhookInfo {
         self.last_error_message = last_error_message;
     }
 
-    pub fn set_max_connections(&mut self, max_connections: Option<isize>) {
+    pub fn set_max_connections(&mut self, max_connections: Option<i64>) {
         self.max_connections = max_connections;
     }
 
@@ -2298,7 +2298,7 @@ impl WebhookInfo {
         self.has_custom_certificate
     }
 
-    pub fn pending_update_count(&self) -> isize {
+    pub fn pending_update_count(&self) -> i64 {
         self.pending_update_count
     }
 
@@ -2314,7 +2314,7 @@ impl WebhookInfo {
         self.last_error_message.clone()
     }
 
-    pub fn max_connections(&self) -> Option<isize> {
+    pub fn max_connections(&self) -> Option<i64> {
         self.max_connections
     }
 
@@ -2483,11 +2483,11 @@ impl Chat {
         self.permissions = permissions;
     }
 
-    pub fn set_slow_mode_delay(&mut self, slow_mode_delay: Option<isize>) {
+    pub fn set_slow_mode_delay(&mut self, slow_mode_delay: Option<i64>) {
         self.slow_mode_delay = slow_mode_delay;
     }
 
-    pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: Option<isize>) {
+    pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: Option<i64>) {
         self.message_auto_delete_time = message_auto_delete_time;
     }
 
@@ -2555,11 +2555,11 @@ impl Chat {
         self.permissions.clone()
     }
 
-    pub fn slow_mode_delay(&self) -> Option<isize> {
+    pub fn slow_mode_delay(&self) -> Option<i64> {
         self.slow_mode_delay
     }
 
-    pub fn message_auto_delete_time(&self) -> Option<isize> {
+    pub fn message_auto_delete_time(&self) -> Option<i64> {
         self.message_auto_delete_time
     }
 
@@ -3115,7 +3115,7 @@ impl MessageId {
 }
 
 impl MessageEntity {
-    pub fn new(type_field: String, offset: isize, length: isize) -> Self {
+    pub fn new(type_field: String, offset: i64, length: i64) -> Self {
         Self {
             type_field,
             offset,
@@ -3130,11 +3130,11 @@ impl MessageEntity {
         self.type_field = type_field;
     }
 
-    pub fn set_offset(&mut self, offset: isize) {
+    pub fn set_offset(&mut self, offset: i64) {
         self.offset = offset;
     }
 
-    pub fn set_length(&mut self, length: isize) {
+    pub fn set_length(&mut self, length: i64) {
         self.length = length;
     }
 
@@ -3154,11 +3154,11 @@ impl MessageEntity {
         self.type_field.clone()
     }
 
-    pub fn offset(&self) -> isize {
+    pub fn offset(&self) -> i64 {
         self.offset
     }
 
-    pub fn length(&self) -> isize {
+    pub fn length(&self) -> i64 {
         self.length
     }
 
@@ -3565,7 +3565,7 @@ impl Video {
 }
 
 impl VideoNote {
-    pub fn new(file_id: String, file_unique_id: String, length: isize, duration: u32) -> Self {
+    pub fn new(file_id: String, file_unique_id: String, length: i64, duration: u32) -> Self {
         Self {
             file_id,
             file_unique_id,
@@ -3584,7 +3584,7 @@ impl VideoNote {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_length(&mut self, length: isize) {
+    pub fn set_length(&mut self, length: i64) {
         self.length = length;
     }
 
@@ -3608,7 +3608,7 @@ impl VideoNote {
         self.file_unique_id.clone()
     }
 
-    pub fn length(&self) -> isize {
+    pub fn length(&self) -> i64 {
         self.length
     }
 
@@ -3730,7 +3730,7 @@ impl Contact {
 }
 
 impl Dice {
-    pub fn new(emoji: String, value: isize) -> Self {
+    pub fn new(emoji: String, value: i64) -> Self {
         Self { emoji, value }
     }
 
@@ -3738,7 +3738,7 @@ impl Dice {
         self.emoji = emoji;
     }
 
-    pub fn set_value(&mut self, value: isize) {
+    pub fn set_value(&mut self, value: i64) {
         self.value = value;
     }
 
@@ -3746,13 +3746,13 @@ impl Dice {
         self.emoji.clone()
     }
 
-    pub fn value(&self) -> isize {
+    pub fn value(&self) -> i64 {
         self.value
     }
 }
 
 impl PollOption {
-    pub fn new(text: String, voter_count: isize) -> Self {
+    pub fn new(text: String, voter_count: i64) -> Self {
         Self { text, voter_count }
     }
 
@@ -3760,7 +3760,7 @@ impl PollOption {
         self.text = text;
     }
 
-    pub fn set_voter_count(&mut self, voter_count: isize) {
+    pub fn set_voter_count(&mut self, voter_count: i64) {
         self.voter_count = voter_count;
     }
 
@@ -3768,13 +3768,13 @@ impl PollOption {
         self.text.clone()
     }
 
-    pub fn voter_count(&self) -> isize {
+    pub fn voter_count(&self) -> i64 {
         self.voter_count
     }
 }
 
 impl PollAnswer {
-    pub fn new(poll_id: String, user: User, option_ids: Vec<isize>) -> Self {
+    pub fn new(poll_id: String, user: User, option_ids: Vec<i64>) -> Self {
         Self {
             poll_id,
             user,
@@ -3790,7 +3790,7 @@ impl PollAnswer {
         self.user = user;
     }
 
-    pub fn set_option_ids(&mut self, option_ids: Vec<isize>) {
+    pub fn set_option_ids(&mut self, option_ids: Vec<i64>) {
         self.option_ids = option_ids;
     }
 
@@ -3802,7 +3802,7 @@ impl PollAnswer {
         self.user.clone()
     }
 
-    pub fn option_ids(&self) -> Vec<isize> {
+    pub fn option_ids(&self) -> Vec<i64> {
         self.option_ids.clone()
     }
 }
@@ -3812,7 +3812,7 @@ impl Poll {
         id: String,
         question: String,
         options: Vec<PollOption>,
-        total_voter_count: isize,
+        total_voter_count: i64,
         is_closed: bool,
         is_anonymous: bool,
         type_field: String,
@@ -3847,7 +3847,7 @@ impl Poll {
         self.options = options;
     }
 
-    pub fn set_total_voter_count(&mut self, total_voter_count: isize) {
+    pub fn set_total_voter_count(&mut self, total_voter_count: i64) {
         self.total_voter_count = total_voter_count;
     }
 
@@ -3867,7 +3867,7 @@ impl Poll {
         self.allows_multiple_answers = allows_multiple_answers;
     }
 
-    pub fn set_correct_option_id(&mut self, correct_option_id: Option<isize>) {
+    pub fn set_correct_option_id(&mut self, correct_option_id: Option<i64>) {
         self.correct_option_id = correct_option_id;
     }
 
@@ -3879,7 +3879,7 @@ impl Poll {
         self.explanation_entities = explanation_entities;
     }
 
-    pub fn set_open_period(&mut self, open_period: Option<isize>) {
+    pub fn set_open_period(&mut self, open_period: Option<i64>) {
         self.open_period = open_period;
     }
 
@@ -3899,7 +3899,7 @@ impl Poll {
         self.options.clone()
     }
 
-    pub fn total_voter_count(&self) -> isize {
+    pub fn total_voter_count(&self) -> i64 {
         self.total_voter_count
     }
 
@@ -3919,7 +3919,7 @@ impl Poll {
         self.allows_multiple_answers
     }
 
-    pub fn correct_option_id(&self) -> Option<isize> {
+    pub fn correct_option_id(&self) -> Option<i64> {
         self.correct_option_id
     }
 
@@ -3931,7 +3931,7 @@ impl Poll {
         self.explanation_entities.clone()
     }
 
-    pub fn open_period(&self) -> Option<isize> {
+    pub fn open_period(&self) -> Option<i64> {
         self.open_period
     }
 
@@ -3964,15 +3964,15 @@ impl Location {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn set_live_period(&mut self, live_period: Option<isize>) {
+    pub fn set_live_period(&mut self, live_period: Option<i64>) {
         self.live_period = live_period;
     }
 
-    pub fn set_heading(&mut self, heading: Option<isize>) {
+    pub fn set_heading(&mut self, heading: Option<i64>) {
         self.heading = heading;
     }
 
-    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<i64>) {
         self.proximity_alert_radius = proximity_alert_radius;
     }
 
@@ -3988,15 +3988,15 @@ impl Location {
         self.horizontal_accuracy
     }
 
-    pub fn live_period(&self) -> Option<isize> {
+    pub fn live_period(&self) -> Option<i64> {
         self.live_period
     }
 
-    pub fn heading(&self) -> Option<isize> {
+    pub fn heading(&self) -> Option<i64> {
         self.heading
     }
 
-    pub fn proximity_alert_radius(&self) -> Option<isize> {
+    pub fn proximity_alert_radius(&self) -> Option<i64> {
         self.proximity_alert_radius
     }
 }
@@ -4072,7 +4072,7 @@ impl Venue {
 }
 
 impl ProximityAlertTriggered {
-    pub fn new(traveler: User, watcher: User, distance: isize) -> Self {
+    pub fn new(traveler: User, watcher: User, distance: i64) -> Self {
         Self {
             traveler,
             watcher,
@@ -4088,7 +4088,7 @@ impl ProximityAlertTriggered {
         self.watcher = watcher;
     }
 
-    pub fn set_distance(&mut self, distance: isize) {
+    pub fn set_distance(&mut self, distance: i64) {
         self.distance = distance;
     }
 
@@ -4100,23 +4100,23 @@ impl ProximityAlertTriggered {
         self.watcher.clone()
     }
 
-    pub fn distance(&self) -> isize {
+    pub fn distance(&self) -> i64 {
         self.distance
     }
 }
 
 impl MessageAutoDeleteTimerChanged {
-    pub fn new(message_auto_delete_time: isize) -> Self {
+    pub fn new(message_auto_delete_time: i64) -> Self {
         Self {
             message_auto_delete_time,
         }
     }
 
-    pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: isize) {
+    pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: i64) {
         self.message_auto_delete_time = message_auto_delete_time;
     }
 
-    pub fn message_auto_delete_time(&self) -> isize {
+    pub fn message_auto_delete_time(&self) -> i64 {
         self.message_auto_delete_time
     }
 }
@@ -4164,14 +4164,14 @@ impl VoiceChatParticipantsInvited {
 }
 
 impl UserProfilePhotos {
-    pub fn new(total_count: isize, photos: Vec<Vec<PhotoSize>>) -> Self {
+    pub fn new(total_count: i64, photos: Vec<Vec<PhotoSize>>) -> Self {
         Self {
             total_count,
             photos,
         }
     }
 
-    pub fn set_total_count(&mut self, total_count: isize) {
+    pub fn set_total_count(&mut self, total_count: i64) {
         self.total_count = total_count;
     }
 
@@ -4179,7 +4179,7 @@ impl UserProfilePhotos {
         self.photos = photos;
     }
 
-    pub fn total_count(&self) -> isize {
+    pub fn total_count(&self) -> i64 {
         self.total_count
     }
 
@@ -5109,7 +5109,7 @@ impl ResponseParameters {
         self.migrate_to_chat_id = migrate_to_chat_id;
     }
 
-    pub fn set_retry_after(&mut self, retry_after: Option<isize>) {
+    pub fn set_retry_after(&mut self, retry_after: Option<i64>) {
         self.retry_after = retry_after;
     }
 
@@ -5117,7 +5117,7 @@ impl ResponseParameters {
         self.migrate_to_chat_id
     }
 
-    pub fn retry_after(&self) -> Option<isize> {
+    pub fn retry_after(&self) -> Option<i64> {
         self.retry_after
     }
 }
@@ -6441,15 +6441,15 @@ impl InlineQueryResultLocation {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn set_live_period(&mut self, live_period: Option<isize>) {
+    pub fn set_live_period(&mut self, live_period: Option<i64>) {
         self.live_period = live_period;
     }
 
-    pub fn set_heading(&mut self, heading: Option<isize>) {
+    pub fn set_heading(&mut self, heading: Option<i64>) {
         self.heading = heading;
     }
 
-    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<i64>) {
         self.proximity_alert_radius = proximity_alert_radius;
     }
 
@@ -6500,15 +6500,15 @@ impl InlineQueryResultLocation {
         self.horizontal_accuracy
     }
 
-    pub fn live_period(&self) -> Option<isize> {
+    pub fn live_period(&self) -> Option<i64> {
         self.live_period
     }
 
-    pub fn heading(&self) -> Option<isize> {
+    pub fn heading(&self) -> Option<i64> {
         self.heading
     }
 
-    pub fn proximity_alert_radius(&self) -> Option<isize> {
+    pub fn proximity_alert_radius(&self) -> Option<i64> {
         self.proximity_alert_radius
     }
 
@@ -7607,15 +7607,15 @@ impl InputLocationMessageContent {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn set_live_period(&mut self, live_period: Option<isize>) {
+    pub fn set_live_period(&mut self, live_period: Option<i64>) {
         self.live_period = live_period;
     }
 
-    pub fn set_heading(&mut self, heading: Option<isize>) {
+    pub fn set_heading(&mut self, heading: Option<i64>) {
         self.heading = heading;
     }
 
-    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<isize>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<i64>) {
         self.proximity_alert_radius = proximity_alert_radius;
     }
 
@@ -7631,15 +7631,15 @@ impl InputLocationMessageContent {
         self.horizontal_accuracy
     }
 
-    pub fn live_period(&self) -> Option<isize> {
+    pub fn live_period(&self) -> Option<i64> {
         self.live_period
     }
 
-    pub fn heading(&self) -> Option<isize> {
+    pub fn heading(&self) -> Option<i64> {
         self.heading
     }
 
-    pub fn proximity_alert_radius(&self) -> Option<isize> {
+    pub fn proximity_alert_radius(&self) -> Option<i64> {
         self.proximity_alert_radius
     }
 }
@@ -7823,11 +7823,11 @@ impl InputInvoiceMessageContent {
         self.prices = prices;
     }
 
-    pub fn set_max_tip_amount(&mut self, max_tip_amount: Option<isize>) {
+    pub fn set_max_tip_amount(&mut self, max_tip_amount: Option<i64>) {
         self.max_tip_amount = max_tip_amount;
     }
 
-    pub fn set_suggested_tip_amounts(&mut self, suggested_tip_amounts: Option<Vec<isize>>) {
+    pub fn set_suggested_tip_amounts(&mut self, suggested_tip_amounts: Option<Vec<i64>>) {
         self.suggested_tip_amounts = suggested_tip_amounts;
     }
 
@@ -7906,11 +7906,11 @@ impl InputInvoiceMessageContent {
         self.prices.clone()
     }
 
-    pub fn max_tip_amount(&self) -> Option<isize> {
+    pub fn max_tip_amount(&self) -> Option<i64> {
         self.max_tip_amount
     }
 
-    pub fn suggested_tip_amounts(&self) -> Option<Vec<isize>> {
+    pub fn suggested_tip_amounts(&self) -> Option<Vec<i64>> {
         self.suggested_tip_amounts.clone()
     }
 
@@ -8016,7 +8016,7 @@ impl ChosenInlineResult {
 }
 
 impl LabeledPrice {
-    pub fn new(label: String, amount: isize) -> Self {
+    pub fn new(label: String, amount: i64) -> Self {
         Self { label, amount }
     }
 
@@ -8024,7 +8024,7 @@ impl LabeledPrice {
         self.label = label;
     }
 
-    pub fn set_amount(&mut self, amount: isize) {
+    pub fn set_amount(&mut self, amount: i64) {
         self.amount = amount;
     }
 
@@ -8032,7 +8032,7 @@ impl LabeledPrice {
         self.label.clone()
     }
 
-    pub fn amount(&self) -> isize {
+    pub fn amount(&self) -> i64 {
         self.amount
     }
 }
@@ -8043,7 +8043,7 @@ impl Invoice {
         description: String,
         start_parameter: String,
         currency: String,
-        total_amount: isize,
+        total_amount: i64,
     ) -> Self {
         Self {
             title,
@@ -8070,7 +8070,7 @@ impl Invoice {
         self.currency = currency;
     }
 
-    pub fn set_total_amount(&mut self, total_amount: isize) {
+    pub fn set_total_amount(&mut self, total_amount: i64) {
         self.total_amount = total_amount;
     }
 
@@ -8090,7 +8090,7 @@ impl Invoice {
         self.currency.clone()
     }
 
-    pub fn total_amount(&self) -> isize {
+    pub fn total_amount(&self) -> i64 {
         self.total_amount
     }
 }
@@ -8239,7 +8239,7 @@ impl ShippingOption {
 impl SuccessfulPayment {
     pub fn new(
         currency: String,
-        total_amount: isize,
+        total_amount: i64,
         invoice_payload: String,
         telegram_payment_charge_id: String,
         provider_payment_charge_id: String,
@@ -8259,7 +8259,7 @@ impl SuccessfulPayment {
         self.currency = currency;
     }
 
-    pub fn set_total_amount(&mut self, total_amount: isize) {
+    pub fn set_total_amount(&mut self, total_amount: i64) {
         self.total_amount = total_amount;
     }
 
@@ -8287,7 +8287,7 @@ impl SuccessfulPayment {
         self.currency.clone()
     }
 
-    pub fn total_amount(&self) -> isize {
+    pub fn total_amount(&self) -> i64 {
         self.total_amount
     }
 
@@ -8365,7 +8365,7 @@ impl PreCheckoutQuery {
         id: String,
         from: User,
         currency: String,
-        total_amount: isize,
+        total_amount: i64,
         invoice_payload: String,
     ) -> Self {
         Self {
@@ -8391,7 +8391,7 @@ impl PreCheckoutQuery {
         self.currency = currency;
     }
 
-    pub fn set_total_amount(&mut self, total_amount: isize) {
+    pub fn set_total_amount(&mut self, total_amount: i64) {
         self.total_amount = total_amount;
     }
 
@@ -8419,7 +8419,7 @@ impl PreCheckoutQuery {
         self.currency.clone()
     }
 
-    pub fn total_amount(&self) -> isize {
+    pub fn total_amount(&self) -> i64 {
         self.total_amount
     }
 
@@ -8459,12 +8459,7 @@ impl PassportData {
 }
 
 impl PassportFile {
-    pub fn new(
-        file_id: String,
-        file_unique_id: String,
-        file_size: u32,
-        file_date: u64,
-    ) -> Self {
+    pub fn new(file_id: String, file_unique_id: String, file_size: u32, file_date: u64) -> Self {
         Self {
             file_id,
             file_unique_id,
@@ -9107,7 +9102,7 @@ impl Game {
 }
 
 impl GameHighScore {
-    pub fn new(position: isize, user: User, score: isize) -> Self {
+    pub fn new(position: i64, user: User, score: i64) -> Self {
         Self {
             position,
             user,
@@ -9115,7 +9110,7 @@ impl GameHighScore {
         }
     }
 
-    pub fn set_position(&mut self, position: isize) {
+    pub fn set_position(&mut self, position: i64) {
         self.position = position;
     }
 
@@ -9123,11 +9118,11 @@ impl GameHighScore {
         self.user = user;
     }
 
-    pub fn set_score(&mut self, score: isize) {
+    pub fn set_score(&mut self, score: i64) {
         self.score = score;
     }
 
-    pub fn position(&self) -> isize {
+    pub fn position(&self) -> i64 {
         self.position
     }
 
@@ -9135,7 +9130,7 @@ impl GameHighScore {
         self.user.clone()
     }
 
-    pub fn score(&self) -> isize {
+    pub fn score(&self) -> i64 {
         self.score
     }
 }

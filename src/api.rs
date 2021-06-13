@@ -571,7 +571,7 @@ pub trait TelegramApi {
     fn get_chat_members_count(
         &self,
         params: &GetChatMembersCountParams,
-    ) -> Result<MethodResponse<usize>, Self::Error> {
+    ) -> Result<MethodResponse<u64>, Self::Error> {
         self.request("getChatMembersCount", Some(params))
     }
 
