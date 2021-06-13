@@ -172,7 +172,7 @@ pub trait TelegramApi {
         let method_name = "sendPhoto";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.photo() {
+        if let FileEnum::InputFile(input_file) = params.photo() {
             files.push(("photo", input_file.path()));
         }
 
@@ -183,11 +183,11 @@ pub trait TelegramApi {
         let method_name = "sendAudio";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.audio() {
+        if let FileEnum::InputFile(input_file) = params.audio() {
             files.push(("audio", input_file.path()));
         }
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFile(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -205,87 +205,87 @@ pub trait TelegramApi {
 
         for media in params.media() {
             match media {
-                MediaEnum::InputMediaAudioVariant(audio) => {
+                MediaEnum::Audio(audio) => {
                     let mut new_audio = audio.clone();
 
-                    if let FileEnum::InputFileVariant(input_file) = audio.media() {
+                    if let FileEnum::InputFile(input_file) = audio.media() {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_audio.set_media(FileEnum::StringVariant(attach_name));
+                        new_audio.set_media(FileEnum::String(attach_name));
 
                         files.push((name, input_file.path()));
                     };
 
-                    if let Some(FileEnum::InputFileVariant(input_file)) = audio.thumb() {
+                    if let Some(FileEnum::InputFile(input_file)) = audio.thumb() {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_audio.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+                        new_audio.set_thumb(Some(FileEnum::String(attach_name)));
 
                         files.push((name, input_file.path()));
                     };
 
-                    new_medias.push(MediaEnum::InputMediaAudioVariant(new_audio));
+                    new_medias.push(MediaEnum::Audio(new_audio));
                 }
 
-                MediaEnum::InputMediaDocumentVariant(document) => {
+                MediaEnum::Document(document) => {
                     let mut new_document = document.clone();
 
-                    if let FileEnum::InputFileVariant(input_file) = document.media() {
+                    if let FileEnum::InputFile(input_file) = document.media() {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_document.set_media(FileEnum::StringVariant(attach_name));
+                        new_document.set_media(FileEnum::String(attach_name));
 
                         files.push((name, input_file.path()));
                     };
 
-                    new_medias.push(MediaEnum::InputMediaDocumentVariant(new_document));
+                    new_medias.push(MediaEnum::Document(new_document));
                 }
-                MediaEnum::InputMediaPhotoVariant(photo) => {
+                MediaEnum::Photo(photo) => {
                     let mut new_photo = photo.clone();
 
-                    if let FileEnum::InputFileVariant(input_file) = photo.media() {
+                    if let FileEnum::InputFile(input_file) = photo.media() {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_photo.set_media(FileEnum::StringVariant(attach_name));
+                        new_photo.set_media(FileEnum::String(attach_name));
 
                         files.push((name, input_file.path()));
                     };
 
-                    new_medias.push(MediaEnum::InputMediaPhotoVariant(new_photo));
+                    new_medias.push(MediaEnum::Photo(new_photo));
                 }
 
-                MediaEnum::InputMediaVideoVariant(video) => {
+                MediaEnum::Video(video) => {
                     let mut new_video = video.clone();
 
-                    if let FileEnum::InputFileVariant(input_file) = video.media() {
+                    if let FileEnum::InputFile(input_file) = video.media() {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_video.set_media(FileEnum::StringVariant(attach_name));
+                        new_video.set_media(FileEnum::String(attach_name));
 
                         files.push((name, input_file.path()));
                     };
 
-                    if let Some(FileEnum::InputFileVariant(input_file)) = video.thumb() {
+                    if let Some(FileEnum::InputFile(input_file)) = video.thumb() {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_video.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+                        new_video.set_thumb(Some(FileEnum::String(attach_name)));
 
                         files.push((name, input_file.path()));
                     };
 
-                    new_medias.push(MediaEnum::InputMediaVideoVariant(new_video));
+                    new_medias.push(MediaEnum::Video(new_video));
                 }
             };
         }
@@ -308,11 +308,11 @@ pub trait TelegramApi {
         let method_name = "sendDocument";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.document() {
+        if let FileEnum::InputFile(input_file) = params.document() {
             files.push(("document", input_file.path()));
         }
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFile(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -323,11 +323,11 @@ pub trait TelegramApi {
         let method_name = "sendVideo";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.video() {
+        if let FileEnum::InputFile(input_file) = params.video() {
             files.push(("video", input_file.path()));
         }
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFile(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -341,11 +341,11 @@ pub trait TelegramApi {
         let method_name = "sendAnimation";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.animation() {
+        if let FileEnum::InputFile(input_file) = params.animation() {
             files.push(("animation", input_file.path()));
         }
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFile(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -356,7 +356,7 @@ pub trait TelegramApi {
         let method_name = "sendVoice";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.voice() {
+        if let FileEnum::InputFile(input_file) = params.voice() {
             files.push(("voice", input_file.path()));
         }
 
@@ -370,11 +370,11 @@ pub trait TelegramApi {
         let method_name = "sendVideoNote";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.video_note() {
+        if let FileEnum::InputFile(input_file) = params.video_note() {
             files.push(("video_note", input_file.path()));
         }
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFile(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
@@ -643,111 +643,111 @@ pub trait TelegramApi {
         let mut files: Vec<(String, PathBuf)> = vec![];
 
         let new_media = match params.media() {
-            InputMedia::InputMediaAnimationVariant(animation) => {
+            InputMedia::Animation(animation) => {
                 let mut new_animation = animation.clone();
 
-                if let FileEnum::InputFileVariant(input_file) = animation.media() {
+                if let FileEnum::InputFile(input_file) = animation.media() {
                     let name = "animation".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_animation.set_media(FileEnum::StringVariant(attach_name));
+                    new_animation.set_media(FileEnum::String(attach_name));
 
                     files.push((name, input_file.path()));
                 };
 
-                if let Some(FileEnum::InputFileVariant(input_file)) = animation.thumb() {
+                if let Some(FileEnum::InputFile(input_file)) = animation.thumb() {
                     let name = "animation_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_animation.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+                    new_animation.set_thumb(Some(FileEnum::String(attach_name)));
 
                     files.push((name, input_file.path()));
                 };
 
-                InputMedia::InputMediaAnimationVariant(new_animation)
+                InputMedia::Animation(new_animation)
             }
-            InputMedia::InputMediaDocumentVariant(document) => {
+            InputMedia::Document(document) => {
                 let mut new_document = document.clone();
 
-                if let FileEnum::InputFileVariant(input_file) = document.media() {
+                if let FileEnum::InputFile(input_file) = document.media() {
                     let name = "document".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_document.set_media(FileEnum::StringVariant(attach_name));
+                    new_document.set_media(FileEnum::String(attach_name));
 
                     files.push((name, input_file.path()));
                 };
 
-                if let Some(FileEnum::InputFileVariant(input_file)) = document.thumb() {
+                if let Some(FileEnum::InputFile(input_file)) = document.thumb() {
                     let name = "document_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_document.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+                    new_document.set_thumb(Some(FileEnum::String(attach_name)));
 
                     files.push((name, input_file.path()));
                 };
 
-                InputMedia::InputMediaDocumentVariant(new_document)
+                InputMedia::Document(new_document)
             }
-            InputMedia::InputMediaAudioVariant(audio) => {
+            InputMedia::Audio(audio) => {
                 let mut new_audio = audio.clone();
 
-                if let FileEnum::InputFileVariant(input_file) = audio.media() {
+                if let FileEnum::InputFile(input_file) = audio.media() {
                     let name = "audio".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_audio.set_media(FileEnum::StringVariant(attach_name));
+                    new_audio.set_media(FileEnum::String(attach_name));
 
                     files.push((name, input_file.path()));
                 };
 
-                if let Some(FileEnum::InputFileVariant(input_file)) = audio.thumb() {
+                if let Some(FileEnum::InputFile(input_file)) = audio.thumb() {
                     let name = "audio_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_audio.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+                    new_audio.set_thumb(Some(FileEnum::String(attach_name)));
 
                     files.push((name, input_file.path()));
                 };
 
-                InputMedia::InputMediaAudioVariant(new_audio)
+                InputMedia::Audio(new_audio)
             }
-            InputMedia::InputMediaPhotoVariant(photo) => {
+            InputMedia::Photo(photo) => {
                 let mut new_photo = photo.clone();
 
-                if let FileEnum::InputFileVariant(input_file) = photo.media() {
+                if let FileEnum::InputFile(input_file) = photo.media() {
                     let name = "photo".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_photo.set_media(FileEnum::StringVariant(attach_name));
+                    new_photo.set_media(FileEnum::String(attach_name));
 
                     files.push((name, input_file.path()));
                 };
 
-                InputMedia::InputMediaPhotoVariant(new_photo)
+                InputMedia::Photo(new_photo)
             }
-            InputMedia::InputMediaVideoVariant(video) => {
+            InputMedia::Video(video) => {
                 let mut new_video = video.clone();
 
-                if let FileEnum::InputFileVariant(input_file) = video.media() {
+                if let FileEnum::InputFile(input_file) = video.media() {
                     let name = "video".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_video.set_media(FileEnum::StringVariant(attach_name));
+                    new_video.set_media(FileEnum::String(attach_name));
 
                     files.push((name, input_file.path()));
                 };
 
-                if let Some(FileEnum::InputFileVariant(input_file)) = video.thumb() {
+                if let Some(FileEnum::InputFile(input_file)) = video.thumb() {
                     let name = "video_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_video.set_thumb(Some(FileEnum::StringVariant(attach_name)));
+                    new_video.set_thumb(Some(FileEnum::String(attach_name)));
 
                     files.push((name, input_file.path()));
                 };
 
-                InputMedia::InputMediaVideoVariant(new_video)
+                InputMedia::Video(new_video)
             }
         };
 
@@ -787,7 +787,7 @@ pub trait TelegramApi {
         let method_name = "sendSticker";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let FileEnum::InputFileVariant(input_file) = params.sticker() {
+        if let FileEnum::InputFile(input_file) = params.sticker() {
             files.push(("sticker", input_file.path()));
         }
 
@@ -821,7 +821,7 @@ pub trait TelegramApi {
         let method_name = "createNewStickerSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.png_sticker() {
+        if let Some(FileEnum::InputFile(input_file)) = params.png_sticker() {
             files.push(("png_sticker", input_file.path()));
         }
 
@@ -839,7 +839,7 @@ pub trait TelegramApi {
         let method_name = "addStickerToSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.png_sticker() {
+        if let Some(FileEnum::InputFile(input_file)) = params.png_sticker() {
             files.push(("png_sticker", input_file.path()));
         }
 
@@ -871,7 +871,7 @@ pub trait TelegramApi {
         let method_name = "setStickerSetThumb";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(FileEnum::InputFileVariant(input_file)) = params.thumb() {
+        if let Some(FileEnum::InputFile(input_file)) = params.thumb() {
             files.push(("thumb", input_file.path()));
         }
 
