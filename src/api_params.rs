@@ -1,20 +1,27 @@
 use crate::objects::{
-    BotCommand, ChatPermissions, FileEnum, ForceReply, InlineKeyboardMarkup,
-    InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
-    InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
-    InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
-    InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
-    InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
-    InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputFile, LabeledPrice, MaskPosition,
-    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
-    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
-    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
-    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, ReplyKeyboardMarkup,
-    ReplyKeyboardRemove, ShippingOption,
+    BotCommand, ChatPermissions, ForceReply, InlineKeyboardMarkup, InlineQueryResultArticle,
+    InlineQueryResultAudio, InlineQueryResultCachedAudio, InlineQueryResultCachedDocument,
+    InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto,
+    InlineQueryResultCachedSticker, InlineQueryResultCachedVideo, InlineQueryResultCachedVoice,
+    InlineQueryResultContact, InlineQueryResultDocument, InlineQueryResultGame,
+    InlineQueryResultGif, InlineQueryResultLocation, InlineQueryResultMpeg4Gif,
+    InlineQueryResultPhoto, InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice,
+    LabeledPrice, MaskPosition, MessageEntity, PassportElementErrorDataField,
+    PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
+    PassportElementErrorReverseSide, PassportElementErrorSelfie,
+    PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
+    PassportElementErrorUnspecified, ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption,
 };
 use serde::Deserialize;
 use serde::Serialize;
+use std::path::PathBuf;
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum File {
+    InputFile(InputFile),
+    String(String),
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
@@ -67,14 +74,14 @@ pub enum PassportElementError {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum ChatIdEnum {
+pub enum ChatId {
     Integer(i64),
     String(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum ReplyMarkupEnum {
+pub enum ReplyMarkup {
     InlineKeyboardMarkup(InlineKeyboardMarkup),
     ReplyKeyboardMarkup(ReplyKeyboardMarkup),
     ReplyKeyboardRemove(ReplyKeyboardRemove),
@@ -83,11 +90,16 @@ pub enum ReplyMarkupEnum {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum MediaEnum {
+pub enum Media {
     Audio(InputMediaAudio),
     Document(InputMediaDocument),
     Photo(InputMediaPhoto),
     Video(InputMediaVideo),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputFile {
+    pub path: PathBuf,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -133,7 +145,7 @@ pub struct DeleteWebhookParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendMessageParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub text: String,
 
@@ -156,14 +168,14 @@ pub struct SendMessageParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ForwardMessageParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub from_chat_id: ChatIdEnum,
+    pub from_chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -173,9 +185,9 @@ pub struct ForwardMessageParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CopyMessageParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub from_chat_id: ChatIdEnum,
+    pub from_chat_id: ChatId,
 
     pub message_id: i32,
 
@@ -198,14 +210,14 @@ pub struct CopyMessageParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendPhotoParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub photo: FileEnum,
+    pub photo: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -226,14 +238,14 @@ pub struct SendPhotoParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendAudioParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub audio: FileEnum,
+    pub audio: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -254,7 +266,7 @@ pub struct SendAudioParams {
     pub title: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -266,17 +278,17 @@ pub struct SendAudioParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendDocumentParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub document: FileEnum,
+    pub document: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -300,14 +312,14 @@ pub struct SendDocumentParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendVideoParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub video: FileEnum,
+    pub video: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<u32>,
@@ -319,7 +331,7 @@ pub struct SendVideoParams {
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -343,14 +355,14 @@ pub struct SendVideoParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendAnimationParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub animation: FileEnum,
+    pub animation: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<u32>,
@@ -362,7 +374,7 @@ pub struct SendAnimationParams {
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -383,14 +395,14 @@ pub struct SendAnimationParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendVoiceParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub voice: FileEnum,
+    pub voice: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -414,14 +426,14 @@ pub struct SendVoiceParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendVideoNoteParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub video_note: FileEnum,
+    pub video_note: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub duration: Option<u32>,
@@ -430,7 +442,7 @@ pub struct SendVideoNoteParams {
     pub length: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -442,14 +454,14 @@ pub struct SendVideoNoteParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendMediaGroupParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub media: Vec<MediaEnum>,
+    pub media: Vec<Media>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -463,7 +475,7 @@ pub struct SendMediaGroupParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendLocationParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub latitude: f64,
 
@@ -491,13 +503,13 @@ pub struct SendLocationParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EditMessageLiveLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<ChatIdEnum>,
+    pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -525,7 +537,7 @@ pub struct EditMessageLiveLocationParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StopMessageLiveLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<ChatIdEnum>,
+    pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -539,7 +551,7 @@ pub struct StopMessageLiveLocationParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendVenueParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub latitude: f64,
 
@@ -571,12 +583,12 @@ pub struct SendVenueParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendContactParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub phone_number: String,
 
@@ -598,12 +610,12 @@ pub struct SendContactParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendPollParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub question: String,
 
@@ -649,12 +661,12 @@ pub struct SendPollParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendDiceParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub emoji: Option<String>,
@@ -669,12 +681,12 @@ pub struct SendDiceParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendChatActionParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub action: String,
 }
@@ -697,7 +709,7 @@ pub struct GetFileParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct KickChatMemberParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub user_id: u64,
 
@@ -710,7 +722,7 @@ pub struct KickChatMemberParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct UnbanChatMemberParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub user_id: u64,
 
@@ -720,7 +732,7 @@ pub struct UnbanChatMemberParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct RestrictChatMemberParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub user_id: u64,
 
@@ -732,7 +744,7 @@ pub struct RestrictChatMemberParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PromoteChatMemberParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub user_id: u64,
 
@@ -772,7 +784,7 @@ pub struct PromoteChatMemberParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatAdministratorCustomTitleParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub user_id: u64,
 
@@ -781,19 +793,19 @@ pub struct SetChatAdministratorCustomTitleParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatPermissionsParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub permissions: ChatPermissions,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ExportChatInviteLinkParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CreateChatInviteLinkParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub expire_date: Option<u64>,
@@ -804,7 +816,7 @@ pub struct CreateChatInviteLinkParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EditChatInviteLinkParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub invite_link: String,
 
@@ -817,33 +829,33 @@ pub struct EditChatInviteLinkParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct RevokeChatInviteLinkParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub invite_link: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatPhotoParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub photo: InputFile,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct DeleteChatPhotoParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatTitleParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub title: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatDescriptionParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -851,7 +863,7 @@ pub struct SetChatDescriptionParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PinChatMessageParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub message_id: i32,
 
@@ -861,7 +873,7 @@ pub struct PinChatMessageParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct UnpinChatMessageParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -869,46 +881,46 @@ pub struct UnpinChatMessageParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct UnpinAllChatMessagesParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct LeaveChatParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetChatParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetChatAdministratorsParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetChatMembersCountParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetChatMemberParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatStickerSetParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub sticker_set_name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct DeleteChatStickerSetParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -936,7 +948,7 @@ pub struct SetMyCommandsParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EditMessageTextParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<ChatIdEnum>,
+    pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -962,7 +974,7 @@ pub struct EditMessageTextParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EditMessageCaptionParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<ChatIdEnum>,
+    pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -986,7 +998,7 @@ pub struct EditMessageCaptionParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EditMessageMediaParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<ChatIdEnum>,
+    pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -1003,7 +1015,7 @@ pub struct EditMessageMediaParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EditMessageReplyMarkupParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<ChatIdEnum>,
+    pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_id: Option<i32>,
@@ -1017,7 +1029,7 @@ pub struct EditMessageReplyMarkupParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StopPollParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub message_id: i32,
 
@@ -1027,16 +1039,16 @@ pub struct StopPollParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct DeleteMessageParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
     pub message_id: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendStickerParams {
-    pub chat_id: ChatIdEnum,
+    pub chat_id: ChatId,
 
-    pub sticker: FileEnum,
+    pub sticker: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -1048,7 +1060,7 @@ pub struct SendStickerParams {
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_markup: Option<ReplyMarkupEnum>,
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1072,7 +1084,7 @@ pub struct CreateNewStickerSetParams {
     pub title: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub png_sticker: Option<FileEnum>,
+    pub png_sticker: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tgs_sticker: Option<InputFile>,
@@ -1093,7 +1105,7 @@ pub struct AddStickerToSetParams {
     pub name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub png_sticker: Option<FileEnum>,
+    pub png_sticker: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tgs_sticker: Option<InputFile>,
@@ -1123,7 +1135,7 @@ pub struct SetStickerSetThumbParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1312,7 +1324,7 @@ pub struct InputMediaPhoto {
     #[serde(rename = "type")]
     pub type_field: String,
 
-    pub media: FileEnum,
+    pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -1329,10 +1341,10 @@ pub struct InputMediaVideo {
     #[serde(rename = "type")]
     pub type_field: String,
 
-    pub media: FileEnum,
+    pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -1361,10 +1373,10 @@ pub struct InputMediaAnimation {
     #[serde(rename = "type")]
     pub type_field: String,
 
-    pub media: FileEnum,
+    pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -1390,10 +1402,10 @@ pub struct InputMediaAudio {
     #[serde(rename = "type")]
     pub type_field: String,
 
-    pub media: FileEnum,
+    pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -1419,10 +1431,10 @@ pub struct InputMediaDocument {
     #[serde(rename = "type")]
     pub type_field: String,
 
-    pub media: FileEnum,
+    pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb: Option<FileEnum>,
+    pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -1558,7 +1570,7 @@ impl DeleteWebhookParams {
 }
 
 impl SendMessageParams {
-    pub fn new(chat_id: ChatIdEnum, text: String) -> Self {
+    pub fn new(chat_id: ChatId, text: String) -> Self {
         Self {
             chat_id,
             text,
@@ -1572,7 +1584,7 @@ impl SendMessageParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -1604,11 +1616,11 @@ impl SendMessageParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -1640,13 +1652,13 @@ impl SendMessageParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl ForwardMessageParams {
-    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: i32) -> Self {
+    pub fn new(chat_id: ChatId, from_chat_id: ChatId, message_id: i32) -> Self {
         Self {
             chat_id,
             from_chat_id,
@@ -1655,11 +1667,11 @@ impl ForwardMessageParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_from_chat_id(&mut self, from_chat_id: ChatIdEnum) {
+    pub fn set_from_chat_id(&mut self, from_chat_id: ChatId) {
         self.from_chat_id = from_chat_id;
     }
 
@@ -1671,11 +1683,11 @@ impl ForwardMessageParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn from_chat_id(&self) -> ChatIdEnum {
+    pub fn from_chat_id(&self) -> ChatId {
         self.from_chat_id.clone()
     }
 
@@ -1689,7 +1701,7 @@ impl ForwardMessageParams {
 }
 
 impl CopyMessageParams {
-    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: i32) -> Self {
+    pub fn new(chat_id: ChatId, from_chat_id: ChatId, message_id: i32) -> Self {
         Self {
             chat_id,
             from_chat_id,
@@ -1704,11 +1716,11 @@ impl CopyMessageParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_from_chat_id(&mut self, from_chat_id: ChatIdEnum) {
+    pub fn set_from_chat_id(&mut self, from_chat_id: ChatId) {
         self.from_chat_id = from_chat_id;
     }
 
@@ -1740,15 +1752,15 @@ impl CopyMessageParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn from_chat_id(&self) -> ChatIdEnum {
+    pub fn from_chat_id(&self) -> ChatId {
         self.from_chat_id.clone()
     }
 
@@ -1780,13 +1792,13 @@ impl CopyMessageParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendPhotoParams {
-    pub fn new(chat_id: ChatIdEnum, photo: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, photo: File) -> Self {
         Self {
             chat_id,
             photo,
@@ -1800,11 +1812,11 @@ impl SendPhotoParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_photo(&mut self, photo: FileEnum) {
+    pub fn set_photo(&mut self, photo: File) {
         self.photo = photo;
     }
 
@@ -1832,15 +1844,15 @@ impl SendPhotoParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn photo(&self) -> FileEnum {
+    pub fn photo(&self) -> File {
         self.photo.clone()
     }
 
@@ -1868,13 +1880,13 @@ impl SendPhotoParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendAudioParams {
-    pub fn new(chat_id: ChatIdEnum, audio: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, audio: File) -> Self {
         Self {
             chat_id,
             audio,
@@ -1892,11 +1904,11 @@ impl SendAudioParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_audio(&mut self, audio: FileEnum) {
+    pub fn set_audio(&mut self, audio: File) {
         self.audio = audio;
     }
 
@@ -1924,7 +1936,7 @@ impl SendAudioParams {
         self.title = title;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -1940,15 +1952,15 @@ impl SendAudioParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn audio(&self) -> FileEnum {
+    pub fn audio(&self) -> File {
         self.audio.clone()
     }
 
@@ -1976,7 +1988,7 @@ impl SendAudioParams {
         self.title.clone()
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -1992,13 +2004,13 @@ impl SendAudioParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendDocumentParams {
-    pub fn new(chat_id: ChatIdEnum, document: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, document: File) -> Self {
         Self {
             chat_id,
             document,
@@ -2014,15 +2026,15 @@ impl SendDocumentParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_document(&mut self, document: FileEnum) {
+    pub fn set_document(&mut self, document: File) {
         self.document = document;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -2057,19 +2069,19 @@ impl SendDocumentParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn document(&self) -> FileEnum {
+    pub fn document(&self) -> File {
         self.document.clone()
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -2101,13 +2113,13 @@ impl SendDocumentParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendVideoParams {
-    pub fn new(chat_id: ChatIdEnum, video: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, video: File) -> Self {
         Self {
             chat_id,
             video,
@@ -2126,11 +2138,11 @@ impl SendVideoParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_video(&mut self, video: FileEnum) {
+    pub fn set_video(&mut self, video: File) {
         self.video = video;
     }
 
@@ -2146,7 +2158,7 @@ impl SendVideoParams {
         self.height = height;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -2178,15 +2190,15 @@ impl SendVideoParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn video(&self) -> FileEnum {
+    pub fn video(&self) -> File {
         self.video.clone()
     }
 
@@ -2202,7 +2214,7 @@ impl SendVideoParams {
         self.height
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -2234,13 +2246,13 @@ impl SendVideoParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendAnimationParams {
-    pub fn new(chat_id: ChatIdEnum, animation: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, animation: File) -> Self {
         Self {
             chat_id,
             animation,
@@ -2258,11 +2270,11 @@ impl SendAnimationParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_animation(&mut self, animation: FileEnum) {
+    pub fn set_animation(&mut self, animation: File) {
         self.animation = animation;
     }
 
@@ -2278,7 +2290,7 @@ impl SendAnimationParams {
         self.height = height;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -2306,15 +2318,15 @@ impl SendAnimationParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn animation(&self) -> FileEnum {
+    pub fn animation(&self) -> File {
         self.animation.clone()
     }
 
@@ -2330,7 +2342,7 @@ impl SendAnimationParams {
         self.height
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -2358,13 +2370,13 @@ impl SendAnimationParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendVoiceParams {
-    pub fn new(chat_id: ChatIdEnum, voice: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, voice: File) -> Self {
         Self {
             chat_id,
             voice,
@@ -2379,11 +2391,11 @@ impl SendVoiceParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_voice(&mut self, voice: FileEnum) {
+    pub fn set_voice(&mut self, voice: File) {
         self.voice = voice;
     }
 
@@ -2415,15 +2427,15 @@ impl SendVoiceParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn voice(&self) -> FileEnum {
+    pub fn voice(&self) -> File {
         self.voice.clone()
     }
 
@@ -2455,13 +2467,13 @@ impl SendVoiceParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendVideoNoteParams {
-    pub fn new(chat_id: ChatIdEnum, video_note: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, video_note: File) -> Self {
         Self {
             chat_id,
             video_note,
@@ -2475,11 +2487,11 @@ impl SendVideoNoteParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_video_note(&mut self, video_note: FileEnum) {
+    pub fn set_video_note(&mut self, video_note: File) {
         self.video_note = video_note;
     }
 
@@ -2491,7 +2503,7 @@ impl SendVideoNoteParams {
         self.length = length;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -2507,15 +2519,15 @@ impl SendVideoNoteParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn video_note(&self) -> FileEnum {
+    pub fn video_note(&self) -> File {
         self.video_note.clone()
     }
 
@@ -2527,7 +2539,7 @@ impl SendVideoNoteParams {
         self.length
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -2543,13 +2555,13 @@ impl SendVideoNoteParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendMediaGroupParams {
-    pub fn new(chat_id: ChatIdEnum, media: Vec<MediaEnum>) -> Self {
+    pub fn new(chat_id: ChatId, media: Vec<Media>) -> Self {
         Self {
             chat_id,
             media,
@@ -2559,11 +2571,11 @@ impl SendMediaGroupParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_media(&mut self, media: Vec<MediaEnum>) {
+    pub fn set_media(&mut self, media: Vec<Media>) {
         self.media = media;
     }
 
@@ -2579,11 +2591,11 @@ impl SendMediaGroupParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn media(&self) -> Vec<MediaEnum> {
+    pub fn media(&self) -> Vec<Media> {
         self.media.clone()
     }
 
@@ -2601,7 +2613,7 @@ impl SendMediaGroupParams {
 }
 
 impl SendLocationParams {
-    pub fn new(chat_id: ChatIdEnum, latitude: f64, longitude: f64) -> Self {
+    pub fn new(chat_id: ChatId, latitude: f64, longitude: f64) -> Self {
         Self {
             chat_id,
             latitude,
@@ -2617,7 +2629,7 @@ impl SendLocationParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -2657,11 +2669,11 @@ impl SendLocationParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -2701,7 +2713,7 @@ impl SendLocationParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
@@ -2729,7 +2741,7 @@ impl EditMessageLiveLocationParams {
         self.longitude = longitude;
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<ChatIdEnum>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<ChatId>) {
         self.chat_id = chat_id;
     }
 
@@ -2765,7 +2777,7 @@ impl EditMessageLiveLocationParams {
         self.longitude
     }
 
-    pub fn chat_id(&self) -> Option<ChatIdEnum> {
+    pub fn chat_id(&self) -> Option<ChatId> {
         self.chat_id.clone()
     }
 
@@ -2804,7 +2816,7 @@ impl StopMessageLiveLocationParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<ChatIdEnum>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<ChatId>) {
         self.chat_id = chat_id;
     }
 
@@ -2820,7 +2832,7 @@ impl StopMessageLiveLocationParams {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> Option<ChatIdEnum> {
+    pub fn chat_id(&self) -> Option<ChatId> {
         self.chat_id.clone()
     }
 
@@ -2839,7 +2851,7 @@ impl StopMessageLiveLocationParams {
 
 impl SendVenueParams {
     pub fn new(
-        chat_id: ChatIdEnum,
+        chat_id: ChatId,
         latitude: f64,
         longitude: f64,
         title: String,
@@ -2862,7 +2874,7 @@ impl SendVenueParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -2910,11 +2922,11 @@ impl SendVenueParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -2962,13 +2974,13 @@ impl SendVenueParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendContactParams {
-    pub fn new(chat_id: ChatIdEnum, phone_number: String, first_name: String) -> Self {
+    pub fn new(chat_id: ChatId, phone_number: String, first_name: String) -> Self {
         Self {
             chat_id,
             phone_number,
@@ -2982,7 +2994,7 @@ impl SendContactParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3014,11 +3026,11 @@ impl SendContactParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3050,13 +3062,13 @@ impl SendContactParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendPollParams {
-    pub fn new(chat_id: ChatIdEnum, question: String, options: Vec<String>) -> Self {
+    pub fn new(chat_id: ChatId, question: String, options: Vec<String>) -> Self {
         Self {
             chat_id,
             question,
@@ -3078,7 +3090,7 @@ impl SendPollParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3142,11 +3154,11 @@ impl SendPollParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3210,13 +3222,13 @@ impl SendPollParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendDiceParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self {
             chat_id,
             emoji: None,
@@ -3227,7 +3239,7 @@ impl SendDiceParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3247,11 +3259,11 @@ impl SendDiceParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3271,17 +3283,17 @@ impl SendDiceParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
 
 impl SendChatActionParams {
-    pub fn new(chat_id: ChatIdEnum, action: String) -> Self {
+    pub fn new(chat_id: ChatId, action: String) -> Self {
         Self { chat_id, action }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3289,7 +3301,7 @@ impl SendChatActionParams {
         self.action = action;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3347,7 +3359,7 @@ impl GetFileParams {
 }
 
 impl KickChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3356,7 +3368,7 @@ impl KickChatMemberParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3372,7 +3384,7 @@ impl KickChatMemberParams {
         self.revoke_messages = revoke_messages;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3390,7 +3402,7 @@ impl KickChatMemberParams {
 }
 
 impl UnbanChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3398,7 +3410,7 @@ impl UnbanChatMemberParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3410,7 +3422,7 @@ impl UnbanChatMemberParams {
         self.only_if_banned = only_if_banned;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3424,7 +3436,7 @@ impl UnbanChatMemberParams {
 }
 
 impl RestrictChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: u64, permissions: ChatPermissions) -> Self {
+    pub fn new(chat_id: ChatId, user_id: u64, permissions: ChatPermissions) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3433,7 +3445,7 @@ impl RestrictChatMemberParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3449,7 +3461,7 @@ impl RestrictChatMemberParams {
         self.until_date = until_date;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3467,7 +3479,7 @@ impl RestrictChatMemberParams {
 }
 
 impl PromoteChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3485,7 +3497,7 @@ impl PromoteChatMemberParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3537,7 +3549,7 @@ impl PromoteChatMemberParams {
         self.can_pin_messages = can_pin_messages;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3591,7 +3603,7 @@ impl PromoteChatMemberParams {
 }
 
 impl SetChatAdministratorCustomTitleParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: u64, custom_title: String) -> Self {
+    pub fn new(chat_id: ChatId, user_id: u64, custom_title: String) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3599,7 +3611,7 @@ impl SetChatAdministratorCustomTitleParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3611,7 +3623,7 @@ impl SetChatAdministratorCustomTitleParams {
         self.custom_title = custom_title;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3625,14 +3637,14 @@ impl SetChatAdministratorCustomTitleParams {
 }
 
 impl SetChatPermissionsParams {
-    pub fn new(chat_id: ChatIdEnum, permissions: ChatPermissions) -> Self {
+    pub fn new(chat_id: ChatId, permissions: ChatPermissions) -> Self {
         Self {
             chat_id,
             permissions,
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3640,7 +3652,7 @@ impl SetChatPermissionsParams {
         self.permissions = permissions;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3650,21 +3662,21 @@ impl SetChatPermissionsParams {
 }
 
 impl ExportChatInviteLinkParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl CreateChatInviteLinkParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self {
             chat_id,
             expire_date: None,
@@ -3672,7 +3684,7 @@ impl CreateChatInviteLinkParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3684,7 +3696,7 @@ impl CreateChatInviteLinkParams {
         self.member_limit = member_limit;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3698,7 +3710,7 @@ impl CreateChatInviteLinkParams {
 }
 
 impl EditChatInviteLinkParams {
-    pub fn new(chat_id: ChatIdEnum, invite_link: String) -> Self {
+    pub fn new(chat_id: ChatId, invite_link: String) -> Self {
         Self {
             chat_id,
             invite_link,
@@ -3707,7 +3719,7 @@ impl EditChatInviteLinkParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3723,7 +3735,7 @@ impl EditChatInviteLinkParams {
         self.member_limit = member_limit;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3741,14 +3753,14 @@ impl EditChatInviteLinkParams {
 }
 
 impl RevokeChatInviteLinkParams {
-    pub fn new(chat_id: ChatIdEnum, invite_link: String) -> Self {
+    pub fn new(chat_id: ChatId, invite_link: String) -> Self {
         Self {
             chat_id,
             invite_link,
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3756,7 +3768,7 @@ impl RevokeChatInviteLinkParams {
         self.invite_link = invite_link;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3766,11 +3778,11 @@ impl RevokeChatInviteLinkParams {
 }
 
 impl SetChatPhotoParams {
-    pub fn new(chat_id: ChatIdEnum, photo: InputFile) -> Self {
+    pub fn new(chat_id: ChatId, photo: InputFile) -> Self {
         Self { chat_id, photo }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3778,7 +3790,7 @@ impl SetChatPhotoParams {
         self.photo = photo;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3788,25 +3800,25 @@ impl SetChatPhotoParams {
 }
 
 impl DeleteChatPhotoParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl SetChatTitleParams {
-    pub fn new(chat_id: ChatIdEnum, title: String) -> Self {
+    pub fn new(chat_id: ChatId, title: String) -> Self {
         Self { chat_id, title }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3814,7 +3826,7 @@ impl SetChatTitleParams {
         self.title = title;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3824,14 +3836,14 @@ impl SetChatTitleParams {
 }
 
 impl SetChatDescriptionParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self {
             chat_id,
             description: None,
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3839,7 +3851,7 @@ impl SetChatDescriptionParams {
         self.description = description;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3849,7 +3861,7 @@ impl SetChatDescriptionParams {
 }
 
 impl PinChatMessageParams {
-    pub fn new(chat_id: ChatIdEnum, message_id: i32) -> Self {
+    pub fn new(chat_id: ChatId, message_id: i32) -> Self {
         Self {
             chat_id,
             message_id,
@@ -3857,7 +3869,7 @@ impl PinChatMessageParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3869,7 +3881,7 @@ impl PinChatMessageParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3883,14 +3895,14 @@ impl PinChatMessageParams {
 }
 
 impl UnpinChatMessageParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self {
             chat_id,
             message_id: None,
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3898,7 +3910,7 @@ impl UnpinChatMessageParams {
         self.message_id = message_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -3908,81 +3920,81 @@ impl UnpinChatMessageParams {
 }
 
 impl UnpinAllChatMessagesParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl LeaveChatParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl GetChatParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl GetChatAdministratorsParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl GetChatMembersCountParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
 
 impl GetChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
         Self { chat_id, user_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -3990,7 +4002,7 @@ impl GetChatMemberParams {
         self.user_id = user_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -4000,14 +4012,14 @@ impl GetChatMemberParams {
 }
 
 impl SetChatStickerSetParams {
-    pub fn new(chat_id: ChatIdEnum, sticker_set_name: String) -> Self {
+    pub fn new(chat_id: ChatId, sticker_set_name: String) -> Self {
         Self {
             chat_id,
             sticker_set_name,
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -4015,7 +4027,7 @@ impl SetChatStickerSetParams {
         self.sticker_set_name = sticker_set_name;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -4025,15 +4037,15 @@ impl SetChatStickerSetParams {
 }
 
 impl DeleteChatStickerSetParams {
-    pub fn new(chat_id: ChatIdEnum) -> Self {
+    pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 }
@@ -4122,7 +4134,7 @@ impl EditMessageTextParams {
         self.text = text;
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<ChatIdEnum>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<ChatId>) {
         self.chat_id = chat_id;
     }
 
@@ -4154,7 +4166,7 @@ impl EditMessageTextParams {
         self.text.clone()
     }
 
-    pub fn chat_id(&self) -> Option<ChatIdEnum> {
+    pub fn chat_id(&self) -> Option<ChatId> {
         self.chat_id.clone()
     }
 
@@ -4196,7 +4208,7 @@ impl EditMessageCaptionParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<ChatIdEnum>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<ChatId>) {
         self.chat_id = chat_id;
     }
 
@@ -4224,7 +4236,7 @@ impl EditMessageCaptionParams {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> Option<ChatIdEnum> {
+    pub fn chat_id(&self) -> Option<ChatId> {
         self.chat_id.clone()
     }
 
@@ -4268,7 +4280,7 @@ impl EditMessageMediaParams {
         self.media = media;
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<ChatIdEnum>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<ChatId>) {
         self.chat_id = chat_id;
     }
 
@@ -4288,7 +4300,7 @@ impl EditMessageMediaParams {
         self.media.clone()
     }
 
-    pub fn chat_id(&self) -> Option<ChatIdEnum> {
+    pub fn chat_id(&self) -> Option<ChatId> {
         self.chat_id.clone()
     }
 
@@ -4315,7 +4327,7 @@ impl EditMessageReplyMarkupParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<ChatIdEnum>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<ChatId>) {
         self.chat_id = chat_id;
     }
 
@@ -4331,7 +4343,7 @@ impl EditMessageReplyMarkupParams {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> Option<ChatIdEnum> {
+    pub fn chat_id(&self) -> Option<ChatId> {
         self.chat_id.clone()
     }
 
@@ -4349,7 +4361,7 @@ impl EditMessageReplyMarkupParams {
 }
 
 impl StopPollParams {
-    pub fn new(chat_id: ChatIdEnum, message_id: i32) -> Self {
+    pub fn new(chat_id: ChatId, message_id: i32) -> Self {
         Self {
             chat_id,
             message_id,
@@ -4357,7 +4369,7 @@ impl StopPollParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -4369,7 +4381,7 @@ impl StopPollParams {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -4383,14 +4395,14 @@ impl StopPollParams {
 }
 
 impl DeleteMessageParams {
-    pub fn new(chat_id: ChatIdEnum, message_id: i32) -> Self {
+    pub fn new(chat_id: ChatId, message_id: i32) -> Self {
         Self {
             chat_id,
             message_id,
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
@@ -4398,7 +4410,7 @@ impl DeleteMessageParams {
         self.message_id = message_id;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
@@ -4408,7 +4420,7 @@ impl DeleteMessageParams {
 }
 
 impl SendStickerParams {
-    pub fn new(chat_id: ChatIdEnum, sticker: FileEnum) -> Self {
+    pub fn new(chat_id: ChatId, sticker: File) -> Self {
         Self {
             chat_id,
             sticker,
@@ -4419,11 +4431,11 @@ impl SendStickerParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: ChatIdEnum) {
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_sticker(&mut self, sticker: FileEnum) {
+    pub fn set_sticker(&mut self, sticker: File) {
         self.sticker = sticker;
     }
 
@@ -4439,15 +4451,15 @@ impl SendStickerParams {
         self.allow_sending_without_reply = allow_sending_without_reply;
     }
 
-    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkupEnum>) {
+    pub fn set_reply_markup(&mut self, reply_markup: Option<ReplyMarkup>) {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> ChatIdEnum {
+    pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
     }
 
-    pub fn sticker(&self) -> FileEnum {
+    pub fn sticker(&self) -> File {
         self.sticker.clone()
     }
 
@@ -4463,7 +4475,7 @@ impl SendStickerParams {
         self.allow_sending_without_reply
     }
 
-    pub fn reply_markup(&self) -> Option<ReplyMarkupEnum> {
+    pub fn reply_markup(&self) -> Option<ReplyMarkup> {
         self.reply_markup.clone()
     }
 }
@@ -4537,7 +4549,7 @@ impl CreateNewStickerSetParams {
         self.emojis = emojis;
     }
 
-    pub fn set_png_sticker(&mut self, png_sticker: Option<FileEnum>) {
+    pub fn set_png_sticker(&mut self, png_sticker: Option<File>) {
         self.png_sticker = png_sticker;
     }
 
@@ -4569,7 +4581,7 @@ impl CreateNewStickerSetParams {
         self.emojis.clone()
     }
 
-    pub fn png_sticker(&self) -> Option<FileEnum> {
+    pub fn png_sticker(&self) -> Option<File> {
         self.png_sticker.clone()
     }
 
@@ -4610,7 +4622,7 @@ impl AddStickerToSetParams {
         self.emojis = emojis;
     }
 
-    pub fn set_png_sticker(&mut self, png_sticker: Option<FileEnum>) {
+    pub fn set_png_sticker(&mut self, png_sticker: Option<File>) {
         self.png_sticker = png_sticker;
     }
 
@@ -4634,7 +4646,7 @@ impl AddStickerToSetParams {
         self.emojis.clone()
     }
 
-    pub fn png_sticker(&self) -> Option<FileEnum> {
+    pub fn png_sticker(&self) -> Option<File> {
         self.png_sticker.clone()
     }
 
@@ -4700,7 +4712,7 @@ impl SetStickerSetThumbParams {
         self.user_id = user_id;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -4712,7 +4724,7 @@ impl SetStickerSetThumbParams {
         self.user_id
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 }
@@ -5313,7 +5325,7 @@ impl GetGameHighScoresParams {
 }
 
 impl InputMediaPhoto {
-    pub fn new(media: FileEnum) -> Self {
+    pub fn new(media: File) -> Self {
         Self {
             media,
             type_field: "photo".to_string(),
@@ -5327,7 +5339,7 @@ impl InputMediaPhoto {
         self.type_field = type_field;
     }
 
-    pub fn set_media(&mut self, media: FileEnum) {
+    pub fn set_media(&mut self, media: File) {
         self.media = media;
     }
 
@@ -5347,7 +5359,7 @@ impl InputMediaPhoto {
         self.type_field.clone()
     }
 
-    pub fn media(&self) -> FileEnum {
+    pub fn media(&self) -> File {
         self.media.clone()
     }
 
@@ -5365,7 +5377,7 @@ impl InputMediaPhoto {
 }
 
 impl InputMediaVideo {
-    pub fn new(media: FileEnum) -> Self {
+    pub fn new(media: File) -> Self {
         Self {
             media,
             type_field: "video".to_string(),
@@ -5384,11 +5396,11 @@ impl InputMediaVideo {
         self.type_field = type_field;
     }
 
-    pub fn set_media(&mut self, media: FileEnum) {
+    pub fn set_media(&mut self, media: File) {
         self.media = media;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -5424,11 +5436,11 @@ impl InputMediaVideo {
         self.type_field.clone()
     }
 
-    pub fn media(&self) -> FileEnum {
+    pub fn media(&self) -> File {
         self.media.clone()
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -5462,7 +5474,7 @@ impl InputMediaVideo {
 }
 
 impl InputMediaAnimation {
-    pub fn new(media: FileEnum) -> Self {
+    pub fn new(media: File) -> Self {
         Self {
             media,
             type_field: "animation".to_string(),
@@ -5480,11 +5492,11 @@ impl InputMediaAnimation {
         self.type_field = type_field;
     }
 
-    pub fn set_media(&mut self, media: FileEnum) {
+    pub fn set_media(&mut self, media: File) {
         self.media = media;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -5516,11 +5528,11 @@ impl InputMediaAnimation {
         self.type_field.clone()
     }
 
-    pub fn media(&self) -> FileEnum {
+    pub fn media(&self) -> File {
         self.media.clone()
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -5550,7 +5562,7 @@ impl InputMediaAnimation {
 }
 
 impl InputMediaAudio {
-    pub fn new(media: FileEnum) -> Self {
+    pub fn new(media: File) -> Self {
         Self {
             media,
             type_field: "audio".to_string(),
@@ -5568,11 +5580,11 @@ impl InputMediaAudio {
         self.type_field = type_field;
     }
 
-    pub fn set_media(&mut self, media: FileEnum) {
+    pub fn set_media(&mut self, media: File) {
         self.media = media;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -5604,11 +5616,11 @@ impl InputMediaAudio {
         self.type_field.clone()
     }
 
-    pub fn media(&self) -> FileEnum {
+    pub fn media(&self) -> File {
         self.media.clone()
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -5638,7 +5650,7 @@ impl InputMediaAudio {
 }
 
 impl InputMediaDocument {
-    pub fn new(media: FileEnum) -> Self {
+    pub fn new(media: File) -> Self {
         Self {
             media,
             type_field: "document".to_string(),
@@ -5654,11 +5666,11 @@ impl InputMediaDocument {
         self.type_field = type_field;
     }
 
-    pub fn set_media(&mut self, media: FileEnum) {
+    pub fn set_media(&mut self, media: File) {
         self.media = media;
     }
 
-    pub fn set_thumb(&mut self, thumb: Option<FileEnum>) {
+    pub fn set_thumb(&mut self, thumb: Option<File>) {
         self.thumb = thumb;
     }
 
@@ -5685,11 +5697,11 @@ impl InputMediaDocument {
         self.type_field.clone()
     }
 
-    pub fn media(&self) -> FileEnum {
+    pub fn media(&self) -> File {
         self.media.clone()
     }
 
-    pub fn thumb(&self) -> Option<FileEnum> {
+    pub fn thumb(&self) -> Option<File> {
         self.thumb.clone()
     }
 
@@ -5707,5 +5719,19 @@ impl InputMediaDocument {
 
     pub fn disable_content_type_detection(&self) -> Option<bool> {
         self.disable_content_type_detection
+    }
+}
+
+impl InputFile {
+    pub fn new(path: PathBuf) -> Self {
+        Self { path }
+    }
+
+    pub fn set_path(&mut self, path: PathBuf) {
+        self.path = path;
+    }
+
+    pub fn path(&self) -> PathBuf {
+        self.path.clone()
     }
 }

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
@@ -12,11 +11,6 @@ pub enum InputMessageContent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct InputFile {
-    pub path: PathBuf,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct VoiceChatStarted {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -26,13 +20,6 @@ pub struct VoiceChatScheduled {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CallbackGame {}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum FileEnum {
-    InputFile(InputFile),
-    String(String),
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Update {
@@ -9132,19 +9119,5 @@ impl GameHighScore {
 
     pub fn score(&self) -> i64 {
         self.score
-    }
-}
-
-impl InputFile {
-    pub fn new(path: PathBuf) -> Self {
-        Self { path }
-    }
-
-    pub fn set_path(&mut self, path: PathBuf) {
-        self.path = path;
-    }
-
-    pub fn path(&self) -> PathBuf {
-        self.path.clone()
     }
 }
