@@ -53,7 +53,7 @@ pub enum PassportElementError {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum ChatIdEnum {
-    IsizeVariant(isize),
+    IntegerVariant(i64),
     StringVariant(String),
 }
 
@@ -78,13 +78,13 @@ pub enum MediaEnum {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetUpdatesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub offset: Option<isize>,
+    pub offset: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub limit: Option<isize>,
+    pub limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub timeout: Option<isize>,
+    pub timeout: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allowed_updates: Option<Vec<String>>,
@@ -135,7 +135,7 @@ pub struct SendMessageParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -153,7 +153,7 @@ pub struct ForwardMessageParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
 
-    pub message_id: isize,
+    pub message_id: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -162,7 +162,7 @@ pub struct CopyMessageParams {
 
     pub from_chat_id: ChatIdEnum,
 
-    pub message_id: isize,
+    pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -177,7 +177,7 @@ pub struct CopyMessageParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -205,7 +205,7 @@ pub struct SendPhotoParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -230,7 +230,7 @@ pub struct SendAudioParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub performer: Option<String>,
@@ -245,7 +245,7 @@ pub struct SendAudioParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -279,7 +279,7 @@ pub struct SendDocumentParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -295,13 +295,13 @@ pub struct SendVideoParams {
     pub video: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub width: Option<isize>,
+    pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub height: Option<isize>,
+    pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<FileEnum>,
@@ -322,7 +322,7 @@ pub struct SendVideoParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -338,13 +338,13 @@ pub struct SendAnimationParams {
     pub animation: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub width: Option<isize>,
+    pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub height: Option<isize>,
+    pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<FileEnum>,
@@ -362,7 +362,7 @@ pub struct SendAnimationParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -387,13 +387,13 @@ pub struct SendVoiceParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -409,7 +409,7 @@ pub struct SendVideoNoteParams {
     pub video_note: FileEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub length: Option<isize>,
@@ -421,7 +421,7 @@ pub struct SendVideoNoteParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -440,7 +440,7 @@ pub struct SendMediaGroupParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -470,7 +470,7 @@ pub struct SendLocationParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -485,7 +485,7 @@ pub struct EditMessageLiveLocationParams {
     pub chat_id: Option<ChatIdEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -513,7 +513,7 @@ pub struct StopMessageLiveLocationParams {
     pub chat_id: Option<ChatIdEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -550,7 +550,7 @@ pub struct SendVenueParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -577,7 +577,7 @@ pub struct SendContactParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -619,7 +619,7 @@ pub struct SendPollParams {
     pub open_period: Option<isize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub close_date: Option<isize>,
+    pub close_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_closed: Option<bool>,
@@ -628,7 +628,7 @@ pub struct SendPollParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -648,7 +648,7 @@ pub struct SendDiceParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -666,13 +666,13 @@ pub struct SendChatActionParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetUserProfilePhotosParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub offset: Option<isize>,
+    pub offset: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub limit: Option<isize>,
+    pub limit: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -684,10 +684,10 @@ pub struct GetFileParams {
 pub struct KickChatMemberParams {
     pub chat_id: ChatIdEnum,
 
-    pub user_id: isize,
+    pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub until_date: Option<isize>,
+    pub until_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub revoke_messages: Option<bool>,
@@ -697,7 +697,7 @@ pub struct KickChatMemberParams {
 pub struct UnbanChatMemberParams {
     pub chat_id: ChatIdEnum,
 
-    pub user_id: isize,
+    pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub only_if_banned: Option<bool>,
@@ -707,19 +707,19 @@ pub struct UnbanChatMemberParams {
 pub struct RestrictChatMemberParams {
     pub chat_id: ChatIdEnum,
 
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub permissions: ChatPermissions,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub until_date: Option<isize>,
+    pub until_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PromoteChatMemberParams {
     pub chat_id: ChatIdEnum,
 
-    pub user_id: isize,
+    pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_anonymous: Option<bool>,
@@ -759,7 +759,7 @@ pub struct PromoteChatMemberParams {
 pub struct SetChatAdministratorCustomTitleParams {
     pub chat_id: ChatIdEnum,
 
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub custom_title: String,
 }
@@ -781,10 +781,10 @@ pub struct CreateChatInviteLinkParams {
     pub chat_id: ChatIdEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expire_date: Option<isize>,
+    pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub member_limit: Option<isize>,
+    pub member_limit: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -794,10 +794,10 @@ pub struct EditChatInviteLinkParams {
     pub invite_link: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expire_date: Option<isize>,
+    pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub member_limit: Option<isize>,
+    pub member_limit: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -838,7 +838,7 @@ pub struct SetChatDescriptionParams {
 pub struct PinChatMessageParams {
     pub chat_id: ChatIdEnum,
 
-    pub message_id: isize,
+    pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -849,7 +849,7 @@ pub struct UnpinChatMessageParams {
     pub chat_id: ChatIdEnum,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -881,7 +881,7 @@ pub struct GetChatMembersCountParams {
 pub struct GetChatMemberParams {
     pub chat_id: ChatIdEnum,
 
-    pub user_id: isize,
+    pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -924,7 +924,7 @@ pub struct EditMessageTextParams {
     pub chat_id: Option<ChatIdEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -950,7 +950,7 @@ pub struct EditMessageCaptionParams {
     pub chat_id: Option<ChatIdEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -974,7 +974,7 @@ pub struct EditMessageMediaParams {
     pub chat_id: Option<ChatIdEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -991,7 +991,7 @@ pub struct EditMessageReplyMarkupParams {
     pub chat_id: Option<ChatIdEnum>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -1004,7 +1004,7 @@ pub struct EditMessageReplyMarkupParams {
 pub struct StopPollParams {
     pub chat_id: ChatIdEnum,
 
-    pub message_id: isize,
+    pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<InlineKeyboardMarkup>,
@@ -1014,7 +1014,7 @@ pub struct StopPollParams {
 pub struct DeleteMessageParams {
     pub chat_id: ChatIdEnum,
 
-    pub message_id: isize,
+    pub message_id: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1027,7 +1027,7 @@ pub struct SendStickerParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -1043,14 +1043,14 @@ pub struct GetStickerSetParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct UploadStickerFileParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub png_sticker: InputFile,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CreateNewStickerSetParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub name: String,
 
@@ -1073,7 +1073,7 @@ pub struct CreateNewStickerSetParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AddStickerToSetParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub name: String,
 
@@ -1105,7 +1105,7 @@ pub struct DeleteStickerFromSetParams {
 pub struct SetStickerSetThumbParams {
     pub name: String,
 
-    pub user_id: isize,
+    pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<FileEnum>,
@@ -1135,7 +1135,7 @@ pub struct AnswerInlineQueryParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendInvoiceParams {
-    pub chat_id: isize,
+    pub chat_id: i64,
 
     pub title: String,
 
@@ -1165,13 +1165,13 @@ pub struct SendInvoiceParams {
     pub photo_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_size: Option<isize>,
+    pub photo_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_width: Option<isize>,
+    pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_height: Option<isize>,
+    pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub need_name: Option<bool>,
@@ -1198,7 +1198,7 @@ pub struct SendInvoiceParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -1232,14 +1232,14 @@ pub struct AnswerPreCheckoutQueryParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetPassportDataErrorsParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub errors: Vec<PassportElementError>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SendGameParams {
-    pub chat_id: isize,
+    pub chat_id: i64,
 
     pub game_short_name: String,
 
@@ -1247,7 +1247,7 @@ pub struct SendGameParams {
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub reply_to_message_id: Option<isize>,
+    pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allow_sending_without_reply: Option<bool>,
@@ -1258,7 +1258,7 @@ pub struct SendGameParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetGameScoreParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     pub score: isize,
 
@@ -1269,10 +1269,10 @@ pub struct SetGameScoreParams {
     pub disable_edit_message: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<isize>,
+    pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -1280,13 +1280,13 @@ pub struct SetGameScoreParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct GetGameHighScoresParams {
-    pub user_id: isize,
+    pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub chat_id: Option<isize>,
+    pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub message_id: Option<isize>,
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub inline_message_id: Option<String>,
@@ -1329,13 +1329,13 @@ pub struct InputMediaVideo {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub width: Option<isize>,
+    pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub height: Option<isize>,
+    pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub supports_streaming: Option<bool>,
@@ -1361,13 +1361,13 @@ pub struct InputMediaAnimation {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub width: Option<isize>,
+    pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub height: Option<isize>,
+    pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1390,7 +1390,7 @@ pub struct InputMediaAudio {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub duration: Option<isize>,
+    pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub performer: Option<String>,
@@ -1432,15 +1432,15 @@ impl GetUpdatesParams {
         }
     }
 
-    pub fn set_offset(&mut self, offset: Option<isize>) {
+    pub fn set_offset(&mut self, offset: Option<u32>) {
         self.offset = offset;
     }
 
-    pub fn set_limit(&mut self, limit: Option<isize>) {
+    pub fn set_limit(&mut self, limit: Option<u32>) {
         self.limit = limit;
     }
 
-    pub fn set_timeout(&mut self, timeout: Option<isize>) {
+    pub fn set_timeout(&mut self, timeout: Option<u32>) {
         self.timeout = timeout;
     }
 
@@ -1448,15 +1448,15 @@ impl GetUpdatesParams {
         self.allowed_updates = allowed_updates;
     }
 
-    pub fn offset(&self) -> Option<isize> {
+    pub fn offset(&self) -> Option<u32> {
         self.offset
     }
 
-    pub fn limit(&self) -> Option<isize> {
+    pub fn limit(&self) -> Option<u32> {
         self.limit
     }
 
-    pub fn timeout(&self) -> Option<isize> {
+    pub fn timeout(&self) -> Option<u32> {
         self.timeout
     }
 
@@ -1581,7 +1581,7 @@ impl SendMessageParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -1617,7 +1617,7 @@ impl SendMessageParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -1631,7 +1631,7 @@ impl SendMessageParams {
 }
 
 impl ForwardMessageParams {
-    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: i32) -> Self {
         Self {
             chat_id,
             from_chat_id,
@@ -1648,7 +1648,7 @@ impl ForwardMessageParams {
         self.from_chat_id = from_chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
@@ -1664,7 +1664,7 @@ impl ForwardMessageParams {
         self.from_chat_id.clone()
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 
@@ -1674,7 +1674,7 @@ impl ForwardMessageParams {
 }
 
 impl CopyMessageParams {
-    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, from_chat_id: ChatIdEnum, message_id: i32) -> Self {
         Self {
             chat_id,
             from_chat_id,
@@ -1697,7 +1697,7 @@ impl CopyMessageParams {
         self.from_chat_id = from_chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
@@ -1717,7 +1717,7 @@ impl CopyMessageParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -1737,7 +1737,7 @@ impl CopyMessageParams {
         self.from_chat_id.clone()
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 
@@ -1757,7 +1757,7 @@ impl CopyMessageParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -1809,7 +1809,7 @@ impl SendPhotoParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -1845,7 +1845,7 @@ impl SendPhotoParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -1897,7 +1897,7 @@ impl SendAudioParams {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
@@ -1917,7 +1917,7 @@ impl SendAudioParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -1949,7 +1949,7 @@ impl SendAudioParams {
         self.caption_entities.clone()
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 
@@ -1969,7 +1969,7 @@ impl SendAudioParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2034,7 +2034,7 @@ impl SendDocumentParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2078,7 +2078,7 @@ impl SendDocumentParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2119,15 +2119,15 @@ impl SendVideoParams {
         self.video = video;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
-    pub fn set_width(&mut self, width: Option<isize>) {
+    pub fn set_width(&mut self, width: Option<u32>) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: Option<isize>) {
+    pub fn set_height(&mut self, height: Option<u32>) {
         self.height = height;
     }
 
@@ -2155,7 +2155,7 @@ impl SendVideoParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2175,15 +2175,15 @@ impl SendVideoParams {
         self.video.clone()
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 
-    pub fn width(&self) -> Option<isize> {
+    pub fn width(&self) -> Option<u32> {
         self.width
     }
 
-    pub fn height(&self) -> Option<isize> {
+    pub fn height(&self) -> Option<u32> {
         self.height
     }
 
@@ -2211,7 +2211,7 @@ impl SendVideoParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2251,15 +2251,15 @@ impl SendAnimationParams {
         self.animation = animation;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
-    pub fn set_width(&mut self, width: Option<isize>) {
+    pub fn set_width(&mut self, width: Option<u32>) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: Option<isize>) {
+    pub fn set_height(&mut self, height: Option<u32>) {
         self.height = height;
     }
 
@@ -2283,7 +2283,7 @@ impl SendAnimationParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2303,15 +2303,15 @@ impl SendAnimationParams {
         self.animation.clone()
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 
-    pub fn width(&self) -> Option<isize> {
+    pub fn width(&self) -> Option<u32> {
         self.width
     }
 
-    pub fn height(&self) -> Option<isize> {
+    pub fn height(&self) -> Option<u32> {
         self.height
     }
 
@@ -2335,7 +2335,7 @@ impl SendAnimationParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2384,7 +2384,7 @@ impl SendVoiceParams {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
@@ -2392,7 +2392,7 @@ impl SendVoiceParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2424,7 +2424,7 @@ impl SendVoiceParams {
         self.caption_entities.clone()
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 
@@ -2432,7 +2432,7 @@ impl SendVoiceParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2468,7 +2468,7 @@ impl SendVideoNoteParams {
         self.video_note = video_note;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
@@ -2484,7 +2484,7 @@ impl SendVideoNoteParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2504,7 +2504,7 @@ impl SendVideoNoteParams {
         self.video_note.clone()
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 
@@ -2520,7 +2520,7 @@ impl SendVideoNoteParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2556,7 +2556,7 @@ impl SendMediaGroupParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2576,7 +2576,7 @@ impl SendMediaGroupParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2634,7 +2634,7 @@ impl SendLocationParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2678,7 +2678,7 @@ impl SendLocationParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2718,7 +2718,7 @@ impl EditMessageLiveLocationParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -2754,7 +2754,7 @@ impl EditMessageLiveLocationParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -2793,7 +2793,7 @@ impl StopMessageLiveLocationParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -2809,7 +2809,7 @@ impl StopMessageLiveLocationParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -2887,7 +2887,7 @@ impl SendVenueParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -2939,7 +2939,7 @@ impl SendVenueParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -2991,7 +2991,7 @@ impl SendContactParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -3027,7 +3027,7 @@ impl SendContactParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -3107,7 +3107,7 @@ impl SendPollParams {
         self.open_period = open_period;
     }
 
-    pub fn set_close_date(&mut self, close_date: Option<isize>) {
+    pub fn set_close_date(&mut self, close_date: Option<u64>) {
         self.close_date = close_date;
     }
 
@@ -3119,7 +3119,7 @@ impl SendPollParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -3175,7 +3175,7 @@ impl SendPollParams {
         self.open_period
     }
 
-    pub fn close_date(&self) -> Option<isize> {
+    pub fn close_date(&self) -> Option<u64> {
         self.close_date
     }
 
@@ -3187,7 +3187,7 @@ impl SendPollParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -3224,7 +3224,7 @@ impl SendDiceParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -3248,7 +3248,7 @@ impl SendDiceParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -3284,7 +3284,7 @@ impl SendChatActionParams {
 }
 
 impl GetUserProfilePhotosParams {
-    pub fn new(user_id: isize) -> Self {
+    pub fn new(user_id: u64) -> Self {
         Self {
             user_id,
             offset: None,
@@ -3292,27 +3292,27 @@ impl GetUserProfilePhotosParams {
         }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
-    pub fn set_offset(&mut self, offset: Option<isize>) {
+    pub fn set_offset(&mut self, offset: Option<u32>) {
         self.offset = offset;
     }
 
-    pub fn set_limit(&mut self, limit: Option<isize>) {
+    pub fn set_limit(&mut self, limit: Option<u32>) {
         self.limit = limit;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
-    pub fn offset(&self) -> Option<isize> {
+    pub fn offset(&self) -> Option<u32> {
         self.offset
     }
 
-    pub fn limit(&self) -> Option<isize> {
+    pub fn limit(&self) -> Option<u32> {
         self.limit
     }
 }
@@ -3332,7 +3332,7 @@ impl GetFileParams {
 }
 
 impl KickChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3345,11 +3345,11 @@ impl KickChatMemberParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
-    pub fn set_until_date(&mut self, until_date: Option<isize>) {
+    pub fn set_until_date(&mut self, until_date: Option<u64>) {
         self.until_date = until_date;
     }
 
@@ -3361,11 +3361,11 @@ impl KickChatMemberParams {
         self.chat_id.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
-    pub fn until_date(&self) -> Option<isize> {
+    pub fn until_date(&self) -> Option<u64> {
         self.until_date
     }
 
@@ -3375,7 +3375,7 @@ impl KickChatMemberParams {
 }
 
 impl UnbanChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3387,7 +3387,7 @@ impl UnbanChatMemberParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -3399,7 +3399,7 @@ impl UnbanChatMemberParams {
         self.chat_id.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -3409,7 +3409,7 @@ impl UnbanChatMemberParams {
 }
 
 impl RestrictChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: isize, permissions: ChatPermissions) -> Self {
+    pub fn new(chat_id: ChatIdEnum, user_id: u64, permissions: ChatPermissions) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3422,7 +3422,7 @@ impl RestrictChatMemberParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -3430,7 +3430,7 @@ impl RestrictChatMemberParams {
         self.permissions = permissions;
     }
 
-    pub fn set_until_date(&mut self, until_date: Option<isize>) {
+    pub fn set_until_date(&mut self, until_date: Option<u64>) {
         self.until_date = until_date;
     }
 
@@ -3438,7 +3438,7 @@ impl RestrictChatMemberParams {
         self.chat_id.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -3446,13 +3446,13 @@ impl RestrictChatMemberParams {
         self.permissions.clone()
     }
 
-    pub fn until_date(&self) -> Option<isize> {
+    pub fn until_date(&self) -> Option<u64> {
         self.until_date
     }
 }
 
 impl PromoteChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3474,7 +3474,7 @@ impl PromoteChatMemberParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -3526,7 +3526,7 @@ impl PromoteChatMemberParams {
         self.chat_id.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -3576,7 +3576,7 @@ impl PromoteChatMemberParams {
 }
 
 impl SetChatAdministratorCustomTitleParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: isize, custom_title: String) -> Self {
+    pub fn new(chat_id: ChatIdEnum, user_id: u64, custom_title: String) -> Self {
         Self {
             chat_id,
             user_id,
@@ -3588,7 +3588,7 @@ impl SetChatAdministratorCustomTitleParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -3600,7 +3600,7 @@ impl SetChatAdministratorCustomTitleParams {
         self.chat_id.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -3661,11 +3661,11 @@ impl CreateChatInviteLinkParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_expire_date(&mut self, expire_date: Option<isize>) {
+    pub fn set_expire_date(&mut self, expire_date: Option<u64>) {
         self.expire_date = expire_date;
     }
 
-    pub fn set_member_limit(&mut self, member_limit: Option<isize>) {
+    pub fn set_member_limit(&mut self, member_limit: Option<u32>) {
         self.member_limit = member_limit;
     }
 
@@ -3673,11 +3673,11 @@ impl CreateChatInviteLinkParams {
         self.chat_id.clone()
     }
 
-    pub fn expire_date(&self) -> Option<isize> {
+    pub fn expire_date(&self) -> Option<u64> {
         self.expire_date
     }
 
-    pub fn member_limit(&self) -> Option<isize> {
+    pub fn member_limit(&self) -> Option<u32> {
         self.member_limit
     }
 }
@@ -3700,11 +3700,11 @@ impl EditChatInviteLinkParams {
         self.invite_link = invite_link;
     }
 
-    pub fn set_expire_date(&mut self, expire_date: Option<isize>) {
+    pub fn set_expire_date(&mut self, expire_date: Option<u64>) {
         self.expire_date = expire_date;
     }
 
-    pub fn set_member_limit(&mut self, member_limit: Option<isize>) {
+    pub fn set_member_limit(&mut self, member_limit: Option<u32>) {
         self.member_limit = member_limit;
     }
 
@@ -3716,11 +3716,11 @@ impl EditChatInviteLinkParams {
         self.invite_link.clone()
     }
 
-    pub fn expire_date(&self) -> Option<isize> {
+    pub fn expire_date(&self) -> Option<u64> {
         self.expire_date
     }
 
-    pub fn member_limit(&self) -> Option<isize> {
+    pub fn member_limit(&self) -> Option<u32> {
         self.member_limit
     }
 }
@@ -3834,7 +3834,7 @@ impl SetChatDescriptionParams {
 }
 
 impl PinChatMessageParams {
-    pub fn new(chat_id: ChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, message_id: i32) -> Self {
         Self {
             chat_id,
             message_id,
@@ -3846,7 +3846,7 @@ impl PinChatMessageParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
@@ -3858,7 +3858,7 @@ impl PinChatMessageParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 
@@ -3879,7 +3879,7 @@ impl UnpinChatMessageParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -3887,7 +3887,7 @@ impl UnpinChatMessageParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 }
@@ -3963,7 +3963,7 @@ impl GetChatMembersCountParams {
 }
 
 impl GetChatMemberParams {
-    pub fn new(chat_id: ChatIdEnum, user_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, user_id: u64) -> Self {
         Self { chat_id, user_id }
     }
 
@@ -3971,7 +3971,7 @@ impl GetChatMemberParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -3979,7 +3979,7 @@ impl GetChatMemberParams {
         self.chat_id.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 }
@@ -4111,7 +4111,7 @@ impl EditMessageTextParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -4143,7 +4143,7 @@ impl EditMessageTextParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -4185,7 +4185,7 @@ impl EditMessageCaptionParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -4213,7 +4213,7 @@ impl EditMessageCaptionParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -4257,7 +4257,7 @@ impl EditMessageMediaParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -4277,7 +4277,7 @@ impl EditMessageMediaParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -4304,7 +4304,7 @@ impl EditMessageReplyMarkupParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -4320,7 +4320,7 @@ impl EditMessageReplyMarkupParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -4334,7 +4334,7 @@ impl EditMessageReplyMarkupParams {
 }
 
 impl StopPollParams {
-    pub fn new(chat_id: ChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, message_id: i32) -> Self {
         Self {
             chat_id,
             message_id,
@@ -4346,7 +4346,7 @@ impl StopPollParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
@@ -4358,7 +4358,7 @@ impl StopPollParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 
@@ -4368,7 +4368,7 @@ impl StopPollParams {
 }
 
 impl DeleteMessageParams {
-    pub fn new(chat_id: ChatIdEnum, message_id: isize) -> Self {
+    pub fn new(chat_id: ChatIdEnum, message_id: i32) -> Self {
         Self {
             chat_id,
             message_id,
@@ -4379,7 +4379,7 @@ impl DeleteMessageParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
@@ -4387,7 +4387,7 @@ impl DeleteMessageParams {
         self.chat_id.clone()
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 }
@@ -4416,7 +4416,7 @@ impl SendStickerParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -4440,7 +4440,7 @@ impl SendStickerParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -4468,14 +4468,14 @@ impl GetStickerSetParams {
 }
 
 impl UploadStickerFileParams {
-    pub fn new(user_id: isize, png_sticker: InputFile) -> Self {
+    pub fn new(user_id: u64, png_sticker: InputFile) -> Self {
         Self {
             user_id,
             png_sticker,
         }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -4483,7 +4483,7 @@ impl UploadStickerFileParams {
         self.png_sticker = png_sticker;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -4493,7 +4493,7 @@ impl UploadStickerFileParams {
 }
 
 impl CreateNewStickerSetParams {
-    pub fn new(user_id: isize, name: String, title: String, emojis: String) -> Self {
+    pub fn new(user_id: u64, name: String, title: String, emojis: String) -> Self {
         Self {
             user_id,
             name,
@@ -4506,7 +4506,7 @@ impl CreateNewStickerSetParams {
         }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -4538,7 +4538,7 @@ impl CreateNewStickerSetParams {
         self.mask_position = mask_position;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -4572,7 +4572,7 @@ impl CreateNewStickerSetParams {
 }
 
 impl AddStickerToSetParams {
-    pub fn new(user_id: isize, name: String, emojis: String) -> Self {
+    pub fn new(user_id: u64, name: String, emojis: String) -> Self {
         Self {
             user_id,
             name,
@@ -4583,7 +4583,7 @@ impl AddStickerToSetParams {
         }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -4607,7 +4607,7 @@ impl AddStickerToSetParams {
         self.mask_position = mask_position;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -4669,7 +4669,7 @@ impl DeleteStickerFromSetParams {
 }
 
 impl SetStickerSetThumbParams {
-    pub fn new(name: String, user_id: isize) -> Self {
+    pub fn new(name: String, user_id: u64) -> Self {
         Self {
             name,
             user_id,
@@ -4681,7 +4681,7 @@ impl SetStickerSetThumbParams {
         self.name = name;
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -4693,7 +4693,7 @@ impl SetStickerSetThumbParams {
         self.name.clone()
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -4774,7 +4774,7 @@ impl AnswerInlineQueryParams {
 
 impl SendInvoiceParams {
     pub fn new(
-        chat_id: isize,
+        chat_id: i64,
         title: String,
         description: String,
         payload: String,
@@ -4812,7 +4812,7 @@ impl SendInvoiceParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: isize) {
+    pub fn set_chat_id(&mut self, chat_id: i64) {
         self.chat_id = chat_id;
     }
 
@@ -4860,15 +4860,15 @@ impl SendInvoiceParams {
         self.photo_url = photo_url;
     }
 
-    pub fn set_photo_size(&mut self, photo_size: Option<isize>) {
+    pub fn set_photo_size(&mut self, photo_size: Option<u32>) {
         self.photo_size = photo_size;
     }
 
-    pub fn set_photo_width(&mut self, photo_width: Option<isize>) {
+    pub fn set_photo_width(&mut self, photo_width: Option<u32>) {
         self.photo_width = photo_width;
     }
 
-    pub fn set_photo_height(&mut self, photo_height: Option<isize>) {
+    pub fn set_photo_height(&mut self, photo_height: Option<u32>) {
         self.photo_height = photo_height;
     }
 
@@ -4907,7 +4907,7 @@ impl SendInvoiceParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -4919,7 +4919,7 @@ impl SendInvoiceParams {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> isize {
+    pub fn chat_id(&self) -> i64 {
         self.chat_id
     }
 
@@ -4967,15 +4967,15 @@ impl SendInvoiceParams {
         self.photo_url.clone()
     }
 
-    pub fn photo_size(&self) -> Option<isize> {
+    pub fn photo_size(&self) -> Option<u32> {
         self.photo_size
     }
 
-    pub fn photo_width(&self) -> Option<isize> {
+    pub fn photo_width(&self) -> Option<u32> {
         self.photo_width
     }
 
-    pub fn photo_height(&self) -> Option<isize> {
+    pub fn photo_height(&self) -> Option<u32> {
         self.photo_height
     }
 
@@ -5011,7 +5011,7 @@ impl SendInvoiceParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -5102,11 +5102,11 @@ impl AnswerPreCheckoutQueryParams {
 }
 
 impl SetPassportDataErrorsParams {
-    pub fn new(user_id: isize, errors: Vec<PassportElementError>) -> Self {
+    pub fn new(user_id: u64, errors: Vec<PassportElementError>) -> Self {
         Self { user_id, errors }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -5114,7 +5114,7 @@ impl SetPassportDataErrorsParams {
         self.errors = errors;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -5124,7 +5124,7 @@ impl SetPassportDataErrorsParams {
 }
 
 impl SendGameParams {
-    pub fn new(chat_id: isize, game_short_name: String) -> Self {
+    pub fn new(chat_id: i64, game_short_name: String) -> Self {
         Self {
             chat_id,
             game_short_name,
@@ -5135,7 +5135,7 @@ impl SendGameParams {
         }
     }
 
-    pub fn set_chat_id(&mut self, chat_id: isize) {
+    pub fn set_chat_id(&mut self, chat_id: i64) {
         self.chat_id = chat_id;
     }
 
@@ -5147,7 +5147,7 @@ impl SendGameParams {
         self.disable_notification = disable_notification;
     }
 
-    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<isize>) {
+    pub fn set_reply_to_message_id(&mut self, reply_to_message_id: Option<i32>) {
         self.reply_to_message_id = reply_to_message_id;
     }
 
@@ -5159,7 +5159,7 @@ impl SendGameParams {
         self.reply_markup = reply_markup;
     }
 
-    pub fn chat_id(&self) -> isize {
+    pub fn chat_id(&self) -> i64 {
         self.chat_id
     }
 
@@ -5171,7 +5171,7 @@ impl SendGameParams {
         self.disable_notification
     }
 
-    pub fn reply_to_message_id(&self) -> Option<isize> {
+    pub fn reply_to_message_id(&self) -> Option<i32> {
         self.reply_to_message_id
     }
 
@@ -5185,7 +5185,7 @@ impl SendGameParams {
 }
 
 impl SetGameScoreParams {
-    pub fn new(user_id: isize, score: isize) -> Self {
+    pub fn new(user_id: u64, score: isize) -> Self {
         Self {
             user_id,
             score,
@@ -5197,7 +5197,7 @@ impl SetGameScoreParams {
         }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
@@ -5213,11 +5213,11 @@ impl SetGameScoreParams {
         self.disable_edit_message = disable_edit_message;
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<isize>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<i64>) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -5225,7 +5225,7 @@ impl SetGameScoreParams {
         self.inline_message_id = inline_message_id;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
@@ -5241,11 +5241,11 @@ impl SetGameScoreParams {
         self.disable_edit_message
     }
 
-    pub fn chat_id(&self) -> Option<isize> {
+    pub fn chat_id(&self) -> Option<i64> {
         self.chat_id
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -5255,7 +5255,7 @@ impl SetGameScoreParams {
 }
 
 impl GetGameHighScoresParams {
-    pub fn new(user_id: isize) -> Self {
+    pub fn new(user_id: u64) -> Self {
         Self {
             user_id,
             chat_id: None,
@@ -5264,15 +5264,15 @@ impl GetGameHighScoresParams {
         }
     }
 
-    pub fn set_user_id(&mut self, user_id: isize) {
+    pub fn set_user_id(&mut self, user_id: u64) {
         self.user_id = user_id;
     }
 
-    pub fn set_chat_id(&mut self, chat_id: Option<isize>) {
+    pub fn set_chat_id(&mut self, chat_id: Option<i64>) {
         self.chat_id = chat_id;
     }
 
-    pub fn set_message_id(&mut self, message_id: Option<isize>) {
+    pub fn set_message_id(&mut self, message_id: Option<i32>) {
         self.message_id = message_id;
     }
 
@@ -5280,15 +5280,15 @@ impl GetGameHighScoresParams {
         self.inline_message_id = inline_message_id;
     }
 
-    pub fn user_id(&self) -> isize {
+    pub fn user_id(&self) -> u64 {
         self.user_id
     }
 
-    pub fn chat_id(&self) -> Option<isize> {
+    pub fn chat_id(&self) -> Option<i64> {
         self.chat_id
     }
 
-    pub fn message_id(&self) -> Option<isize> {
+    pub fn message_id(&self) -> Option<i32> {
         self.message_id
     }
 
@@ -5389,15 +5389,15 @@ impl InputMediaVideo {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_width(&mut self, width: Option<isize>) {
+    pub fn set_width(&mut self, width: Option<u32>) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: Option<isize>) {
+    pub fn set_height(&mut self, height: Option<u32>) {
         self.height = height;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
@@ -5429,15 +5429,15 @@ impl InputMediaVideo {
         self.caption_entities.clone()
     }
 
-    pub fn width(&self) -> Option<isize> {
+    pub fn width(&self) -> Option<u32> {
         self.width
     }
 
-    pub fn height(&self) -> Option<isize> {
+    pub fn height(&self) -> Option<u32> {
         self.height
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 
@@ -5485,15 +5485,15 @@ impl InputMediaAnimation {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_width(&mut self, width: Option<isize>) {
+    pub fn set_width(&mut self, width: Option<u32>) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: Option<isize>) {
+    pub fn set_height(&mut self, height: Option<u32>) {
         self.height = height;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
@@ -5521,15 +5521,15 @@ impl InputMediaAnimation {
         self.caption_entities.clone()
     }
 
-    pub fn width(&self) -> Option<isize> {
+    pub fn width(&self) -> Option<u32> {
         self.width
     }
 
-    pub fn height(&self) -> Option<isize> {
+    pub fn height(&self) -> Option<u32> {
         self.height
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 }
@@ -5573,7 +5573,7 @@ impl InputMediaAudio {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_duration(&mut self, duration: Option<isize>) {
+    pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
     }
 
@@ -5609,7 +5609,7 @@ impl InputMediaAudio {
         self.caption_entities.clone()
     }
 
-    pub fn duration(&self) -> Option<isize> {
+    pub fn duration(&self) -> Option<u32> {
         self.duration
     }
 

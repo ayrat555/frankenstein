@@ -21,7 +21,7 @@ pub struct VoiceChatStarted {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct VoiceChatScheduled {
-    pub start_date: isize,
+    pub start_date: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -36,7 +36,7 @@ pub enum FileEnum {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Update {
-    pub update_id: isize,
+    pub update_id: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message: Option<Message>,
@@ -90,7 +90,7 @@ pub struct WebhookInfo {
     pub ip_address: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_error_date: Option<isize>,
+    pub last_error_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_error_message: Option<String>,
@@ -104,7 +104,7 @@ pub struct WebhookInfo {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct User {
-    pub id: isize,
+    pub id: u64,
 
     pub is_bot: bool,
 
@@ -131,7 +131,7 @@ pub struct User {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Chat {
-    pub id: isize,
+    pub id: i64,
 
     #[serde(rename = "type")]
     pub type_field: String,
@@ -179,7 +179,7 @@ pub struct Chat {
     pub can_set_sticker_set: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub linked_chat_id: Option<isize>,
+    pub linked_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<ChatLocation>,
@@ -187,7 +187,7 @@ pub struct Chat {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Message {
-    pub message_id: isize,
+    pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub from: Option<User>,
@@ -195,7 +195,7 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sender_chat: Option<Chat>,
 
-    pub date: isize,
+    pub date: u64,
 
     pub chat: Chat,
 
@@ -206,7 +206,7 @@ pub struct Message {
     pub forward_from_chat: Option<Chat>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub forward_from_message_id: Option<isize>,
+    pub forward_from_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub forward_signature: Option<String>,
@@ -215,7 +215,7 @@ pub struct Message {
     pub forward_sender_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub forward_date: Option<isize>,
+    pub forward_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message: Option<Box<Message>>,
@@ -224,7 +224,7 @@ pub struct Message {
     pub via_bot: Option<User>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub edit_date: Option<isize>,
+    pub edit_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub media_group_id: Option<String>,
@@ -314,10 +314,10 @@ pub struct Message {
     pub message_auto_delete_timer_changed: Option<MessageAutoDeleteTimerChanged>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub migrate_to_chat_id: Option<isize>,
+    pub migrate_to_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub migrate_from_chat_id: Option<isize>,
+    pub migrate_from_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub pinned_message: Option<Box<Message>>,
@@ -355,7 +355,7 @@ pub struct Message {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct MessageId {
-    pub message_id: isize,
+    pub message_id: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -383,12 +383,12 @@ pub struct PhotoSize {
 
     pub file_unique_id: String,
 
-    pub width: isize,
+    pub width: u32,
 
-    pub height: isize,
+    pub height: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -397,11 +397,11 @@ pub struct Animation {
 
     pub file_unique_id: String,
 
-    pub width: isize,
+    pub width: u32,
 
-    pub height: isize,
+    pub height: u32,
 
-    pub duration: isize,
+    pub duration: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<PhotoSize>,
@@ -413,7 +413,7 @@ pub struct Animation {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -422,7 +422,7 @@ pub struct Audio {
 
     pub file_unique_id: String,
 
-    pub duration: isize,
+    pub duration: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub performer: Option<String>,
@@ -437,7 +437,7 @@ pub struct Audio {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<PhotoSize>,
@@ -459,7 +459,7 @@ pub struct Document {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -468,11 +468,11 @@ pub struct Video {
 
     pub file_unique_id: String,
 
-    pub width: isize,
+    pub width: u32,
 
-    pub height: isize,
+    pub height: u32,
 
-    pub duration: isize,
+    pub duration: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<PhotoSize>,
@@ -484,7 +484,7 @@ pub struct Video {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -495,13 +495,13 @@ pub struct VideoNote {
 
     pub length: isize,
 
-    pub duration: isize,
+    pub duration: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -510,13 +510,13 @@ pub struct Voice {
 
     pub file_unique_id: String,
 
-    pub duration: isize,
+    pub duration: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -529,7 +529,7 @@ pub struct Contact {
     pub last_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub user_id: Option<isize>,
+    pub user_id: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub vcard: Option<String>,
@@ -589,7 +589,7 @@ pub struct Poll {
     pub open_period: Option<isize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub close_date: Option<isize>,
+    pub close_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -648,7 +648,7 @@ pub struct MessageAutoDeleteTimerChanged {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct VoiceChatEnded {
-    pub duration: isize,
+    pub duration: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -671,7 +671,7 @@ pub struct File {
     pub file_unique_id: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub file_path: Option<String>,
@@ -816,10 +816,10 @@ pub struct ChatInviteLink {
     pub is_revoked: bool,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expire_date: Option<isize>,
+    pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub member_limit: Option<isize>,
+    pub member_limit: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -886,7 +886,7 @@ pub struct ChatMember {
     pub can_add_web_page_previews: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub until_date: Option<isize>,
+    pub until_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -895,7 +895,7 @@ pub struct ChatMemberUpdated {
 
     pub from: User,
 
-    pub date: isize,
+    pub date: u64,
 
     pub old_chat_member: ChatMember,
 
@@ -949,7 +949,7 @@ pub struct BotCommand {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ResponseParameters {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub migrate_to_chat_id: Option<isize>,
+    pub migrate_to_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub retry_after: Option<isize>,
@@ -961,9 +961,9 @@ pub struct Sticker {
 
     pub file_unique_id: String,
 
-    pub width: isize,
+    pub width: u32,
 
-    pub height: isize,
+    pub height: u32,
 
     pub is_animated: bool,
 
@@ -980,7 +980,7 @@ pub struct Sticker {
     pub mask_position: Option<MaskPosition>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub file_size: Option<isize>,
+    pub file_size: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1054,10 +1054,10 @@ pub struct InlineQueryResultArticle {
     pub thumb_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_width: Option<isize>,
+    pub thumb_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_height: Option<isize>,
+    pub thumb_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1072,10 +1072,10 @@ pub struct InlineQueryResultPhoto {
     pub thumb_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_width: Option<isize>,
+    pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_height: Option<isize>,
+    pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -1109,13 +1109,13 @@ pub struct InlineQueryResultGif {
     pub gif_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub gif_width: Option<isize>,
+    pub gif_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub gif_height: Option<isize>,
+    pub gif_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub gif_duration: Option<isize>,
+    pub gif_duration: Option<u32>,
 
     pub thumb_url: String,
 
@@ -1151,13 +1151,13 @@ pub struct InlineQueryResultMpeg4Gif {
     pub mpeg4_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub mpeg4_width: Option<isize>,
+    pub mpeg4_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub mpeg4_height: Option<isize>,
+    pub mpeg4_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub mpeg4_duration: Option<isize>,
+    pub mpeg4_duration: Option<u32>,
 
     pub thumb_url: String,
 
@@ -1208,13 +1208,13 @@ pub struct InlineQueryResultVideo {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub video_width: Option<isize>,
+    pub video_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub video_height: Option<isize>,
+    pub video_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub video_duration: Option<isize>,
+    pub video_duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -1250,7 +1250,7 @@ pub struct InlineQueryResultAudio {
     pub performer: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub audio_duration: Option<isize>,
+    pub audio_duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<InlineKeyboardMarkup>,
@@ -1280,7 +1280,7 @@ pub struct InlineQueryResultVoice {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub voice_duration: Option<isize>,
+    pub voice_duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<InlineKeyboardMarkup>,
@@ -1324,10 +1324,10 @@ pub struct InlineQueryResultDocument {
     pub thumb_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_width: Option<isize>,
+    pub thumb_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_height: Option<isize>,
+    pub thumb_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1365,10 +1365,10 @@ pub struct InlineQueryResultLocation {
     pub thumb_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_width: Option<isize>,
+    pub thumb_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_height: Option<isize>,
+    pub thumb_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1408,10 +1408,10 @@ pub struct InlineQueryResultVenue {
     pub thumb_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_width: Option<isize>,
+    pub thumb_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_height: Option<isize>,
+    pub thumb_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1441,10 +1441,10 @@ pub struct InlineQueryResultContact {
     pub thumb_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_width: Option<isize>,
+    pub thumb_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub thumb_height: Option<isize>,
+    pub thumb_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1735,13 +1735,13 @@ pub struct InputInvoiceMessageContent {
     pub photo_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_size: Option<isize>,
+    pub photo_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_width: Option<isize>,
+    pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub photo_height: Option<isize>,
+    pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub need_name: Option<bool>,
@@ -1937,9 +1937,9 @@ pub struct PassportFile {
 
     pub file_unique_id: String,
 
-    pub file_size: isize,
+    pub file_size: u32,
 
-    pub file_date: isize,
+    pub file_date: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -2112,7 +2112,7 @@ pub struct GameHighScore {
 }
 
 impl Update {
-    pub fn new(update_id: isize) -> Self {
+    pub fn new(update_id: u32) -> Self {
         Self {
             update_id,
             message: None,
@@ -2131,7 +2131,7 @@ impl Update {
         }
     }
 
-    pub fn set_update_id(&mut self, update_id: isize) {
+    pub fn set_update_id(&mut self, update_id: u32) {
         self.update_id = update_id;
     }
 
@@ -2187,7 +2187,7 @@ impl Update {
         self.chat_member = chat_member;
     }
 
-    pub fn update_id(&self) -> isize {
+    pub fn update_id(&self) -> u32 {
         self.update_id
     }
 
@@ -2274,7 +2274,7 @@ impl WebhookInfo {
         self.ip_address = ip_address;
     }
 
-    pub fn set_last_error_date(&mut self, last_error_date: Option<isize>) {
+    pub fn set_last_error_date(&mut self, last_error_date: Option<u64>) {
         self.last_error_date = last_error_date;
     }
 
@@ -2306,7 +2306,7 @@ impl WebhookInfo {
         self.ip_address.clone()
     }
 
-    pub fn last_error_date(&self) -> Option<isize> {
+    pub fn last_error_date(&self) -> Option<u64> {
         self.last_error_date
     }
 
@@ -2324,7 +2324,7 @@ impl WebhookInfo {
 }
 
 impl User {
-    pub fn new(id: isize, is_bot: bool, first_name: String) -> Self {
+    pub fn new(id: u64, is_bot: bool, first_name: String) -> Self {
         Self {
             id,
             is_bot,
@@ -2338,7 +2338,7 @@ impl User {
         }
     }
 
-    pub fn set_id(&mut self, id: isize) {
+    pub fn set_id(&mut self, id: u64) {
         self.id = id;
     }
 
@@ -2374,7 +2374,7 @@ impl User {
         self.supports_inline_queries = supports_inline_queries;
     }
 
-    pub fn id(&self) -> isize {
+    pub fn id(&self) -> u64 {
         self.id
     }
 
@@ -2412,7 +2412,7 @@ impl User {
 }
 
 impl Chat {
-    pub fn new(id: isize, type_field: String) -> Self {
+    pub fn new(id: i64, type_field: String) -> Self {
         Self {
             id,
             type_field,
@@ -2435,7 +2435,7 @@ impl Chat {
         }
     }
 
-    pub fn set_id(&mut self, id: isize) {
+    pub fn set_id(&mut self, id: i64) {
         self.id = id;
     }
 
@@ -2499,7 +2499,7 @@ impl Chat {
         self.can_set_sticker_set = can_set_sticker_set;
     }
 
-    pub fn set_linked_chat_id(&mut self, linked_chat_id: Option<isize>) {
+    pub fn set_linked_chat_id(&mut self, linked_chat_id: Option<i64>) {
         self.linked_chat_id = linked_chat_id;
     }
 
@@ -2507,7 +2507,7 @@ impl Chat {
         self.location = location;
     }
 
-    pub fn id(&self) -> isize {
+    pub fn id(&self) -> i64 {
         self.id
     }
 
@@ -2571,7 +2571,7 @@ impl Chat {
         self.can_set_sticker_set
     }
 
-    pub fn linked_chat_id(&self) -> Option<isize> {
+    pub fn linked_chat_id(&self) -> Option<i64> {
         self.linked_chat_id
     }
 
@@ -2581,7 +2581,7 @@ impl Chat {
 }
 
 impl Message {
-    pub fn new(message_id: isize, date: isize, chat: Chat) -> Self {
+    pub fn new(message_id: i32, date: u64, chat: Chat) -> Self {
         Self {
             message_id,
             date,
@@ -2642,11 +2642,11 @@ impl Message {
         }
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
-    pub fn set_date(&mut self, date: isize) {
+    pub fn set_date(&mut self, date: u64) {
         self.date = date;
     }
 
@@ -2670,7 +2670,7 @@ impl Message {
         self.forward_from_chat = forward_from_chat;
     }
 
-    pub fn set_forward_from_message_id(&mut self, forward_from_message_id: Option<isize>) {
+    pub fn set_forward_from_message_id(&mut self, forward_from_message_id: Option<i32>) {
         self.forward_from_message_id = forward_from_message_id;
     }
 
@@ -2682,7 +2682,7 @@ impl Message {
         self.forward_sender_name = forward_sender_name;
     }
 
-    pub fn set_forward_date(&mut self, forward_date: Option<isize>) {
+    pub fn set_forward_date(&mut self, forward_date: Option<u64>) {
         self.forward_date = forward_date;
     }
 
@@ -2694,7 +2694,7 @@ impl Message {
         self.via_bot = via_bot;
     }
 
-    pub fn set_edit_date(&mut self, edit_date: Option<isize>) {
+    pub fn set_edit_date(&mut self, edit_date: Option<u64>) {
         self.edit_date = edit_date;
     }
 
@@ -2817,11 +2817,11 @@ impl Message {
         self.message_auto_delete_timer_changed = message_auto_delete_timer_changed;
     }
 
-    pub fn set_migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<isize>) {
+    pub fn set_migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<i64>) {
         self.migrate_to_chat_id = migrate_to_chat_id;
     }
 
-    pub fn set_migrate_from_chat_id(&mut self, migrate_from_chat_id: Option<isize>) {
+    pub fn set_migrate_from_chat_id(&mut self, migrate_from_chat_id: Option<i64>) {
         self.migrate_from_chat_id = migrate_from_chat_id;
     }
 
@@ -2879,11 +2879,11 @@ impl Message {
         self.voice_chat_scheduled.clone()
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 
-    pub fn date(&self) -> isize {
+    pub fn date(&self) -> u64 {
         self.date
     }
 
@@ -2907,7 +2907,7 @@ impl Message {
         self.forward_from_chat.clone()
     }
 
-    pub fn forward_from_message_id(&self) -> Option<isize> {
+    pub fn forward_from_message_id(&self) -> Option<i32> {
         self.forward_from_message_id
     }
 
@@ -2919,7 +2919,7 @@ impl Message {
         self.forward_sender_name.clone()
     }
 
-    pub fn forward_date(&self) -> Option<isize> {
+    pub fn forward_date(&self) -> Option<u64> {
         self.forward_date
     }
 
@@ -2931,7 +2931,7 @@ impl Message {
         self.via_bot.clone()
     }
 
-    pub fn edit_date(&self) -> Option<isize> {
+    pub fn edit_date(&self) -> Option<u64> {
         self.edit_date
     }
 
@@ -3051,11 +3051,11 @@ impl Message {
         self.message_auto_delete_timer_changed.clone()
     }
 
-    pub fn migrate_to_chat_id(&self) -> Option<isize> {
+    pub fn migrate_to_chat_id(&self) -> Option<i64> {
         self.migrate_to_chat_id
     }
 
-    pub fn migrate_from_chat_id(&self) -> Option<isize> {
+    pub fn migrate_from_chat_id(&self) -> Option<i64> {
         self.migrate_from_chat_id
     }
 
@@ -3101,15 +3101,15 @@ impl Message {
 }
 
 impl MessageId {
-    pub fn new(message_id: isize) -> Self {
+    pub fn new(message_id: i32) -> Self {
         Self { message_id }
     }
 
-    pub fn set_message_id(&mut self, message_id: isize) {
+    pub fn set_message_id(&mut self, message_id: i32) {
         self.message_id = message_id;
     }
 
-    pub fn message_id(&self) -> isize {
+    pub fn message_id(&self) -> i32 {
         self.message_id
     }
 }
@@ -3176,7 +3176,7 @@ impl MessageEntity {
 }
 
 impl PhotoSize {
-    pub fn new(file_id: String, file_unique_id: String, width: isize, height: isize) -> Self {
+    pub fn new(file_id: String, file_unique_id: String, width: u32, height: u32) -> Self {
         Self {
             file_id,
             file_unique_id,
@@ -3194,15 +3194,15 @@ impl PhotoSize {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: u32) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: u32) {
         self.height = height;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3214,15 +3214,15 @@ impl PhotoSize {
         self.file_unique_id.clone()
     }
 
-    pub fn width(&self) -> isize {
+    pub fn width(&self) -> u32 {
         self.width
     }
 
-    pub fn height(&self) -> isize {
+    pub fn height(&self) -> u32 {
         self.height
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
@@ -3231,9 +3231,9 @@ impl Animation {
     pub fn new(
         file_id: String,
         file_unique_id: String,
-        width: isize,
-        height: isize,
-        duration: isize,
+        width: u32,
+        height: u32,
+        duration: u32,
     ) -> Self {
         Self {
             file_id,
@@ -3256,15 +3256,15 @@ impl Animation {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: u32) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: u32) {
         self.height = height;
     }
 
-    pub fn set_duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: u32) {
         self.duration = duration;
     }
 
@@ -3280,7 +3280,7 @@ impl Animation {
         self.mime_type = mime_type;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3292,15 +3292,15 @@ impl Animation {
         self.file_unique_id.clone()
     }
 
-    pub fn width(&self) -> isize {
+    pub fn width(&self) -> u32 {
         self.width
     }
 
-    pub fn height(&self) -> isize {
+    pub fn height(&self) -> u32 {
         self.height
     }
 
-    pub fn duration(&self) -> isize {
+    pub fn duration(&self) -> u32 {
         self.duration
     }
 
@@ -3316,13 +3316,13 @@ impl Animation {
         self.mime_type.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
 
 impl Audio {
-    pub fn new(file_id: String, file_unique_id: String, duration: isize) -> Self {
+    pub fn new(file_id: String, file_unique_id: String, duration: u32) -> Self {
         Self {
             file_id,
             file_unique_id,
@@ -3344,7 +3344,7 @@ impl Audio {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: u32) {
         self.duration = duration;
     }
 
@@ -3364,7 +3364,7 @@ impl Audio {
         self.mime_type = mime_type;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3380,7 +3380,7 @@ impl Audio {
         self.file_unique_id.clone()
     }
 
-    pub fn duration(&self) -> isize {
+    pub fn duration(&self) -> u32 {
         self.duration
     }
 
@@ -3400,7 +3400,7 @@ impl Audio {
         self.mime_type.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 
@@ -3441,7 +3441,7 @@ impl Document {
         self.mime_type = mime_type;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3465,7 +3465,7 @@ impl Document {
         self.mime_type.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
@@ -3474,9 +3474,9 @@ impl Video {
     pub fn new(
         file_id: String,
         file_unique_id: String,
-        width: isize,
-        height: isize,
-        duration: isize,
+        width: u32,
+        height: u32,
+        duration: u32,
     ) -> Self {
         Self {
             file_id,
@@ -3499,15 +3499,15 @@ impl Video {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: u32) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: u32) {
         self.height = height;
     }
 
-    pub fn set_duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: u32) {
         self.duration = duration;
     }
 
@@ -3523,7 +3523,7 @@ impl Video {
         self.mime_type = mime_type;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3535,15 +3535,15 @@ impl Video {
         self.file_unique_id.clone()
     }
 
-    pub fn width(&self) -> isize {
+    pub fn width(&self) -> u32 {
         self.width
     }
 
-    pub fn height(&self) -> isize {
+    pub fn height(&self) -> u32 {
         self.height
     }
 
-    pub fn duration(&self) -> isize {
+    pub fn duration(&self) -> u32 {
         self.duration
     }
 
@@ -3559,13 +3559,13 @@ impl Video {
         self.mime_type.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
 
 impl VideoNote {
-    pub fn new(file_id: String, file_unique_id: String, length: isize, duration: isize) -> Self {
+    pub fn new(file_id: String, file_unique_id: String, length: isize, duration: u32) -> Self {
         Self {
             file_id,
             file_unique_id,
@@ -3588,7 +3588,7 @@ impl VideoNote {
         self.length = length;
     }
 
-    pub fn set_duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: u32) {
         self.duration = duration;
     }
 
@@ -3596,7 +3596,7 @@ impl VideoNote {
         self.thumb = thumb;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3612,7 +3612,7 @@ impl VideoNote {
         self.length
     }
 
-    pub fn duration(&self) -> isize {
+    pub fn duration(&self) -> u32 {
         self.duration
     }
 
@@ -3620,13 +3620,13 @@ impl VideoNote {
         self.thumb.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
 
 impl Voice {
-    pub fn new(file_id: String, file_unique_id: String, duration: isize) -> Self {
+    pub fn new(file_id: String, file_unique_id: String, duration: u32) -> Self {
         Self {
             file_id,
             file_unique_id,
@@ -3644,7 +3644,7 @@ impl Voice {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: u32) {
         self.duration = duration;
     }
 
@@ -3652,7 +3652,7 @@ impl Voice {
         self.mime_type = mime_type;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -3664,7 +3664,7 @@ impl Voice {
         self.file_unique_id.clone()
     }
 
-    pub fn duration(&self) -> isize {
+    pub fn duration(&self) -> u32 {
         self.duration
     }
 
@@ -3672,7 +3672,7 @@ impl Voice {
         self.mime_type.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
@@ -3700,7 +3700,7 @@ impl Contact {
         self.last_name = last_name;
     }
 
-    pub fn set_user_id(&mut self, user_id: Option<isize>) {
+    pub fn set_user_id(&mut self, user_id: Option<u64>) {
         self.user_id = user_id;
     }
 
@@ -3720,7 +3720,7 @@ impl Contact {
         self.last_name.clone()
     }
 
-    pub fn user_id(&self) -> Option<isize> {
+    pub fn user_id(&self) -> Option<u64> {
         self.user_id
     }
 
@@ -3883,7 +3883,7 @@ impl Poll {
         self.open_period = open_period;
     }
 
-    pub fn set_close_date(&mut self, close_date: Option<isize>) {
+    pub fn set_close_date(&mut self, close_date: Option<u64>) {
         self.close_date = close_date;
     }
 
@@ -3935,7 +3935,7 @@ impl Poll {
         self.open_period
     }
 
-    pub fn close_date(&self) -> Option<isize> {
+    pub fn close_date(&self) -> Option<u64> {
         self.close_date
     }
 }
@@ -4122,29 +4122,29 @@ impl MessageAutoDeleteTimerChanged {
 }
 
 impl VoiceChatEnded {
-    pub fn new(duration: isize) -> Self {
+    pub fn new(duration: u32) -> Self {
         Self { duration }
     }
 
-    pub fn set_duration(&mut self, duration: isize) {
+    pub fn set_duration(&mut self, duration: u32) {
         self.duration = duration;
     }
 
-    pub fn duration(&self) -> isize {
+    pub fn duration(&self) -> u32 {
         self.duration
     }
 }
 
 impl VoiceChatScheduled {
-    pub fn new(start_date: isize) -> Self {
+    pub fn new(start_date: u64) -> Self {
         Self { start_date }
     }
 
-    pub fn set_start_date(&mut self, start_date: isize) {
+    pub fn set_start_date(&mut self, start_date: u64) {
         self.start_date = start_date;
     }
 
-    pub fn start_date(&self) -> isize {
+    pub fn start_date(&self) -> u64 {
         self.start_date
     }
 }
@@ -4206,7 +4206,7 @@ impl File {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -4222,7 +4222,7 @@ impl File {
         self.file_unique_id.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 
@@ -4666,11 +4666,11 @@ impl ChatInviteLink {
         self.is_revoked = is_revoked;
     }
 
-    pub fn set_expire_date(&mut self, expire_date: Option<isize>) {
+    pub fn set_expire_date(&mut self, expire_date: Option<u64>) {
         self.expire_date = expire_date;
     }
 
-    pub fn set_member_limit(&mut self, member_limit: Option<isize>) {
+    pub fn set_member_limit(&mut self, member_limit: Option<u32>) {
         self.member_limit = member_limit;
     }
 
@@ -4690,11 +4690,11 @@ impl ChatInviteLink {
         self.is_revoked
     }
 
-    pub fn expire_date(&self) -> Option<isize> {
+    pub fn expire_date(&self) -> Option<u64> {
         self.expire_date
     }
 
-    pub fn member_limit(&self) -> Option<isize> {
+    pub fn member_limit(&self) -> Option<u32> {
         self.member_limit
     }
 }
@@ -4811,7 +4811,7 @@ impl ChatMember {
         self.can_add_web_page_previews = can_add_web_page_previews;
     }
 
-    pub fn set_until_date(&mut self, until_date: Option<isize>) {
+    pub fn set_until_date(&mut self, until_date: Option<u64>) {
         self.until_date = until_date;
     }
 
@@ -4899,7 +4899,7 @@ impl ChatMember {
         self.can_add_web_page_previews
     }
 
-    pub fn until_date(&self) -> Option<isize> {
+    pub fn until_date(&self) -> Option<u64> {
         self.until_date
     }
 }
@@ -4908,7 +4908,7 @@ impl ChatMemberUpdated {
     pub fn new(
         chat: Chat,
         from: User,
-        date: isize,
+        date: u64,
         old_chat_member: ChatMember,
         new_chat_member: ChatMember,
     ) -> Self {
@@ -4930,7 +4930,7 @@ impl ChatMemberUpdated {
         self.from = from;
     }
 
-    pub fn set_date(&mut self, date: isize) {
+    pub fn set_date(&mut self, date: u64) {
         self.date = date;
     }
 
@@ -4954,7 +4954,7 @@ impl ChatMemberUpdated {
         self.from.clone()
     }
 
-    pub fn date(&self) -> isize {
+    pub fn date(&self) -> u64 {
         self.date
     }
 
@@ -5105,7 +5105,7 @@ impl ResponseParameters {
         }
     }
 
-    pub fn set_migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<isize>) {
+    pub fn set_migrate_to_chat_id(&mut self, migrate_to_chat_id: Option<i64>) {
         self.migrate_to_chat_id = migrate_to_chat_id;
     }
 
@@ -5113,7 +5113,7 @@ impl ResponseParameters {
         self.retry_after = retry_after;
     }
 
-    pub fn migrate_to_chat_id(&self) -> Option<isize> {
+    pub fn migrate_to_chat_id(&self) -> Option<i64> {
         self.migrate_to_chat_id
     }
 
@@ -5126,8 +5126,8 @@ impl Sticker {
     pub fn new(
         file_id: String,
         file_unique_id: String,
-        width: isize,
-        height: isize,
+        width: u32,
+        height: u32,
         is_animated: bool,
     ) -> Self {
         Self {
@@ -5152,11 +5152,11 @@ impl Sticker {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_width(&mut self, width: isize) {
+    pub fn set_width(&mut self, width: u32) {
         self.width = width;
     }
 
-    pub fn set_height(&mut self, height: isize) {
+    pub fn set_height(&mut self, height: u32) {
         self.height = height;
     }
 
@@ -5180,7 +5180,7 @@ impl Sticker {
         self.mask_position = mask_position;
     }
 
-    pub fn set_file_size(&mut self, file_size: Option<isize>) {
+    pub fn set_file_size(&mut self, file_size: Option<u32>) {
         self.file_size = file_size;
     }
 
@@ -5192,11 +5192,11 @@ impl Sticker {
         self.file_unique_id.clone()
     }
 
-    pub fn width(&self) -> isize {
+    pub fn width(&self) -> u32 {
         self.width
     }
 
-    pub fn height(&self) -> isize {
+    pub fn height(&self) -> u32 {
         self.height
     }
 
@@ -5220,7 +5220,7 @@ impl Sticker {
         self.mask_position.clone()
     }
 
-    pub fn file_size(&self) -> Option<isize> {
+    pub fn file_size(&self) -> Option<u32> {
         self.file_size
     }
 }
@@ -5449,11 +5449,11 @@ impl InlineQueryResultArticle {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<u32>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
     }
 
@@ -5493,11 +5493,11 @@ impl InlineQueryResultArticle {
         self.thumb_url.clone()
     }
 
-    pub fn thumb_width(&self) -> Option<isize> {
+    pub fn thumb_width(&self) -> Option<u32> {
         self.thumb_width
     }
 
-    pub fn thumb_height(&self) -> Option<isize> {
+    pub fn thumb_height(&self) -> Option<u32> {
         self.thumb_height
     }
 }
@@ -5537,11 +5537,11 @@ impl InlineQueryResultPhoto {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_photo_width(&mut self, photo_width: Option<isize>) {
+    pub fn set_photo_width(&mut self, photo_width: Option<u32>) {
         self.photo_width = photo_width;
     }
 
-    pub fn set_photo_height(&mut self, photo_height: Option<isize>) {
+    pub fn set_photo_height(&mut self, photo_height: Option<u32>) {
         self.photo_height = photo_height;
     }
 
@@ -5592,11 +5592,11 @@ impl InlineQueryResultPhoto {
         self.thumb_url.clone()
     }
 
-    pub fn photo_width(&self) -> Option<isize> {
+    pub fn photo_width(&self) -> Option<u32> {
         self.photo_width
     }
 
-    pub fn photo_height(&self) -> Option<isize> {
+    pub fn photo_height(&self) -> Option<u32> {
         self.photo_height
     }
 
@@ -5665,15 +5665,15 @@ impl InlineQueryResultGif {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_gif_width(&mut self, gif_width: Option<isize>) {
+    pub fn set_gif_width(&mut self, gif_width: Option<u32>) {
         self.gif_width = gif_width;
     }
 
-    pub fn set_gif_height(&mut self, gif_height: Option<isize>) {
+    pub fn set_gif_height(&mut self, gif_height: Option<u32>) {
         self.gif_height = gif_height;
     }
 
-    pub fn set_gif_duration(&mut self, gif_duration: Option<isize>) {
+    pub fn set_gif_duration(&mut self, gif_duration: Option<u32>) {
         self.gif_duration = gif_duration;
     }
 
@@ -5724,15 +5724,15 @@ impl InlineQueryResultGif {
         self.thumb_url.clone()
     }
 
-    pub fn gif_width(&self) -> Option<isize> {
+    pub fn gif_width(&self) -> Option<u32> {
         self.gif_width
     }
 
-    pub fn gif_height(&self) -> Option<isize> {
+    pub fn gif_height(&self) -> Option<u32> {
         self.gif_height
     }
 
-    pub fn gif_duration(&self) -> Option<isize> {
+    pub fn gif_duration(&self) -> Option<u32> {
         self.gif_duration
     }
 
@@ -5801,15 +5801,15 @@ impl InlineQueryResultMpeg4Gif {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_mpeg4_width(&mut self, mpeg4_width: Option<isize>) {
+    pub fn set_mpeg4_width(&mut self, mpeg4_width: Option<u32>) {
         self.mpeg4_width = mpeg4_width;
     }
 
-    pub fn set_mpeg4_height(&mut self, mpeg4_height: Option<isize>) {
+    pub fn set_mpeg4_height(&mut self, mpeg4_height: Option<u32>) {
         self.mpeg4_height = mpeg4_height;
     }
 
-    pub fn set_mpeg4_duration(&mut self, mpeg4_duration: Option<isize>) {
+    pub fn set_mpeg4_duration(&mut self, mpeg4_duration: Option<u32>) {
         self.mpeg4_duration = mpeg4_duration;
     }
 
@@ -5860,15 +5860,15 @@ impl InlineQueryResultMpeg4Gif {
         self.thumb_url.clone()
     }
 
-    pub fn mpeg4_width(&self) -> Option<isize> {
+    pub fn mpeg4_width(&self) -> Option<u32> {
         self.mpeg4_width
     }
 
-    pub fn mpeg4_height(&self) -> Option<isize> {
+    pub fn mpeg4_height(&self) -> Option<u32> {
         self.mpeg4_height
     }
 
-    pub fn mpeg4_duration(&self) -> Option<isize> {
+    pub fn mpeg4_duration(&self) -> Option<u32> {
         self.mpeg4_duration
     }
 
@@ -5964,15 +5964,15 @@ impl InlineQueryResultVideo {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_video_width(&mut self, video_width: Option<isize>) {
+    pub fn set_video_width(&mut self, video_width: Option<u32>) {
         self.video_width = video_width;
     }
 
-    pub fn set_video_height(&mut self, video_height: Option<isize>) {
+    pub fn set_video_height(&mut self, video_height: Option<u32>) {
         self.video_height = video_height;
     }
 
-    pub fn set_video_duration(&mut self, video_duration: Option<isize>) {
+    pub fn set_video_duration(&mut self, video_duration: Option<u32>) {
         self.video_duration = video_duration;
     }
 
@@ -6027,15 +6027,15 @@ impl InlineQueryResultVideo {
         self.caption_entities.clone()
     }
 
-    pub fn video_width(&self) -> Option<isize> {
+    pub fn video_width(&self) -> Option<u32> {
         self.video_width
     }
 
-    pub fn video_height(&self) -> Option<isize> {
+    pub fn video_height(&self) -> Option<u32> {
         self.video_height
     }
 
-    pub fn video_duration(&self) -> Option<isize> {
+    pub fn video_duration(&self) -> Option<u32> {
         self.video_duration
     }
 
@@ -6101,7 +6101,7 @@ impl InlineQueryResultAudio {
         self.performer = performer;
     }
 
-    pub fn set_audio_duration(&mut self, audio_duration: Option<isize>) {
+    pub fn set_audio_duration(&mut self, audio_duration: Option<u32>) {
         self.audio_duration = audio_duration;
     }
 
@@ -6148,7 +6148,7 @@ impl InlineQueryResultAudio {
         self.performer.clone()
     }
 
-    pub fn audio_duration(&self) -> Option<isize> {
+    pub fn audio_duration(&self) -> Option<u32> {
         self.audio_duration
     }
 
@@ -6205,7 +6205,7 @@ impl InlineQueryResultVoice {
         self.caption_entities = caption_entities;
     }
 
-    pub fn set_voice_duration(&mut self, voice_duration: Option<isize>) {
+    pub fn set_voice_duration(&mut self, voice_duration: Option<u32>) {
         self.voice_duration = voice_duration;
     }
 
@@ -6248,7 +6248,7 @@ impl InlineQueryResultVoice {
         self.caption_entities.clone()
     }
 
-    pub fn voice_duration(&self) -> Option<isize> {
+    pub fn voice_duration(&self) -> Option<u32> {
         self.voice_duration
     }
 
@@ -6332,11 +6332,11 @@ impl InlineQueryResultDocument {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<u32>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
     }
 
@@ -6388,11 +6388,11 @@ impl InlineQueryResultDocument {
         self.thumb_url.clone()
     }
 
-    pub fn thumb_width(&self) -> Option<isize> {
+    pub fn thumb_width(&self) -> Option<u32> {
         self.thumb_width
     }
 
-    pub fn thumb_height(&self) -> Option<isize> {
+    pub fn thumb_height(&self) -> Option<u32> {
         self.thumb_height
     }
 }
@@ -6468,11 +6468,11 @@ impl InlineQueryResultLocation {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<u32>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
     }
 
@@ -6524,11 +6524,11 @@ impl InlineQueryResultLocation {
         self.thumb_url.clone()
     }
 
-    pub fn thumb_width(&self) -> Option<isize> {
+    pub fn thumb_width(&self) -> Option<u32> {
         self.thumb_width
     }
 
-    pub fn thumb_height(&self) -> Option<isize> {
+    pub fn thumb_height(&self) -> Option<u32> {
         self.thumb_height
     }
 }
@@ -6609,11 +6609,11 @@ impl InlineQueryResultVenue {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<u32>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
     }
 
@@ -6669,11 +6669,11 @@ impl InlineQueryResultVenue {
         self.thumb_url.clone()
     }
 
-    pub fn thumb_width(&self) -> Option<isize> {
+    pub fn thumb_width(&self) -> Option<u32> {
         self.thumb_width
     }
 
-    pub fn thumb_height(&self) -> Option<isize> {
+    pub fn thumb_height(&self) -> Option<u32> {
         self.thumb_height
     }
 }
@@ -6734,11 +6734,11 @@ impl InlineQueryResultContact {
         self.thumb_url = thumb_url;
     }
 
-    pub fn set_thumb_width(&mut self, thumb_width: Option<isize>) {
+    pub fn set_thumb_width(&mut self, thumb_width: Option<u32>) {
         self.thumb_width = thumb_width;
     }
 
-    pub fn set_thumb_height(&mut self, thumb_height: Option<isize>) {
+    pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
     }
 
@@ -6778,11 +6778,11 @@ impl InlineQueryResultContact {
         self.thumb_url.clone()
     }
 
-    pub fn thumb_width(&self) -> Option<isize> {
+    pub fn thumb_width(&self) -> Option<u32> {
         self.thumb_width
     }
 
-    pub fn thumb_height(&self) -> Option<isize> {
+    pub fn thumb_height(&self) -> Option<u32> {
         self.thumb_height
     }
 }
@@ -7839,15 +7839,15 @@ impl InputInvoiceMessageContent {
         self.photo_url = photo_url;
     }
 
-    pub fn set_photo_size(&mut self, photo_size: Option<isize>) {
+    pub fn set_photo_size(&mut self, photo_size: Option<u32>) {
         self.photo_size = photo_size;
     }
 
-    pub fn set_photo_width(&mut self, photo_width: Option<isize>) {
+    pub fn set_photo_width(&mut self, photo_width: Option<u32>) {
         self.photo_width = photo_width;
     }
 
-    pub fn set_photo_height(&mut self, photo_height: Option<isize>) {
+    pub fn set_photo_height(&mut self, photo_height: Option<u32>) {
         self.photo_height = photo_height;
     }
 
@@ -7922,15 +7922,15 @@ impl InputInvoiceMessageContent {
         self.photo_url.clone()
     }
 
-    pub fn photo_size(&self) -> Option<isize> {
+    pub fn photo_size(&self) -> Option<u32> {
         self.photo_size
     }
 
-    pub fn photo_width(&self) -> Option<isize> {
+    pub fn photo_width(&self) -> Option<u32> {
         self.photo_width
     }
 
-    pub fn photo_height(&self) -> Option<isize> {
+    pub fn photo_height(&self) -> Option<u32> {
         self.photo_height
     }
 
@@ -8462,8 +8462,8 @@ impl PassportFile {
     pub fn new(
         file_id: String,
         file_unique_id: String,
-        file_size: isize,
-        file_date: isize,
+        file_size: u32,
+        file_date: u64,
     ) -> Self {
         Self {
             file_id,
@@ -8481,11 +8481,11 @@ impl PassportFile {
         self.file_unique_id = file_unique_id;
     }
 
-    pub fn set_file_size(&mut self, file_size: isize) {
+    pub fn set_file_size(&mut self, file_size: u32) {
         self.file_size = file_size;
     }
 
-    pub fn set_file_date(&mut self, file_date: isize) {
+    pub fn set_file_date(&mut self, file_date: u64) {
         self.file_date = file_date;
     }
 
@@ -8497,11 +8497,11 @@ impl PassportFile {
         self.file_unique_id.clone()
     }
 
-    pub fn file_size(&self) -> isize {
+    pub fn file_size(&self) -> u32 {
         self.file_size
     }
 
-    pub fn file_date(&self) -> isize {
+    pub fn file_date(&self) -> u64 {
         self.file_date
     }
 }

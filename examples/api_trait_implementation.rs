@@ -143,7 +143,7 @@ impl TelegramApi for Api {
 fn main() {
     let api = Api::new(TOKEN.to_string());
 
-    let params = SendMessageParams::new(ChatIdEnum::IsizeVariant(275808073), "Hello!".to_string());
+    let params = SendMessageParams::new(ChatIdEnum::IntegerVariant(275808073), "Hello!".to_string());
 
     let result = api.send_message(&params);
 
