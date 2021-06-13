@@ -3,6 +3,7 @@
 - Feature: Get rid of isize/usize types ([#11](https://github.com/ayrat555/frankenstein/pull/11), [#16](https://github.com/ayrat555/frankenstein/pull/16), [ab72b4469b3ed](https://github.com/ayrat555/frankenstein/commit/ab72b4469b3edf89d84f07ce17770605aa9068b2))
 - Chore: Fix clippy::pedantic warnings ([#12](https://github.com/ayrat555/frankenstein/pull/12), [#14](https://github.com/ayrat555/frankenstein/pull/14))
 - Chore: remove `Enum` postfix from enums ([#13](https://github.com/ayrat555/frankenstein/pull/13))
+- Chore: bump multipart from 0.17 to 0.18 ([#15](https://github.com/ayrat555/frankenstein/pull/15))
 
 ## 0.3.1 (2021-05-15)
 
