@@ -128,7 +128,7 @@ use frankenstein::TelegramApi;
 
 ...
 
-let token = "My_token".to_string()
+let token = "My_token";
 let api = Api::new(token);
 ```
 
