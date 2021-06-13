@@ -8,7 +8,7 @@ Telegram bot API client for Rust.
 
 It's a complete wrapper for Telegram bot API and it's up to date with version 5.2 of the API.
 
-Frankenstein data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method params. Almost all structs and enums are automatically generated from [Telegram Bot API docs](https://core.telegram.org/bots/api) with [frankestein_creator](https://github.com/ayrat555/frankenstein_creator)
+Frankenstein data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method params.
 
 ## Installation
 
@@ -151,8 +151,8 @@ Some methods in the API allow uploading files. In the frankenstein for this `Fil
 
 ```rust
 pub enum FileEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
+    InputFile(InputFile),
+    String(String),
 }
 
 pub struct InputFile {
@@ -162,8 +162,8 @@ pub struct InputFile {
 
 It has two variants:
 
-- `FileEnum::StringVariant` is used to pass id of the already uploaded file
-- `FileEnum::InputFileVariant` is used to upload a new file using multipart upload.
+- `FileEnum::String` is used to pass id of the already uploaded file
+- `FileEnum::InputFile` is used to upload a new file using multipart upload.
 
 
 ### Documentation

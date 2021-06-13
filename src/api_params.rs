@@ -1,78 +1,93 @@
-use crate::objects::*;
-use serde::{Deserialize, Serialize};
+use crate::objects::{
+    BotCommand, ChatPermissions, FileEnum, ForceReply, InlineKeyboardMarkup,
+    InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
+    InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
+    InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
+    InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
+    InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
+    InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputFile, LabeledPrice, MaskPosition,
+    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
+    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
+    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
+    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, ReplyKeyboardMarkup,
+    ReplyKeyboardRemove, ShippingOption,
+};
+use serde::Deserialize;
+use serde::Serialize;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum InlineQueryResult {
-    InlineQueryResultCachedAudioVariant(InlineQueryResultCachedAudio),
-    InlineQueryResultCachedDocumentVariant(InlineQueryResultCachedDocument),
-    InlineQueryResultCachedGifVariant(InlineQueryResultCachedGif),
-    InlineQueryResultCachedMpeg4GifVariant(InlineQueryResultCachedMpeg4Gif),
-    InlineQueryResultCachedPhotoVariant(InlineQueryResultCachedPhoto),
-    InlineQueryResultCachedStickerVariant(InlineQueryResultCachedSticker),
-    InlineQueryResultCachedVideoVariant(InlineQueryResultCachedVideo),
-    InlineQueryResultCachedVoiceVariant(InlineQueryResultCachedVoice),
-    InlineQueryResultArticleVariant(InlineQueryResultArticle),
-    InlineQueryResultAudioVariant(InlineQueryResultAudio),
-    InlineQueryResultContactVariant(InlineQueryResultContact),
-    InlineQueryResultGameVariant(InlineQueryResultGame),
-    InlineQueryResultDocumentVariant(InlineQueryResultDocument),
-    InlineQueryResultGifVariant(InlineQueryResultGif),
-    InlineQueryResultLocationVariant(InlineQueryResultLocation),
-    InlineQueryResultMpeg4GifVariant(InlineQueryResultMpeg4Gif),
-    InlineQueryResultPhotoVariant(InlineQueryResultPhoto),
-    InlineQueryResultVenueVariant(InlineQueryResultVenue),
-    InlineQueryResultVideoVariant(InlineQueryResultVideo),
-    InlineQueryResultVoiceVariant(InlineQueryResultVoice),
+    CachedAudio(InlineQueryResultCachedAudio),
+    CachedDocument(InlineQueryResultCachedDocument),
+    CachedGif(InlineQueryResultCachedGif),
+    CachedMpeg4Gif(InlineQueryResultCachedMpeg4Gif),
+    CachedPhoto(InlineQueryResultCachedPhoto),
+    CachedSticker(InlineQueryResultCachedSticker),
+    CachedVideo(InlineQueryResultCachedVideo),
+    CachedVoice(InlineQueryResultCachedVoice),
+    Article(InlineQueryResultArticle),
+    Audio(InlineQueryResultAudio),
+    Contact(InlineQueryResultContact),
+    Game(InlineQueryResultGame),
+    Document(InlineQueryResultDocument),
+    Gif(InlineQueryResultGif),
+    Location(InlineQueryResultLocation),
+    Mpeg4Gif(InlineQueryResultMpeg4Gif),
+    Photo(InlineQueryResultPhoto),
+    Venue(InlineQueryResultVenue),
+    Video(InlineQueryResultVideo),
+    Voice(InlineQueryResultVoice),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum InputMedia {
-    InputMediaAnimationVariant(InputMediaAnimation),
-    InputMediaDocumentVariant(InputMediaDocument),
-    InputMediaAudioVariant(InputMediaAudio),
-    InputMediaPhotoVariant(InputMediaPhoto),
-    InputMediaVideoVariant(InputMediaVideo),
+    Animation(InputMediaAnimation),
+    Document(InputMediaDocument),
+    Audio(InputMediaAudio),
+    Photo(InputMediaPhoto),
+    Video(InputMediaVideo),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum PassportElementError {
-    PassportElementErrorDataFieldVariant(PassportElementErrorDataField),
-    PassportElementErrorFrontSideVariant(PassportElementErrorFrontSide),
-    PassportElementErrorReverseSideVariant(PassportElementErrorReverseSide),
-    PassportElementErrorSelfieVariant(PassportElementErrorSelfie),
-    PassportElementErrorFileVariant(PassportElementErrorFile),
-    PassportElementErrorFilesVariant(PassportElementErrorFiles),
-    PassportElementErrorTranslationFileVariant(PassportElementErrorTranslationFile),
-    PassportElementErrorTranslationFilesVariant(PassportElementErrorTranslationFiles),
-    PassportElementErrorUnspecifiedVariant(PassportElementErrorUnspecified),
+    DataField(PassportElementErrorDataField),
+    FrontSide(PassportElementErrorFrontSide),
+    ReverseSide(PassportElementErrorReverseSide),
+    Selfie(PassportElementErrorSelfie),
+    File(PassportElementErrorFile),
+    Files(PassportElementErrorFiles),
+    TranslationFile(PassportElementErrorTranslationFile),
+    TranslationFiles(PassportElementErrorTranslationFiles),
+    Unspecified(PassportElementErrorUnspecified),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum ChatIdEnum {
-    IntegerVariant(i64),
-    StringVariant(String),
+    Integer(i64),
+    String(String),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum ReplyMarkupEnum {
-    InlineKeyboardMarkupVariant(InlineKeyboardMarkup),
-    ReplyKeyboardMarkupVariant(ReplyKeyboardMarkup),
-    ReplyKeyboardRemoveVariant(ReplyKeyboardRemove),
-    ForceReplyVariant(ForceReply),
+    InlineKeyboardMarkup(InlineKeyboardMarkup),
+    ReplyKeyboardMarkup(ReplyKeyboardMarkup),
+    ReplyKeyboardRemove(ReplyKeyboardRemove),
+    ForceReply(ForceReply),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum MediaEnum {
-    InputMediaAudioVariant(InputMediaAudio),
-    InputMediaDocumentVariant(InputMediaDocument),
-    InputMediaPhotoVariant(InputMediaPhoto),
-    InputMediaVideoVariant(InputMediaVideo),
+    Audio(InputMediaAudio),
+    Document(InputMediaDocument),
+    Photo(InputMediaPhoto),
+    Video(InputMediaVideo),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

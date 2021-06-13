@@ -4,11 +4,11 @@ use std::path::PathBuf;
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum InputMessageContent {
-    InputTextMessageContentVariant(InputTextMessageContent),
-    InputLocationMessageContentVariant(InputLocationMessageContent),
-    InputVenueMessageContentVariant(InputLocationMessageContent),
-    InputContactMessageContentVariant(InputLocationMessageContent),
-    InputInvoiceMessageContentVariant(InputInvoiceMessageContent),
+    Text(InputTextMessageContent),
+    Location(InputLocationMessageContent),
+    Venue(InputLocationMessageContent),
+    Contact(InputLocationMessageContent),
+    Invoice(InputInvoiceMessageContent),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -30,8 +30,8 @@ pub struct CallbackGame {}
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum FileEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
+    InputFile(InputFile),
+    String(String),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
