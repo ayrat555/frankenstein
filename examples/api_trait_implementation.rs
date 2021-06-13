@@ -1,4 +1,4 @@
-use frankenstein::ChatIdEnum;
+use frankenstein::ChatId;
 use frankenstein::ErrorResponse;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
@@ -143,7 +143,7 @@ impl TelegramApi for Api {
 fn main() {
     let api = Api::new(TOKEN.to_string());
 
-    let params = SendMessageParams::new(ChatIdEnum::Integer(275808073), "Hello!".to_string());
+    let params = SendMessageParams::new(ChatId::Integer(275808073), "Hello!".to_string());
 
     let result = api.send_message(&params);
 

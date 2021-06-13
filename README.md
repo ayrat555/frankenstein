@@ -111,7 +111,7 @@ For example, parameters for `leaveChat` method:
 ```rust
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct LeaveChatParams {
-    chat_id: ChatIdEnum,
+    chat_id: ChatId,
 }
 ```
 
@@ -147,10 +147,10 @@ See a complete example in the `examples` directory.
 
 ### Uploading files
 
-Some methods in the API allow uploading files. In the frankenstein for this `FileEnum` struct is used:
+Some methods in the API allow uploading files. In the frankenstein for this `File` struct is used:
 
 ```rust
-pub enum FileEnum {
+pub enum File {
     InputFile(InputFile),
     String(String),
 }
@@ -162,8 +162,8 @@ pub struct InputFile {
 
 It has two variants:
 
-- `FileEnum::String` is used to pass id of the already uploaded file
-- `FileEnum::InputFile` is used to upload a new file using multipart upload.
+- `File::String` is used to pass id of the already uploaded file
+- `File::InputFile` is used to upload a new file using multipart upload.
 
 
 ### Documentation
