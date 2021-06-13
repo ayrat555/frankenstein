@@ -1,6 +1,6 @@
 <p align="center"><img src="frankenstein_logo.png" alt="frankenstein" height="300px"></p>
 
-[![Crates.io][s1]][ci] [![docs page][docs-badge]][docs]
+[![Crates.io][s1]][ci] [![docs page][docs-badge]][docs] ![test][ga-test] ![style][ga-style]
 
 # Frankenstein
 
@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.3.1"
+frankenstein = "0.4"
 ```
 
 ## Usage
@@ -168,7 +168,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.3.1/frankenstein/api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.4.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 ## Replacing the default http client
 
@@ -177,7 +177,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.3", default-features = false }
+frankenstein = { version = "0.4", default-features = false }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:
@@ -208,3 +208,5 @@ Ayrat Badykov (@ayrat555)
 [docs-badge]: https://img.shields.io/badge/docs-website-blue.svg
 [ci]: https://crates.io/crates/frankenstein
 [docs]: https://docs.rs/frankenstein/
+[ga-test]: https://github.com/ayrat555/frankenstein/actions/workflows/rust.yml/badge.svg
+[ga-style]: https://github.com/ayrat555/frankenstein/actions/workflows/style.yml/badge.svg
