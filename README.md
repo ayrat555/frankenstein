@@ -151,8 +151,8 @@ Some methods in the API allow uploading files. In the frankenstein for this `Fil
 
 ```rust
 pub enum FileEnum {
-    InputFileVariant(InputFile),
-    StringVariant(String),
+    InputFile(InputFile),
+    String(String),
 }
 
 pub struct InputFile {
@@ -162,8 +162,8 @@ pub struct InputFile {
 
 It has two variants:
 
-- `FileEnum::StringVariant` is used to pass id of the already uploaded file
-- `FileEnum::InputFileVariant` is used to upload a new file using multipart upload.
+- `FileEnum::String` is used to pass id of the already uploaded file
+- `FileEnum::InputFile` is used to upload a new file using multipart upload.
 
 
 ### Documentation
