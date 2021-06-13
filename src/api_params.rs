@@ -128,7 +128,7 @@ pub struct SetWebhookParams {
     pub ip_address: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_connections: Option<i64>,
+    pub max_connections: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allowed_updates: Option<Vec<String>>,
@@ -439,7 +439,7 @@ pub struct SendVideoNoteParams {
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub length: Option<i64>,
+    pub length: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub thumb: Option<File>,
@@ -485,13 +485,13 @@ pub struct SendLocationParams {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub live_period: Option<i64>,
+    pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub heading: Option<i64>,
+    pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub proximity_alert_radius: Option<i64>,
+    pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -525,10 +525,10 @@ pub struct EditMessageLiveLocationParams {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub heading: Option<i64>,
+    pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub proximity_alert_radius: Option<i64>,
+    pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<InlineKeyboardMarkup>,
@@ -631,7 +631,7 @@ pub struct SendPollParams {
     pub allows_multiple_answers: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub correct_option_id: Option<i64>,
+    pub correct_option_id: Option<u8>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub explanation: Option<String>,
@@ -643,7 +643,7 @@ pub struct SendPollParams {
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub open_period: Option<i64>,
+    pub open_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub close_date: Option<u64>,
@@ -937,7 +937,7 @@ pub struct AnswerCallbackQueryParams {
     pub url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub cache_time: Option<i64>,
+    pub cache_time: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1120,7 +1120,7 @@ pub struct AddStickerToSetParams {
 pub struct SetStickerPositionInSetParams {
     pub sticker: String,
 
-    pub position: i64,
+    pub position: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1145,7 +1145,7 @@ pub struct AnswerInlineQueryParams {
     pub results: Vec<InlineQueryResult>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub cache_time: Option<i64>,
+    pub cache_time: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_personal: Option<bool>,
@@ -1177,10 +1177,10 @@ pub struct SendInvoiceParams {
     pub prices: Vec<LabeledPrice>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub max_tip_amount: Option<i64>,
+    pub max_tip_amount: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub suggested_tip_amounts: Option<Vec<i64>>,
+    pub suggested_tip_amounts: Option<Vec<u32>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub start_parameter: Option<String>,
@@ -1287,7 +1287,7 @@ pub struct SendGameParams {
 pub struct SetGameScoreParams {
     pub user_id: u64,
 
-    pub score: i64,
+    pub score: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub force: Option<bool>,
@@ -1516,7 +1516,7 @@ impl SetWebhookParams {
         self.ip_address = ip_address;
     }
 
-    pub fn set_max_connections(&mut self, max_connections: Option<i64>) {
+    pub fn set_max_connections(&mut self, max_connections: Option<u32>) {
         self.max_connections = max_connections;
     }
 
@@ -1540,7 +1540,7 @@ impl SetWebhookParams {
         self.ip_address.clone()
     }
 
-    pub fn max_connections(&self) -> Option<i64> {
+    pub fn max_connections(&self) -> Option<u32> {
         self.max_connections
     }
 
@@ -2499,7 +2499,7 @@ impl SendVideoNoteParams {
         self.duration = duration;
     }
 
-    pub fn set_length(&mut self, length: Option<i64>) {
+    pub fn set_length(&mut self, length: Option<u32>) {
         self.length = length;
     }
 
@@ -2535,7 +2535,7 @@ impl SendVideoNoteParams {
         self.duration
     }
 
-    pub fn length(&self) -> Option<i64> {
+    pub fn length(&self) -> Option<u32> {
         self.length
     }
 
@@ -2645,15 +2645,15 @@ impl SendLocationParams {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn set_live_period(&mut self, live_period: Option<i64>) {
+    pub fn set_live_period(&mut self, live_period: Option<u32>) {
         self.live_period = live_period;
     }
 
-    pub fn set_heading(&mut self, heading: Option<i64>) {
+    pub fn set_heading(&mut self, heading: Option<u16>) {
         self.heading = heading;
     }
 
-    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<i64>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<u32>) {
         self.proximity_alert_radius = proximity_alert_radius;
     }
 
@@ -2689,15 +2689,15 @@ impl SendLocationParams {
         self.horizontal_accuracy
     }
 
-    pub fn live_period(&self) -> Option<i64> {
+    pub fn live_period(&self) -> Option<u32> {
         self.live_period
     }
 
-    pub fn heading(&self) -> Option<i64> {
+    pub fn heading(&self) -> Option<u16> {
         self.heading
     }
 
-    pub fn proximity_alert_radius(&self) -> Option<i64> {
+    pub fn proximity_alert_radius(&self) -> Option<u32> {
         self.proximity_alert_radius
     }
 
@@ -2757,11 +2757,11 @@ impl EditMessageLiveLocationParams {
         self.horizontal_accuracy = horizontal_accuracy;
     }
 
-    pub fn set_heading(&mut self, heading: Option<i64>) {
+    pub fn set_heading(&mut self, heading: Option<u16>) {
         self.heading = heading;
     }
 
-    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<i64>) {
+    pub fn set_proximity_alert_radius(&mut self, proximity_alert_radius: Option<u32>) {
         self.proximity_alert_radius = proximity_alert_radius;
     }
 
@@ -2793,11 +2793,11 @@ impl EditMessageLiveLocationParams {
         self.horizontal_accuracy
     }
 
-    pub fn heading(&self) -> Option<i64> {
+    pub fn heading(&self) -> Option<u16> {
         self.heading
     }
 
-    pub fn proximity_alert_radius(&self) -> Option<i64> {
+    pub fn proximity_alert_radius(&self) -> Option<u32> {
         self.proximity_alert_radius
     }
 
@@ -3114,7 +3114,7 @@ impl SendPollParams {
         self.allows_multiple_answers = allows_multiple_answers;
     }
 
-    pub fn set_correct_option_id(&mut self, correct_option_id: Option<i64>) {
+    pub fn set_correct_option_id(&mut self, correct_option_id: Option<u8>) {
         self.correct_option_id = correct_option_id;
     }
 
@@ -3130,7 +3130,7 @@ impl SendPollParams {
         self.explanation_entities = explanation_entities;
     }
 
-    pub fn set_open_period(&mut self, open_period: Option<i64>) {
+    pub fn set_open_period(&mut self, open_period: Option<u32>) {
         self.open_period = open_period;
     }
 
@@ -3182,7 +3182,7 @@ impl SendPollParams {
         self.allows_multiple_answers
     }
 
-    pub fn correct_option_id(&self) -> Option<i64> {
+    pub fn correct_option_id(&self) -> Option<u8> {
         self.correct_option_id
     }
 
@@ -3198,7 +3198,7 @@ impl SendPollParams {
         self.explanation_entities.clone()
     }
 
-    pub fn open_period(&self) -> Option<i64> {
+    pub fn open_period(&self) -> Option<u32> {
         self.open_period
     }
 
@@ -4077,7 +4077,7 @@ impl AnswerCallbackQueryParams {
         self.url = url;
     }
 
-    pub fn set_cache_time(&mut self, cache_time: Option<i64>) {
+    pub fn set_cache_time(&mut self, cache_time: Option<u32>) {
         self.cache_time = cache_time;
     }
 
@@ -4097,7 +4097,7 @@ impl AnswerCallbackQueryParams {
         self.url.clone()
     }
 
-    pub fn cache_time(&self) -> Option<i64> {
+    pub fn cache_time(&self) -> Option<u32> {
         self.cache_time
     }
 }
@@ -4660,7 +4660,7 @@ impl AddStickerToSetParams {
 }
 
 impl SetStickerPositionInSetParams {
-    pub fn new(sticker: String, position: i64) -> Self {
+    pub fn new(sticker: String, position: u32) -> Self {
         Self { sticker, position }
     }
 
@@ -4668,7 +4668,7 @@ impl SetStickerPositionInSetParams {
         self.sticker = sticker;
     }
 
-    pub fn set_position(&mut self, position: i64) {
+    pub fn set_position(&mut self, position: u32) {
         self.position = position;
     }
 
@@ -4676,7 +4676,7 @@ impl SetStickerPositionInSetParams {
         self.sticker.clone()
     }
 
-    pub fn position(&self) -> i64 {
+    pub fn position(&self) -> u32 {
         self.position
     }
 }
@@ -4750,7 +4750,7 @@ impl AnswerInlineQueryParams {
         self.results = results;
     }
 
-    pub fn set_cache_time(&mut self, cache_time: Option<i64>) {
+    pub fn set_cache_time(&mut self, cache_time: Option<u32>) {
         self.cache_time = cache_time;
     }
 
@@ -4778,7 +4778,7 @@ impl AnswerInlineQueryParams {
         self.results.clone()
     }
 
-    pub fn cache_time(&self) -> Option<i64> {
+    pub fn cache_time(&self) -> Option<u32> {
         self.cache_time
     }
 
@@ -4875,11 +4875,11 @@ impl SendInvoiceParams {
         self.provider_data = provider_data;
     }
 
-    pub fn set_max_tip_amount(&mut self, max_tip_amount: Option<i64>) {
+    pub fn set_max_tip_amount(&mut self, max_tip_amount: Option<u32>) {
         self.max_tip_amount = max_tip_amount;
     }
 
-    pub fn set_suggested_tip_amounts(&mut self, suggested_tip_amounts: Option<Vec<i64>>) {
+    pub fn set_suggested_tip_amounts(&mut self, suggested_tip_amounts: Option<Vec<u32>>) {
         self.suggested_tip_amounts = suggested_tip_amounts;
     }
 
@@ -4978,11 +4978,11 @@ impl SendInvoiceParams {
         self.prices.clone()
     }
 
-    pub fn max_tip_amount(&self) -> Option<i64> {
+    pub fn max_tip_amount(&self) -> Option<u32> {
         self.max_tip_amount
     }
 
-    pub fn suggested_tip_amounts(&self) -> Option<Vec<i64>> {
+    pub fn suggested_tip_amounts(&self) -> Option<Vec<u32>> {
         self.suggested_tip_amounts.clone()
     }
 
@@ -5212,7 +5212,7 @@ impl SendGameParams {
 }
 
 impl SetGameScoreParams {
-    pub fn new(user_id: u64, score: i64) -> Self {
+    pub fn new(user_id: u64, score: i32) -> Self {
         Self {
             user_id,
             score,
@@ -5228,7 +5228,7 @@ impl SetGameScoreParams {
         self.user_id = user_id;
     }
 
-    pub fn set_score(&mut self, score: i64) {
+    pub fn set_score(&mut self, score: i32) {
         self.score = score;
     }
 
@@ -5256,7 +5256,7 @@ impl SetGameScoreParams {
         self.user_id
     }
 
-    pub fn score(&self) -> i64 {
+    pub fn score(&self) -> i32 {
         self.score
     }
 
