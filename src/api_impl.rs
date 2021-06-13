@@ -127,8 +127,11 @@ impl TelegramApi for Api {
 
         for (parameter_name, file_name, file_path) in files_with_names {
             let file = std::fs::File::open(&file_path).unwrap();
-            let file_extension = file_path.extension().and_then(|s| s.to_str()).unwrap_or("");
-            let mime = mime_guess::from_ext(&file_extension).first_or_octet_stream();
+            let file_extension = file_path
+                .extension()
+                .and_then(std::ffi::OsStr::to_str)
+                .unwrap_or("");
+            let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
 
             form.add_stream(parameter_name, file, file_name, Some(mime));
         }
@@ -252,7 +255,7 @@ mod tests {
 
         let update = &response.result[0];
 
-        assert_eq!(379656753, update.update_id())
+        assert_eq!(379656753, update.update_id());
     }
 
     #[test]
@@ -290,7 +293,7 @@ mod tests {
         {
             assert_eq!("Bad Request: chat not found".to_string(), description);
         } else {
-            assert!(false)
+            panic!("Error was expected but there is none");
         }
     }
 
@@ -1452,8 +1455,7 @@ mod tests {
         )));
 
         let photo = InputMediaPhoto::new(file);
-
-        let medias = vec![Media::Photo(photo.clone()), Media::Photo(photo.clone())];
+        let medias = vec![Media::Photo(photo.clone()), Media::Photo(photo)];
 
         let params = SendMediaGroupParams::new(ChatId::Integer(-1001368460856), medias);
 

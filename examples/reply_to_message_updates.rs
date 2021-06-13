@@ -27,9 +27,11 @@ fn main() {
                         );
                         send_message_params.set_reply_to_message_id(Some(message.message_id()));
 
-                        let _ = api.send_message(&send_message_params);
+                        if let Err(err) = api.send_message(&send_message_params) {
+                            println!("Failed to send message: {:?}", err);
+                        }
 
-                        update_params.set_offset(Some(update.update_id() + 1))
+                        update_params.set_offset(Some(update.update_id() + 1));
                     }
                 }
             }
