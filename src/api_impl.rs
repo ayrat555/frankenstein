@@ -13,7 +13,7 @@ pub struct Api {
 }
 
 impl Api {
-    pub fn new(api_key: String) -> Api {
+    pub fn new(api_key: &str) -> Api {
         let api_url = format!("{}{}", BASE_API_URL, api_key);
 
         Api { api_url }
@@ -156,7 +156,7 @@ mod tests {
 
     #[test]
     fn new_sets_correct_url() {
-        let api = Api::new("hey".to_string());
+        let api = Api::new("hey");
 
         assert_eq!(
             Api {

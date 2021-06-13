@@ -7,7 +7,7 @@ use frankenstein::TelegramApi;
 static TOKEN: &str = "API_TOKEN";
 
 fn main() {
-    let api = Api::new(TOKEN.to_string());
+    let api = Api::new(TOKEN);
 
     let mut update_params = GetUpdatesParams::new();
     update_params.set_allowed_updates(Some(vec!["message".to_string()]));
