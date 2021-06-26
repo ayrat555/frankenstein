@@ -1092,9 +1092,6 @@ pub struct InlineQueryResultArticle {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultPhoto {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub photo_url: String,
@@ -1131,9 +1128,6 @@ pub struct InlineQueryResultPhoto {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultGif {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub gif_url: String,
@@ -1173,9 +1167,6 @@ pub struct InlineQueryResultGif {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultMpeg4Gif {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub mpeg4_url: String,
@@ -1215,9 +1206,6 @@ pub struct InlineQueryResultMpeg4Gif {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultVideo {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub video_url: String,
@@ -1291,9 +1279,6 @@ pub struct InlineQueryResultAudio {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultVoice {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub voice_url: String,
@@ -1321,9 +1306,6 @@ pub struct InlineQueryResultVoice {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultDocument {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub title: String,
@@ -1362,9 +1344,6 @@ pub struct InlineQueryResultDocument {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultLocation {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub latitude: f64,
@@ -1403,9 +1382,6 @@ pub struct InlineQueryResultLocation {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultVenue {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub latitude: f64,
@@ -1446,9 +1422,6 @@ pub struct InlineQueryResultVenue {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultContact {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub phone_number: String,
@@ -1479,9 +1452,6 @@ pub struct InlineQueryResultContact {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultGame {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub game_short_name: String,
@@ -1492,9 +1462,6 @@ pub struct InlineQueryResultGame {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedPhoto {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub photo_file_id: String,
@@ -1523,9 +1490,6 @@ pub struct InlineQueryResultCachedPhoto {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedGif {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub gif_file_id: String,
@@ -1551,9 +1515,6 @@ pub struct InlineQueryResultCachedGif {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedMpeg4Gif {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub mpeg4_file_id: String,
@@ -1579,9 +1540,6 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedSticker {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub sticker_file_id: String,
@@ -1595,9 +1553,6 @@ pub struct InlineQueryResultCachedSticker {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedDocument {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub title: String,
@@ -1625,9 +1580,6 @@ pub struct InlineQueryResultCachedDocument {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedVideo {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub video_file_id: String,
@@ -1682,9 +1634,6 @@ pub struct InlineQueryResultCachedVoice {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedAudio {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub audio_file_id: String,
@@ -5245,7 +5194,6 @@ impl InlineQueryResultArticle {
             id,
             title,
             input_message_content,
-            type_field: "article".to_string(),
             reply_markup: None,
             url: None,
             hide_url: None,
@@ -5254,10 +5202,6 @@ impl InlineQueryResultArticle {
             thumb_width: None,
             thumb_height: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -5298,10 +5242,6 @@ impl InlineQueryResultArticle {
 
     pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -5351,7 +5291,6 @@ impl InlineQueryResultPhoto {
             id,
             photo_url,
             thumb_url,
-            type_field: "photo".to_string(),
             photo_width: None,
             photo_height: None,
             title: None,
@@ -5362,10 +5301,6 @@ impl InlineQueryResultPhoto {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -5417,10 +5352,6 @@ impl InlineQueryResultPhoto {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -5478,7 +5409,6 @@ impl InlineQueryResultGif {
             id,
             gif_url,
             thumb_url,
-            type_field: "gif".to_string(),
             gif_width: None,
             gif_height: None,
             gif_duration: None,
@@ -5490,10 +5420,6 @@ impl InlineQueryResultGif {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -5549,10 +5475,6 @@ impl InlineQueryResultGif {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -5614,7 +5536,6 @@ impl InlineQueryResultMpeg4Gif {
             id,
             mpeg4_url,
             thumb_url,
-            type_field: "mpeg4_gif".to_string(),
             mpeg4_width: None,
             mpeg4_height: None,
             mpeg4_duration: None,
@@ -5626,10 +5547,6 @@ impl InlineQueryResultMpeg4Gif {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -5685,10 +5602,6 @@ impl InlineQueryResultMpeg4Gif {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -5758,7 +5671,6 @@ impl InlineQueryResultVideo {
             mime_type,
             thumb_url,
             title,
-            type_field: "video".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -5769,10 +5681,6 @@ impl InlineQueryResultVideo {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -5832,10 +5740,6 @@ impl InlineQueryResultVideo {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -5901,7 +5805,6 @@ impl InlineQueryResultAudio {
             id,
             audio_url,
             title,
-            type_field: "audio".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -5910,10 +5813,6 @@ impl InlineQueryResultAudio {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -5957,10 +5856,6 @@ impl InlineQueryResultAudio {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6010,7 +5905,7 @@ impl InlineQueryResultVoice {
             id,
             voice_url,
             title,
-            type_field: "voice".to_string(),
+
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -6018,10 +5913,6 @@ impl InlineQueryResultVoice {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6061,10 +5952,6 @@ impl InlineQueryResultVoice {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6111,7 +5998,6 @@ impl InlineQueryResultDocument {
             title,
             document_url,
             mime_type,
-            type_field: "document".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -6122,10 +6008,6 @@ impl InlineQueryResultDocument {
             thumb_width: None,
             thumb_height: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6181,10 +6063,6 @@ impl InlineQueryResultDocument {
 
     pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6247,7 +6125,6 @@ impl InlineQueryResultLocation {
             latitude,
             longitude,
             title,
-            type_field: "location".to_string(),
             horizontal_accuracy: None,
             live_period: None,
             heading: None,
@@ -6258,10 +6135,6 @@ impl InlineQueryResultLocation {
             thumb_width: None,
             thumb_height: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6317,10 +6190,6 @@ impl InlineQueryResultLocation {
 
     pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6384,7 +6253,6 @@ impl InlineQueryResultVenue {
             longitude,
             title,
             address,
-            type_field: "venue".to_string(),
             foursquare_id: None,
             foursquare_type: None,
             google_place_id: None,
@@ -6395,10 +6263,6 @@ impl InlineQueryResultVenue {
             thumb_width: None,
             thumb_height: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6458,10 +6322,6 @@ impl InlineQueryResultVenue {
 
     pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6527,7 +6387,6 @@ impl InlineQueryResultContact {
             id,
             phone_number,
             first_name,
-            type_field: "contract".to_string(),
             last_name: None,
             vcard: None,
             reply_markup: None,
@@ -6536,10 +6395,6 @@ impl InlineQueryResultContact {
             thumb_width: None,
             thumb_height: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6583,10 +6438,6 @@ impl InlineQueryResultContact {
 
     pub fn set_thumb_height(&mut self, thumb_height: Option<u32>) {
         self.thumb_height = thumb_height;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6635,13 +6486,8 @@ impl InlineQueryResultGame {
         Self {
             id,
             game_short_name,
-            type_field: "game".to_string(),
             reply_markup: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6654,10 +6500,6 @@ impl InlineQueryResultGame {
 
     pub fn set_reply_markup(&mut self, reply_markup: Option<InlineKeyboardMarkup>) {
         self.reply_markup = reply_markup;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6678,7 +6520,6 @@ impl InlineQueryResultCachedPhoto {
         Self {
             id,
             photo_file_id,
-            type_field: "photo".to_string(),
             title: None,
             description: None,
             caption: None,
@@ -6687,10 +6528,6 @@ impl InlineQueryResultCachedPhoto {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6730,10 +6567,6 @@ impl InlineQueryResultCachedPhoto {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6778,7 +6611,6 @@ impl InlineQueryResultCachedGif {
         Self {
             id,
             gif_file_id,
-            type_field: "gif".to_string(),
             title: None,
             caption: None,
             parse_mode: None,
@@ -6786,10 +6618,6 @@ impl InlineQueryResultCachedGif {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6825,10 +6653,6 @@ impl InlineQueryResultCachedGif {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6869,7 +6693,6 @@ impl InlineQueryResultCachedMpeg4Gif {
         Self {
             id,
             mpeg4_file_id,
-            type_field: "mpeg4_gif".to_string(),
             title: None,
             caption: None,
             parse_mode: None,
@@ -6877,10 +6700,6 @@ impl InlineQueryResultCachedMpeg4Gif {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6916,10 +6735,6 @@ impl InlineQueryResultCachedMpeg4Gif {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -6960,14 +6775,9 @@ impl InlineQueryResultCachedSticker {
         Self {
             id,
             sticker_file_id,
-            type_field: "sticker".to_string(),
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -6987,10 +6797,6 @@ impl InlineQueryResultCachedSticker {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -7016,7 +6822,6 @@ impl InlineQueryResultCachedDocument {
             id,
             title,
             document_file_id,
-            type_field: "document".to_string(),
             description: None,
             caption: None,
             parse_mode: None,
@@ -7024,10 +6829,6 @@ impl InlineQueryResultCachedDocument {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -7067,10 +6868,6 @@ impl InlineQueryResultCachedDocument {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -7116,7 +6913,6 @@ impl InlineQueryResultCachedVideo {
             id,
             video_file_id,
             title,
-            type_field: "video".to_string(),
             description: None,
             caption: None,
             parse_mode: None,
@@ -7124,10 +6920,6 @@ impl InlineQueryResultCachedVideo {
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -7167,10 +6959,6 @@ impl InlineQueryResultCachedVideo {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -7216,17 +7004,12 @@ impl InlineQueryResultCachedVoice {
             id,
             voice_file_id,
             title,
-            type_field: "voice".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -7262,10 +7045,6 @@ impl InlineQueryResultCachedVoice {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {
@@ -7306,17 +7085,12 @@ impl InlineQueryResultCachedAudio {
         Self {
             id,
             audio_file_id,
-            type_field: "audio".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
             reply_markup: None,
             input_message_content: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_id(&mut self, id: String) {
@@ -7348,10 +7122,6 @@ impl InlineQueryResultCachedAudio {
         input_message_content: Option<InputMessageContent>,
     ) {
         self.input_message_content = input_message_content;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn id(&self) -> String {

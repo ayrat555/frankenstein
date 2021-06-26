@@ -24,37 +24,62 @@ pub enum File {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
+#[serde(tag = "type")]
 pub enum InlineQueryResult {
+    #[serde(rename = "audio")]
     CachedAudio(InlineQueryResultCachedAudio),
+    #[serde(rename = "document")]
     CachedDocument(InlineQueryResultCachedDocument),
+    #[serde(rename = "gif")]
     CachedGif(InlineQueryResultCachedGif),
+    #[serde(rename = "mpeg4_gif")]
     CachedMpeg4Gif(InlineQueryResultCachedMpeg4Gif),
+    #[serde(rename = "photo")]
     CachedPhoto(InlineQueryResultCachedPhoto),
+    #[serde(rename = "sticker")]
     CachedSticker(InlineQueryResultCachedSticker),
+    #[serde(rename = "video")]
     CachedVideo(InlineQueryResultCachedVideo),
+    #[serde(rename = "voice")]
     CachedVoice(InlineQueryResultCachedVoice),
+    #[serde(rename = "article")]
     Article(InlineQueryResultArticle),
+    #[serde(rename = "audio")]
     Audio(InlineQueryResultAudio),
+    #[serde(rename = "contract")]
     Contact(InlineQueryResultContact),
+    #[serde(rename = "game")]
     Game(InlineQueryResultGame),
+    #[serde(rename = "document")]
     Document(InlineQueryResultDocument),
+    #[serde(rename = "gif")]
     Gif(InlineQueryResultGif),
+    #[serde(rename = "location")]
     Location(InlineQueryResultLocation),
+    #[serde(rename = "mpeg4_gif")]
     Mpeg4Gif(InlineQueryResultMpeg4Gif),
+    #[serde(rename = "photo")]
     Photo(InlineQueryResultPhoto),
+    #[serde(rename = "venue")]
     Venue(InlineQueryResultVenue),
+    #[serde(rename = "video")]
     Video(InlineQueryResultVideo),
+    #[serde(rename = "voice")]
     Voice(InlineQueryResultVoice),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
+#[serde(tag = "type")]
 pub enum InputMedia {
+    #[serde(rename = "animation")]
     Animation(InputMediaAnimation),
+    #[serde(rename = "document")]
     Document(InputMediaDocument),
+    #[serde(rename = "audio")]
     Audio(InputMediaAudio),
+    #[serde(rename = "photo")]
     Photo(InputMediaPhoto),
+    #[serde(rename = "video")]
     Video(InputMediaVideo),
 }
 
@@ -89,11 +114,15 @@ pub enum ReplyMarkup {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
+#[serde(tag = "type")]
 pub enum Media {
+    #[serde(rename = "audio")]
     Audio(InputMediaAudio),
+    #[serde(rename = "document")]
     Document(InputMediaDocument),
+    #[serde(rename = "photo")]
     Photo(InputMediaPhoto),
+    #[serde(rename = "video")]
     Video(InputMediaVideo),
 }
 
@@ -1380,9 +1409,6 @@ pub struct GetGameHighScoresParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InputMediaPhoto {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1397,9 +1423,6 @@ pub struct InputMediaPhoto {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InputMediaVideo {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1429,9 +1452,6 @@ pub struct InputMediaVideo {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InputMediaAnimation {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1458,9 +1478,6 @@ pub struct InputMediaAnimation {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InputMediaAudio {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1487,9 +1504,6 @@ pub struct InputMediaAudio {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InputMediaDocument {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -5457,15 +5471,10 @@ impl InputMediaPhoto {
     pub fn new(media: File) -> Self {
         Self {
             media,
-            type_field: "photo".to_string(),
             caption: None,
             parse_mode: None,
             caption_entities: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_media(&mut self, media: File) {
@@ -5482,10 +5491,6 @@ impl InputMediaPhoto {
 
     pub fn set_caption_entities(&mut self, caption_entities: Option<Vec<MessageEntity>>) {
         self.caption_entities = caption_entities;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn media(&self) -> File {
@@ -5509,7 +5514,6 @@ impl InputMediaVideo {
     pub fn new(media: File) -> Self {
         Self {
             media,
-            type_field: "video".to_string(),
             thumb: None,
             caption: None,
             parse_mode: None,
@@ -5519,10 +5523,6 @@ impl InputMediaVideo {
             duration: None,
             supports_streaming: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_media(&mut self, media: File) {
@@ -5559,10 +5559,6 @@ impl InputMediaVideo {
 
     pub fn set_supports_streaming(&mut self, supports_streaming: Option<bool>) {
         self.supports_streaming = supports_streaming;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn media(&self) -> File {
@@ -5606,7 +5602,6 @@ impl InputMediaAnimation {
     pub fn new(media: File) -> Self {
         Self {
             media,
-            type_field: "animation".to_string(),
             thumb: None,
             caption: None,
             parse_mode: None,
@@ -5615,10 +5610,6 @@ impl InputMediaAnimation {
             height: None,
             duration: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_media(&mut self, media: File) {
@@ -5651,10 +5642,6 @@ impl InputMediaAnimation {
 
     pub fn set_duration(&mut self, duration: Option<u32>) {
         self.duration = duration;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn media(&self) -> File {
@@ -5694,7 +5681,6 @@ impl InputMediaAudio {
     pub fn new(media: File) -> Self {
         Self {
             media,
-            type_field: "audio".to_string(),
             thumb: None,
             caption: None,
             parse_mode: None,
@@ -5703,10 +5689,6 @@ impl InputMediaAudio {
             performer: None,
             title: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_media(&mut self, media: File) {
@@ -5739,10 +5721,6 @@ impl InputMediaAudio {
 
     pub fn set_title(&mut self, title: Option<String>) {
         self.title = title;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn media(&self) -> File {
@@ -5782,17 +5760,12 @@ impl InputMediaDocument {
     pub fn new(media: File) -> Self {
         Self {
             media,
-            type_field: "document".to_string(),
             thumb: None,
             caption: None,
             parse_mode: None,
             caption_entities: None,
             disable_content_type_detection: None,
         }
-    }
-
-    pub fn set_type_field(&mut self, type_field: String) {
-        self.type_field = type_field;
     }
 
     pub fn set_media(&mut self, media: File) {
@@ -5820,10 +5793,6 @@ impl InputMediaDocument {
         disable_content_type_detection: Option<bool>,
     ) {
         self.disable_content_type_detection = disable_content_type_detection;
-    }
-
-    pub fn type_field(&self) -> String {
-        self.type_field.clone()
     }
 
     pub fn media(&self) -> File {
