@@ -156,6 +156,7 @@ mod tests {
     use super::*;
     use crate::api_params::AnswerCallbackQueryParams;
     use crate::api_params::AnswerInlineQueryParams;
+    use crate::api_params::BanChatMemberParams;
     use crate::api_params::BotCommandScope;
     use crate::api_params::BotCommandScopeChat;
     use crate::api_params::ChatId;
@@ -175,8 +176,8 @@ mod tests {
     use crate::api_params::File;
     use crate::api_params::ForwardMessageParams;
     use crate::api_params::GetChatAdministratorsParams;
+    use crate::api_params::GetChatMemberCountParams;
     use crate::api_params::GetChatMemberParams;
-    use crate::api_params::GetChatMembersCountParams;
     use crate::api_params::GetChatParams;
     use crate::api_params::GetFileParams;
     use crate::api_params::GetMyCommandsParams;
@@ -187,7 +188,6 @@ mod tests {
     use crate::api_params::InputFile;
     use crate::api_params::InputMedia;
     use crate::api_params::InputMediaPhoto;
-    use crate::api_params::KickChatMemberParams;
     use crate::api_params::LeaveChatParams;
     use crate::api_params::Media;
     use crate::api_params::PinChatMessageParams;
@@ -638,17 +638,17 @@ mod tests {
     }
 
     #[test]
-    fn kick_chat_member_success() {
+    fn ban_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = KickChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
+        let params = BanChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
 
-        let _m = mockito::mock("POST", "/kickChatMember")
+        let _m = mockito::mock("POST", "/banChatMember")
             .with_status(200)
             .with_body(response_string)
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.kick_chat_member(&params).unwrap();
+        let response = api.ban_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1183,15 +1183,15 @@ mod tests {
     #[test]
     fn get_chat_members_count_success() {
         let response_string = "{\"ok\":true,\"result\":4}";
-        let params = GetChatMembersCountParams::new(ChatId::Integer(-1001368460856));
+        let params = GetChatMemberCountParams::new(ChatId::Integer(-1001368460856));
 
-        let _m = mockito::mock("POST", "/getChatMembersCount")
+        let _m = mockito::mock("POST", "/getChatMemberCount")
             .with_status(200)
             .with_body(response_string)
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.get_chat_members_count(&params).unwrap();
+        let response = api.get_chat_member_count(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);

@@ -743,7 +743,7 @@ pub struct GetFileParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct KickChatMemberParams {
+pub struct BanChatMemberParams {
     pub chat_id: ChatId,
 
     pub user_id: u64,
@@ -935,7 +935,7 @@ pub struct GetChatAdministratorsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct GetChatMembersCountParams {
+pub struct GetChatMemberCountParams {
     pub chat_id: ChatId,
 }
 
@@ -3417,7 +3417,7 @@ impl GetFileParams {
     }
 }
 
-impl KickChatMemberParams {
+impl BanChatMemberParams {
     pub fn new(chat_id: ChatId, user_id: u64) -> Self {
         Self {
             chat_id,
@@ -4034,7 +4034,7 @@ impl GetChatAdministratorsParams {
     }
 }
 
-impl GetChatMembersCountParams {
+impl GetChatMemberCountParams {
     pub fn new(chat_id: ChatId) -> Self {
         Self { chat_id }
     }
