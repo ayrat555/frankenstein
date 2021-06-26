@@ -6,7 +6,7 @@
 
 Telegram bot API client for Rust.
 
-It's a complete wrapper for Telegram bot API and it's up to date with version 5.2 of the API.
+It's a complete wrapper for Telegram bot API and it's up to date with version 5.3 of the API.
 
 Frankenstein data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method params.
 
@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.4"
+frankenstein = "0.5"
 ```
 
 ## Usage
@@ -168,7 +168,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.4.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.5.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 ## Replacing the default http client
 
@@ -177,7 +177,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.4", default-features = false }
+frankenstein = { version = "0.5", default-features = false }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:

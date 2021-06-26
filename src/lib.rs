@@ -7,6 +7,7 @@
     clippy::new_without_default,
     clippy::non_ascii_literal,
     clippy::single_match_else,
+    clippy::struct_excessive_bools,
     clippy::too_many_arguments,
     clippy::unreadable_literal,
     clippy::wildcard_imports

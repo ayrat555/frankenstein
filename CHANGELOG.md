@@ -1,3 +1,16 @@
+## 0.5.0 (2021-06-26)
+
+### [Telegram API 5.3 Changes](https://core.telegram.org/bots/api#june-25-2021):
+
+  * add BotCommandScope - [#b937a5442d](https://github.com/ayrat555/frankenstein/commit/b937a5442dfd7f756593e02c897130ed681fc4f6)
+  * add input_field_placeholder - [#371fe3463](https://github.com/ayrat555/frankenstein/commit/371fe3463c44e40c4999e8ab7224014b903821d5)
+  * split ChatMember struct into 6 structs - [#8b104155a8](https://github.com/ayrat555/frankenstein/commit/8b104155a84220611d0e7666de5f63d630902d5c)
+  * rename kickChatMember and getChatMembersCount - [#35819f8843a88c](https://github.com/ayrat555/frankenstein/commit/35819f8843a88ccf2cd56f098082565274afb131)
+
+### Other Changes
+
+  * Move type field into enums - [#19](https://github.com/ayrat555/frankenstein/pull/19)
+
 ## 0.4.0 (2021-06-13)
 
 - Feature: Get rid of isize/usize types ([#11](https://github.com/ayrat555/frankenstein/pull/11), [#16](https://github.com/ayrat555/frankenstein/pull/16), [ab72b4469b3ed](https://github.com/ayrat555/frankenstein/commit/ab72b4469b3edf89d84f07ce17770605aa9068b2))
