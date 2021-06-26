@@ -675,6 +675,9 @@ pub struct ReplyKeyboardMarkup {
     pub one_time_keyboard: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub input_field_placeholder: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub selective: Option<bool>,
 }
 
@@ -776,6 +779,9 @@ pub struct CallbackQuery {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ForceReply {
     pub force_reply: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub input_field_placeholder: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub selective: Option<bool>,
@@ -4224,6 +4230,7 @@ impl ReplyKeyboardMarkup {
             keyboard,
             resize_keyboard: None,
             one_time_keyboard: None,
+            input_field_placeholder: None,
             selective: None,
         }
     }
@@ -4240,6 +4247,10 @@ impl ReplyKeyboardMarkup {
         self.one_time_keyboard = one_time_keyboard;
     }
 
+    pub fn set_input_field_placeholder(&mut self, input_field_placeholder: Option<String>) {
+        self.input_field_placeholder = input_field_placeholder;
+    }
+
     pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
     }
@@ -4254,6 +4265,10 @@ impl ReplyKeyboardMarkup {
 
     pub fn one_time_keyboard(&self) -> Option<bool> {
         self.one_time_keyboard
+    }
+
+    pub fn input_field_placeholder(&self) -> Option<String> {
+        self.input_field_placeholder.clone()
     }
 
     pub fn selective(&self) -> Option<bool> {
@@ -4556,6 +4571,7 @@ impl ForceReply {
     pub fn new(force_reply: bool) -> Self {
         Self {
             force_reply,
+            input_field_placeholder: None,
             selective: None,
         }
     }
@@ -4566,6 +4582,14 @@ impl ForceReply {
 
     pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
+    }
+
+    pub fn set_input_field_placeholder(&mut self, input_field_placeholder: Option<String>) {
+        self.input_field_placeholder = input_field_placeholder;
+    }
+
+    pub fn input_field_placeholder(&self) -> Option<String> {
+        self.input_field_placeholder.clone()
     }
 
     pub fn force_reply(&self) -> bool {
