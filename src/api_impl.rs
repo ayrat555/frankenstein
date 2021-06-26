@@ -156,12 +156,16 @@ mod tests {
     use super::*;
     use crate::api_params::AnswerCallbackQueryParams;
     use crate::api_params::AnswerInlineQueryParams;
+    use crate::api_params::BanChatMemberParams;
+    use crate::api_params::BotCommandScope;
+    use crate::api_params::BotCommandScopeChat;
     use crate::api_params::ChatId;
     use crate::api_params::CopyMessageParams;
     use crate::api_params::CreateChatInviteLinkParams;
     use crate::api_params::DeleteChatPhotoParams;
     use crate::api_params::DeleteChatStickerSetParams;
     use crate::api_params::DeleteMessageParams;
+    use crate::api_params::DeleteMyCommandsParams;
     use crate::api_params::DeleteWebhookParams;
     use crate::api_params::EditChatInviteLinkParams;
     use crate::api_params::EditMessageCaptionParams;
@@ -172,10 +176,11 @@ mod tests {
     use crate::api_params::File;
     use crate::api_params::ForwardMessageParams;
     use crate::api_params::GetChatAdministratorsParams;
+    use crate::api_params::GetChatMemberCountParams;
     use crate::api_params::GetChatMemberParams;
-    use crate::api_params::GetChatMembersCountParams;
     use crate::api_params::GetChatParams;
     use crate::api_params::GetFileParams;
+    use crate::api_params::GetMyCommandsParams;
     use crate::api_params::GetStickerSetParams;
     use crate::api_params::GetUpdatesParams;
     use crate::api_params::GetUserProfilePhotosParams;
@@ -183,7 +188,6 @@ mod tests {
     use crate::api_params::InputFile;
     use crate::api_params::InputMedia;
     use crate::api_params::InputMediaPhoto;
-    use crate::api_params::KickChatMemberParams;
     use crate::api_params::LeaveChatParams;
     use crate::api_params::Media;
     use crate::api_params::PinChatMessageParams;
@@ -634,17 +638,17 @@ mod tests {
     }
 
     #[test]
-    fn kick_chat_member_success() {
+    fn ban_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = KickChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
+        let params = BanChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
 
-        let _m = mockito::mock("POST", "/kickChatMember")
+        let _m = mockito::mock("POST", "/banChatMember")
             .with_status(200)
             .with_body(response_string)
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.kick_chat_member(&params).unwrap();
+        let response = api.ban_chat_member(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1161,7 +1165,7 @@ mod tests {
 
     #[test]
     fn get_chat_administrators_success() {
-        let response_string = "{\"ok\":true,\"result\":[{\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"status\":\"administrator\",\"is_anonymous\":false,\"can_be_edited\":false,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_voice_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":true,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true},{\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"status\":\"creator\",\"is_anonymous\":false}]}";
+        let response_string = "{\"ok\":true,\"result\":[{\"status\":\"administrator\",\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"can_be_edited\":false,\"is_anonymous\":true,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_voice_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":false,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true},{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}]}";
         let params = GetChatAdministratorsParams::new(ChatId::Integer(-1001368460856));
 
         let _m = mockito::mock("POST", "/getChatAdministrators")
@@ -1179,15 +1183,15 @@ mod tests {
     #[test]
     fn get_chat_members_count_success() {
         let response_string = "{\"ok\":true,\"result\":4}";
-        let params = GetChatMembersCountParams::new(ChatId::Integer(-1001368460856));
+        let params = GetChatMemberCountParams::new(ChatId::Integer(-1001368460856));
 
-        let _m = mockito::mock("POST", "/getChatMembersCount")
+        let _m = mockito::mock("POST", "/getChatMemberCount")
             .with_status(200)
             .with_body(response_string)
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.get_chat_members_count(&params).unwrap();
+        let response = api.get_chat_member_count(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
@@ -1195,7 +1199,7 @@ mod tests {
 
     #[test]
     fn get_chat_member_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"status\":\"creator\",\"is_anonymous\":false}}";
+        let response_string = "{\"ok\":true,\"result\":{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}}";
         let params = GetChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
 
         let _m = mockito::mock("POST", "/getChatMember")
@@ -1284,8 +1288,75 @@ mod tests {
     }
 
     #[test]
+    fn set_my_commands_default_scope_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params = SetMyCommandsParams::new(vec![
+            BotCommand::new("meow".to_string(), "mewo".to_string()),
+            BotCommand::new("meow1".to_string(), "mewo1".to_string()),
+        ]);
+        params.set_scope(Some(BotCommandScope::Default));
+
+        let _m = mockito::mock("POST", "/setMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.set_my_commands(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn delete_my_commands_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params = DeleteMyCommandsParams::new();
+
+        params.set_scope(Some(BotCommandScope::Chat(BotCommandScopeChat::new(
+            ChatId::Integer(275808073),
+        ))));
+
+        params.set_language_code(Some("es".to_string()));
+
+        let _m = mockito::mock("POST", "/deleteMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.delete_my_commands(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
     fn get_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"command\":\"meow\",\"description\":\"mewo\"},{\"command\":\"meow1\",\"description\":\"mewo1\"}]}";
+
+        let params = GetMyCommandsParams::new();
+        let _m = mockito::mock("POST", "/getMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.get_my_commands(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_my_commands_scope_success() {
+        let response_string = "{\"ok\":true,\"result\":[]}";
+
+        let mut params = GetMyCommandsParams::new();
+
+        params.set_scope(Some(BotCommandScope::Chat(BotCommandScopeChat::new(
+            ChatId::Integer(275808073),
+        ))));
 
         let _m = mockito::mock("POST", "/getMyCommands")
             .with_status(200)
@@ -1293,7 +1364,7 @@ mod tests {
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.get_my_commands().unwrap();
+        let response = api.get_my_commands(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);

@@ -3,12 +3,14 @@ use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
 use crate::api_params::AnswerPreCheckoutQueryParams;
 use crate::api_params::AnswerShippingQueryParams;
+use crate::api_params::BanChatMemberParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteMessageParams;
+use crate::api_params::DeleteMyCommandsParams;
 use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
@@ -21,16 +23,16 @@ use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::File;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::GetChatAdministratorsParams;
+use crate::api_params::GetChatMemberCountParams;
 use crate::api_params::GetChatMemberParams;
-use crate::api_params::GetChatMembersCountParams;
 use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
+use crate::api_params::GetMyCommandsParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::InputMedia;
-use crate::api_params::KickChatMemberParams;
 use crate::api_params::LeaveChatParams;
 use crate::api_params::Media;
 use crate::api_params::PinChatMessageParams;
@@ -439,11 +441,11 @@ pub trait TelegramApi {
         self.request("getFile", Some(params))
     }
 
-    fn kick_chat_member(
+    fn ban_chat_member(
         &self,
-        params: &KickChatMemberParams,
+        params: &BanChatMemberParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        self.request("kickChatMember", Some(params))
+        self.request("banChatMember", Some(params))
     }
 
     fn unban_chat_member(
@@ -568,11 +570,11 @@ pub trait TelegramApi {
         self.request("getChatAdministrators", Some(params))
     }
 
-    fn get_chat_members_count(
+    fn get_chat_member_count(
         &self,
-        params: &GetChatMembersCountParams,
+        params: &GetChatMemberCountParams,
     ) -> Result<MethodResponse<u32>, Self::Error> {
-        self.request("getChatMembersCount", Some(params))
+        self.request("getChatMemberCount", Some(params))
     }
 
     fn get_chat_member(
@@ -610,8 +612,18 @@ pub trait TelegramApi {
         self.request("setMyCommands", Some(params))
     }
 
-    fn get_my_commands(&self) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
-        self.request_without_body("getMyCommands")
+    fn get_my_commands(
+        &self,
+        params: &GetMyCommandsParams,
+    ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
+        self.request("getMyCommands", Some(params))
+    }
+
+    fn delete_my_commands(
+        &self,
+        params: &DeleteMyCommandsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteMyCommands", Some(params))
     }
 
     fn answer_inline_query(

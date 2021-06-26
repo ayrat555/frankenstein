@@ -11,6 +11,110 @@ pub enum InputMessageContent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "status")]
+pub enum ChatMember {
+    #[serde(rename = "creator")]
+    Owner(ChatMemberOwner),
+    #[serde(rename = "administrator")]
+    Administrator(ChatMemberAdministrator),
+    #[serde(rename = "member")]
+    Member(ChatMemberMember),
+    #[serde(rename = "restricted")]
+    Restricted(ChatMemberRestricted),
+    #[serde(rename = "left")]
+    Left(ChatMemberLeft),
+    #[serde(rename = "banned")]
+    Banned(ChatMemberBanned),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatMemberOwner {
+    pub user: User,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub custom_title: Option<String>,
+
+    pub is_anonymous: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatMemberAdministrator {
+    pub user: User,
+
+    pub can_be_edited: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub custom_title: Option<String>,
+
+    pub is_anonymous: bool,
+
+    pub can_manage_chat: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub can_post_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub can_edit_messages: Option<bool>,
+
+    pub can_delete_messages: bool,
+
+    pub can_manage_voice_chats: bool,
+
+    pub can_restrict_members: bool,
+
+    pub can_promote_members: bool,
+
+    pub can_change_info: bool,
+
+    pub can_invite_users: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub can_pin_messages: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatMemberMember {
+    pub user: User,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatMemberRestricted {
+    pub user: User,
+
+    pub is_member: bool,
+
+    pub can_change_info: bool,
+
+    pub can_invite_users: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub can_pin_messages: Option<bool>,
+
+    pub can_send_messages: bool,
+
+    pub can_send_media_messages: bool,
+
+    pub can_send_polls: bool,
+
+    pub can_send_other_messages: bool,
+
+    pub can_add_web_page_previews: bool,
+
+    pub until_date: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatMemberLeft {
+    pub user: User,
+}
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatMemberBanned {
+    pub user: User,
+
+    pub until_date: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct VoiceChatStarted {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -675,6 +779,9 @@ pub struct ReplyKeyboardMarkup {
     pub one_time_keyboard: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub input_field_placeholder: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub selective: Option<bool>,
 }
 
@@ -778,6 +885,9 @@ pub struct ForceReply {
     pub force_reply: bool,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub input_field_placeholder: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub selective: Option<bool>,
 }
 
@@ -807,73 +917,6 @@ pub struct ChatInviteLink {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub member_limit: Option<u32>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct ChatMember {
-    pub user: User,
-
-    pub status: String,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub custom_title: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub is_anonymous: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_be_edited: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_manage_chat: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_post_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_edit_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_delete_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_manage_voice_chats: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_restrict_members: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_promote_members: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_change_info: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_invite_users: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_pin_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub is_member: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_send_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_send_media_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_send_polls: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_send_other_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub can_add_web_page_previews: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub until_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -4224,6 +4267,7 @@ impl ReplyKeyboardMarkup {
             keyboard,
             resize_keyboard: None,
             one_time_keyboard: None,
+            input_field_placeholder: None,
             selective: None,
         }
     }
@@ -4240,6 +4284,10 @@ impl ReplyKeyboardMarkup {
         self.one_time_keyboard = one_time_keyboard;
     }
 
+    pub fn set_input_field_placeholder(&mut self, input_field_placeholder: Option<String>) {
+        self.input_field_placeholder = input_field_placeholder;
+    }
+
     pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
     }
@@ -4254,6 +4302,10 @@ impl ReplyKeyboardMarkup {
 
     pub fn one_time_keyboard(&self) -> Option<bool> {
         self.one_time_keyboard
+    }
+
+    pub fn input_field_placeholder(&self) -> Option<String> {
+        self.input_field_placeholder.clone()
     }
 
     pub fn selective(&self) -> Option<bool> {
@@ -4556,6 +4608,7 @@ impl ForceReply {
     pub fn new(force_reply: bool) -> Self {
         Self {
             force_reply,
+            input_field_placeholder: None,
             selective: None,
         }
     }
@@ -4566,6 +4619,14 @@ impl ForceReply {
 
     pub fn set_selective(&mut self, selective: Option<bool>) {
         self.selective = selective;
+    }
+
+    pub fn set_input_field_placeholder(&mut self, input_field_placeholder: Option<String>) {
+        self.input_field_placeholder = input_field_placeholder;
+    }
+
+    pub fn input_field_placeholder(&self) -> Option<String> {
+        self.input_field_placeholder.clone()
     }
 
     pub fn force_reply(&self) -> bool {
@@ -4683,211 +4744,6 @@ impl ChatInviteLink {
 
     pub fn member_limit(&self) -> Option<u32> {
         self.member_limit
-    }
-}
-
-impl ChatMember {
-    pub fn new(user: User, status: String) -> Self {
-        Self {
-            user,
-            status,
-            custom_title: None,
-            is_anonymous: None,
-            can_be_edited: None,
-            can_manage_chat: None,
-            can_post_messages: None,
-            can_edit_messages: None,
-            can_delete_messages: None,
-            can_manage_voice_chats: None,
-            can_restrict_members: None,
-            can_promote_members: None,
-            can_change_info: None,
-            can_invite_users: None,
-            can_pin_messages: None,
-            is_member: None,
-            can_send_messages: None,
-            can_send_media_messages: None,
-            can_send_polls: None,
-            can_send_other_messages: None,
-            can_add_web_page_previews: None,
-            until_date: None,
-        }
-    }
-
-    pub fn set_user(&mut self, user: User) {
-        self.user = user;
-    }
-
-    pub fn set_status(&mut self, status: String) {
-        self.status = status;
-    }
-
-    pub fn set_custom_title(&mut self, custom_title: Option<String>) {
-        self.custom_title = custom_title;
-    }
-
-    pub fn set_is_anonymous(&mut self, is_anonymous: Option<bool>) {
-        self.is_anonymous = is_anonymous;
-    }
-
-    pub fn set_can_be_edited(&mut self, can_be_edited: Option<bool>) {
-        self.can_be_edited = can_be_edited;
-    }
-
-    pub fn set_can_manage_chat(&mut self, can_manage_chat: Option<bool>) {
-        self.can_manage_chat = can_manage_chat;
-    }
-
-    pub fn set_can_post_messages(&mut self, can_post_messages: Option<bool>) {
-        self.can_post_messages = can_post_messages;
-    }
-
-    pub fn set_can_edit_messages(&mut self, can_edit_messages: Option<bool>) {
-        self.can_edit_messages = can_edit_messages;
-    }
-
-    pub fn set_can_delete_messages(&mut self, can_delete_messages: Option<bool>) {
-        self.can_delete_messages = can_delete_messages;
-    }
-
-    pub fn set_can_manage_voice_chats(&mut self, can_manage_voice_chats: Option<bool>) {
-        self.can_manage_voice_chats = can_manage_voice_chats;
-    }
-
-    pub fn set_can_restrict_members(&mut self, can_restrict_members: Option<bool>) {
-        self.can_restrict_members = can_restrict_members;
-    }
-
-    pub fn set_can_promote_members(&mut self, can_promote_members: Option<bool>) {
-        self.can_promote_members = can_promote_members;
-    }
-
-    pub fn set_can_change_info(&mut self, can_change_info: Option<bool>) {
-        self.can_change_info = can_change_info;
-    }
-
-    pub fn set_can_invite_users(&mut self, can_invite_users: Option<bool>) {
-        self.can_invite_users = can_invite_users;
-    }
-
-    pub fn set_can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
-        self.can_pin_messages = can_pin_messages;
-    }
-
-    pub fn set_is_member(&mut self, is_member: Option<bool>) {
-        self.is_member = is_member;
-    }
-
-    pub fn set_can_send_messages(&mut self, can_send_messages: Option<bool>) {
-        self.can_send_messages = can_send_messages;
-    }
-
-    pub fn set_can_send_media_messages(&mut self, can_send_media_messages: Option<bool>) {
-        self.can_send_media_messages = can_send_media_messages;
-    }
-
-    pub fn set_can_send_polls(&mut self, can_send_polls: Option<bool>) {
-        self.can_send_polls = can_send_polls;
-    }
-
-    pub fn set_can_send_other_messages(&mut self, can_send_other_messages: Option<bool>) {
-        self.can_send_other_messages = can_send_other_messages;
-    }
-
-    pub fn set_can_add_web_page_previews(&mut self, can_add_web_page_previews: Option<bool>) {
-        self.can_add_web_page_previews = can_add_web_page_previews;
-    }
-
-    pub fn set_until_date(&mut self, until_date: Option<u64>) {
-        self.until_date = until_date;
-    }
-
-    pub fn user(&self) -> User {
-        self.user.clone()
-    }
-
-    pub fn status(&self) -> String {
-        self.status.clone()
-    }
-
-    pub fn custom_title(&self) -> Option<String> {
-        self.custom_title.clone()
-    }
-
-    pub fn is_anonymous(&self) -> Option<bool> {
-        self.is_anonymous
-    }
-
-    pub fn can_be_edited(&self) -> Option<bool> {
-        self.can_be_edited
-    }
-
-    pub fn can_manage_chat(&self) -> Option<bool> {
-        self.can_manage_chat
-    }
-
-    pub fn can_post_messages(&self) -> Option<bool> {
-        self.can_post_messages
-    }
-
-    pub fn can_edit_messages(&self) -> Option<bool> {
-        self.can_edit_messages
-    }
-
-    pub fn can_delete_messages(&self) -> Option<bool> {
-        self.can_delete_messages
-    }
-
-    pub fn can_manage_voice_chats(&self) -> Option<bool> {
-        self.can_manage_voice_chats
-    }
-
-    pub fn can_restrict_members(&self) -> Option<bool> {
-        self.can_restrict_members
-    }
-
-    pub fn can_promote_members(&self) -> Option<bool> {
-        self.can_promote_members
-    }
-
-    pub fn can_change_info(&self) -> Option<bool> {
-        self.can_change_info
-    }
-
-    pub fn can_invite_users(&self) -> Option<bool> {
-        self.can_invite_users
-    }
-
-    pub fn can_pin_messages(&self) -> Option<bool> {
-        self.can_pin_messages
-    }
-
-    pub fn is_member(&self) -> Option<bool> {
-        self.is_member
-    }
-
-    pub fn can_send_messages(&self) -> Option<bool> {
-        self.can_send_messages
-    }
-
-    pub fn can_send_media_messages(&self) -> Option<bool> {
-        self.can_send_media_messages
-    }
-
-    pub fn can_send_polls(&self) -> Option<bool> {
-        self.can_send_polls
-    }
-
-    pub fn can_send_other_messages(&self) -> Option<bool> {
-        self.can_send_other_messages
-    }
-
-    pub fn can_add_web_page_previews(&self) -> Option<bool> {
-        self.can_add_web_page_previews
-    }
-
-    pub fn until_date(&self) -> Option<u64> {
-        self.until_date
     }
 }
 
@@ -9119,5 +8975,328 @@ impl GameHighScore {
 
     pub fn score(&self) -> i32 {
         self.score
+    }
+}
+
+impl ChatMemberOwner {
+    pub fn new(user: User, is_anonymous: bool) -> Self {
+        Self {
+            user,
+            is_anonymous,
+            custom_title: None,
+        }
+    }
+
+    pub fn set_user(&mut self, user: User) {
+        self.user = user;
+    }
+
+    pub fn set_custom_title(&mut self, custom_title: Option<String>) {
+        self.custom_title = custom_title;
+    }
+
+    pub fn set_is_anonymous(&mut self, is_anonymous: bool) {
+        self.is_anonymous = is_anonymous;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn custom_title(&self) -> Option<String> {
+        self.custom_title.clone()
+    }
+
+    pub fn is_anonymous(&self) -> bool {
+        self.is_anonymous
+    }
+}
+
+impl ChatMemberAdministrator {
+    pub fn new(user: User) -> Self {
+        Self {
+            user,
+            can_be_edited: true,
+            is_anonymous: true,
+            can_manage_chat: true,
+            can_delete_messages: true,
+            can_manage_voice_chats: true,
+            can_restrict_members: true,
+            can_promote_members: true,
+            can_change_info: true,
+            can_invite_users: true,
+            can_post_messages: None,
+            can_edit_messages: None,
+            can_pin_messages: None,
+            custom_title: None,
+        }
+    }
+
+    pub fn set_user(&mut self, user: User) {
+        self.user = user;
+    }
+
+    pub fn set_can_be_edited(&mut self, can_be_edited: bool) {
+        self.can_be_edited = can_be_edited;
+    }
+
+    pub fn set_custom_title(&mut self, custom_title: Option<String>) {
+        self.custom_title = custom_title;
+    }
+
+    pub fn set_is_anonymous(&mut self, is_anonymous: bool) {
+        self.is_anonymous = is_anonymous;
+    }
+
+    pub fn set_can_manage_chat(&mut self, can_manage_chat: bool) {
+        self.can_manage_chat = can_manage_chat;
+    }
+
+    pub fn set_can_post_messages(&mut self, can_post_messages: Option<bool>) {
+        self.can_post_messages = can_post_messages;
+    }
+
+    pub fn set_can_edit_messages(&mut self, can_edit_messages: Option<bool>) {
+        self.can_edit_messages = can_edit_messages;
+    }
+
+    pub fn set_can_delete_messages(&mut self, can_delete_messages: bool) {
+        self.can_delete_messages = can_delete_messages;
+    }
+
+    pub fn set_can_manage_voice_chats(&mut self, can_manage_voice_chats: bool) {
+        self.can_manage_voice_chats = can_manage_voice_chats;
+    }
+
+    pub fn set_can_restrict_members(&mut self, can_restrict_members: bool) {
+        self.can_restrict_members = can_restrict_members;
+    }
+
+    pub fn set_can_promote_members(&mut self, can_promote_members: bool) {
+        self.can_promote_members = can_promote_members;
+    }
+
+    pub fn set_can_change_info(&mut self, can_change_info: bool) {
+        self.can_change_info = can_change_info;
+    }
+
+    pub fn set_can_invite_users(&mut self, can_invite_users: bool) {
+        self.can_invite_users = can_invite_users;
+    }
+
+    pub fn set_can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
+        self.can_pin_messages = can_pin_messages;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn can_be_edited(&self) -> bool {
+        self.can_be_edited
+    }
+
+    pub fn custom_title(&self) -> Option<String> {
+        self.custom_title.clone()
+    }
+
+    pub fn is_anonymous(&self) -> bool {
+        self.is_anonymous
+    }
+
+    pub fn can_manage_chat(&self) -> bool {
+        self.can_manage_chat
+    }
+
+    pub fn can_post_messages(&self) -> Option<bool> {
+        self.can_post_messages
+    }
+
+    pub fn can_edit_messages(&self) -> Option<bool> {
+        self.can_edit_messages
+    }
+
+    pub fn can_delete_messages(&self) -> bool {
+        self.can_delete_messages
+    }
+
+    pub fn can_manage_voice_chats(&self) -> bool {
+        self.can_manage_voice_chats
+    }
+
+    pub fn can_restrict_members(&self) -> bool {
+        self.can_restrict_members
+    }
+
+    pub fn can_promote_members(&self) -> bool {
+        self.can_promote_members
+    }
+
+    pub fn can_change_info(&self) -> bool {
+        self.can_change_info
+    }
+
+    pub fn can_invite_users(&self) -> bool {
+        self.can_invite_users
+    }
+
+    pub fn can_pin_messages(&self) -> Option<bool> {
+        self.can_pin_messages
+    }
+}
+
+impl ChatMemberMember {
+    pub fn new(user: User) -> Self {
+        Self { user }
+    }
+
+    pub fn set_user(&mut self, user: User) {
+        self.user = user;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+}
+
+impl ChatMemberRestricted {
+    pub fn new(user: User, until_date: u64) -> Self {
+        Self {
+            user,
+            until_date,
+            is_member: true,
+            can_change_info: true,
+            can_invite_users: true,
+            can_send_messages: true,
+            can_send_media_messages: true,
+            can_send_polls: true,
+            can_send_other_messages: true,
+            can_add_web_page_previews: true,
+            can_pin_messages: None,
+        }
+    }
+
+    pub fn set_user(&mut self, user: User) {
+        self.user = user;
+    }
+
+    pub fn set_is_member(&mut self, is_member: bool) {
+        self.is_member = is_member;
+    }
+
+    pub fn set_can_change_info(&mut self, can_change_info: bool) {
+        self.can_change_info = can_change_info;
+    }
+
+    pub fn set_can_invite_users(&mut self, can_invite_users: bool) {
+        self.can_invite_users = can_invite_users;
+    }
+
+    pub fn set_can_pin_messages(&mut self, can_pin_messages: Option<bool>) {
+        self.can_pin_messages = can_pin_messages;
+    }
+
+    pub fn set_can_send_messages(&mut self, can_send_messages: bool) {
+        self.can_send_messages = can_send_messages;
+    }
+
+    pub fn set_can_send_media_messages(&mut self, can_send_media_messages: bool) {
+        self.can_send_media_messages = can_send_media_messages;
+    }
+
+    pub fn set_can_send_polls(&mut self, can_send_polls: bool) {
+        self.can_send_polls = can_send_polls;
+    }
+
+    pub fn set_can_send_other_messages(&mut self, can_send_other_messages: bool) {
+        self.can_send_other_messages = can_send_other_messages;
+    }
+
+    pub fn set_can_add_web_page_previews(&mut self, can_add_web_page_previews: bool) {
+        self.can_add_web_page_previews = can_add_web_page_previews;
+    }
+
+    pub fn set_until_date(&mut self, until_date: u64) {
+        self.until_date = until_date;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn is_member(&self) -> bool {
+        self.is_member
+    }
+
+    pub fn can_change_info(&self) -> bool {
+        self.can_change_info
+    }
+
+    pub fn can_invite_users(&self) -> bool {
+        self.can_invite_users
+    }
+
+    pub fn can_pin_messages(&self) -> Option<bool> {
+        self.can_pin_messages
+    }
+
+    pub fn can_send_messages(&self) -> bool {
+        self.can_send_messages
+    }
+
+    pub fn can_send_media_messages(&self) -> bool {
+        self.can_send_media_messages
+    }
+
+    pub fn can_send_polls(&self) -> bool {
+        self.can_send_polls
+    }
+
+    pub fn can_send_other_messages(&self) -> bool {
+        self.can_send_other_messages
+    }
+
+    pub fn can_add_web_page_previews(&self) -> bool {
+        self.can_add_web_page_previews
+    }
+
+    pub fn until_date(&self) -> u64 {
+        self.until_date
+    }
+}
+
+impl ChatMemberLeft {
+    pub fn new(user: User) -> Self {
+        Self { user }
+    }
+
+    pub fn set_user(&mut self, user: User) {
+        self.user = user;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+}
+
+impl ChatMemberBanned {
+    pub fn new(user: User, until_date: u64) -> Self {
+        Self { user, until_date }
+    }
+
+    pub fn set_user(&mut self, user: User) {
+        self.user = user;
+    }
+
+    pub fn set_until_date(&mut self, until_date: u64) {
+        self.until_date = until_date;
+    }
+
+    pub fn user(&self) -> User {
+        self.user.clone()
+    }
+
+    pub fn until_date(&self) -> u64 {
+        self.until_date
     }
 }
