@@ -1059,9 +1059,6 @@ pub struct InlineQuery {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultArticle {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub title: String,
@@ -1246,9 +1243,6 @@ pub struct InlineQueryResultVideo {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultAudio {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub audio_url: String,
@@ -1607,9 +1601,6 @@ pub struct InlineQueryResultCachedVideo {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InlineQueryResultCachedVoice {
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     pub id: String,
 
     pub voice_file_id: String,
