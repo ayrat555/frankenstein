@@ -18,26 +18,26 @@ jobs:
         include:
           - os: ubuntu-latest
             toolchain: stable
-            clippyargs: -D clippy::pedantic -D warnings
+            clippyargs: -D clippy::pedantic -D warnings -A clippy::struct-excessive-bools
           - os: macOS-latest
             toolchain: stable
-            clippyargs: -D clippy::pedantic -D warnings
+            clippyargs: -D clippy::pedantic -D warnings -A clippy::struct-excessive-bools
           - os: windows-latest
             toolchain: stable
-            clippyargs: -D clippy::pedantic -D warnings
+            clippyargs: -D clippy::pedantic -D warnings -A clippy::struct-excessive-bools
 
           - os: ubuntu-latest
             toolchain: nightly
-            clippyargs: -W clippy::pedantic
+            clippyargs: -W clippy::pedantic -A clippy::struct-excessive-bools
           # - os: ubuntu-latest
           #   toolchain: 1.41.1 # Debian 10 Buster
           #   clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints
           - os: ubuntu-latest
             toolchain: 1.47.0 # Alpine 3.13
-            clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints
+            clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints -A clippy::struct-excessive-bools
           - os: ubuntu-latest
             toolchain: 1.48.0 # Debian 11 Bullseye
-            clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints
+            clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints -A clippy::struct-excessive-bools
     steps:
       - uses: actions/checkout@v2
 
