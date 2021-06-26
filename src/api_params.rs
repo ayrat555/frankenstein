@@ -97,6 +97,41 @@ pub enum Media {
     Video(InputMediaVideo),
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type")]
+pub enum BotCommandScope {
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "all_private_chats")]
+    AllPrivateChats,
+    #[serde(rename = "all_group_chats")]
+    AllGroupChats,
+    #[serde(rename = "all_chat_administrators")]
+    AllChatAdministrators,
+    #[serde(rename = "chat")]
+    Chat(BotCommandScopeChat),
+    #[serde(rename = "chat_administrators")]
+    ChatAdministrators(BotCommandScopeChatAdministrators),
+    #[serde(rename = "chat_member")]
+    ChatMember(BotCommandScopeChatMember),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct BotCommandScopeChat {
+    pub chat_id: ChatId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct BotCommandScopeChatAdministrators {
+    pub chat_id: ChatId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct BotCommandScopeChatMember {
+    pub chat_id: ChatId,
+    pub user_id: u64,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InputFile {
     pub path: PathBuf,
@@ -943,6 +978,30 @@ pub struct AnswerCallbackQueryParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<BotCommandScope>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct GetMyCommandsParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<BotCommandScope>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct DeleteMyCommandsParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<BotCommandScope>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub language_code: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -4104,15 +4163,85 @@ impl AnswerCallbackQueryParams {
 
 impl SetMyCommandsParams {
     pub fn new(commands: Vec<BotCommand>) -> Self {
-        Self { commands }
+        Self {
+            commands,
+            scope: None,
+            language_code: None,
+        }
     }
 
     pub fn set_commands(&mut self, commands: Vec<BotCommand>) {
         self.commands = commands;
     }
 
+    pub fn set_scope(&mut self, scope: Option<BotCommandScope>) {
+        self.scope = scope;
+    }
+
+    pub fn set_language_code(&mut self, language_code: Option<String>) {
+        self.language_code = language_code;
+    }
+
     pub fn commands(&self) -> Vec<BotCommand> {
         self.commands.clone()
+    }
+
+    pub fn scope(&self) -> Option<BotCommandScope> {
+        self.scope.clone()
+    }
+
+    pub fn language_code(&self) -> Option<String> {
+        self.language_code.clone()
+    }
+}
+
+impl GetMyCommandsParams {
+    pub fn new() -> Self {
+        Self {
+            scope: None,
+            language_code: None,
+        }
+    }
+
+    pub fn set_scope(&mut self, scope: Option<BotCommandScope>) {
+        self.scope = scope;
+    }
+
+    pub fn set_language_code(&mut self, language_code: Option<String>) {
+        self.language_code = language_code;
+    }
+
+    pub fn scope(&self) -> Option<BotCommandScope> {
+        self.scope.clone()
+    }
+
+    pub fn language_code(&self) -> Option<String> {
+        self.language_code.clone()
+    }
+}
+
+impl DeleteMyCommandsParams {
+    pub fn new() -> Self {
+        Self {
+            scope: None,
+            language_code: None,
+        }
+    }
+
+    pub fn set_scope(&mut self, scope: Option<BotCommandScope>) {
+        self.scope = scope;
+    }
+
+    pub fn set_language_code(&mut self, language_code: Option<String>) {
+        self.language_code = language_code;
+    }
+
+    pub fn scope(&self) -> Option<BotCommandScope> {
+        self.scope.clone()
+    }
+
+    pub fn language_code(&self) -> Option<String> {
+        self.language_code.clone()
     }
 }
 
@@ -5733,5 +5862,55 @@ impl InputFile {
 
     pub fn path(&self) -> PathBuf {
         self.path.clone()
+    }
+}
+
+impl BotCommandScopeChat {
+    pub fn new(chat_id: ChatId) -> Self {
+        Self { chat_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+}
+
+impl BotCommandScopeChatAdministrators {
+    pub fn new(chat_id: ChatId) -> Self {
+        Self { chat_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+}
+
+impl BotCommandScopeChatMember {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
+        Self { chat_id, user_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn set_user_id(&mut self, user_id: u64) {
+        self.user_id = user_id;
+    }
+
+    pub fn user_id(&self) -> u64 {
+        self.user_id
     }
 }

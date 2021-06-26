@@ -9,6 +9,7 @@ use crate::api_params::CreateNewStickerSetParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteMessageParams;
+use crate::api_params::DeleteMyCommandsParams;
 use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
@@ -26,6 +27,7 @@ use crate::api_params::GetChatMembersCountParams;
 use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
+use crate::api_params::GetMyCommandsParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
@@ -610,8 +612,18 @@ pub trait TelegramApi {
         self.request("setMyCommands", Some(params))
     }
 
-    fn get_my_commands(&self) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
-        self.request_without_body("getMyCommands")
+    fn get_my_commands(
+        &self,
+        params: &GetMyCommandsParams,
+    ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
+        self.request("getMyCommands", Some(params))
+    }
+
+    fn delete_my_commands(
+        &self,
+        params: &DeleteMyCommandsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteMyCommands", Some(params))
     }
 
     fn answer_inline_query(

@@ -156,12 +156,15 @@ mod tests {
     use super::*;
     use crate::api_params::AnswerCallbackQueryParams;
     use crate::api_params::AnswerInlineQueryParams;
+    use crate::api_params::BotCommandScope;
+    use crate::api_params::BotCommandScopeChat;
     use crate::api_params::ChatId;
     use crate::api_params::CopyMessageParams;
     use crate::api_params::CreateChatInviteLinkParams;
     use crate::api_params::DeleteChatPhotoParams;
     use crate::api_params::DeleteChatStickerSetParams;
     use crate::api_params::DeleteMessageParams;
+    use crate::api_params::DeleteMyCommandsParams;
     use crate::api_params::DeleteWebhookParams;
     use crate::api_params::EditChatInviteLinkParams;
     use crate::api_params::EditMessageCaptionParams;
@@ -176,6 +179,7 @@ mod tests {
     use crate::api_params::GetChatMembersCountParams;
     use crate::api_params::GetChatParams;
     use crate::api_params::GetFileParams;
+    use crate::api_params::GetMyCommandsParams;
     use crate::api_params::GetStickerSetParams;
     use crate::api_params::GetUpdatesParams;
     use crate::api_params::GetUserProfilePhotosParams;
@@ -1284,8 +1288,75 @@ mod tests {
     }
 
     #[test]
+    fn set_my_commands_default_scope_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params = SetMyCommandsParams::new(vec![
+            BotCommand::new("meow".to_string(), "mewo".to_string()),
+            BotCommand::new("meow1".to_string(), "mewo1".to_string()),
+        ]);
+        params.set_scope(Some(BotCommandScope::Default));
+
+        let _m = mockito::mock("POST", "/setMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.set_my_commands(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn delete_my_commands_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let mut params = DeleteMyCommandsParams::new();
+
+        params.set_scope(Some(BotCommandScope::Chat(BotCommandScopeChat::new(
+            ChatId::Integer(275808073),
+        ))));
+
+        params.set_language_code(Some("es".to_string()));
+
+        let _m = mockito::mock("POST", "/deleteMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.delete_my_commands(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
     fn get_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"command\":\"meow\",\"description\":\"mewo\"},{\"command\":\"meow1\",\"description\":\"mewo1\"}]}";
+
+        let params = GetMyCommandsParams::new();
+        let _m = mockito::mock("POST", "/getMyCommands")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.get_my_commands(&params).unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn get_my_commands_scope_success() {
+        let response_string = "{\"ok\":true,\"result\":[]}";
+
+        let mut params = GetMyCommandsParams::new();
+
+        params.set_scope(Some(BotCommandScope::Chat(BotCommandScopeChat::new(
+            ChatId::Integer(275808073),
+        ))));
 
         let _m = mockito::mock("POST", "/getMyCommands")
             .with_status(200)
@@ -1293,7 +1364,7 @@ mod tests {
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        let response = api.get_my_commands().unwrap();
+        let response = api.get_my_commands(&params).unwrap();
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
