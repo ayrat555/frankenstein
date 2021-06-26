@@ -84,16 +84,25 @@ pub enum InputMedia {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
+#[serde(tag = "source")]
 pub enum PassportElementError {
+    #[serde(rename = "data")]
     DataField(PassportElementErrorDataField),
+    #[serde(rename = "front_side")]
     FrontSide(PassportElementErrorFrontSide),
+    #[serde(rename = "reverse_side")]
     ReverseSide(PassportElementErrorReverseSide),
+    #[serde(rename = "selfie")]
     Selfie(PassportElementErrorSelfie),
+    #[serde(rename = "file")]
     File(PassportElementErrorFile),
+    #[serde(rename = "files")]
     Files(PassportElementErrorFiles),
+    #[serde(rename = "translation_file")]
     TranslationFile(PassportElementErrorTranslationFile),
+    #[serde(rename = "translation_files")]
     TranslationFiles(PassportElementErrorTranslationFiles),
+    #[serde(rename = "unspecified")]
     Unspecified(PassportElementErrorUnspecified),
 }
 

@@ -1955,7 +1955,6 @@ pub struct EncryptedCredentials {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorDataField {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -1968,7 +1967,6 @@ pub struct PassportElementErrorDataField {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorFrontSide {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -1979,7 +1977,6 @@ pub struct PassportElementErrorFrontSide {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorReverseSide {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -1990,7 +1987,6 @@ pub struct PassportElementErrorReverseSide {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorSelfie {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -2001,7 +1997,6 @@ pub struct PassportElementErrorSelfie {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorFile {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -2012,7 +2007,6 @@ pub struct PassportElementErrorFile {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorFiles {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -2023,7 +2017,6 @@ pub struct PassportElementErrorFiles {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorTranslationFile {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -2034,7 +2027,6 @@ pub struct PassportElementErrorTranslationFile {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorTranslationFiles {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -2045,7 +2037,6 @@ pub struct PassportElementErrorTranslationFiles {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PassportElementErrorUnspecified {
-    pub source: String,
     #[serde(rename = "type")]
     pub type_field: String,
 
@@ -5896,7 +5887,6 @@ impl InlineQueryResultVoice {
             id,
             voice_url,
             title,
-
             caption: None,
             parse_mode: None,
             caption_entities: None,
@@ -8233,24 +8223,13 @@ impl EncryptedCredentials {
 }
 
 impl PassportElementErrorDataField {
-    pub fn new(
-        source: String,
-        type_field: String,
-        field_name: String,
-        data_hash: String,
-        message: String,
-    ) -> Self {
+    pub fn new(type_field: String, field_name: String, data_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             field_name,
             data_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8267,10 +8246,6 @@ impl PassportElementErrorDataField {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8291,17 +8266,12 @@ impl PassportElementErrorDataField {
 }
 
 impl PassportElementErrorFrontSide {
-    pub fn new(source: String, type_field: String, file_hash: String, message: String) -> Self {
+    pub fn new(type_field: String, file_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8314,10 +8284,6 @@ impl PassportElementErrorFrontSide {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8334,17 +8300,12 @@ impl PassportElementErrorFrontSide {
 }
 
 impl PassportElementErrorReverseSide {
-    pub fn new(source: String, type_field: String, file_hash: String, message: String) -> Self {
+    pub fn new(type_field: String, file_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8357,10 +8318,6 @@ impl PassportElementErrorReverseSide {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8377,17 +8334,12 @@ impl PassportElementErrorReverseSide {
 }
 
 impl PassportElementErrorSelfie {
-    pub fn new(source: String, type_field: String, file_hash: String, message: String) -> Self {
+    pub fn new(type_field: String, file_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8400,10 +8352,6 @@ impl PassportElementErrorSelfie {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8420,17 +8368,12 @@ impl PassportElementErrorSelfie {
 }
 
 impl PassportElementErrorFile {
-    pub fn new(source: String, type_field: String, file_hash: String, message: String) -> Self {
+    pub fn new(type_field: String, file_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8443,10 +8386,6 @@ impl PassportElementErrorFile {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8463,22 +8402,12 @@ impl PassportElementErrorFile {
 }
 
 impl PassportElementErrorFiles {
-    pub fn new(
-        source: String,
-        type_field: String,
-        file_hashes: Vec<String>,
-        message: String,
-    ) -> Self {
+    pub fn new(type_field: String, file_hashes: Vec<String>, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hashes,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8491,10 +8420,6 @@ impl PassportElementErrorFiles {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8511,17 +8436,12 @@ impl PassportElementErrorFiles {
 }
 
 impl PassportElementErrorTranslationFile {
-    pub fn new(source: String, type_field: String, file_hash: String, message: String) -> Self {
+    pub fn new(type_field: String, file_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8534,10 +8454,6 @@ impl PassportElementErrorTranslationFile {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8554,22 +8470,12 @@ impl PassportElementErrorTranslationFile {
 }
 
 impl PassportElementErrorTranslationFiles {
-    pub fn new(
-        source: String,
-        type_field: String,
-        file_hashes: Vec<String>,
-        message: String,
-    ) -> Self {
+    pub fn new(type_field: String, file_hashes: Vec<String>, message: String) -> Self {
         Self {
-            source,
             type_field,
             file_hashes,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8582,10 +8488,6 @@ impl PassportElementErrorTranslationFiles {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
@@ -8602,17 +8504,12 @@ impl PassportElementErrorTranslationFiles {
 }
 
 impl PassportElementErrorUnspecified {
-    pub fn new(source: String, type_field: String, element_hash: String, message: String) -> Self {
+    pub fn new(type_field: String, element_hash: String, message: String) -> Self {
         Self {
-            source,
             type_field,
             element_hash,
             message,
         }
-    }
-
-    pub fn set_source(&mut self, source: String) {
-        self.source = source;
     }
 
     pub fn set_type_field(&mut self, type_field: String) {
@@ -8625,10 +8522,6 @@ impl PassportElementErrorUnspecified {
 
     pub fn set_message(&mut self, message: String) {
         self.message = message;
-    }
-
-    pub fn source(&self) -> String {
-        self.source.clone()
     }
 
     pub fn type_field(&self) -> String {
