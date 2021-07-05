@@ -770,7 +770,7 @@ pub struct File {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ReplyKeyboardMarkup {
-    pub keyboard: Vec<KeyboardButton>,
+    pub keyboard: Vec<Vec<KeyboardButton>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub resize_keyboard: Option<bool>,
@@ -4193,7 +4193,7 @@ impl File {
 }
 
 impl ReplyKeyboardMarkup {
-    pub fn new(keyboard: Vec<KeyboardButton>) -> Self {
+    pub fn new(keyboard: Vec<Vec<KeyboardButton>>) -> Self {
         Self {
             keyboard,
             resize_keyboard: None,
@@ -4203,7 +4203,7 @@ impl ReplyKeyboardMarkup {
         }
     }
 
-    pub fn set_keyboard(&mut self, keyboard: Vec<KeyboardButton>) {
+    pub fn set_keyboard(&mut self, keyboard: Vec<Vec<KeyboardButton>>) {
         self.keyboard = keyboard;
     }
 
@@ -4223,7 +4223,7 @@ impl ReplyKeyboardMarkup {
         self.selective = selective;
     }
 
-    pub fn keyboard(&self) -> Vec<KeyboardButton> {
+    pub fn keyboard(&self) -> Vec<Vec<KeyboardButton>> {
         self.keyboard.clone()
     }
 
