@@ -1,3 +1,7 @@
+## 0.5.1 (2021-07-06)
+
+  * Fix ReplyKeyboardMarkup serialization error - [#20](https://github.com/ayrat555/frankenstein/pull/20)
+
 ## 0.5.0 (2021-06-26)
 
 ### [Telegram API 5.3 Changes](https://core.telegram.org/bots/api#june-25-2021):
