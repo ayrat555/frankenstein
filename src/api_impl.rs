@@ -159,6 +159,7 @@ mod tests {
     use crate::api_params::BanChatMemberParams;
     use crate::api_params::BotCommandScope;
     use crate::api_params::BotCommandScopeChat;
+    use crate::api_params::ChatAction;
     use crate::api_params::ChatId;
     use crate::api_params::CopyMessageParams;
     use crate::api_params::CreateChatInviteLinkParams;
@@ -587,7 +588,7 @@ mod tests {
     #[test]
     fn send_chat_action_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = SendChatActionParams::new(ChatId::Integer(275808073), "typing".to_string());
+        let params = SendChatActionParams::new(ChatId::Integer(275808073), ChatAction::Typing);
 
         let _m = mockito::mock("POST", "/sendChatAction")
             .with_status(200)

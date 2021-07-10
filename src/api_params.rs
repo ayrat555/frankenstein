@@ -123,6 +123,21 @@ pub enum ReplyMarkup {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum ChatAction {
+    Typing,
+    UploadPhoto,
+    RecordVide,
+    UploadVideo,
+    RecordVoice,
+    UploadVoice,
+    UploadDocument,
+    FindLocation,
+    RecordVideoNote,
+    UploadVideoNote
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type")]
 pub enum Media {
     #[serde(rename = "audio")]
@@ -761,7 +776,7 @@ pub struct SendDiceParams {
 pub struct SendChatActionParams {
     pub chat_id: ChatId,
 
-    pub action: String,
+    pub action: ChatAction,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -3371,7 +3386,7 @@ impl SendDiceParams {
 }
 
 impl SendChatActionParams {
-    pub fn new(chat_id: ChatId, action: String) -> Self {
+    pub fn new(chat_id: ChatId, action: ChatAction) -> Self {
         Self { chat_id, action }
     }
 
@@ -3379,7 +3394,7 @@ impl SendChatActionParams {
         self.chat_id = chat_id;
     }
 
-    pub fn set_action(&mut self, action: String) {
+    pub fn set_action(&mut self, action: ChatAction) {
         self.action = action;
     }
 
@@ -3387,7 +3402,7 @@ impl SendChatActionParams {
         self.chat_id.clone()
     }
 
-    pub fn action(&self) -> String {
+    pub fn action(&self) -> ChatAction {
         self.action.clone()
     }
 }
