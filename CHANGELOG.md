@@ -1,3 +1,7 @@
+## 0.5.2 (2021-07-10)
+
+  * Make SendChatActionParams.action an enum - [#22](https://github.com/ayrat555/frankenstein/pull/22)
+
 ## 0.5.1 (2021-07-06)
 
   * Fix ReplyKeyboardMarkup serialization error - [#20](https://github.com/ayrat555/frankenstein/pull/20)
