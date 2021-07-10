@@ -127,14 +127,14 @@ pub enum ReplyMarkup {
 pub enum ChatAction {
     Typing,
     UploadPhoto,
-    RecordVide,
+    RecordVideo,
     UploadVideo,
     RecordVoice,
     UploadVoice,
     UploadDocument,
     FindLocation,
     RecordVideoNote,
-    UploadVideoNote
+    UploadVideoNote,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
