@@ -83,7 +83,9 @@ impl TelegramApi for Api {
     ) -> Result<T2, Error> {
         let url = format!("{}/{}", self.api_url, method);
 
-        let prepared_request = ureq::post(&url).set("Content-Type", "application/json");
+        let prepared_request = ureq::post(&url)
+            .set("User-Agent", "frankenstein/0.5.3")
+            .set("Content-Type", "application/json");
 
         let response = match params {
             None => prepared_request.call()?,
