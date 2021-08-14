@@ -1,3 +1,7 @@
+## 0.5.3 (2021-08-14)
+
+  * Make Api struct cloneable - [#23](https://github.com/ayrat555/frankenstein/pull/23)
+
 ## 0.5.2 (2021-07-10)
 
   * Make SendChatActionParams.action an enum - [#22](https://github.com/ayrat555/frankenstein/pull/22)
