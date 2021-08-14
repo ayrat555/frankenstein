@@ -7,7 +7,7 @@ use std::path::PathBuf;
 
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Api {
     pub api_url: String,
 }
