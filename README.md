@@ -170,6 +170,8 @@ It has two variants:
 
 Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.5.3/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
+You can check out a real world bot created using this library - [El Monitorro](https://github.com/ayrat555/el_monitorro). El Monitorro is a feed reader bot.
+
 ## Replacing the default http client
 
 The library uses `ureq` http client by default, but it can be easily replaced with any http client of your choice:
