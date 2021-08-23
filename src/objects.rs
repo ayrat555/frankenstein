@@ -28,6 +28,17 @@ pub enum ChatMember {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum ChatType {
+    Private,
+    Group,
+    Supergroup,
+    Channel,
+}
+
+pub enum MessageEntityType {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ChatMemberOwner {
     pub user: User,
 
@@ -225,7 +236,7 @@ pub struct Chat {
     pub id: i64,
 
     #[serde(rename = "type")]
-    pub type_field: String,
+    pub type_field: ChatType,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -2373,7 +2384,7 @@ impl User {
 }
 
 impl Chat {
-    pub fn new(id: i64, type_field: String) -> Self {
+    pub fn new(id: i64, type_field: ChatType) -> Self {
         Self {
             id,
             type_field,
@@ -2400,7 +2411,7 @@ impl Chat {
         self.id = id;
     }
 
-    pub fn set_type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: ChatType) {
         self.type_field = type_field;
     }
 
@@ -2472,7 +2483,7 @@ impl Chat {
         self.id
     }
 
-    pub fn type_field(&self) -> String {
+    pub fn type_field(&self) -> ChatType {
         self.type_field.clone()
     }
 
