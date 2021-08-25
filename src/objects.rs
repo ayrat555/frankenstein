@@ -36,7 +36,32 @@ pub enum ChatType {
     Channel,
 }
 
-pub enum MessageEntityType {}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum MessageEntityType {
+    Mention,
+    Hashtag,
+    Cashtag,
+    BotCommand,
+    Url,
+    Email,
+    PhoneNumber,
+    Bold,
+    Italic,
+    Underline,
+    Strikethrough,
+    Code,
+    Pre,
+    TextLink,
+    TextMention,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum PollType {
+    Regular,
+    Quiz,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ChatMemberOwner {
@@ -463,7 +488,7 @@ pub struct MessageId {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct MessageEntity {
     #[serde(rename = "type")]
-    pub type_field: String,
+    pub type_field: MessageEntityType,
 
     pub offset: u16,
 
@@ -674,7 +699,7 @@ pub struct Poll {
 
     pub is_anonymous: bool,
     #[serde(rename = "type")]
-    pub type_field: String,
+    pub type_field: PollType,
 
     pub allows_multiple_answers: bool,
 
@@ -814,7 +839,7 @@ pub struct KeyboardButton {
 pub struct KeyboardButtonPollType {
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub type_field: Option<String>,
+    pub type_field: Option<PollType>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -3087,7 +3112,7 @@ impl MessageId {
 }
 
 impl MessageEntity {
-    pub fn new(type_field: String, offset: u16, length: u16) -> Self {
+    pub fn new(type_field: MessageEntityType, offset: u16, length: u16) -> Self {
         Self {
             type_field,
             offset,
@@ -3098,7 +3123,7 @@ impl MessageEntity {
         }
     }
 
-    pub fn set_type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: MessageEntityType) {
         self.type_field = type_field;
     }
 
@@ -3122,7 +3147,7 @@ impl MessageEntity {
         self.language = language;
     }
 
-    pub fn type_field(&self) -> String {
+    pub fn type_field(&self) -> MessageEntityType {
         self.type_field.clone()
     }
 
@@ -3787,7 +3812,7 @@ impl Poll {
         total_voter_count: u32,
         is_closed: bool,
         is_anonymous: bool,
-        type_field: String,
+        type_field: PollType,
         allows_multiple_answers: bool,
     ) -> Self {
         Self {
@@ -3831,7 +3856,7 @@ impl Poll {
         self.is_anonymous = is_anonymous;
     }
 
-    pub fn set_type_field(&mut self, type_field: String) {
+    pub fn set_type_field(&mut self, type_field: PollType) {
         self.type_field = type_field;
     }
 
@@ -3883,7 +3908,7 @@ impl Poll {
         self.is_anonymous
     }
 
-    pub fn type_field(&self) -> String {
+    pub fn type_field(&self) -> PollType {
         self.type_field.clone()
     }
 
@@ -4303,11 +4328,11 @@ impl KeyboardButtonPollType {
         Self { type_field: None }
     }
 
-    pub fn set_type_field(&mut self, type_field: Option<String>) {
+    pub fn set_type_field(&mut self, type_field: Option<PollType>) {
         self.type_field = type_field;
     }
 
-    pub fn type_field(&self) -> Option<String> {
+    pub fn type_field(&self) -> Option<PollType> {
         self.type_field.clone()
     }
 }
