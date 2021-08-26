@@ -1,3 +1,7 @@
+## 0.6.0 (2021-08-26)
+
+  * Use enums instead of strings for type fields - [#25](https://github.com/ayrat555/frankenstein/pull/25)
+
 ## 0.5.3 (2021-08-14)
 
   * Make Api struct cloneable - [#23](https://github.com/ayrat555/frankenstein/pull/23)
