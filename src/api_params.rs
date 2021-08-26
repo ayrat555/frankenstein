@@ -10,7 +10,8 @@ use crate::objects::{
     PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
     PassportElementErrorReverseSide, PassportElementErrorSelfie,
     PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
-    PassportElementErrorUnspecified, ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption,
+    PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
+    ShippingOption,
 };
 use serde::Deserialize;
 use serde::Serialize;
@@ -713,7 +714,7 @@ pub struct SendPollParams {
     pub is_anonymous: Option<bool>,
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub type_field: Option<String>,
+    pub type_field: Option<PollType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allows_multiple_answers: Option<bool>,
@@ -3203,7 +3204,7 @@ impl SendPollParams {
         self.is_anonymous = is_anonymous;
     }
 
-    pub fn set_type_field(&mut self, type_field: Option<String>) {
+    pub fn set_type_field(&mut self, type_field: Option<PollType>) {
         self.type_field = type_field;
     }
 
@@ -3271,7 +3272,7 @@ impl SendPollParams {
         self.is_anonymous
     }
 
-    pub fn type_field(&self) -> Option<String> {
+    pub fn type_field(&self) -> Option<PollType> {
         self.type_field.clone()
     }
 
