@@ -281,6 +281,9 @@ pub struct Update {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub chat_member: Option<ChatMemberUpdated>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub chat_join_request: Option<ChatJoinRequest>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -1052,6 +1055,21 @@ pub struct ChatMemberUpdated {
     pub old_chat_member: ChatMember,
 
     pub new_chat_member: ChatMember,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub invite_link: Option<ChatInviteLink>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ChatJoinRequest {
+    pub chat: Chat,
+
+    pub from: User,
+
+    pub date: u64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bio: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub invite_link: Option<ChatInviteLink>,
@@ -2211,6 +2229,7 @@ impl Update {
             poll_answer: None,
             my_chat_member: None,
             chat_member: None,
+            chat_join_request: None,
         }
     }
 
@@ -2270,6 +2289,10 @@ impl Update {
         self.chat_member = chat_member;
     }
 
+    pub fn set_chat_join_request(&mut self, chat_join_request: Option<ChatJoinRequest>) {
+        self.chat_join_request = chat_join_request;
+    }
+
     pub fn update_id(&self) -> u32 {
         self.update_id
     }
@@ -2324,6 +2347,10 @@ impl Update {
 
     pub fn chat_member(&self) -> Option<ChatMemberUpdated> {
         self.chat_member.clone()
+    }
+
+    pub fn chat_join_request(&self) -> Option<ChatJoinRequest> {
+        self.chat_join_request.clone()
     }
 }
 
@@ -4893,6 +4920,58 @@ impl ChatMemberUpdated {
 
     pub fn new_chat_member(&self) -> ChatMember {
         self.new_chat_member.clone()
+    }
+
+    pub fn invite_link(&self) -> Option<ChatInviteLink> {
+        self.invite_link.clone()
+    }
+}
+
+impl ChatJoinRequest {
+    pub fn new(chat: Chat, from: User, date: u64) -> Self {
+        Self {
+            chat,
+            from,
+            date,
+            bio: None,
+            invite_link: None,
+        }
+    }
+
+    pub fn set_chat(&mut self, chat: Chat) {
+        self.chat = chat;
+    }
+
+    pub fn set_from(&mut self, from: User) {
+        self.from = from;
+    }
+
+    pub fn set_date(&mut self, date: u64) {
+        self.date = date;
+    }
+
+    pub fn set_bio(&mut self, bio: Option<String>) {
+        self.bio = bio;
+    }
+
+    pub fn set_invite_link(&mut self, invite_link: Option<ChatInviteLink>) {
+        self.invite_link = invite_link;
+    }
+
+    pub fn chat(&self) -> Chat {
+        self.chat.clone()
+    }
+
+    pub fn from(&self) -> User {
+        self.from.clone()
+    }
+
+    pub fn date(&self) -> u64 {
+        self.date
+    }
+
+    pub fn bio(&self) -> Option<String> {
+        self.bio.clone()
     }
 
     pub fn invite_link(&self) -> Option<ChatInviteLink> {
