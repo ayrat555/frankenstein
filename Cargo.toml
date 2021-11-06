@@ -18,7 +18,7 @@ impl = ["ureq", "multipart", "mime_guess", "serde_json"]
 serde = { version = "1.0", features = ["derive"] }
 
 [dependencies.ureq]
-version = "2.0"
+version = "2.3"
 optional = true
 
 [dependencies.multipart]
