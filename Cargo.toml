@@ -7,32 +7,44 @@ edition = "2018"
 license = "WTFPL"
 repository = "https://github.com/ayrat555/frankenstein"
 readme = "README.md"
-keywords = ["request",  "http", "client", "bot", "telegram"]
+keywords = ["request", "http", "client", "bot", "telegram"]
 categories = ["web-programming::http-client"]
 
+[[example]]
+name = "get_me"
+required-features = ["http-client"]
+
+[[example]]
+name = "reply_to_message_updates"
+required-features = ["http-client"]
+
 [features]
-default = ["impl"]
-impl = ["ureq", "multipart", "mime_guess", "serde_json"]
+default = ["http-client"]
+http-client = ["ureq", "multipart", "mime_guess", "serde_json"]
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
 
-[dependencies.ureq]
-version = "2.3"
+[dependencies.mime_guess]
+version = "2"
 optional = true
 
 [dependencies.multipart]
 version = "0.18"
 optional = true
 
-[dependencies.mime_guess]
-version = "2.0"
-optional = true
+[dependencies.serde]
+version = "1"
+features = ["derive"]
 
 [dependencies.serde_json]
-version = "1.0"
+version = "1"
+optional = true
+
+[dependencies.ureq]
+version = "2"
 optional = true
 
 [dev-dependencies]
+isahc = "1"
 mockito = "0.30"
-isahc = "1.3"
+serde_json = "1"

@@ -21,8 +21,8 @@ pub use api::*;
 pub use api_params::*;
 pub use objects::*;
 
-#[cfg(feature = "impl")]
+#[cfg(feature = "http-client")]
 pub mod api_impl;
 
-#[cfg(feature = "impl")]
+#[cfg(feature = "http-client")]
 pub use api_impl::*;
