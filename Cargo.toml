@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2018"

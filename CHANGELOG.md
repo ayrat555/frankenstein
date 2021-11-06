@@ -1,3 +1,8 @@
+## 0.7.0 (2021-11-06)
+
+  * [Telegram API 5.4 Changes](https://core.telegram.org/bots/api#november-5-2021) - [#27](https://github.com/ayrat555/frankenstein/pull/27)
+  * Update ureq to 2.3 - [#27](https://github.com/ayrat555/frankenstein/pull/27)
+
 ## 0.6.0 (2021-08-26)
 
   * Use enums instead of strings for type fields - [#25](https://github.com/ayrat555/frankenstein/pull/25)
