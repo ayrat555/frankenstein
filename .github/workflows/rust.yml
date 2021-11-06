@@ -9,35 +9,40 @@ on:
 
 jobs:
   test:
-    name: Test ${{ matrix.os }} ${{ matrix.toolchain }}
+    name: Test ${{ matrix.os }} ${{ matrix.toolchain }} ${{ matrix.features }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.toolchain == 'nightly' }}
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        toolchain:
+          - stable
+        clippyargs:
+          - -D clippy::pedantic -D warnings
+        features:
+          - --no-default-features
+          - --all-features
         include:
+          # Check future versions and maybe get some glances on soon to be lints
           - os: ubuntu-latest
-            toolchain: stable
-            clippyargs: -D clippy::pedantic -D warnings
-          - os: macOS-latest
-            toolchain: stable
-            clippyargs: -D clippy::pedantic -D warnings
-          - os: windows-latest
-            toolchain: stable
-            clippyargs: -D clippy::pedantic -D warnings
-
+            toolchain: beta
+            clippyargs: -W clippy::pedantic -W clippy::cargo
+            features: --all-features
           - os: ubuntu-latest
             toolchain: nightly
             clippyargs: -W clippy::pedantic
-          # - os: ubuntu-latest
-          #   toolchain: 1.41.1 # Debian 10 Buster
-          #   clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints
+            features: --all-features
+
+          # Check the minimum supported Rust version (MSRV).
+          # Sometimes old rust versions don't yet have the lints (allow unknown) or don't have fixes in lints (false positives -> don't error, just warn).
           - os: ubuntu-latest
-            toolchain: 1.55.0 # Alpine 3.13
-            clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints
-          - os: ubuntu-latest
-            toolchain: 1.54.0 # Debian 11 Bullseye
-            clippyargs: -W clippy::pedantic -A unknown-lints -A clippy::unknown-clippy-lints
+            toolchain: 1.54.0
+            clippyargs: -A unknown-lints
+            features: --all-features
     steps:
       - uses: actions/checkout@v2
 
@@ -49,17 +54,23 @@ jobs:
           profile: minimal
           toolchain: ${{ matrix.toolchain }}
 
-      - name: Run clippy
+      - name: Check clippy
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --verbose --all-targets --all-features -- ${{ matrix.clippyargs }}
+          args: --verbose --all-targets ${{ matrix.features }} -- ${{ matrix.clippyargs }}
+
+      - name: Check docs
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --verbose --no-deps ${{ matrix.features }}
 
       - name: Run tests
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --verbose --all-features
+          args: --verbose ${{ matrix.features }}
 
   release:
     name: Release ${{ matrix.triple }}
@@ -77,16 +88,17 @@ jobs:
             triple: armv7-unknown-linux-gnueabihf
           - os: ubuntu-latest
             triple: aarch64-unknown-linux-gnu
-          - os: macOS-latest
+
+          - os: macos-11
             triple: x86_64-apple-darwin
-          - os: macOS-latest
+          - os: macos-11
             triple: aarch64-apple-darwin
+
           - os: windows-latest
             triple: x86_64-pc-windows-msvc
           # https://github.com/briansmith/ring/issues/1167
           # - os: windows-latest
           #   triple: aarch64-pc-windows-msvc
-
     steps:
       - uses: actions/checkout@v2
 
@@ -100,9 +112,6 @@ jobs:
 
       - name: Build release
         uses: actions-rs/cargo@v1
-        env:
-          # TODO: Remove this once it's the default
-          SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
         with:
           command: build
           args: --release --verbose --all-features --target ${{ matrix.triple }}

@@ -27,45 +27,38 @@ pub struct HttpError {
 
 impl Api {
     #[must_use]
-    pub fn new(api_key: &str) -> Api {
+    pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", BASE_API_URL, api_key);
-
-        Api { api_url }
+        Self { api_url }
     }
 
     #[must_use]
-    pub fn new_url(api_url: String) -> Api {
-        Api { api_url }
+    pub const fn new_url(api_url: String) -> Self {
+        Self { api_url }
     }
 }
 
 impl From<isahc::http::Error> for Error {
     fn from(error: isahc::http::Error) -> Self {
         let message = format!("{:?}", error);
-
         let error = HttpError { code: 500, message };
-
-        Error::HttpError(error)
+        Self::HttpError(error)
     }
 }
 
 impl From<std::io::Error> for Error {
     fn from(error: std::io::Error) -> Self {
         let message = format!("{:?}", error);
-
         let error = HttpError { code: 500, message };
-
-        Error::HttpError(error)
+        Self::HttpError(error)
     }
 }
 
 impl From<isahc::Error> for Error {
     fn from(error: isahc::Error) -> Self {
         let message = format!("{:?}", error);
-
         let error = HttpError { code: 500, message };
-
-        Error::HttpError(error)
+        Self::HttpError(error)
     }
 }
 

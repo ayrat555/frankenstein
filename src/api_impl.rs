@@ -13,14 +13,13 @@ pub struct Api {
 }
 
 impl Api {
-    pub fn new(api_key: &str) -> Api {
+    pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", BASE_API_URL, api_key);
-
-        Api { api_url }
+        Self { api_url }
     }
 
-    pub fn new_url(api_url: String) -> Api {
-        Api { api_url }
+    pub const fn new_url(api_url: String) -> Self {
+        Self { api_url }
     }
 }
 
@@ -46,28 +45,23 @@ impl From<ureq::Error> for Error {
                         serde_json::from_str(&message);
 
                     match json_result {
-                        Ok(result) => Error::ApiError(result),
+                        Ok(result) => Self::ApiError(result),
                         Err(_) => {
                             let error = HttpError { code, message };
-
-                            Error::HttpError(error)
+                            Self::HttpError(error)
                         }
                     }
                 }
                 Err(_) => {
                     let message = "Failed to decode response".to_string();
-
                     let error = HttpError { code, message };
-
-                    Error::HttpError(error)
+                    Self::HttpError(error)
                 }
             },
             ureq::Error::Transport(transport_error) => {
                 let message = format!("{:?}", transport_error);
-
                 let error = HttpError { message, code: 500 };
-
-                Error::HttpError(error)
+                Self::HttpError(error)
             }
         }
     }

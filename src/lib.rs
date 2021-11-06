@@ -1,5 +1,7 @@
 // TODO: remove and fix (or allow explicitly on the specific problem)
 #![allow(
+    clippy::large_enum_variant,
+    clippy::missing_const_for_fn,
     clippy::missing_errors_doc,
     clippy::module_name_repetitions,
     clippy::must_use_candidate,
@@ -10,6 +12,7 @@
     clippy::struct_excessive_bools,
     clippy::too_many_arguments,
     clippy::unreadable_literal,
+    clippy::use_self,
     clippy::wildcard_imports
 )]
 
