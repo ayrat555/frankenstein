@@ -133,6 +133,7 @@ pub enum ChatAction {
     RecordVoice,
     UploadVoice,
     UploadDocument,
+    ChooseSticker,
     FindLocation,
     RecordVideoNote,
     UploadVideoNote,
@@ -933,6 +934,20 @@ pub struct RevokeChatInviteLinkParams {
     pub chat_id: ChatId,
 
     pub invite_link: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ApproveChatJoinRequestParams {
+    pub chat_id: ChatId,
+
+    pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct DeclineChatJoinRequestParams {
+    pub chat_id: ChatId,
+
+    pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -3920,6 +3935,50 @@ impl RevokeChatInviteLinkParams {
 
     pub fn invite_link(&self) -> String {
         self.invite_link.clone()
+    }
+}
+
+impl ApproveChatJoinRequestParams {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
+        Self { chat_id, user_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn set_user_id(&mut self, user_id: u64) {
+        self.user_id = user_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn user_id(&self) -> u64 {
+        self.user_id
+    }
+}
+
+impl DeclineChatJoinRequestParams {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
+        Self { chat_id, user_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn set_user_id(&mut self, user_id: u64) {
+        self.user_id = user_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn user_id(&self) -> u64 {
+        self.user_id
     }
 }
 
