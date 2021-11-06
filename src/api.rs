@@ -3,10 +3,12 @@ use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
 use crate::api_params::AnswerPreCheckoutQueryParams;
 use crate::api_params::AnswerShippingQueryParams;
+use crate::api_params::ApproveChatJoinRequestParams;
 use crate::api_params::BanChatMemberParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
+use crate::api_params::DeclineChatJoinRequestParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteMessageParams;
@@ -509,6 +511,20 @@ pub trait TelegramApi {
         params: &RevokeChatInviteLinkParams,
     ) -> Result<MethodResponse<ChatInviteLink>, Self::Error> {
         self.request("revokeChatInviteLink", Some(params))
+    }
+
+    fn approve_chat_join_request(
+        &self,
+        params: &ApproveChatJoinRequestParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("approveChatJoinRequest", Some(params))
+    }
+
+    fn decline_chat_join_request(
+        &self,
+        params: &DeclineChatJoinRequestParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("declineChatJoinRequest", Some(params))
     }
 
     fn set_chat_photo(

@@ -133,6 +133,7 @@ pub enum ChatAction {
     RecordVoice,
     UploadVoice,
     UploadDocument,
+    ChooseSticker,
     FindLocation,
     RecordVideoNote,
     UploadVideoNote,
@@ -897,10 +898,16 @@ pub struct CreateChatInviteLinkParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub member_limit: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub creates_join_request: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -910,10 +917,16 @@ pub struct EditChatInviteLinkParams {
     pub invite_link: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub member_limit: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub creates_join_request: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -921,6 +934,20 @@ pub struct RevokeChatInviteLinkParams {
     pub chat_id: ChatId,
 
     pub invite_link: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct ApproveChatJoinRequestParams {
+    pub chat_id: ChatId,
+
+    pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct DeclineChatJoinRequestParams {
+    pub chat_id: ChatId,
+
+    pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -3777,13 +3804,19 @@ impl CreateChatInviteLinkParams {
     pub fn new(chat_id: ChatId) -> Self {
         Self {
             chat_id,
+            name: None,
             expire_date: None,
             member_limit: None,
+            creates_join_request: None,
         }
     }
 
     pub fn set_chat_id(&mut self, chat_id: ChatId) {
         self.chat_id = chat_id;
+    }
+
+    pub fn set_name(&mut self, name: Option<String>) {
+        self.name = name;
     }
 
     pub fn set_expire_date(&mut self, expire_date: Option<u64>) {
@@ -3794,8 +3827,16 @@ impl CreateChatInviteLinkParams {
         self.member_limit = member_limit;
     }
 
+    pub fn set_creates_join_request(&mut self, creates_join_request: Option<bool>) {
+        self.creates_join_request = creates_join_request;
+    }
+
     pub fn chat_id(&self) -> ChatId {
         self.chat_id.clone()
+    }
+
+    pub fn name(&self) -> Option<String> {
+        self.name.clone()
     }
 
     pub fn expire_date(&self) -> Option<u64> {
@@ -3805,6 +3846,10 @@ impl CreateChatInviteLinkParams {
     pub fn member_limit(&self) -> Option<u32> {
         self.member_limit
     }
+
+    pub fn creates_join_request(&self) -> Option<bool> {
+        self.creates_join_request
+    }
 }
 
 impl EditChatInviteLinkParams {
@@ -3812,8 +3857,10 @@ impl EditChatInviteLinkParams {
         Self {
             chat_id,
             invite_link,
+            name: None,
             expire_date: None,
             member_limit: None,
+            creates_join_request: None,
         }
     }
 
@@ -3825,12 +3872,20 @@ impl EditChatInviteLinkParams {
         self.invite_link = invite_link;
     }
 
+    pub fn set_name(&mut self, name: Option<String>) {
+        self.name = name;
+    }
+
     pub fn set_expire_date(&mut self, expire_date: Option<u64>) {
         self.expire_date = expire_date;
     }
 
     pub fn set_member_limit(&mut self, member_limit: Option<u32>) {
         self.member_limit = member_limit;
+    }
+
+    pub fn set_creates_join_request(&mut self, creates_join_request: Option<bool>) {
+        self.creates_join_request = creates_join_request;
     }
 
     pub fn chat_id(&self) -> ChatId {
@@ -3841,12 +3896,20 @@ impl EditChatInviteLinkParams {
         self.invite_link.clone()
     }
 
+    pub fn name(&self) -> Option<String> {
+        self.name.clone()
+    }
+
     pub fn expire_date(&self) -> Option<u64> {
         self.expire_date
     }
 
     pub fn member_limit(&self) -> Option<u32> {
         self.member_limit
+    }
+
+    pub fn creates_join_request(&self) -> Option<bool> {
+        self.creates_join_request
     }
 }
 
@@ -3872,6 +3935,50 @@ impl RevokeChatInviteLinkParams {
 
     pub fn invite_link(&self) -> String {
         self.invite_link.clone()
+    }
+}
+
+impl ApproveChatJoinRequestParams {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
+        Self { chat_id, user_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn set_user_id(&mut self, user_id: u64) {
+        self.user_id = user_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn user_id(&self) -> u64 {
+        self.user_id
+    }
+}
+
+impl DeclineChatJoinRequestParams {
+    pub fn new(chat_id: ChatId, user_id: u64) -> Self {
+        Self { chat_id, user_id }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn set_user_id(&mut self, user_id: u64) {
+        self.user_id = user_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn user_id(&self) -> u64 {
+        self.user_id
     }
 }
 
