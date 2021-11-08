@@ -1,3 +1,8 @@
+## 0.7.1 (2021-11-08)
+
+  * Rename impl feature to http-client - [#30](https://github.com/ayrat555/frankenstein/pull/30)
+  * Improve CI - [#31](https://github.com/ayrat555/frankenstein/pull/31)
+
 ## 0.7.0 (2021-11-06)
 
   * [Telegram API 5.4 Changes](https://core.telegram.org/bots/api#november-5-2021) - [#27](https://github.com/ayrat555/frankenstein/pull/27)
