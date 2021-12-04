@@ -955,7 +955,7 @@ pub trait TelegramApi {
     }
 
     fn request_with_possible_form_data<
-        T1: serde::ser::Serialize,
+        T1: serde::ser::Serialize + std::fmt::Debug,
         T2: serde::de::DeserializeOwned,
     >(
         &self,
@@ -970,14 +970,17 @@ pub trait TelegramApi {
         }
     }
 
-    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+    fn request_with_form_data<
+        T1: serde::ser::Serialize + std::fmt::Debug,
+        T2: serde::de::DeserializeOwned,
+    >(
         &self,
         method: &str,
         params: T1,
         files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Self::Error>;
 
-    fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+    fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
         &self,
         method: &str,
         params: Option<T1>,

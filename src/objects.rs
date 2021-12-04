@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 pub enum InputMessageContent {
     Text(InputTextMessageContent),
     Location(InputLocationMessageContent),
-    Venue(InputLocationMessageContent),
-    Contact(InputLocationMessageContent),
+    Venue(InputVenueMessageContent),
+    Contact(InputContactMessageContent),
     Invoice(InputInvoiceMessageContent),
 }
 

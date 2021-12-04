@@ -28,6 +28,8 @@ impl Api {
 pub enum Error {
     HttpError(HttpError),
     ApiError(ErrorResponse),
+    DecodeError(String),
+    EncodeError(String),
 }
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
@@ -70,7 +72,7 @@ impl From<ureq::Error> for Error {
 impl TelegramApi for Api {
     type Error = Error;
 
-    fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+    fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
         &self,
         method: &str,
         params: Option<T1>,
@@ -82,24 +84,30 @@ impl TelegramApi for Api {
         let response = match params {
             None => prepared_request.call()?,
             Some(data) => {
-                let json = serde_json::to_string(&data).unwrap();
+                let json = serde_json::to_string(&data)
+                    .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, data)))?;
 
                 prepared_request.send_string(&json)?
             }
         };
 
-        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
+        let parsed_response: T2 = serde_json::from_reader(response.into_reader())
+            .map_err(|e| Error::DecodeError(format!("{:?}", e)))?;
 
         Ok(parsed_response)
     }
 
-    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+    fn request_with_form_data<
+        T1: serde::ser::Serialize + std::fmt::Debug,
+        T2: serde::de::DeserializeOwned,
+    >(
         &self,
         method: &str,
         params: T1,
         files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Error> {
-        let json_string = serde_json::to_string(&params).unwrap();
+        let json_string = serde_json::to_string(&params)
+            .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
@@ -1559,5 +1567,22 @@ mod tests {
 
         let json = serde_json::to_string(&response).unwrap();
         assert_eq!(response_string, json);
+    }
+
+    #[test]
+    fn returns_decode_error_if_response_can_not_be_decoded() {
+        let response_string = "{}";
+        let mut params = GetUpdatesParams::new();
+        params.set_allowed_updates(Some(vec!["message".to_string()]));
+
+        let _m = mockito::mock("POST", "/getUpdates")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Api::new_url(mockito::server_url());
+
+        let response = api.get_updates(&params);
+
+        assert_eq!(Err(Error::DecodeError("hey".to_string())), response);
     }
 }
