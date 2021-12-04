@@ -1583,6 +1583,11 @@ mod tests {
 
         let response = api.get_updates(&params);
 
-        assert_eq!(Err(Error::DecodeError("hey".to_string())), response);
+        assert_eq!(
+            Err(Error::DecodeError(
+                "Error(\"missing field `ok`\", line: 1, column: 2)".to_string()
+            )),
+            response
+        );
     }
 }
