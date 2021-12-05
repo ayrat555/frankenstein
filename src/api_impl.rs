@@ -4,6 +4,7 @@ use multipart::client::lazy::Multipart;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::path::PathBuf;
+use ureq::Response;
 
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
@@ -20,6 +21,37 @@ impl Api {
 
     pub const fn new_url(api_url: String) -> Self {
         Self { api_url }
+    }
+
+    fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
+        &self,
+        params: &T,
+    ) -> Result<String, Error> {
+        serde_json::to_string(params)
+            .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))
+    }
+
+    fn decode_response<T: serde::de::DeserializeOwned>(
+        &self,
+        response: Response,
+    ) -> Result<T, Error> {
+        match response.into_string() {
+            Ok(message) => {
+                let json_result: Result<T, serde_json::Error> = serde_json::from_str(&message);
+
+                match json_result {
+                    Ok(result) => Ok(result),
+                    Err(e) => {
+                        let err = Error::DecodeError(format!("{:?} : {:?}", e, &message));
+                        Err(err)
+                    }
+                }
+            }
+            Err(e) => {
+                let err = Error::DecodeError(format!("Failed to decode response: {:?}", e));
+                Err(err)
+            }
+        }
     }
 }
 
@@ -84,15 +116,13 @@ impl TelegramApi for Api {
         let response = match params {
             None => prepared_request.call()?,
             Some(data) => {
-                let json = serde_json::to_string(&data)
-                    .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, data)))?;
+                let json = self.encode_params(&data)?;
 
                 prepared_request.send_string(&json)?
             }
         };
 
-        let parsed_response: T2 = serde_json::from_reader(response.into_reader())
-            .map_err(|e| Error::DecodeError(format!("{:?}", e)))?;
+        let parsed_response: T2 = self.decode_response(response)?;
 
         Ok(parsed_response)
     }
@@ -106,8 +136,7 @@ impl TelegramApi for Api {
         params: T1,
         files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Error> {
-        let json_string = serde_json::to_string(&params)
-            .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))?;
+        let json_string = self.encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
@@ -147,7 +176,7 @@ impl TelegramApi for Api {
             )
             .send(form_data)?;
 
-        let parsed_response: T2 = serde_json::from_reader(response.into_reader()).unwrap();
+        let parsed_response: T2 = self.decode_response(response)?;
 
         Ok(parsed_response)
     }
@@ -1571,7 +1600,7 @@ mod tests {
 
     #[test]
     fn returns_decode_error_if_response_can_not_be_decoded() {
-        let response_string = "{}";
+        let response_string = "{hey this json is invalid}";
         let mut params = GetUpdatesParams::new();
         params.set_allowed_updates(Some(vec!["message".to_string()]));
 
@@ -1584,9 +1613,7 @@ mod tests {
         let response = api.get_updates(&params);
 
         assert_eq!(
-            Err(Error::DecodeError(
-                "Error(\"missing field `ok`\", line: 1, column: 2)".to_string()
-            )),
+            Err(Error::DecodeError("Error(\"key must be a string\", line: 1, column: 2) : \"{hey this json is invalid}\"".to_string())),
             response
         );
     }
