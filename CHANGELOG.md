@@ -1,3 +1,10 @@
+## 0.8.0 (2021-12-05)
+
+### [#32](https://github.com/ayrat555/frankenstein/pull/32):
+
+- fix InputMessageContent enum
+- improve error handling
+
 ## 0.7.1 (2021-11-08)
 
   * Rename impl feature to http-client - [#30](https://github.com/ayrat555/frankenstein/pull/30)
