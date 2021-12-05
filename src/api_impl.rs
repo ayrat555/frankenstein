@@ -23,18 +23,14 @@ impl Api {
         Self { api_url }
     }
 
-    fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
-        &self,
+    pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
         params: &T,
     ) -> Result<String, Error> {
         serde_json::to_string(params)
             .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))
     }
 
-    fn decode_response<T: serde::de::DeserializeOwned>(
-        &self,
-        response: Response,
-    ) -> Result<T, Error> {
+    pub fn decode_response<T: serde::de::DeserializeOwned>(response: Response) -> Result<T, Error> {
         match response.into_string() {
             Ok(message) => {
                 let json_result: Result<T, serde_json::Error> = serde_json::from_str(&message);
@@ -116,13 +112,13 @@ impl TelegramApi for Api {
         let response = match params {
             None => prepared_request.call()?,
             Some(data) => {
-                let json = self.encode_params(&data)?;
+                let json = Self::encode_params(&data)?;
 
                 prepared_request.send_string(&json)?
             }
         };
 
-        let parsed_response: T2 = self.decode_response(response)?;
+        let parsed_response: T2 = Self::decode_response(response)?;
 
         Ok(parsed_response)
     }
@@ -136,7 +132,7 @@ impl TelegramApi for Api {
         params: T1,
         files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Error> {
-        let json_string = self.encode_params(&params)?;
+        let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
@@ -176,7 +172,7 @@ impl TelegramApi for Api {
             )
             .send(form_data)?;
 
-        let parsed_response: T2 = self.decode_response(response)?;
+        let parsed_response: T2 = Self::decode_response(response)?;
 
         Ok(parsed_response)
     }
