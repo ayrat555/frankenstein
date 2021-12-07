@@ -2672,7 +2672,7 @@ impl Chat {
     }
 
     pub fn has_private_forwards(&self) -> Option<bool> {
-        self.has_private_forwards.clone()
+        self.has_private_forwards
     }
 
     pub fn description(&self) -> Option<String> {
@@ -2700,7 +2700,7 @@ impl Chat {
     }
 
     pub fn has_protected_content(&self) -> Option<bool> {
-        self.has_protected_content.clone()
+        self.has_protected_content
     }
 
     pub fn sticker_set_name(&self) -> Option<String> {
@@ -3074,7 +3074,7 @@ impl Message {
     }
 
     pub fn is_automatic_forward(&mut self) -> Option<bool> {
-        self.is_automatic_forward.clone()
+        self.is_automatic_forward
     }
 
     pub fn reply_to_message(&self) -> Option<Box<Message>> {
@@ -3090,7 +3090,7 @@ impl Message {
     }
 
     pub fn has_protected_content(&self) -> Option<bool> {
-        self.has_protected_content.clone()
+        self.has_protected_content
     }
 
     pub fn media_group_id(&self) -> Option<String> {
