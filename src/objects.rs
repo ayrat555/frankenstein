@@ -363,6 +363,9 @@ pub struct Chat {
     pub bio: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_private_forwards: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -379,6 +382,9 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub message_auto_delete_time: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_protected_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sticker_set_name: Option<String>,
@@ -426,6 +432,9 @@ pub struct Message {
     pub forward_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_automatic_forward: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message: Option<Box<Message>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -433,6 +442,9 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub edit_date: Option<u64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_protected_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub media_group_id: Option<String>,
@@ -2532,12 +2544,14 @@ impl Chat {
             last_name: None,
             photo: None,
             bio: None,
+            has_private_forwards: None,
             description: None,
             invite_link: None,
             pinned_message: None,
             permissions: None,
             slow_mode_delay: None,
             message_auto_delete_time: None,
+            has_protected_content: None,
             sticker_set_name: None,
             can_set_sticker_set: None,
             linked_chat_id: None,
@@ -2577,6 +2591,10 @@ impl Chat {
         self.bio = bio;
     }
 
+    pub fn set_has_private_forwards(&mut self, has_private_forwards: Option<bool>) {
+        self.has_private_forwards = has_private_forwards;
+    }
+
     pub fn set_description(&mut self, description: Option<String>) {
         self.description = description;
     }
@@ -2599,6 +2617,10 @@ impl Chat {
 
     pub fn set_message_auto_delete_time(&mut self, message_auto_delete_time: Option<u32>) {
         self.message_auto_delete_time = message_auto_delete_time;
+    }
+
+    pub fn set_has_protected_content(&mut self, has_protected_content: Option<bool>) {
+        self.has_protected_content = has_protected_content;
     }
 
     pub fn set_sticker_set_name(&mut self, sticker_set_name: Option<String>) {
@@ -2649,6 +2671,10 @@ impl Chat {
         self.bio.clone()
     }
 
+    pub fn has_private_forwards(&self) -> Option<bool> {
+        self.has_private_forwards
+    }
+
     pub fn description(&self) -> Option<String> {
         self.description.clone()
     }
@@ -2671,6 +2697,10 @@ impl Chat {
 
     pub fn message_auto_delete_time(&self) -> Option<u32> {
         self.message_auto_delete_time
+    }
+
+    pub fn has_protected_content(&self) -> Option<bool> {
+        self.has_protected_content
     }
 
     pub fn sticker_set_name(&self) -> Option<String> {
@@ -2704,9 +2734,11 @@ impl Message {
             forward_signature: None,
             forward_sender_name: None,
             forward_date: None,
+            is_automatic_forward: None,
             reply_to_message: None,
             via_bot: None,
             edit_date: None,
+            has_protected_content: None,
             media_group_id: None,
             author_signature: None,
             text: None,
@@ -2796,6 +2828,10 @@ impl Message {
         self.forward_date = forward_date;
     }
 
+    pub fn set_is_automatic_forward(&mut self, is_automatic_forward: Option<bool>) {
+        self.is_automatic_forward = is_automatic_forward;
+    }
+
     pub fn set_reply_to_message(&mut self, reply_to_message: Option<Box<Message>>) {
         self.reply_to_message = reply_to_message;
     }
@@ -2806,6 +2842,10 @@ impl Message {
 
     pub fn set_edit_date(&mut self, edit_date: Option<u64>) {
         self.edit_date = edit_date;
+    }
+
+    pub fn set_has_protected_content(&mut self, has_protected_content: Option<bool>) {
+        self.has_protected_content = has_protected_content;
     }
 
     pub fn set_media_group_id(&mut self, media_group_id: Option<String>) {
@@ -3033,6 +3073,10 @@ impl Message {
         self.forward_date
     }
 
+    pub fn is_automatic_forward(&mut self) -> Option<bool> {
+        self.is_automatic_forward
+    }
+
     pub fn reply_to_message(&self) -> Option<Box<Message>> {
         self.reply_to_message.clone()
     }
@@ -3043,6 +3087,10 @@ impl Message {
 
     pub fn edit_date(&self) -> Option<u64> {
         self.edit_date
+    }
+
+    pub fn has_protected_content(&self) -> Option<bool> {
+        self.has_protected_content
     }
 
     pub fn media_group_id(&self) -> Option<String> {

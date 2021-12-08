@@ -5,6 +5,7 @@ use crate::api_params::AnswerPreCheckoutQueryParams;
 use crate::api_params::AnswerShippingQueryParams;
 use crate::api_params::ApproveChatJoinRequestParams;
 use crate::api_params::BanChatMemberParams;
+use crate::api_params::BanChatSenderChatParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
@@ -73,6 +74,7 @@ use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
+use crate::api_params::UnbanChatSenderChatParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
@@ -476,6 +478,20 @@ pub trait TelegramApi {
         params: &SetChatAdministratorCustomTitleParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("setChatAdministratorCustomTitle", Some(params))
+    }
+
+    fn ban_chat_sender_chat(
+        &self,
+        params: &BanChatSenderChatParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("banChatSenderChat", Some(params))
+    }
+
+    fn unban_chat_sender_chat(
+        &self,
+        params: &UnbanChatSenderChatParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unbanChatSenderChat", Some(params))
     }
 
     fn set_chat_permissions(

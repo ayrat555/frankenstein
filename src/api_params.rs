@@ -882,6 +882,20 @@ pub struct SetChatAdministratorCustomTitleParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct BanChatSenderChatParams {
+    pub chat_id: ChatId,
+
+    pub sender_chat_id: i64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct UnbanChatSenderChatParams {
+    pub chat_id: ChatId,
+
+    pub sender_chat_id: i64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SetChatPermissionsParams {
     pub chat_id: ChatId,
 
@@ -3758,6 +3772,56 @@ impl SetChatAdministratorCustomTitleParams {
 
     pub fn custom_title(&self) -> String {
         self.custom_title.clone()
+    }
+}
+
+impl BanChatSenderChatParams {
+    pub fn new(chat_id: ChatId, sender_chat_id: i64) -> Self {
+        Self {
+            chat_id,
+            sender_chat_id,
+        }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn set_sender_chat_id(&mut self, sender_chat_id: i64) {
+        self.sender_chat_id = sender_chat_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn sender_chat_id(&self) -> i64 {
+        self.sender_chat_id
+    }
+}
+
+impl UnbanChatSenderChatParams {
+    pub fn new(chat_id: ChatId, sender_chat_id: i64) -> Self {
+        Self {
+            chat_id,
+            sender_chat_id,
+        }
+    }
+
+    pub fn set_chat_id(&mut self, chat_id: ChatId) {
+        self.chat_id = chat_id;
+    }
+
+    pub fn set_sender_chat_id(&mut self, sender_chat_id: i64) {
+        self.sender_chat_id = sender_chat_id;
+    }
+
+    pub fn chat_id(&self) -> ChatId {
+        self.chat_id.clone()
+    }
+
+    pub fn sender_chat_id(&self) -> i64 {
+        self.sender_chat_id
     }
 }
 
