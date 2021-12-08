@@ -1,9 +1,13 @@
+## 0.8.1 (2021-12-08)
+
+  * [Telegram API 5.5 Changes](https://core.telegram.org/bots/api#december-7-2021) - [#33](https://github.com/ayrat555/frankenstein/pull/33)
+
 ## 0.8.0 (2021-12-05)
 
 ### [#32](https://github.com/ayrat555/frankenstein/pull/32):
 
-- fix InputMessageContent enum
-- improve error handling
+  * fix InputMessageContent enum
+  * improve error handling
 
 ## 0.7.1 (2021-11-08)
 
