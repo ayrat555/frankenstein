@@ -892,10 +892,11 @@ mod tests {
     fn edit_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/O458bA8hQ0MzNmQy\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"creates_join_request\":false,\"is_primary\":false,\"is_revoked\":false}}";
 
-        let params = EditChatInviteLinkParams::new(
-            ChatId::Integer(-1001368460856),
-            "https://t.me/joinchat/O458bA8hQ0MzNmQy".to_string(),
-        );
+        let params = EditChatInviteLinkParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .invite_link("https://t.me/joinchat/O458bA8hQ0MzNmQy")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/editChatInviteLink")
             .with_status(200)
@@ -913,10 +914,11 @@ mod tests {
     fn revoke_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/O458bA8hQ0MzNmQy\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"creates_join_request\":false,\"is_primary\":false,\"is_revoked\":true}}";
 
-        let params = RevokeChatInviteLinkParams::new(
-            ChatId::Integer(-1001368460856),
-            "https://t.me/joinchat/O458bA8hQ0MzNmQy".to_string(),
-        );
+        let params = RevokeChatInviteLinkParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .invite_link("https://t.me/joinchat/O458bA8hQ0MzNmQy")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/revokeChatInviteLink")
             .with_status(200)
@@ -933,7 +935,10 @@ mod tests {
     #[test]
     fn delete_chat_photo_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = DeleteChatPhotoParams::new(ChatId::Integer(-1001368460856));
+        let params = DeleteChatPhotoParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/deleteChatPhoto")
             .with_status(200)
@@ -950,12 +955,14 @@ mod tests {
     #[test]
     fn send_photo_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2763,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618730180,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA20AA0U3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0U3AwAB\",\"width\":320,\"height\":320,\"file_size\":19968},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3gAA0Y3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0Y3AwAB\",\"width\":799,\"height\":800,\"file_size\":63581},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3kAA0M3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0M3AwAB\",\"width\":847,\"height\":848,\"file_size\":63763}]}}";
-        let params = SendPhotoParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendPhotoParamsBuilder::default()
+            .chat_id(275808073)
+            .photo(file)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendPhoto")
             .with_status(200)
@@ -972,12 +979,14 @@ mod tests {
     #[test]
     fn send_audio_file_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendAudioParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendAudioParamsBuilder::default()
+            .chat_id(275808073)
+            .audio(file)
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/sendAudio")
             .with_status(200)
             .with_body(response_string)
@@ -993,15 +1002,16 @@ mod tests {
     #[test]
     fn send_audio_file_with_thumb_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let mut params = SendAudioParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
-        params.set_thumb(Some(File::InputFile(InputFile::new(
-            std::path::PathBuf::from("./frankenstein_logo.png"),
-        ))));
+
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendAudioParamsBuilder::default()
+            .chat_id(275808073)
+            .audio(file)
+            .thumb(file)
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/sendAudio")
             .with_status(200)
             .with_body(response_string)
@@ -1017,13 +1027,15 @@ mod tests {
     #[test]
     fn send_audio_file_id_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendAudioParams::new(
-            ChatId::Integer(275808073),
-            File::String(
-                "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ"
-                    .to_string(),
-            ),
+        let file = File::String(
+            "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ".to_string(),
         );
+        let params = SendAudioParamsBuilder::default()
+            .chat_id(275808073)
+            .audio(file)
+            .build()
+            .unwrap();
+
         let _m = mockito::mock("POST", "/sendAudio")
             .with_status(200)
             .with_body(response_string)
@@ -1039,12 +1051,16 @@ mod tests {
     #[test]
     fn send_document_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendDocumentParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendDocumentParamsBuilder::default()
+            .chat_id(275808073)
+            .document(file)
+            .build()
+            .unwrap();
+
         let _m = mockito::mock("POST", "/sendDocument")
             .with_status(200)
             .with_body(response_string)
@@ -1060,12 +1076,16 @@ mod tests {
     #[test]
     fn send_video_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendVideoParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendVideoParamsBuilder::default()
+            .chat_id(275808073)
+            .video(file)
+            .build()
+            .unwrap();
+
         let _m = mockito::mock("POST", "/sendVideo")
             .with_status(200)
             .with_body(response_string)
@@ -1081,12 +1101,16 @@ mod tests {
     #[test]
     fn send_animation_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendAnimationParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendAnimationParamsBuilder::default()
+            .chat_id(275808073)
+            .animation(file)
+            .build()
+            .unwrap();
+
         let _m = mockito::mock("POST", "/sendAnimation")
             .with_status(200)
             .with_body(response_string)
@@ -1102,12 +1126,14 @@ mod tests {
     #[test]
     fn send_voice_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendVoiceParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendVoiceParamsBuilder::default()
+            .chat_id(275808073)
+            .voice(file)
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/sendVoice")
             .with_status(200)
             .with_body(response_string)
@@ -1123,12 +1149,14 @@ mod tests {
     #[test]
     fn send_video_note_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let params = SendVideoNoteParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendVideoNoteParamsBuilder::default()
+            .chat_id(275808073)
+            .video_note(file)
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/sendVideoNote")
             .with_status(200)
             .with_body(response_string)
@@ -1144,11 +1172,15 @@ mod tests {
     #[test]
     fn set_chat_photo_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = SetChatPhotoParams::new(
-            ChatId::Integer(-1001368460856),
-            InputFile::new(std::path::PathBuf::from("./frankenstein_logo.png")),
-        );
 
+        let file = InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        };
+        let params = SetChatPhotoParamsBuilder::default()
+            .chat_id(275808073)
+            .photo(file)
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/setChatPhoto")
             .with_status(200)
             .with_body(response_string)
@@ -1164,8 +1196,11 @@ mod tests {
     #[test]
     fn set_chat_title_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params =
-            SetChatTitleParams::new(ChatId::Integer(-1001368460856), "Frankenstein".to_string());
+        let params = SetChatTitleParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .title("Frankenstein")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setChatTitle")
             .with_status(200)
@@ -1182,8 +1217,11 @@ mod tests {
     #[test]
     fn set_chat_description_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = SetChatDescriptionParams::new(ChatId::Integer(-1001368460856));
-        params.set_description(Some("Frankenstein group".to_string()));
+        let params = SetChatDescriptionParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .description("Frankenstein group")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setChatDescription")
             .with_status(200)
@@ -1200,7 +1238,11 @@ mod tests {
     #[test]
     fn pin_chat_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = PinChatMessageParams::new(ChatId::Integer(275808073), 2766);
+        let params = PinChatMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .message_id(2766)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/pinChatMessage")
             .with_status(200)
@@ -1217,7 +1259,10 @@ mod tests {
     #[test]
     fn unpin_chat_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = UnpinChatMessageParams::new(ChatId::Integer(275808073));
+        let params = UnpinChatMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/unpinChatMessage")
             .with_status(200)
@@ -1234,7 +1279,10 @@ mod tests {
     #[test]
     fn leave_chat_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = LeaveChatParams::new(ChatId::Integer(-1001368460856));
+        let params = LeaveChatParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/leaveChat")
             .with_status(200)
@@ -1251,7 +1299,10 @@ mod tests {
     #[test]
     fn get_chat_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\",\"photo\":{\"small_file_id\":\"AQADAgAT-kgrmy4AAwIAA8jhydkW____s1Cm6Dc_w8Ge7QUAAR8E\",\"small_file_unique_id\":\"AQAD-kgrmy4AA57tBQAB\",\"big_file_id\":\"AQADAgAT-kgrmy4AAwMAA8jhydkW____s1Cm6Dc_w8Gg7QUAAR8E\",\"big_file_unique_id\":\"AQAD-kgrmy4AA6DtBQAB\"},\"description\":\"Frankenstein group\",\"invite_link\":\"https://t.me/joinchat/smSXMzNKTwA0ZjFi\",\"permissions\":{\"can_send_messages\":true,\"can_send_media_messages\":true,\"can_send_polls\":true,\"can_send_other_messages\":true,\"can_add_web_page_previews\":true,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true}}}";
-        let params = GetChatParams::new(ChatId::Integer(-1001368460856));
+        let params = GetChatParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getChat")
             .with_status(200)
@@ -1268,7 +1319,10 @@ mod tests {
     #[test]
     fn get_chat_administrators_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"status\":\"administrator\",\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"can_be_edited\":false,\"is_anonymous\":true,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_voice_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":false,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true},{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}]}";
-        let params = GetChatAdministratorsParams::new(ChatId::Integer(-1001368460856));
+        let params = GetChatAdministratorsParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getChatAdministrators")
             .with_status(200)
@@ -1285,7 +1339,10 @@ mod tests {
     #[test]
     fn get_chat_members_count_success() {
         let response_string = "{\"ok\":true,\"result\":4}";
-        let params = GetChatMemberCountParams::new(ChatId::Integer(-1001368460856));
+        let params = GetChatMemberCountParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getChatMemberCount")
             .with_status(200)
