@@ -181,75 +181,75 @@ impl TelegramApi for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api_params::AnswerCallbackQueryParams;
-    use crate::api_params::AnswerInlineQueryParams;
-    use crate::api_params::BanChatMemberParams;
+    use crate::api_params::AnswerCallbackQueryParamsBuilder;
+    use crate::api_params::AnswerInlineQueryParamsBuilder;
+    use crate::api_params::BanChatMemberParamsBuilder;
     use crate::api_params::BotCommandScope;
     use crate::api_params::BotCommandScopeChat;
     use crate::api_params::ChatAction;
     use crate::api_params::ChatId;
-    use crate::api_params::CopyMessageParams;
-    use crate::api_params::CreateChatInviteLinkParams;
-    use crate::api_params::DeleteChatPhotoParams;
-    use crate::api_params::DeleteChatStickerSetParams;
-    use crate::api_params::DeleteMessageParams;
-    use crate::api_params::DeleteMyCommandsParams;
-    use crate::api_params::DeleteWebhookParams;
-    use crate::api_params::EditChatInviteLinkParams;
-    use crate::api_params::EditMessageCaptionParams;
-    use crate::api_params::EditMessageLiveLocationParams;
-    use crate::api_params::EditMessageMediaParams;
-    use crate::api_params::EditMessageTextParams;
-    use crate::api_params::ExportChatInviteLinkParams;
+    use crate::api_params::CopyMessageParamsBuilder;
+    use crate::api_params::CreateChatInviteLinkParamsBuilder;
+    use crate::api_params::DeleteChatPhotoParamsBuilder;
+    use crate::api_params::DeleteChatStickerSetParamsBuilder;
+    use crate::api_params::DeleteMessageParamsBuilder;
+    use crate::api_params::DeleteMyCommandsParamsBuilder;
+    use crate::api_params::DeleteWebhookParamsBuilder;
+    use crate::api_params::EditChatInviteLinkParamsBuilder;
+    use crate::api_params::EditMessageCaptionParamsBuilder;
+    use crate::api_params::EditMessageLiveLocationParamsBuilder;
+    use crate::api_params::EditMessageMediaParamsBuilder;
+    use crate::api_params::EditMessageTextParamsBuilder;
+    use crate::api_params::ExportChatInviteLinkParamsBuilder;
     use crate::api_params::File;
-    use crate::api_params::ForwardMessageParams;
-    use crate::api_params::GetChatAdministratorsParams;
-    use crate::api_params::GetChatMemberCountParams;
-    use crate::api_params::GetChatMemberParams;
-    use crate::api_params::GetChatParams;
-    use crate::api_params::GetFileParams;
-    use crate::api_params::GetMyCommandsParams;
-    use crate::api_params::GetStickerSetParams;
-    use crate::api_params::GetUpdatesParams;
-    use crate::api_params::GetUserProfilePhotosParams;
+    use crate::api_params::ForwardMessageParamsBuilder;
+    use crate::api_params::GetChatAdministratorsParamsBuilder;
+    use crate::api_params::GetChatMemberCountParamsBuilder;
+    use crate::api_params::GetChatMemberParamsBuilder;
+    use crate::api_params::GetChatParamsBuilder;
+    use crate::api_params::GetFileParamsBuilder;
+    use crate::api_params::GetMyCommandsParamsBuilder;
+    use crate::api_params::GetStickerSetParamsBuilder;
+    use crate::api_params::GetUpdatesParamsBuilder;
+    use crate::api_params::GetUserProfilePhotosParamsBuilder;
     use crate::api_params::InlineQueryResult;
     use crate::api_params::InputFile;
     use crate::api_params::InputMedia;
     use crate::api_params::InputMediaPhoto;
-    use crate::api_params::LeaveChatParams;
+    use crate::api_params::LeaveChatParamsBuilder;
     use crate::api_params::Media;
-    use crate::api_params::PinChatMessageParams;
-    use crate::api_params::PromoteChatMemberParams;
-    use crate::api_params::RestrictChatMemberParams;
-    use crate::api_params::RevokeChatInviteLinkParams;
-    use crate::api_params::SendAnimationParams;
-    use crate::api_params::SendAudioParams;
-    use crate::api_params::SendChatActionParams;
-    use crate::api_params::SendContactParams;
-    use crate::api_params::SendDiceParams;
-    use crate::api_params::SendDocumentParams;
-    use crate::api_params::SendLocationParams;
-    use crate::api_params::SendMediaGroupParams;
-    use crate::api_params::SendMessageParams;
-    use crate::api_params::SendPhotoParams;
-    use crate::api_params::SendPollParams;
-    use crate::api_params::SendStickerParams;
-    use crate::api_params::SendVenueParams;
-    use crate::api_params::SendVideoNoteParams;
-    use crate::api_params::SendVideoParams;
-    use crate::api_params::SendVoiceParams;
-    use crate::api_params::SetChatAdministratorCustomTitleParams;
-    use crate::api_params::SetChatDescriptionParams;
-    use crate::api_params::SetChatPermissionsParams;
-    use crate::api_params::SetChatPhotoParams;
-    use crate::api_params::SetChatStickerSetParams;
-    use crate::api_params::SetChatTitleParams;
-    use crate::api_params::SetMyCommandsParams;
-    use crate::api_params::SetWebhookParams;
-    use crate::api_params::StopMessageLiveLocationParams;
-    use crate::api_params::StopPollParams;
-    use crate::api_params::UnbanChatMemberParams;
-    use crate::api_params::UnpinChatMessageParams;
+    use crate::api_params::PinChatMessageParamsBuilder;
+    use crate::api_params::PromoteChatMemberParamsBuilder;
+    use crate::api_params::RestrictChatMemberParamsBuilder;
+    use crate::api_params::RevokeChatInviteLinkParamsBuilder;
+    use crate::api_params::SendAnimationParamsBuilder;
+    use crate::api_params::SendAudioParamsBuilder;
+    use crate::api_params::SendChatActionParamsBuilder;
+    use crate::api_params::SendContactParamsBuilder;
+    use crate::api_params::SendDiceParamsBuilder;
+    use crate::api_params::SendDocumentParamsBuilder;
+    use crate::api_params::SendLocationParamsBuilder;
+    use crate::api_params::SendMediaGroupParamsBuilder;
+    use crate::api_params::SendMessageParamsBuilder;
+    use crate::api_params::SendPhotoParamsBuilder;
+    use crate::api_params::SendPollParamsBuilder;
+    use crate::api_params::SendStickerParamsBuilder;
+    use crate::api_params::SendVenueParamsBuilder;
+    use crate::api_params::SendVideoNoteParamsBuilder;
+    use crate::api_params::SendVideoParamsBuilder;
+    use crate::api_params::SendVoiceParamsBuilder;
+    use crate::api_params::SetChatAdministratorCustomTitleParamsBuilder;
+    use crate::api_params::SetChatDescriptionParamsBuilder;
+    use crate::api_params::SetChatPermissionsParamsBuilder;
+    use crate::api_params::SetChatPhotoParamsBuilder;
+    use crate::api_params::SetChatStickerSetParamsBuilder;
+    use crate::api_params::SetChatTitleParamsBuilder;
+    use crate::api_params::SetMyCommandsParamsBuilder;
+    use crate::api_params::SetWebhookParamsBuilder;
+    use crate::api_params::StopMessageLiveLocationParamsBuilder;
+    use crate::api_params::StopPollParamsBuilder;
+    use crate::api_params::UnbanChatMemberParamsBuilder;
+    use crate::api_params::UnpinChatMessageParamsBuilder;
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
@@ -269,8 +269,10 @@ mod tests {
     #[test]
     fn get_updates_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"update_id\":379656753,\"message\":{\"message_id\":2741,\"from\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"date\":1618149703,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"dsaf\"}}]}";
-        let mut params = GetUpdatesParams::new();
-        params.set_allowed_updates(Some(vec!["message".to_string()]));
+        let params = GetUpdatesParamsBuilder::default()
+            .allowed_updates(vec!["message".to_string()])
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getUpdates")
             .with_status(200)
@@ -287,13 +289,17 @@ mod tests {
 
         let update = &response.result[0];
 
-        assert_eq!(379656753, update.update_id());
+        assert_eq!(379656753, update.update_id);
     }
 
     #[test]
     fn send_message_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello!\"}}";
-        let params = SendMessageParams::new(ChatId::Integer(275808073), "Hello!".to_string());
+        let params = SendMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .text("Hello!")
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/sendMessage")
             .with_status(200)
             .with_body(response_string)
@@ -310,7 +316,11 @@ mod tests {
     fn send_message_failure() {
         let response_string =
             "{\"ok\":false,\"description\":\"Bad Request: chat not found\",\"error_code\":400}";
-        let params = SendMessageParams::new(ChatId::Integer(1), "Hello!".to_string());
+        let params = SendMessageParamsBuilder::default()
+            .chat_id(1)
+            .text("Hello!")
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/sendMessage")
             .with_status(400)
             .with_body(response_string)
@@ -333,7 +343,7 @@ mod tests {
     fn set_webhook_success() {
         let response_string =
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
-        let params = SetWebhookParams::new("".to_string());
+        let params = SetWebhookParamsBuilder::default().url("").build().unwrap();
         let _m = mockito::mock("POST", "/setWebhook")
             .with_status(200)
             .with_body(response_string)
@@ -350,7 +360,7 @@ mod tests {
     fn delete_webhook_success() {
         let response_string =
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
-        let params = DeleteWebhookParams::new();
+        let params = DeleteWebhookParamsBuilder::default().build().unwrap();
         let _m = mockito::mock("POST", "/deleteWebhook")
             .with_status(200)
             .with_body(response_string)
@@ -442,8 +452,12 @@ mod tests {
     #[test]
     fn forward_message_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2747,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618294971,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello\"}}";
-        let params =
-            ForwardMessageParams::new(ChatId::Integer(275808073), ChatId::Integer(275808073), 2747);
+        let params = ForwardMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .from_chat_id(275808073)
+            .message_id(2747)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/forwardMessage")
             .with_status(200)
@@ -460,8 +474,12 @@ mod tests {
     #[test]
     fn copy_message_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2749}}";
-        let params =
-            CopyMessageParams::new(ChatId::Integer(275808073), ChatId::Integer(275808073), 2747);
+        let params = CopyMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .from_chat_id(275808073)
+            .message_id(2747)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/copyMessage")
             .with_status(200)
@@ -478,7 +496,12 @@ mod tests {
     #[test]
     fn send_location_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2750,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382060,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
-        let params = SendLocationParams::new(ChatId::Integer(275808073), 49.7, 6.95);
+        let params = SendLocationParamsBuilder::default()
+            .chat_id(275808073)
+            .latitude(49.7)
+            .longitude(6.95)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendLocation")
             .with_status(200)
@@ -495,9 +518,13 @@ mod tests {
     #[test]
     fn edit_message_live_location_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
-        let mut params = EditMessageLiveLocationParams::new(49.8, 6.96);
-        params.set_message_id(Some(2752));
-        params.set_chat_id(Some(ChatId::Integer(275808073)));
+        let mut params = EditMessageLiveLocationParamsBuilder::default()
+            .chat_id(275808073)
+            .message_id(2752)
+            .latitude(49.7)
+            .longitude(6.95)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/editMessageLiveLocation")
             .with_status(200)
@@ -514,9 +541,11 @@ mod tests {
     #[test]
     fn stop_message_live_location_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
-        let mut params = StopMessageLiveLocationParams::new();
-        params.set_message_id(Some(2752));
-        params.set_chat_id(Some(ChatId::Integer(275808073)));
+        let mut params = StopMessageLiveLocationParamsBuilder::default()
+            .chat_id(275808073)
+            .message_id(2752)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/stopMessageLiveLocation")
             .with_status(200)
@@ -533,13 +562,14 @@ mod tests {
     #[test]
     fn send_venue_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2754,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618410490,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"venue\":{\"location\":{\"longitude\":6.949981,\"latitude\":49.700002},\"title\":\"Meow\",\"address\":\"Hoof\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
-        let params = SendVenueParams::new(
-            ChatId::Integer(275808073),
-            49.7,
-            6.95,
-            "Meow".to_string(),
-            "Hoof".to_string(),
-        );
+        let params = SendVenueParamsBuilder::default()
+            .chat_id(275808073)
+            .latitude(49.7)
+            .longitude(6.95)
+            .title("Meow")
+            .address("Hoof")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendVenue")
             .with_status(200)
@@ -1597,8 +1627,10 @@ mod tests {
     #[test]
     fn returns_decode_error_if_response_can_not_be_decoded() {
         let response_string = "{hey this json is invalid}";
-        let mut params = GetUpdatesParams::new();
-        params.set_allowed_updates(Some(vec!["message".to_string()]));
+        let params = GetUpdatesParamsBuilder::default()
+            .allowed_updates(vec!["message".to_string()])
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getUpdates")
             .with_status(200)
