@@ -115,6 +115,18 @@ pub enum ChatId {
     String(String),
 }
 
+impl From<i64> for ChatId {
+    fn from(id: i64) -> Self {
+        Self::Integer(id)
+    }
+}
+
+impl From<String> for ChatId {
+    fn from(id: String) -> Self {
+        Self::String(id)
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum ReplyMarkup {
