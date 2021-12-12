@@ -250,7 +250,7 @@ mod tests {
     use crate::api_params::StopPollParamsBuilder;
     use crate::api_params::UnbanChatMemberParamsBuilder;
     use crate::api_params::UnpinChatMessageParamsBuilder;
-    use crate::objects::BotCommand;
+    use crate::objects::BotCommandBuilder;
     use crate::objects::ChatPermissionsBuilder;
     use crate::objects::InlineQueryResultVenue;
 
@@ -1359,7 +1359,11 @@ mod tests {
     #[test]
     fn get_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}}";
-        let params = GetChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
+        let params = GetChatMemberParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .user_id(275808073 as u64)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getChatMember")
             .with_status(200)
@@ -1376,8 +1380,11 @@ mod tests {
     #[test]
     fn set_chat_sticker_set_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params =
-            SetChatStickerSetParams::new(ChatId::Integer(-1001368460856), "GBTDPack".to_string());
+        let params = SetChatStickerSetParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .sticker_set_name("GBTDPack")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setChatStickerSet")
             .with_status(200)
@@ -1394,7 +1401,10 @@ mod tests {
     #[test]
     fn delete_chat_sticker_set_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = DeleteChatStickerSetParams::new(ChatId::Integer(-1001368460856));
+        let params = DeleteChatStickerSetParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/deleteChatStickerSet")
             .with_status(200)
@@ -1411,8 +1421,11 @@ mod tests {
     #[test]
     fn answer_callback_query_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = AnswerCallbackQueryParams::new("id".to_string());
-        params.set_text(Some("text".to_string()));
+        let mut params = AnswerCallbackQueryParamsBuilder::default()
+            .callback_query_id("id")
+            .text("text")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/answerCallbackQuery")
             .with_status(200)
@@ -1429,10 +1442,21 @@ mod tests {
     #[test]
     fn set_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = SetMyCommandsParams::new(vec![
-            BotCommand::new("meow".to_string(), "mewo".to_string()),
-            BotCommand::new("meow1".to_string(), "mewo1".to_string()),
-        ]);
+        let params = SetMyCommandsParamsBuilder::default()
+            .commands(vec![
+                BotCommandBuilder::default()
+                    .command("meow")
+                    .description("mewo")
+                    .build()
+                    .unwrap(),
+                BotCommandBuilder::default()
+                    .command("meow1")
+                    .description("mewo1")
+                    .build()
+                    .unwrap(),
+            ])
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setMyCommands")
             .with_status(200)
@@ -1449,11 +1473,22 @@ mod tests {
     #[test]
     fn set_my_commands_default_scope_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = SetMyCommandsParams::new(vec![
-            BotCommand::new("meow".to_string(), "mewo".to_string()),
-            BotCommand::new("meow1".to_string(), "mewo1".to_string()),
-        ]);
-        params.set_scope(Some(BotCommandScope::Default));
+        let params = SetMyCommandsParamsBuilder::default()
+            .commands(vec![
+                BotCommandBuilder::default()
+                    .command("meow")
+                    .description("mewo")
+                    .build()
+                    .unwrap(),
+                BotCommandBuilder::default()
+                    .command("meow1")
+                    .description("mewo1")
+                    .build()
+                    .unwrap(),
+            ])
+            .scope(BotCommandScope::Default)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setMyCommands")
             .with_status(200)
