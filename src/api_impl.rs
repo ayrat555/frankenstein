@@ -734,7 +734,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = UnbanChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
-            .user_id(275808072 as u64)
+            .user_id(275808072_u64)
             .build()
             .unwrap();
 
