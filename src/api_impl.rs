@@ -215,7 +215,7 @@ mod tests {
     use crate::api_params::InlineQueryResult;
     use crate::api_params::InputFile;
     use crate::api_params::InputMedia;
-    use crate::api_params::InputMediaPhoto;
+    use crate::api_params::InputMediaPhotoBuilder;
     use crate::api_params::LeaveChatParamsBuilder;
     use crate::api_params::Media;
     use crate::api_params::PinChatMessageParamsBuilder;
@@ -252,7 +252,7 @@ mod tests {
     use crate::api_params::UnpinChatMessageParamsBuilder;
     use crate::objects::BotCommandBuilder;
     use crate::objects::ChatPermissionsBuilder;
-    use crate::objects::InlineQueryResultVenue;
+    use crate::objects::InlineQueryResultVenueBuilder;
 
     #[test]
     fn new_sets_correct_url() {
@@ -518,7 +518,7 @@ mod tests {
     #[test]
     fn edit_message_live_location_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
-        let mut params = EditMessageLiveLocationParamsBuilder::default()
+        let params = EditMessageLiveLocationParamsBuilder::default()
             .chat_id(275808073)
             .message_id(2752)
             .latitude(49.7)
@@ -541,7 +541,7 @@ mod tests {
     #[test]
     fn stop_message_live_location_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
-        let mut params = StopMessageLiveLocationParamsBuilder::default()
+        let params = StopMessageLiveLocationParamsBuilder::default()
             .chat_id(275808073)
             .message_id(2752)
             .build()
@@ -672,7 +672,7 @@ mod tests {
     fn get_user_profile_photos_success() {
         let response_string = "{\"ok\":true,\"result\":{\"total_count\":3,\"photos\":[[{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"width\":160,\"height\":160,\"file_size\":8068},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYgADhEkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhEkCAAE\",\"width\":320,\"height\":320,\"file_size\":22765},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYwADhUkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhUkCAAE\",\"width\":640,\"height\":640,\"file_size\":65663}],[{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYQADZj0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZj0KAAE\",\"width\":160,\"height\":160,\"file_size\":13459},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYgADZz0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZz0KAAE\",\"width\":320,\"height\":320,\"file_size\":41243},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYwADaD0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEaD0KAAE\",\"width\":640,\"height\":640,\"file_size\":114427}],[{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYQADdkwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEdkwAAg\",\"width\":160,\"height\":160,\"file_size\":6631},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYgADd0wAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEd0wAAg\",\"width\":320,\"height\":320,\"file_size\":20495},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYwADeEwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEeEwAAg\",\"width\":640,\"height\":640,\"file_size\":54395}]]}}";
         let params = GetUserProfilePhotosParamsBuilder::default()
-            .user_id(275808073)
+            .user_id(275808073 as u64)
             .build()
             .unwrap();
 
@@ -761,6 +761,7 @@ mod tests {
         let params = RestrictChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
             .user_id(275808073 as u64)
+            .permissions(perm)
             .build()
             .unwrap();
 
@@ -779,7 +780,7 @@ mod tests {
     #[test]
     fn promote_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = PromoteChatMemberParamsBuilder::default()
+        let params = PromoteChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
             .user_id(275808073 as u64)
             .can_change_info(true)
@@ -823,7 +824,7 @@ mod tests {
     #[test]
     fn set_chat_permissions_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut perm = ChatPermissionsBuilder::default()
+        let perm = ChatPermissionsBuilder::default()
             .can_add_web_page_previews(true)
             .build()
             .unwrap();
@@ -850,7 +851,7 @@ mod tests {
     fn export_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":\"https://t.me/joinchat/txIUDwjfk7M2ODEy\"}";
 
-        let params = ExportChatInviteLinkParamsBuilder::default
+        let params = ExportChatInviteLinkParamsBuilder::default()
             .chat_id(-1001368460856)
             .build()
             .unwrap();
@@ -1008,7 +1009,7 @@ mod tests {
         });
         let params = SendAudioParamsBuilder::default()
             .chat_id(275808073)
-            .audio(file)
+            .audio(file.clone())
             .thumb(file)
             .build()
             .unwrap();
@@ -1421,7 +1422,7 @@ mod tests {
     #[test]
     fn answer_callback_query_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = AnswerCallbackQueryParamsBuilder::default()
+        let params = AnswerCallbackQueryParamsBuilder::default()
             .callback_query_id("id")
             .text("text")
             .build()
@@ -1505,13 +1506,14 @@ mod tests {
     #[test]
     fn delete_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = DeleteMyCommandsParams::new();
-
-        params.set_scope(Some(BotCommandScope::Chat(BotCommandScopeChat::new(
-            ChatId::Integer(275808073),
-        ))));
-
-        params.set_language_code(Some("es".to_string()));
+        let scope = BotCommandScope::Chat(BotCommandScopeChat {
+            chat_id: ChatId::Integer(275808073),
+        });
+        let params = DeleteMyCommandsParamsBuilder::default()
+            .scope(scope)
+            .language_code("es")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/deleteMyCommands")
             .with_status(200)
@@ -1529,7 +1531,7 @@ mod tests {
     fn get_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"command\":\"meow\",\"description\":\"mewo\"},{\"command\":\"meow1\",\"description\":\"mewo1\"}]}";
 
-        let params = GetMyCommandsParams::new();
+        let params = GetMyCommandsParamsBuilder::default().build().unwrap();
         let _m = mockito::mock("POST", "/getMyCommands")
             .with_status(200)
             .with_body(response_string)
@@ -1546,11 +1548,13 @@ mod tests {
     fn get_my_commands_scope_success() {
         let response_string = "{\"ok\":true,\"result\":[]}";
 
-        let mut params = GetMyCommandsParams::new();
-
-        params.set_scope(Some(BotCommandScope::Chat(BotCommandScopeChat::new(
-            ChatId::Integer(275808073),
-        ))));
+        let scope = BotCommandScope::Chat(BotCommandScopeChat {
+            chat_id: ChatId::Integer(275808073),
+        });
+        let params = GetMyCommandsParamsBuilder::default()
+            .scope(scope)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getMyCommands")
             .with_status(200)
@@ -1568,18 +1572,22 @@ mod tests {
     fn answer_inline_query_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
 
-        let venue_result = InlineQueryResultVenue::new(
-            "hey9sdfasdflasdfadsfasd".to_string(),
-            40.0,
-            40.0,
-            "title".to_string(),
-            "address".to_string(),
+        let venue_result = InlineQueryResult::Venue(
+            InlineQueryResultVenueBuilder::default()
+                .id("hey9sdfasdflasdfadsfasd")
+                .latitude(40.0)
+                .longitude(40.0)
+                .title("title")
+                .address("address")
+                .build()
+                .unwrap(),
         );
 
-        let params = AnswerInlineQueryParams::new(
-            "inline_query.id()".to_string(),
-            vec![InlineQueryResult::Venue(venue_result)],
-        );
+        let params = AnswerInlineQueryParamsBuilder::default()
+            .inline_query_id("inline_query.id()")
+            .results(vec![venue_result])
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/answerInlineQuery")
             .with_status(200)
@@ -1598,10 +1606,12 @@ mod tests {
     fn edit_message_text_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619158446,\"text\":\"Hi!!\"}}";
 
-        let mut params = EditMessageTextParams::new("Hi!!".to_string());
-
-        params.set_chat_id(Some(ChatId::Integer(275808073)));
-        params.set_message_id(Some(2782));
+        let params = EditMessageTextParamsBuilder::default()
+            .text("Hi!!")
+            .chat_id(275808073)
+            .message_id(2782)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/editMessageText")
             .with_status(200)
@@ -1619,11 +1629,12 @@ mod tests {
     fn edit_message_caption_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2784,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619159414,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619159461,\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA20AA1hCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3gAA1lCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3kAA1pCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}],\"caption\":\"Caption\"}}";
 
-        let mut params = EditMessageCaptionParams::new();
-
-        params.set_chat_id(Some(ChatId::Integer(275808073)));
-        params.set_message_id(Some(2784));
-        params.set_caption(Some("Caption".to_string()));
+        let params = EditMessageCaptionParamsBuilder::default()
+            .chat_id(275808073)
+            .message_id(2784)
+            .caption("Caption")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/editMessageCaption")
             .with_status(200)
@@ -1641,7 +1652,11 @@ mod tests {
     fn stop_poll_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":\"5195109123171024927\",\"question\":\"are you?\",\"options\":[{\"text\":\"1\",\"voter_count\":1},{\"text\":\"2\",\"voter_count\":0}],\"total_voter_count\":1,\"is_closed\":true,\"is_anonymous\":true,\"type\":\"regular\",\"allows_multiple_answers\":false}}";
 
-        let params = StopPollParams::new(ChatId::Integer(-1001368460856), 495);
+        let params = StopPollParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .message_id(495)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/stopPoll")
             .with_status(200)
@@ -1659,7 +1674,11 @@ mod tests {
     fn delete_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
 
-        let params = DeleteMessageParams::new(ChatId::Integer(275808073), 2784);
+        let params = DeleteMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .message_id(2784)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/deleteMessage")
             .with_status(200)
@@ -1676,12 +1695,15 @@ mod tests {
     #[test]
     fn send_sticker_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"width\":512,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
-        let params = SendStickerParams::new(
-            ChatId::Integer(275808073),
-            File::InputFile(InputFile::new(std::path::PathBuf::from(
-                "./frankenstein_logo.png",
-            ))),
-        );
+
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
+        let params = SendStickerParamsBuilder::default()
+            .chat_id(275808073)
+            .sticker(file)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendSticker")
             .with_status(200)
@@ -1698,7 +1720,10 @@ mod tests {
     #[test]
     fn get_sticker_set_success() {
         let response_string = "{\"ok\":true,\"result\":{\"name\":\"unocards\",\"title\":\"UNO Bot\",\"is_animated\":false,\"contains_masks\":false,\"stickers\":[{\"file_id\":\"CAACAgQAAxUAAWCDxAQVJ6X7FGiBD5NyjN5DDvgfAALZAQACX1eZAAEqnpNt3SpG_x8E\",\"file_unique_id\":\"AgAD2QEAAl9XmQAB\",\"width\":342,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCBAADFQABYIPEBBUnpfsUaIEPk3KM3kMO-B8AAtkBAAJfV5kAASqek23dKkb_P75BGQAEAQAHbQADBBEAAh8E\",\"file_unique_id\":\"AQADP75BGQAEBBEAAg\",\"width\":85,\"height\":128,\"file_size\":2452},\"emoji\":\"dd\",\"set_name\":\"unocards\",\"file_size\":8898}]}}";
-        let params = GetStickerSetParams::new("unocards".to_string());
+        let params = GetStickerSetParamsBuilder::default()
+            .name("unocards")
+            .build()
+            .unwrap();
         let _m = mockito::mock("POST", "/getStickerSet")
             .with_status(200)
             .with_body(response_string)
@@ -1715,14 +1740,21 @@ mod tests {
     fn send_media_group_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"message_id\":510,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]},{\"message_id\":511,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}]}";
 
-        let file = File::InputFile(InputFile::new(std::path::PathBuf::from(
-            "./frankenstein_logo.png",
-        )));
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
 
-        let photo = InputMediaPhoto::new(file);
+        let photo = InputMediaPhotoBuilder::default()
+            .media(file)
+            .build()
+            .unwrap();
         let medias = vec![Media::Photo(photo.clone()), Media::Photo(photo)];
 
-        let params = SendMediaGroupParams::new(ChatId::Integer(-1001368460856), medias);
+        let params = SendMediaGroupParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .media(medias)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendMediaGroup")
             .with_status(200)
@@ -1740,14 +1772,22 @@ mod tests {
     fn edit_message_media_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":513,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"edit_date\":1619336788,\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}}";
 
-        let file = File::InputFile(InputFile::new(std::path::PathBuf::from(
-            "./frankenstein_logo.png",
-        )));
+        let file = File::InputFile(InputFile {
+            path: std::path::PathBuf::from("./frankenstein_logo.png"),
+        });
 
-        let mut params = EditMessageMediaParams::new(InputMedia::Photo(InputMediaPhoto::new(file)));
+        let params = EditMessageMediaParamsBuilder::default()
+            .media(InputMedia::Photo(
+                InputMediaPhotoBuilder::default()
+                    .media(file)
+                    .build()
+                    .unwrap(),
+            ))
+            .chat_id(-1001368460856)
+            .message_id(513)
+            .build()
+            .unwrap();
 
-        params.set_chat_id(Some(ChatId::Integer(-1001368460856)));
-        params.set_message_id(Some(513));
         let _m = mockito::mock("POST", "/editMessageMedia")
             .with_status(200)
             .with_body(response_string)
