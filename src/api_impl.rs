@@ -672,7 +672,7 @@ mod tests {
     fn get_user_profile_photos_success() {
         let response_string = "{\"ok\":true,\"result\":{\"total_count\":3,\"photos\":[[{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"width\":160,\"height\":160,\"file_size\":8068},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYgADhEkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhEkCAAE\",\"width\":320,\"height\":320,\"file_size\":22765},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYwADhUkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhUkCAAE\",\"width\":640,\"height\":640,\"file_size\":65663}],[{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYQADZj0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZj0KAAE\",\"width\":160,\"height\":160,\"file_size\":13459},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYgADZz0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZz0KAAE\",\"width\":320,\"height\":320,\"file_size\":41243},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYwADaD0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEaD0KAAE\",\"width\":640,\"height\":640,\"file_size\":114427}],[{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYQADdkwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEdkwAAg\",\"width\":160,\"height\":160,\"file_size\":6631},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYgADd0wAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEd0wAAg\",\"width\":320,\"height\":320,\"file_size\":20495},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYwADeEwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEeEwAAg\",\"width\":640,\"height\":640,\"file_size\":54395}]]}}";
         let params = GetUserProfilePhotosParamsBuilder::default()
-            .user_id(275808073 as u64)
+            .user_id(275808073_u64)
             .build()
             .unwrap();
 
@@ -713,7 +713,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = BanChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
-            .user_id(275808073 as u64)
+            .user_id(275808073_u64)
             .build()
             .unwrap();
 
@@ -760,7 +760,7 @@ mod tests {
 
         let params = RestrictChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
-            .user_id(275808073 as u64)
+            .user_id(275808073_u64)
             .permissions(perm)
             .build()
             .unwrap();
@@ -782,7 +782,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = PromoteChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
-            .user_id(275808073 as u64)
+            .user_id(275808073_u64)
             .can_change_info(true)
             .build()
             .unwrap();
@@ -804,7 +804,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = SetChatAdministratorCustomTitleParamsBuilder::default()
             .chat_id(-1001368460856)
-            .user_id(275808073 as u64)
+            .user_id(275808073_u64)
             .custom_title("King")
             .build()
             .unwrap();
@@ -1362,7 +1362,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}}";
         let params = GetChatMemberParamsBuilder::default()
             .chat_id(-1001368460856)
-            .user_id(275808073 as u64)
+            .user_id(275808073_u64)
             .build()
             .unwrap();
 
