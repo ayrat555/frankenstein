@@ -36,6 +36,9 @@ optional = true
 version = "1"
 features = ["derive"]
 
+[dependencies.derive_builder]
+version = "0.10"
+
 [dependencies.serde_json]
 version = "1"
 optional = true

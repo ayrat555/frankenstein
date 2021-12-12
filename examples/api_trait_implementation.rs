@@ -1,11 +1,10 @@
-use frankenstein::ChatId;
 use frankenstein::ErrorResponse;
-use frankenstein::SendMessageParams;
+use frankenstein::SendMessageParamsBuilder;
 use frankenstein::TelegramApi;
 use isahc::{prelude::*, Request};
 use std::path::PathBuf;
 
-static TOKEN: &str = "token";
+static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
 #[derive(PartialEq, Debug)]
@@ -121,7 +120,11 @@ impl TelegramApi for Api {
 fn main() {
     let api = Api::new(TOKEN);
 
-    let params = SendMessageParams::new(ChatId::Integer(275_808_073), "Hello!".to_string());
+    let params = SendMessageParamsBuilder::default()
+        .chat_id(275_808_073)
+        .text("Hello!")
+        .build()
+        .unwrap();
 
     let result = api.send_message(&params);
 

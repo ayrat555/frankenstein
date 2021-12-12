@@ -178,8 +178,8 @@ pub trait TelegramApi {
         let method_name = "sendPhoto";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.photo() {
-            files.push(("photo", input_file.path()));
+        if let File::InputFile(input_file) = &params.photo {
+            files.push(("photo", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -189,12 +189,12 @@ pub trait TelegramApi {
         let method_name = "sendAudio";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.audio() {
-            files.push(("audio", input_file.path()));
+        if let File::InputFile(input_file) = &params.audio {
+            files.push(("audio", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = params.thumb() {
-            files.push(("thumb", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.thumb {
+            files.push(("thumb", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -209,29 +209,29 @@ pub trait TelegramApi {
         let mut new_medias: Vec<Media> = vec![];
         let mut file_idx = 0;
 
-        for media in params.media() {
+        for media in &params.media {
             match media {
                 Media::Audio(audio) => {
                     let mut new_audio = audio.clone();
 
-                    if let File::InputFile(input_file) = audio.media() {
+                    if let File::InputFile(input_file) = &audio.media {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_audio.set_media(File::String(attach_name));
+                        new_audio.media = File::String(attach_name);
 
-                        files.push((name, input_file.path()));
+                        files.push((name, input_file.path.clone()));
                     };
 
-                    if let Some(File::InputFile(input_file)) = audio.thumb() {
+                    if let Some(File::InputFile(input_file)) = &audio.thumb {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_audio.set_thumb(Some(File::String(attach_name)));
+                        new_audio.thumb = Some(File::String(attach_name));
 
-                        files.push((name, input_file.path()));
+                        files.push((name, input_file.path.clone()));
                     };
 
                     new_medias.push(Media::Audio(new_audio));
@@ -240,14 +240,14 @@ pub trait TelegramApi {
                 Media::Document(document) => {
                     let mut new_document = document.clone();
 
-                    if let File::InputFile(input_file) = document.media() {
+                    if let File::InputFile(input_file) = &document.media {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_document.set_media(File::String(attach_name));
+                        new_document.media = File::String(attach_name);
 
-                        files.push((name, input_file.path()));
+                        files.push((name, input_file.path.clone()));
                     };
 
                     new_medias.push(Media::Document(new_document));
@@ -255,14 +255,14 @@ pub trait TelegramApi {
                 Media::Photo(photo) => {
                     let mut new_photo = photo.clone();
 
-                    if let File::InputFile(input_file) = photo.media() {
+                    if let File::InputFile(input_file) = &photo.media {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_photo.set_media(File::String(attach_name));
+                        new_photo.media = File::String(attach_name);
 
-                        files.push((name, input_file.path()));
+                        files.push((name, input_file.path.clone()));
                     };
 
                     new_medias.push(Media::Photo(new_photo));
@@ -271,24 +271,24 @@ pub trait TelegramApi {
                 Media::Video(video) => {
                     let mut new_video = video.clone();
 
-                    if let File::InputFile(input_file) = video.media() {
+                    if let File::InputFile(input_file) = &video.media {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_video.set_media(File::String(attach_name));
+                        new_video.media = File::String(attach_name);
 
-                        files.push((name, input_file.path()));
+                        files.push((name, input_file.path.clone()));
                     };
 
-                    if let Some(File::InputFile(input_file)) = video.thumb() {
+                    if let Some(File::InputFile(input_file)) = &video.thumb {
                         let name = format!("file{}", file_idx);
                         let attach_name = format!("attach://{}", name);
                         file_idx += 1;
 
-                        new_video.set_thumb(Some(File::String(attach_name)));
+                        new_video.thumb = Some(File::String(attach_name));
 
-                        files.push((name, input_file.path()));
+                        files.push((name, input_file.path.clone()));
                     };
 
                     new_medias.push(Media::Video(new_video));
@@ -297,7 +297,7 @@ pub trait TelegramApi {
         }
 
         let mut new_params = params.clone();
-        new_params.set_media(new_medias);
+        new_params.media = new_medias;
 
         let files_with_str_names: Vec<(&str, PathBuf)> = files
             .iter()
@@ -314,12 +314,12 @@ pub trait TelegramApi {
         let method_name = "sendDocument";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.document() {
-            files.push(("document", input_file.path()));
+        if let File::InputFile(input_file) = &params.document {
+            files.push(("document", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = params.thumb() {
-            files.push(("thumb", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.thumb {
+            files.push(("thumb", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -329,12 +329,12 @@ pub trait TelegramApi {
         let method_name = "sendVideo";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.video() {
-            files.push(("video", input_file.path()));
+        if let File::InputFile(input_file) = &params.video {
+            files.push(("video", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = params.thumb() {
-            files.push(("thumb", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.thumb {
+            files.push(("thumb", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -347,12 +347,12 @@ pub trait TelegramApi {
         let method_name = "sendAnimation";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.animation() {
-            files.push(("animation", input_file.path()));
+        if let File::InputFile(input_file) = &params.animation {
+            files.push(("animation", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = params.thumb() {
-            files.push(("thumb", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.thumb {
+            files.push(("thumb", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -362,8 +362,8 @@ pub trait TelegramApi {
         let method_name = "sendVoice";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.voice() {
-            files.push(("voice", input_file.path()));
+        if let File::InputFile(input_file) = &params.voice {
+            files.push(("voice", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -376,12 +376,12 @@ pub trait TelegramApi {
         let method_name = "sendVideoNote";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.video_note() {
-            files.push(("video_note", input_file.path()));
+        if let File::InputFile(input_file) = &params.video_note {
+            files.push(("video_note", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = params.thumb() {
-            files.push(("thumb", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.thumb {
+            files.push(("thumb", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -547,9 +547,9 @@ pub trait TelegramApi {
         &self,
         params: &SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let photo = params.photo();
+        let photo = &params.photo;
 
-        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path())])
+        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
     }
 
     fn delete_chat_photo(
@@ -686,26 +686,26 @@ pub trait TelegramApi {
         let method_name = "editMessageMedia";
         let mut files: Vec<(String, PathBuf)> = vec![];
 
-        let new_media = match params.media() {
+        let new_media = match &params.media {
             InputMedia::Animation(animation) => {
                 let mut new_animation = animation.clone();
 
-                if let File::InputFile(input_file) = animation.media() {
+                if let File::InputFile(input_file) = &animation.media {
                     let name = "animation".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_animation.set_media(File::String(attach_name));
+                    new_animation.media = File::String(attach_name);
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = animation.thumb() {
+                if let Some(File::InputFile(input_file)) = &animation.thumb {
                     let name = "animation_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_animation.set_thumb(Some(File::String(attach_name)));
+                    new_animation.thumb = Some(File::String(attach_name));
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
                 InputMedia::Animation(new_animation)
@@ -713,22 +713,22 @@ pub trait TelegramApi {
             InputMedia::Document(document) => {
                 let mut new_document = document.clone();
 
-                if let File::InputFile(input_file) = document.media() {
+                if let File::InputFile(input_file) = &document.media {
                     let name = "document".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_document.set_media(File::String(attach_name));
+                    new_document.media = File::String(attach_name);
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = document.thumb() {
+                if let Some(File::InputFile(input_file)) = &document.thumb {
                     let name = "document_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_document.set_thumb(Some(File::String(attach_name)));
+                    new_document.thumb = Some(File::String(attach_name));
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
                 InputMedia::Document(new_document)
@@ -736,22 +736,22 @@ pub trait TelegramApi {
             InputMedia::Audio(audio) => {
                 let mut new_audio = audio.clone();
 
-                if let File::InputFile(input_file) = audio.media() {
+                if let File::InputFile(input_file) = &audio.media {
                     let name = "audio".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_audio.set_media(File::String(attach_name));
+                    new_audio.media = File::String(attach_name);
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = audio.thumb() {
+                if let Some(File::InputFile(input_file)) = &audio.thumb {
                     let name = "audio_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_audio.set_thumb(Some(File::String(attach_name)));
+                    new_audio.thumb = Some(File::String(attach_name));
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
                 InputMedia::Audio(new_audio)
@@ -759,13 +759,13 @@ pub trait TelegramApi {
             InputMedia::Photo(photo) => {
                 let mut new_photo = photo.clone();
 
-                if let File::InputFile(input_file) = photo.media() {
+                if let File::InputFile(input_file) = &photo.media {
                     let name = "photo".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_photo.set_media(File::String(attach_name));
+                    new_photo.media = File::String(attach_name);
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
                 InputMedia::Photo(new_photo)
@@ -773,22 +773,22 @@ pub trait TelegramApi {
             InputMedia::Video(video) => {
                 let mut new_video = video.clone();
 
-                if let File::InputFile(input_file) = video.media() {
+                if let File::InputFile(input_file) = &video.media {
                     let name = "video".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_video.set_media(File::String(attach_name));
+                    new_video.media = File::String(attach_name);
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = video.thumb() {
+                if let Some(File::InputFile(input_file)) = &video.thumb {
                     let name = "video_thumb".to_string();
                     let attach_name = format!("attach://{}", name);
 
-                    new_video.set_thumb(Some(File::String(attach_name)));
+                    new_video.thumb = Some(File::String(attach_name));
 
-                    files.push((name, input_file.path()));
+                    files.push((name, input_file.path.clone()));
                 };
 
                 InputMedia::Video(new_video)
@@ -796,7 +796,7 @@ pub trait TelegramApi {
         };
 
         let mut new_params = params.clone();
-        new_params.set_media(new_media);
+        new_params.media = new_media;
 
         let files_with_str_names: Vec<(&str, PathBuf)> = files
             .iter()
@@ -831,8 +831,8 @@ pub trait TelegramApi {
         let method_name = "sendSticker";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let File::InputFile(input_file) = params.sticker() {
-            files.push(("sticker", input_file.path()));
+        if let File::InputFile(input_file) = &params.sticker {
+            files.push(("sticker", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -849,12 +849,12 @@ pub trait TelegramApi {
         &self,
         params: &UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = params.png_sticker();
+        let sticker = &params.png_sticker;
 
         self.request_with_form_data(
             "uploadStickerFile",
             params,
-            vec![("png_sticker", sticker.path())],
+            vec![("png_sticker", sticker.path.clone())],
         )
     }
 
@@ -865,12 +865,12 @@ pub trait TelegramApi {
         let method_name = "createNewStickerSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = params.png_sticker() {
-            files.push(("png_sticker", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.png_sticker {
+            files.push(("png_sticker", input_file.path.clone()));
         }
 
-        if let Some(input_file) = params.tgs_sticker() {
-            files.push(("tgs_sticker", input_file.path()));
+        if let Some(input_file) = &params.tgs_sticker {
+            files.push(("tgs_sticker", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -883,12 +883,12 @@ pub trait TelegramApi {
         let method_name = "addStickerToSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = params.png_sticker() {
-            files.push(("png_sticker", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.png_sticker {
+            files.push(("png_sticker", input_file.path.clone()));
         }
 
-        if let Some(input_file) = params.tgs_sticker() {
-            files.push(("tgs_sticker", input_file.path()));
+        if let Some(input_file) = &params.tgs_sticker {
+            files.push(("tgs_sticker", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -915,8 +915,8 @@ pub trait TelegramApi {
         let method_name = "setStickerSetThumb";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = params.thumb() {
-            files.push(("thumb", input_file.path()));
+        if let Some(File::InputFile(input_file)) = &params.thumb {
+            files.push(("thumb", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
