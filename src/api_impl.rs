@@ -251,7 +251,7 @@ mod tests {
     use crate::api_params::UnbanChatMemberParamsBuilder;
     use crate::api_params::UnpinChatMessageParamsBuilder;
     use crate::objects::BotCommand;
-    use crate::objects::ChatPermissions;
+    use crate::objects::ChatPermissionsBuilder;
     use crate::objects::InlineQueryResultVenue;
 
     #[test]
@@ -586,11 +586,12 @@ mod tests {
     #[test]
     fn send_contact_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2755,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618465934,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"contact\":{\"phone_number\":\"49\",\"first_name\":\"Meow\"}}}";
-        let params = SendContactParams::new(
-            ChatId::Integer(275808073),
-            "49".to_string(),
-            "Meow".to_string(),
-        );
+        let params = SendContactParamsBuilder::default()
+            .chat_id(275808073)
+            .phone_number("49")
+            .first_name("Meow")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendContact")
             .with_status(200)
@@ -607,11 +608,12 @@ mod tests {
     #[test]
     fn send_poll_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2756,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618466302,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"poll\":{\"id\":\"5458519832506925078\",\"question\":\"are you?\",\"options\":[{\"text\":\"1\",\"voter_count\":0},{\"text\":\"2\",\"voter_count\":0}],\"total_voter_count\":0,\"is_closed\":false,\"is_anonymous\":true,\"type\":\"regular\",\"allows_multiple_answers\":false}}}";
-        let params = SendPollParams::new(
-            ChatId::Integer(275808073),
-            "are you?".to_string(),
-            vec!["1".to_string(), "2".to_string()],
-        );
+        let params = SendPollParamsBuilder::default()
+            .chat_id(275808073)
+            .question("are you?")
+            .options(vec!["1".to_string(), "2".to_string()])
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendPoll")
             .with_status(200)
@@ -628,7 +630,10 @@ mod tests {
     #[test]
     fn send_dice_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2757,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"dice\":{\"emoji\":\"🎲\",\"value\":5}}}";
-        let params = SendDiceParams::new(ChatId::Integer(275808073));
+        let params = SendDiceParamsBuilder::default()
+            .chat_id(275808073)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendDice")
             .with_status(200)
@@ -645,7 +650,11 @@ mod tests {
     #[test]
     fn send_chat_action_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = SendChatActionParams::new(ChatId::Integer(275808073), ChatAction::Typing);
+        let params = SendChatActionParamsBuilder::default()
+            .chat_id(275808073)
+            .action(ChatAction::Typing)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/sendChatAction")
             .with_status(200)
@@ -662,7 +671,10 @@ mod tests {
     #[test]
     fn get_user_profile_photos_success() {
         let response_string = "{\"ok\":true,\"result\":{\"total_count\":3,\"photos\":[[{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"width\":160,\"height\":160,\"file_size\":8068},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYgADhEkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhEkCAAE\",\"width\":320,\"height\":320,\"file_size\":22765},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYwADhUkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhUkCAAE\",\"width\":640,\"height\":640,\"file_size\":65663}],[{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYQADZj0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZj0KAAE\",\"width\":160,\"height\":160,\"file_size\":13459},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYgADZz0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZz0KAAE\",\"width\":320,\"height\":320,\"file_size\":41243},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYwADaD0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEaD0KAAE\",\"width\":640,\"height\":640,\"file_size\":114427}],[{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYQADdkwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEdkwAAg\",\"width\":160,\"height\":160,\"file_size\":6631},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYgADd0wAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEd0wAAg\",\"width\":320,\"height\":320,\"file_size\":20495},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYwADeEwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEeEwAAg\",\"width\":640,\"height\":640,\"file_size\":54395}]]}}";
-        let params = GetUserProfilePhotosParams::new(275808073);
+        let params = GetUserProfilePhotosParamsBuilder::default()
+            .user_id(275808073)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getUserProfilePhotos")
             .with_status(200)
@@ -679,9 +691,10 @@ mod tests {
     #[test]
     fn get_file_success() {
         let response_string = "{\"ok\":true,\"result\":{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"file_size\":8068,\"file_path\":\"photos/file_0.jpg\"}}";
-        let  params = GetFileParams::new(
-        "AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA".to_string()
-    );
+        let  params = GetFileParamsBuilder::default()
+            .file_id("AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/getFile")
             .with_status(200)
@@ -698,7 +711,11 @@ mod tests {
     #[test]
     fn ban_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = BanChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
+        let params = BanChatMemberParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .user_id(275808073 as u64)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/banChatMember")
             .with_status(200)
@@ -715,7 +732,11 @@ mod tests {
     #[test]
     fn unban_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = UnbanChatMemberParams::new(ChatId::Integer(-1001368460856), 275808072);
+        let params = UnbanChatMemberParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .user_id(275808072 as u64)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/unbanChatMember")
             .with_status(200)
@@ -732,10 +753,16 @@ mod tests {
     #[test]
     fn restrict_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut perm = ChatPermissions::new();
-        perm.set_can_add_web_page_previews(Some(true));
-        let params =
-            RestrictChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073, perm);
+        let perm = ChatPermissionsBuilder::default()
+            .can_add_web_page_previews(true)
+            .build()
+            .unwrap();
+
+        let params = RestrictChatMemberParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .user_id(275808073 as u64)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/restrictChatMember")
             .with_status(200)
@@ -752,8 +779,12 @@ mod tests {
     #[test]
     fn promote_chat_member_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut params = PromoteChatMemberParams::new(ChatId::Integer(-1001368460856), 275808073);
-        params.set_can_change_info(Some(true));
+        let mut params = PromoteChatMemberParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .user_id(275808073 as u64)
+            .can_change_info(true)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/promoteChatMember")
             .with_status(200)
@@ -770,11 +801,12 @@ mod tests {
     #[test]
     fn set_chat_administrator_custom_title_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = SetChatAdministratorCustomTitleParams::new(
-            ChatId::Integer(-1001368460856),
-            275808073,
-            "King".to_string(),
-        );
+        let params = SetChatAdministratorCustomTitleParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .user_id(275808073 as u64)
+            .custom_title("King")
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setChatAdministratorCustomTitle")
             .with_status(200)
@@ -791,10 +823,16 @@ mod tests {
     #[test]
     fn set_chat_permissions_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut perm = ChatPermissions::new();
-        perm.set_can_add_web_page_previews(Some(true));
+        let mut perm = ChatPermissionsBuilder::default()
+            .can_add_web_page_previews(true)
+            .build()
+            .unwrap();
 
-        let params = SetChatPermissionsParams::new(ChatId::Integer(-1001368460856), perm);
+        let params = SetChatPermissionsParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .permissions(perm)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/setChatPermissions")
             .with_status(200)
@@ -812,7 +850,10 @@ mod tests {
     fn export_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":\"https://t.me/joinchat/txIUDwjfk7M2ODEy\"}";
 
-        let params = ExportChatInviteLinkParams::new(ChatId::Integer(-1001368460856));
+        let params = ExportChatInviteLinkParamsBuilder::default
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/exportChatInviteLink")
             .with_status(200)
@@ -830,7 +871,10 @@ mod tests {
     fn create_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/yFEnSaeiQm83ZTNi\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"creates_join_request\":false,\"is_primary\":false,\"is_revoked\":false}}";
 
-        let params = CreateChatInviteLinkParams::new(ChatId::Integer(-1001368460856));
+        let params = CreateChatInviteLinkParamsBuilder::default()
+            .chat_id(-1001368460856)
+            .build()
+            .unwrap();
 
         let _m = mockito::mock("POST", "/createChatInviteLink")
             .with_status(200)
