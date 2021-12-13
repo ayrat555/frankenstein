@@ -1,3 +1,7 @@
+## 0.9.0 (2021-12-13)
+
+  * Use builders for all structs - [#34](https://github.com/ayrat555/frankenstein/pull/34)
+
 ## 0.8.1 (2021-12-08)
 
   * [Telegram API 5.5 Changes](https://core.telegram.org/bots/api#december-7-2021) - [#33](https://github.com/ayrat555/frankenstein/pull/33)

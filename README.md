@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.8"
+frankenstein = "0.9"
 ```
 
 ## Usage
@@ -40,71 +40,53 @@ supports_inline_queries	Boolean	Optional. True, if the bot supports inline queri
 In frankenstein, it's described as:
 
 ```rust
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[builder(setter(into))]
 pub struct User {
-    pub id: i64,
+    pub id: u64,
 
     pub is_bot: bool,
 
     pub first_name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
     pub last_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
     pub username: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
     pub language_code: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
     pub can_join_groups: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
     pub can_read_all_group_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
     pub supports_inline_queries: Option<bool>,
 }
 ```
 
 Optional fields are described as Option enum.
 
-Every struct has the `new` method which used for initialization. It accepts only required fields, optional fields are set to `None`:
+Every struct can be created with the associated builder. It accepts only required fields, optional fields are set to `None`:
 
 ```rust
-pub fn new(id: i64, is_bot: bool, first_name: String) -> User {
-    Self {
-        id,
-        is_bot,
-        first_name,
-        last_name: None,
-        username: None,
-        language_code: None,
-        can_join_groups: None,
-        can_read_all_group_messages: None,
-        supports_inline_queries: None,
-    }
-}
+let send_message_params = SendMessageParamsBuilder::default()
+    .chat_id(message.chat.id)
+    .text("hello")
+    .reply_to_message_id(message.message_id)
+    .build()
+    .unwrap();
 ```
-
-All fields have setter and getter methods :
-
-```rust
-...
-
- pub fn set_supports_inline_queries(&mut self, supports_inline_queries: Option<bool>) {
-     self.supports_inline_queries = supports_inline_queries;
- }
- pub fn id(&self) -> i64 {
-     self.id
- }
-
-...
-```
-
-
-For method parameters, the same approach is used. The only difference for parameters is the name of the struct in frankenstein ends with `Params` postfix.
 
 For example, parameters for `leaveChat` method:
 
@@ -135,8 +117,10 @@ let api = Api::new(token);
 2. Use this api object to make requests to the Bot API:
 
 ```rust
-let mut update_params = GetUpdatesParams::new();
-update_params.set_allowed_updates(Some(vec!["message".to_string()]));
+let mut update_params_builder = GetUpdatesParamsBuilder::default();
+update_params_builder.allowed_updates(vec!["message".to_string()]);
+
+let update_params = update_params_builder.build().unwrap();
 
 let result = api.get_updates(&update_params);
 ```
@@ -168,7 +152,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.8.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.9.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 You can check out a real world bot created using this library - [El Monitorro](https://github.com/ayrat555/el_monitorro). El Monitorro is a feed reader bot.
 
@@ -179,7 +163,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.8", default-features = false }
+frankenstein = { version = "0.9", default-features = false }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:
@@ -189,7 +173,7 @@ frankenstein = { version = "0.8", default-features = false }
 
 You can check [the default `TelegramApi` trait implementation](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/src/api_impl.rs) for `ureq`.
 
-Also, you can take a look at the [implementation for `isahc` http client](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/examples/api_trait_implementation.rs) in the examples directory.
+Also, you can take a look at the [implementation for `isahc` http client](https://github.com/ayrat555/frankenstein/blob/master/examples/api_trait_implementation.rs) in the examples directory.
 
 Without the default ureq implementation, `frankenstein` has only one dependency - `serde`.
 
