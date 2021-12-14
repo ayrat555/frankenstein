@@ -6,7 +6,7 @@
 
 Telegram bot API client for Rust.
 
-It's a complete wrapper for Telegram bot API and it's up to date with version 5.4 of the API.
+It's a complete wrapper for Telegram bot API and it's up to date with version 5.5 of the API.
 
 Frankenstein data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method params.
 
@@ -87,6 +87,8 @@ let send_message_params = SendMessageParamsBuilder::default()
     .build()
     .unwrap();
 ```
+
+For api parameters, the same approach is used. The only difference for parameters is the name of the struct in frankenstein ends with `Params` postfix.
 
 For example, parameters for `leaveChat` method:
 
