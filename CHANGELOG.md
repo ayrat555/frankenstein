@@ -1,3 +1,7 @@
+## 0.9.1 (2021-12-24)
+
+  * Add From trait impl for File enum - [#35](https://github.com/ayrat555/frankenstein/pull/35)
+
 ## 0.9.0 (2021-12-13)
 
   * Use builders for all structs - [#34](https://github.com/ayrat555/frankenstein/pull/34)
