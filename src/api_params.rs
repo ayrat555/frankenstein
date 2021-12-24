@@ -25,6 +25,26 @@ pub enum File {
     String(String),
 }
 
+impl From<PathBuf> for File {
+    fn from(path: PathBuf) -> Self {
+        let input_file = InputFile { path };
+
+        File::InputFile(input_file)
+    }
+}
+
+impl From<InputFile> for File {
+    fn from(file: InputFile) -> Self {
+        File::InputFile(file)
+    }
+}
+
+impl From<String> for File {
+    fn from(file: String) -> Self {
+        Self::String(file)
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type")]
 pub enum InlineQueryResult {
