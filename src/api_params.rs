@@ -29,13 +29,13 @@ impl From<PathBuf> for File {
     fn from(path: PathBuf) -> Self {
         let input_file = InputFile { path };
 
-        File::InputFile(input_file)
+        Self::InputFile(input_file)
     }
 }
 
 impl From<InputFile> for File {
     fn from(file: InputFile) -> Self {
-        File::InputFile(file)
+        Self::InputFile(file)
     }
 }
 
