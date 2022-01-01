@@ -1,3 +1,7 @@
+## 0.9.2 (2022-01-01)
+
+  * [Telegram Bot API 5.6 Changes](https://core.telegram.org/bots/api#december-30-2021) - [#36](https://github.com/ayrat555/frankenstein/pull/36)
+
 ## 0.9.1 (2021-12-24)
 
   * Add From trait impl for File enum - [#35](https://github.com/ayrat555/frankenstein/pull/35)
@@ -8,7 +12,7 @@
 
 ## 0.8.1 (2021-12-08)
 
-  * [Telegram API 5.5 Changes](https://core.telegram.org/bots/api#december-7-2021) - [#33](https://github.com/ayrat555/frankenstein/pull/33)
+  * [Telegram Bot API 5.5 Changes](https://core.telegram.org/bots/api#december-7-2021) - [#33](https://github.com/ayrat555/frankenstein/pull/33)
 
 ## 0.8.0 (2021-12-05)
 
