@@ -4,7 +4,7 @@ use crate::objects::Update;
 use async_trait::async_trait;
 
 #[async_trait]
-trait AsyncApi {
+pub trait AsyncTelegramApi {
     type Error;
 
     async fn get_updates(
