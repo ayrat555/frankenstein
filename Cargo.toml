@@ -24,6 +24,9 @@ http-client = ["ureq", "multipart", "mime_guess", "serde_json"]
 
 [dependencies]
 
+[dependencies.async-trait]
+version = "0.1"
+
 [dependencies.mime_guess]
 version = "2"
 optional = true

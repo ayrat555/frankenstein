@@ -18,6 +18,7 @@
 
 pub mod api;
 pub mod api_params;
+pub mod async_api;
 pub mod objects;
 
 pub use api::*;
