@@ -19,18 +19,23 @@ impl Api {
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", BASE_API_URL, api_key);
         let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
-        Self { api_url, request_agent }
-    }
-
-    pub fn new_timeout(api_key: &str, timeout: Duration) -> Self {
-        let api_url = format!("{}{}", BASE_API_URL, api_key);
-        let request_agent = ureq::builder().timeout(timeout).build();
-        Self { api_url, request_agent }
+        Self {
+            api_url,
+            request_agent,
+        }
     }
 
     pub fn new_url(api_url: String) -> Self {
         let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
-        Self { api_url, request_agent }
+        Self {
+            api_url,
+            request_agent,
+        }
+    }
+
+    pub fn with_timeout(&mut self, timeout: Duration) {
+        let request_agent = ureq::builder().timeout(timeout).build();
+        self.request_agent = request_agent;
     }
 
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
@@ -116,7 +121,10 @@ impl TelegramApi for Api {
         params: Option<T1>,
     ) -> Result<T2, Error> {
         let url = format!("{}/{}", self.api_url, method);
-        let prepared_request = self.request_agent.post(&url).set("Content-Type", "application/json");
+        let prepared_request = self
+            .request_agent
+            .post(&url)
+            .set("Content-Type", "application/json");
 
         let response = match params {
             None => prepared_request.call()?,
@@ -174,7 +182,9 @@ impl TelegramApi for Api {
 
         let url = format!("{}/{}", self.api_url, method);
         let form_data = form.prepare().unwrap();
-        let response = self.request_agent.post(&url)
+        let response = self
+            .request_agent
+            .post(&url)
             .set(
                 "Content-Type",
                 &format!("multipart/form-data; boundary={}", form_data.boundary()),
@@ -267,12 +277,7 @@ mod tests {
     fn new_sets_correct_url() {
         let api = Api::new("hey");
 
-        assert_eq!(
-            Api {
-                api_url: "https://api.telegram.org/bothey".to_string()
-            },
-            api
-        );
+        assert_eq!("https://api.telegram.org/bothey", api.api_url);
     }
 
     #[test]
