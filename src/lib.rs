@@ -18,13 +18,13 @@
 
 pub mod api;
 pub mod api_params;
+pub mod api_traits;
 pub mod objects;
-pub mod traits;
 
 pub use api::*;
 pub use api_params::*;
+pub use api_traits::*;
 pub use objects::*;
-pub use traits::*;
 
 // #[cfg(feature = "http-client")]
 // pub mod api_impl;

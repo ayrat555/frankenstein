@@ -1,4 +1,3 @@
-use super::EditMessageResponse;
 use super::MethodResponse;
 use crate::api_params::GetUpdatesParams;
 use crate::objects::Update;

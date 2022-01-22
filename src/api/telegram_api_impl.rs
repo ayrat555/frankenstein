@@ -1,11 +1,69 @@
-use super::Api;
 use super::Error;
 use super::HttpError;
-use crate::traits::ErrorResponse;
-use crate::traits::TelegramApi;
+use crate::api_traits::ErrorResponse;
+use crate::api_traits::TelegramApi;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
+use std::time::Duration;
+use ureq::Response;
+
+#[derive(Debug, Clone)]
+pub struct Api {
+    pub api_url: String,
+    request_agent: ureq::Agent,
+}
+
+impl Api {
+    pub fn new(api_key: &str) -> Self {
+        let api_url = format!("{}{}", super::BASE_API_URL, api_key);
+        let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
+        Self {
+            api_url,
+            request_agent,
+        }
+    }
+
+    pub fn new_url(api_url: String) -> Self {
+        let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
+        Self {
+            api_url,
+            request_agent,
+        }
+    }
+
+    pub fn with_timeout(&mut self, timeout: Duration) {
+        let request_agent = ureq::builder().timeout(timeout).build();
+        self.request_agent = request_agent;
+    }
+
+    pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
+        params: &T,
+    ) -> Result<String, Error> {
+        serde_json::to_string(params)
+            .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))
+    }
+
+    pub fn decode_response<T: serde::de::DeserializeOwned>(response: Response) -> Result<T, Error> {
+        match response.into_string() {
+            Ok(message) => {
+                let json_result: Result<T, serde_json::Error> = serde_json::from_str(&message);
+
+                match json_result {
+                    Ok(result) => Ok(result),
+                    Err(e) => {
+                        let err = Error::DecodeError(format!("{:?} : {:?}", e, &message));
+                        Err(err)
+                    }
+                }
+            }
+            Err(e) => {
+                let err = Error::DecodeError(format!("Failed to decode response: {:?}", e));
+                Err(err)
+            }
+        }
+    }
+}
 
 impl From<ureq::Error> for Error {
     fn from(error: ureq::Error) -> Self {
@@ -48,7 +106,10 @@ impl TelegramApi for Api {
     ) -> Result<T2, Error> {
         let url = format!("{}/{}", self.api_url, method);
 
-        let prepared_request = ureq::post(&url).set("Content-Type", "application/json");
+        let prepared_request = self
+            .request_agent
+            .post(&url)
+            .set("Content-Type", "application/json");
 
         let response = match params {
             None => prepared_request.call()?,
@@ -106,7 +167,9 @@ impl TelegramApi for Api {
 
         let url = format!("{}/{}", self.api_url, method);
         let form_data = form.prepare().unwrap();
-        let response = ureq::post(&url)
+        let response = self
+            .request_agent
+            .post(&url)
             .set(
                 "Content-Type",
                 &format!("multipart/form-data; boundary={}", form_data.boundary()),
@@ -199,12 +262,7 @@ mod tests {
     fn new_sets_correct_url() {
         let api = Api::new("hey");
 
-        assert_eq!(
-            Api {
-                api_url: "https://api.telegram.org/bothey".to_string()
-            },
-            api
-        );
+        assert_eq!("https://api.telegram.org/bothey", api.api_url);
     }
 
     #[test]
