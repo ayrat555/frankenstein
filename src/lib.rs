@@ -18,16 +18,16 @@
 
 pub mod api;
 pub mod api_params;
-pub mod async_api;
-pub mod async_api_impl;
 pub mod objects;
+pub mod traits;
 
 pub use api::*;
 pub use api_params::*;
 pub use objects::*;
+pub use traits::*;
 
-#[cfg(feature = "http-client")]
-pub mod api_impl;
+// #[cfg(feature = "http-client")]
+// pub mod api_impl;
 
-#[cfg(feature = "http-client")]
-pub use api_impl::*;
+// #[cfg(feature = "http-client")]
+// pub use api_impl::*;

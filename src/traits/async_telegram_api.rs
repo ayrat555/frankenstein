@@ -1,4 +1,5 @@
-use crate::api::MethodResponse;
+use super::EditMessageResponse;
+use super::MethodResponse;
 use crate::api_params::GetUpdatesParams;
 use crate::objects::Update;
 use async_trait::async_trait;
