@@ -2,6 +2,7 @@ use super::Error;
 use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
 use async_trait::async_trait;
+use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
 pub struct AsyncApi {
@@ -96,5 +97,22 @@ impl AsyncTelegramApi for AsyncApi {
         let parsed_response: T2 = Self::decode_response(response).await?;
 
         Ok(parsed_response)
+    }
+
+    async fn request_with_form_data<
+        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
+        T2: serde::de::DeserializeOwned,
+    >(
+        &self,
+        _method: &str,
+        _params: T1,
+        _files: Vec<(&str, PathBuf)>,
+    ) -> Result<T2, Self::Error> {
+        let error = HttpError {
+            code: 500,
+            message: "doesn't support form data requests yet".to_string(),
+        };
+
+        Err(Error::HttpError(error))
     }
 }
