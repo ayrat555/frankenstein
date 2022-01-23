@@ -154,7 +154,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.9.1/frankenstein/api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.9.3/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 You can check out a real world bot created using this library - [El Monitorro](https://github.com/ayrat555/el_monitorro). El Monitorro is a feed reader bot.
 

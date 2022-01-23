@@ -17,6 +17,7 @@ pub struct Api {
 impl Api {
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
+
         let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
         Self {
             api_url,
@@ -105,7 +106,6 @@ impl TelegramApi for Api {
         params: Option<T1>,
     ) -> Result<T2, Error> {
         let url = format!("{}/{}", self.api_url, method);
-
         let prepared_request = self
             .request_agent
             .post(&url)
