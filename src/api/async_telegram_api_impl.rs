@@ -70,7 +70,7 @@ impl AsyncTelegramApi for AsyncApi {
     type Error = Error;
 
     async fn request<
-        T1: serde::ser::Serialize + std::fmt::Debug,
+        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
         T2: serde::de::DeserializeOwned,
     >(
         &self,
@@ -84,11 +84,13 @@ impl AsyncTelegramApi for AsyncApi {
             .post(url)
             .header("Content-Type", "application/json");
 
-        if let Some(data) = params {
+        prepared_request = if let Some(data) = params {
             let json_string = Self::encode_params(&data)?;
 
-            prepared_request.body(json_string);
-        }
+            prepared_request.body(json_string)
+        } else {
+            prepared_request
+        };
 
         let response = prepared_request.send().await?;
         let parsed_response: T2 = Self::decode_response(response).await?;

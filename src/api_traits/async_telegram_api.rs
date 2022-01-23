@@ -14,7 +14,10 @@ pub trait AsyncTelegramApi {
         self.request("getUpdates", Some(params)).await
     }
 
-    async fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
+    async fn request<
+        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
+        T2: serde::de::DeserializeOwned,
+    >(
         &self,
         method: &str,
         params: Option<T1>,
