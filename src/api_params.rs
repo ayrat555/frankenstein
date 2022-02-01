@@ -1626,6 +1626,10 @@ pub struct CreateNewStickerSetParams {
     #[builder(setter(strip_option), default)]
     pub tgs_sticker: Option<InputFile>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
+    pub webm_sticker: Option<InputFile>,
+
     pub emojis: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1651,6 +1655,10 @@ pub struct AddStickerToSetParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
     pub tgs_sticker: Option<InputFile>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(strip_option), default)]
+    pub webm_sticker: Option<InputFile>,
 
     pub emojis: String,
 

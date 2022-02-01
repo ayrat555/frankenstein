@@ -1396,6 +1396,8 @@ pub struct Sticker {
 
     pub is_animated: bool,
 
+    pub is_video: bool,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
     pub thumb: Option<PhotoSize>,
@@ -1425,6 +1427,8 @@ pub struct StickerSet {
     pub title: String,
 
     pub is_animated: bool,
+
+    pub is_video: bool,
 
     pub contains_masks: bool,
 
