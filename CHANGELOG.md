@@ -1,3 +1,7 @@
+## 0.9.4 (2022-02-01)
+
+  * Bot API 5.7 Changes - [#40](https://github.com/ayrat555/frankenstein/pull/40)
+
 ## 0.9.3 (2022-01-15)
 
   * Configure request timeout - [#39](https://github.com/ayrat555/frankenstein/pull/39)
