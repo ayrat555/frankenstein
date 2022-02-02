@@ -1,3 +1,7 @@
+## 0.9.5 (2022-02-02)
+
+  * Disable unused features in the multipart crate - [#41](https://github.com/ayrat555/frankenstein/pull/41)
+
 ## 0.9.4 (2022-02-01)
 
   * Bot API 5.7 Changes - [#40](https://github.com/ayrat555/frankenstein/pull/40)
