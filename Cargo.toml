@@ -30,6 +30,8 @@ optional = true
 
 [dependencies.multipart]
 version = "0.18"
+default-features=false
+features=['client']
 optional = true
 
 [dependencies.serde]
