@@ -4,23 +4,38 @@ use multipart::client::lazy::Multipart;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::path::PathBuf;
+use std::time::Duration;
 use ureq::Response;
 
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(Debug, Clone)]
 pub struct Api {
     pub api_url: String,
+    request_agent: ureq::Agent,
 }
 
 impl Api {
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", BASE_API_URL, api_key);
-        Self { api_url }
+        let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
+        Self {
+            api_url,
+            request_agent,
+        }
     }
 
-    pub const fn new_url(api_url: String) -> Self {
-        Self { api_url }
+    pub fn new_url(api_url: String) -> Self {
+        let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
+        Self {
+            api_url,
+            request_agent,
+        }
+    }
+
+    pub fn with_timeout(&mut self, timeout: Duration) {
+        let request_agent = ureq::builder().timeout(timeout).build();
+        self.request_agent = request_agent;
     }
 
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
@@ -106,8 +121,10 @@ impl TelegramApi for Api {
         params: Option<T1>,
     ) -> Result<T2, Error> {
         let url = format!("{}/{}", self.api_url, method);
-
-        let prepared_request = ureq::post(&url).set("Content-Type", "application/json");
+        let prepared_request = self
+            .request_agent
+            .post(&url)
+            .set("Content-Type", "application/json");
 
         let response = match params {
             None => prepared_request.call()?,
@@ -165,7 +182,9 @@ impl TelegramApi for Api {
 
         let url = format!("{}/{}", self.api_url, method);
         let form_data = form.prepare().unwrap();
-        let response = ureq::post(&url)
+        let response = self
+            .request_agent
+            .post(&url)
             .set(
                 "Content-Type",
                 &format!("multipart/form-data; boundary={}", form_data.boundary()),
@@ -258,12 +277,7 @@ mod tests {
     fn new_sets_correct_url() {
         let api = Api::new("hey");
 
-        assert_eq!(
-            Api {
-                api_url: "https://api.telegram.org/bothey".to_string()
-            },
-            api
-        );
+        assert_eq!("https://api.telegram.org/bothey", api.api_url);
     }
 
     #[test]
@@ -1678,7 +1692,7 @@ mod tests {
 
     #[test]
     fn send_sticker_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"width\":512,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumb\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
 
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendStickerParamsBuilder::default()
@@ -1701,7 +1715,7 @@ mod tests {
 
     #[test]
     fn get_sticker_set_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"name\":\"unocards\",\"title\":\"UNO Bot\",\"is_animated\":false,\"contains_masks\":false,\"stickers\":[{\"file_id\":\"CAACAgQAAxUAAWCDxAQVJ6X7FGiBD5NyjN5DDvgfAALZAQACX1eZAAEqnpNt3SpG_x8E\",\"file_unique_id\":\"AgAD2QEAAl9XmQAB\",\"width\":342,\"height\":512,\"is_animated\":false,\"thumb\":{\"file_id\":\"AAMCBAADFQABYIPEBBUnpfsUaIEPk3KM3kMO-B8AAtkBAAJfV5kAASqek23dKkb_P75BGQAEAQAHbQADBBEAAh8E\",\"file_unique_id\":\"AQADP75BGQAEBBEAAg\",\"width\":85,\"height\":128,\"file_size\":2452},\"emoji\":\"dd\",\"set_name\":\"unocards\",\"file_size\":8898}]}}";
+        let response_string = "{\"ok\":true,\"result\":{\"name\":\"unocards\",\"title\":\"UNO Bot\",\"is_animated\":false,\"is_video\":false,\"contains_masks\":false,\"stickers\":[{\"file_id\":\"CAACAgQAAxUAAWCDxAQVJ6X7FGiBD5NyjN5DDvgfAALZAQACX1eZAAEqnpNt3SpG_x8E\",\"file_unique_id\":\"AgAD2QEAAl9XmQAB\",\"width\":342,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumb\":{\"file_id\":\"AAMCBAADFQABYIPEBBUnpfsUaIEPk3KM3kMO-B8AAtkBAAJfV5kAASqek23dKkb_P75BGQAEAQAHbQADBBEAAh8E\",\"file_unique_id\":\"AQADP75BGQAEBBEAAg\",\"width\":85,\"height\":128,\"file_size\":2452},\"emoji\":\"dd\",\"set_name\":\"unocards\",\"file_size\":8898}]}}";
         let params = GetStickerSetParamsBuilder::default()
             .name("unocards")
             .build()

@@ -1,3 +1,12 @@
+## 0.9.4 (2022-02-01)
+
+  * Bot API 5.7 Changes - [#40](https://github.com/ayrat555/frankenstein/pull/40)
+
+## 0.9.3 (2022-01-15)
+
+  * Configure request timeout - [#39](https://github.com/ayrat555/frankenstein/pull/39)
+  * Use ureq's agent to make requests  - [#39](https://github.com/ayrat555/frankenstein/pull/39)
+
 ## 0.9.2 (2022-01-01)
 
   * [Telegram Bot API 5.6 Changes](https://core.telegram.org/bots/api#december-30-2021) - [#36](https://github.com/ayrat555/frankenstein/pull/36)
