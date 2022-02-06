@@ -59,3 +59,4 @@ optional = true
 isahc = "1"
 mockito = "0.30"
 serde_json = "1"
+tokio = { version = "1.16.1", features = ["full"] }

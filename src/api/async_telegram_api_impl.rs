@@ -1,6 +1,7 @@
 use super::Error;
 use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
+use crate::api_traits::ErrorResponse;
 use async_trait::async_trait;
 use std::path::PathBuf;
 
@@ -32,20 +33,32 @@ impl AsyncApi {
     pub async fn decode_response<T: serde::de::DeserializeOwned>(
         response: reqwest::Response,
     ) -> Result<T, Error> {
+        let status_code = response.status().as_u16();
         match response.text().await {
             Ok(message) => {
-                let json_result: Result<T, serde_json::Error> = serde_json::from_str(&message);
-
-                match json_result {
-                    Ok(result) => Ok(result),
-                    Err(e) => {
-                        let err = Error::DecodeError(format!("{:?} : {:?}", e, &message));
-                        Err(err)
-                    }
+                if status_code == 200 {
+                    let success_response: T = Self::parse_json(&message)?;
+                    return Ok(success_response);
                 }
+
+                let error_response: ErrorResponse = Self::parse_json(&message)?;
+                Err(Error::ApiError(error_response))
             }
             Err(e) => {
                 let err = Error::DecodeError(format!("Failed to decode response: {:?}", e));
+                Err(err)
+            }
+        }
+    }
+
+    fn parse_json<T: serde::de::DeserializeOwned>(body: &str) -> Result<T, Error> {
+        let json_result: Result<T, serde_json::Error> = serde_json::from_str(body);
+
+        match json_result {
+            Ok(result) => Ok(result),
+
+            Err(e) => {
+                let err = Error::DecodeError(format!("{:?} : {:?}", e, body));
                 Err(err)
             }
         }
