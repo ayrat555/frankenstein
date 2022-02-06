@@ -1,10 +1,16 @@
 use crate::objects::Message;
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "async-telegram-trait")]
 pub mod async_telegram_api;
+
+#[cfg(feature = "telegram-trait")]
 pub mod telegram_api;
 
+#[cfg(feature = "async-telegram-trait")]
 pub use async_telegram_api::*;
+
+#[cfg(feature = "telegram-trait")]
 pub use telegram_api::*;
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]

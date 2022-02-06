@@ -16,18 +16,20 @@
     clippy::wildcard_imports
 )]
 
+#[cfg(any(feature = "http-client", feature = "async-http-client"))]
 pub mod api;
-pub mod api_params;
+
+#[cfg(any(feature = "telegram-trait", feature = "telegram-async-trait",))]
 pub mod api_traits;
+
+#[cfg(any(feature = "http-client", feature = "async-http-client"))]
+pub use api::*;
+
+#[cfg(any(feature = "telegram-trait", feature = "async-telegram-trait"))]
+pub use api_traits::*;
+
+pub mod api_params;
 pub mod objects;
 
-pub use api::*;
 pub use api_params::*;
-pub use api_traits::*;
 pub use objects::*;
-
-// #[cfg(feature = "http-client")]
-// pub mod api_impl;
-
-// #[cfg(feature = "http-client")]
-// pub use api_impl::*;
