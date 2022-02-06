@@ -3,7 +3,10 @@ use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
 use crate::api_traits::ErrorResponse;
 use async_trait::async_trait;
+use reqwest::multipart;
+use serde_json::Value;
 use std::path::PathBuf;
+use tokio::fs::File;
 
 #[derive(Debug, Clone)]
 pub struct AsyncApi {
@@ -79,6 +82,14 @@ impl From<reqwest::Error> for Error {
     }
 }
 
+impl From<std::io::Error> for Error {
+    fn from(error: std::io::Error) -> Self {
+        let message = error.to_string();
+
+        Self::EncodeError(message)
+    }
+}
+
 #[async_trait]
 impl AsyncTelegramApi for AsyncApi {
     type Error = Error;
@@ -117,15 +128,42 @@ impl AsyncTelegramApi for AsyncApi {
         T2: serde::de::DeserializeOwned,
     >(
         &self,
-        _method: &str,
-        _params: T1,
-        _files: Vec<(&str, PathBuf)>,
+        method: &str,
+        params: T1,
+        files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Self::Error> {
-        let error = HttpError {
-            code: 500,
-            message: "doesn't support form data requests yet".to_string(),
-        };
+        let json_string = Self::encode_params(&params)?;
+        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+        let files_with_paths: Vec<(String, &str)> = files
+            .iter()
+            .map(|(key, path)| (key.to_string(), path.to_str().unwrap()))
+            .collect();
 
-        Err(Error::HttpError(error))
+        let mut form = multipart::Form::new();
+        for (key, val) in json_struct.as_object().unwrap().iter() {
+            if !file_keys.contains(&key.as_str()) {
+                let val = match val {
+                    &Value::String(ref val) => val.to_string(),
+                    other => other.to_string(),
+                };
+
+                form = form.text(key.clone(), val.clone());
+            }
+        }
+
+        for (parameter_name, file_path) in files_with_paths {
+            let file = File::open(file_path).await?;
+
+            let part = multipart::Part::stream(file);
+            form = form.part(parameter_name, part);
+        }
+
+        let url = format!("{}/{}", self.api_url, method);
+
+        let response = self.client.post(url).multipart(form).send().await?;
+        let parsed_response: T2 = Self::decode_response(response).await?;
+
+        Ok(parsed_response)
     }
 }
