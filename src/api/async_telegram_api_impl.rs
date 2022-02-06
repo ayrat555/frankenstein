@@ -137,7 +137,7 @@ impl AsyncTelegramApi for AsyncApi {
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         let files_with_paths: Vec<(String, &str)> = files
             .iter()
-            .map(|(key, path)| (key.to_string(), path.to_str().unwrap()))
+            .map(|(key, path)| ((*key).to_string(), path.to_str().unwrap()))
             .collect();
 
         let mut form = multipart::Form::new();
