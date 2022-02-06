@@ -19,7 +19,7 @@
 #[cfg(any(feature = "http-client", feature = "async-http-client"))]
 pub mod api;
 
-#[cfg(any(feature = "telegram-trait", feature = "telegram-async-trait",))]
+#[cfg(any(feature = "telegram-trait", feature = "async-telegram-trait"))]
 pub mod api_traits;
 
 #[cfg(any(feature = "http-client", feature = "async-http-client"))]
