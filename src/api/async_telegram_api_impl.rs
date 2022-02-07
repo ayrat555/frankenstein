@@ -173,3 +173,59 @@ impl AsyncTelegramApi for AsyncApi {
         Ok(parsed_response)
     }
 }
+
+#[cfg(test)]
+mod async_tests {
+    use super::AsyncApi;
+    use super::Error;
+    use crate::api_params::SendMessageParamsBuilder;
+    use crate::api_traits::ErrorResponse;
+    use crate::AsyncTelegramApi;
+
+    #[tokio::test]
+    async fn async_send_message_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello!\"}}";
+        let params = SendMessageParamsBuilder::default()
+            .chat_id(275808073)
+            .text("Hello!")
+            .build()
+            .unwrap();
+        let _m = mockito::mock("POST", "/sendMessage")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = AsyncApi::new_url(mockito::server_url());
+
+        let response = api.send_message(&params).await.unwrap();
+
+        let json = serde_json::to_string(&response).unwrap();
+        assert_eq!(response_string, json);
+    }
+
+    #[tokio::test]
+    async fn send_message_failure() {
+        let response_string =
+            "{\"ok\":false,\"description\":\"Bad Request: chat not found\",\"error_code\":400}";
+        let params = SendMessageParamsBuilder::default()
+            .chat_id(1)
+            .text("Hello!")
+            .build()
+            .unwrap();
+        let _m = mockito::mock("POST", "/sendMessage")
+            .with_status(400)
+            .with_body(response_string)
+            .create();
+        let api = AsyncApi::new_url(mockito::server_url());
+
+        if let Err(Error::ApiError(ErrorResponse {
+            ok: false,
+            description,
+            error_code: 400,
+        })) = api.send_message(&params).await
+        {
+            assert_eq!("Bad Request: chat not found".to_string(), description);
+        } else {
+            panic!("Error was expected but there is none");
+        }
+    }
+}
