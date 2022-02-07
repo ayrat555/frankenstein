@@ -135,9 +135,15 @@ impl AsyncTelegramApi for AsyncApi {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-        let files_with_paths: Vec<(String, &str)> = files
+        let files_with_paths: Vec<(String, &str, String)> = files
             .iter()
-            .map(|(key, path)| ((*key).to_string(), path.to_str().unwrap()))
+            .map(|(key, path)| {
+                (
+                    (*key).to_string(),
+                    path.to_str().unwrap(),
+                    path.file_name().unwrap().to_str().unwrap().to_string(),
+                )
+            })
             .collect();
 
         let mut form = multipart::Form::new();
@@ -152,10 +158,10 @@ impl AsyncTelegramApi for AsyncApi {
             }
         }
 
-        for (parameter_name, file_path) in files_with_paths {
+        for (parameter_name, file_path, file_name) in files_with_paths {
             let file = File::open(file_path).await?;
 
-            let part = multipart::Part::stream(file);
+            let part = multipart::Part::stream(file).file_name(file_name);
             form = form.part(parameter_name, part);
         }
 

@@ -27,6 +27,10 @@ name = "async_reply_to_message_updates"
 required-features = ["async-http-client"]
 
 [[example]]
+name = "async_file_upload"
+required-features = ["async-http-client"]
+
+[[example]]
 name = "api_trait_implementation"
 required-features = ["telegram-trait"]
 
