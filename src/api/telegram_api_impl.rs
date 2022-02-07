@@ -1,13 +1,12 @@
-use crate::api::ErrorResponse;
-use crate::api::TelegramApi;
+use super::Error;
+use super::HttpError;
+use crate::api_traits::ErrorResponse;
+use crate::api_traits::TelegramApi;
 use multipart::client::lazy::Multipart;
-use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
 use ureq::Response;
-
-static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
 #[derive(Debug, Clone)]
 pub struct Api {
@@ -17,7 +16,8 @@ pub struct Api {
 
 impl Api {
     pub fn new(api_key: &str) -> Self {
-        let api_url = format!("{}{}", BASE_API_URL, api_key);
+        let api_url = format!("{}{}", super::BASE_API_URL, api_key);
+
         let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
         Self {
             api_url,
@@ -64,21 +64,6 @@ impl Api {
             }
         }
     }
-}
-
-#[derive(PartialEq, Debug, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum Error {
-    HttpError(HttpError),
-    ApiError(ErrorResponse),
-    DecodeError(String),
-    EncodeError(String),
-}
-
-#[derive(PartialEq, Debug, Serialize, Deserialize)]
-pub struct HttpError {
-    pub code: u16,
-    pub message: String,
 }
 
 impl From<ureq::Error> for Error {

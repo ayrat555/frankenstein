@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.9.5"
+version = "0.10.0"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2018"
@@ -18,11 +18,45 @@ required-features = ["http-client"]
 name = "reply_to_message_updates"
 required-features = ["http-client"]
 
+[[example]]
+name = "async_get_me"
+required-features = ["async-http-client"]
+
+[[example]]
+name = "async_reply_to_message_updates"
+required-features = ["async-http-client"]
+
+[[example]]
+name = "async_file_upload"
+required-features = ["async-http-client"]
+
+[[example]]
+name = "api_trait_implementation"
+required-features = ["telegram-trait"]
+
 [features]
 default = ["http-client"]
-http-client = ["ureq", "multipart", "mime_guess", "serde_json"]
+http-client = ["ureq", "multipart", "mime_guess", "telegram-trait"]
+telegram-trait = ["serde_json"]
+async-http-client = ["reqwest", "tokio", "async-telegram-trait"]
+async-telegram-trait = ["async-trait", "serde_json"]
 
 [dependencies]
+
+[dependencies.async-trait]
+version = "0.1"
+optional = true
+
+[dependencies.reqwest]
+version = "0.11"
+default-features = false
+features = ["multipart", "stream", "rustls-tls"]
+optional = true
+
+[dependencies.tokio]
+version = "1.16"
+features = ["fs"]
+optional = true
 
 [dependencies.mime_guess]
 version = "2"
@@ -53,3 +87,4 @@ optional = true
 isahc = "1"
 mockito = "0.30"
 serde_json = "1"
+tokio = { version = "1.16", features = ["full"] }
