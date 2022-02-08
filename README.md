@@ -24,7 +24,7 @@ frankenstein = "0.10"
 
 ### Default features
 
-- `http-client` - a blocking HTTP client (uses `ureq`)t, it's the only default feature
+- `http-client` - a blocking HTTP client (uses `ureq`), it's the only default feature
 - `telegram-trait` - a blocking API trait, it's included in the `http-client` feature. it may be useful for people who want to create a custom blocking client (for example, replacing an HTTP client)
 
 ### Optional features
