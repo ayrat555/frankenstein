@@ -1,3 +1,7 @@
+## 0.10.0 (2022-02-08)
+
+  * Add optional async api - [#38](https://github.com/ayrat555/frankenstein/pull/38)
+
 ## 0.9.5 (2022-02-02)
 
   * Disable unused features in the multipart crate - [#41](https://github.com/ayrat555/frankenstein/pull/41)

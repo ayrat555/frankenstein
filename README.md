@@ -17,10 +17,39 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.9"
+frankenstein = "0.10"
 ```
 
+## Features
+
+### Default features
+
+- `http-client` - a blocking HTTP client (uses `ureq`), it's the only default feature
+- `telegram-trait` - a blocking API trait, it's included in the `http-client` feature. it may be useful for people who want to create a custom blocking client (for example, replacing an HTTP client)
+
+### Optional features
+
+- `async-http-client` - an async HTTP client, it uses `reqwest` and it's disabled by default
+- `async-telegram-trait` - an async API trait, it's used in the `async-http-client`. it may be useful for people who want to create a custom async client
+
+To use the async client add the following line to your `Cargo.toml` file:
+
+```toml
+frankenstein = { version = "0.10", default-features = false, features = ["async-http-client"] }
+```
+
+You can also disable all features:
+
+```toml
+frankenstein = { version = "0.10", default-features = false }
+```
+
+In this case the crate will ship only with telegram types
+
+
 ## Usage
+
+Examples in this section use the blocking client (`frankenstein::Api`), but async examples would look the same (just replace `frankenstein::Api` with `frankenstein::AsyncApi`)
 
 ### Data structures
 
@@ -154,9 +183,10 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.9.5/frankenstein/api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.10.0/frankenstein/api/trait.TelegramApi.html#provided-methods)
 
 You can check out a real world bot created using this library - [El Monitorro](https://github.com/ayrat555/el_monitorro). El Monitorro is a feed reader bot.
+
 
 ## Replacing the default http client
 
@@ -165,7 +195,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.9", default-features = false }
+frankenstein = { version = "0.10", default-features = false, features = ["telegram-trait"] }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:
