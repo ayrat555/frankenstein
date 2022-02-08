@@ -1,3 +1,7 @@
+## 0.10.1 (2022-02-08)
+
+  * Remove serde_json from trait features - [#43](https://github.com/ayrat555/frankenstein/pull/43)
+
 ## 0.10.0 (2022-02-08)
 
   * Add optional async api - [#38](https://github.com/ayrat555/frankenstein/pull/38)

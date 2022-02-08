@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.10.0"
+version = "0.10.1"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2018"
@@ -36,10 +36,10 @@ required-features = ["telegram-trait"]
 
 [features]
 default = ["http-client"]
-http-client = ["ureq", "multipart", "mime_guess", "telegram-trait"]
-telegram-trait = ["serde_json"]
-async-http-client = ["reqwest", "tokio", "async-telegram-trait"]
-async-telegram-trait = ["async-trait", "serde_json"]
+http-client = ["ureq", "multipart", "mime_guess", "telegram-trait", "serde_json"]
+telegram-trait = []
+async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
+async-telegram-trait = ["async-trait"]
 
 [dependencies]
 
