@@ -44,7 +44,7 @@ jobs:
             clippyargs: -A unknown-lints
             features: --all-features
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
@@ -100,7 +100,7 @@ jobs:
           # - os: windows-latest
           #   triple: aarch64-pc-windows-msvc
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
