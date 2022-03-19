@@ -156,7 +156,7 @@ pub enum ReplyMarkup {
     ForceReply(ForceReply),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum ChatAction {
     Typing,
@@ -275,7 +275,7 @@ pub struct SetWebhookParams {
     pub drop_pending_updates: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct DeleteWebhookParams {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1049,7 +1049,7 @@ pub struct SendChatActionParams {
     pub action: ChatAction,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct GetUserProfilePhotosParams {
     pub user_id: u64,

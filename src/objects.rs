@@ -28,7 +28,7 @@ pub enum ChatMember {
     Banned(ChatMemberBanned),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum ChatType {
     Private,
@@ -37,7 +37,7 @@ pub enum ChatType {
     Channel,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum MessageEntityType {
     Mention,
@@ -58,14 +58,14 @@ pub enum MessageEntityType {
     TextMention,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum PollType {
     Regular,
     Quiz,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum EncryptedPassportElementType {
     PersonalDetails,
@@ -83,7 +83,7 @@ pub enum EncryptedPassportElementType {
     Email,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PassportElementErrorDataFieldType {
     PersonalDetails,
@@ -94,7 +94,7 @@ pub enum PassportElementErrorDataFieldType {
     Address,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PassportElementErrorFrontSideType {
     Passport,
@@ -103,14 +103,14 @@ pub enum PassportElementErrorFrontSideType {
     InternalPassport,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PassportElementErrorReverseSideType {
     DriverLicense,
     IdentityCard,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PassportElementErrorSelfieType {
     Passport,
@@ -119,7 +119,7 @@ pub enum PassportElementErrorSelfieType {
     InternalPassport,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PassportElementErrorFileType {
     UtilityBill,
@@ -129,7 +129,7 @@ pub enum PassportElementErrorFileType {
     TemporaryRegistration,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum PassportElementErrorTranslationFileType {
     Passport,
@@ -242,17 +242,17 @@ pub struct ChatMemberBanned {
     pub until_date: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct VoiceChatStarted {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct VoiceChatScheduled {
     pub start_date: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct CallbackGame {}
 
@@ -693,7 +693,7 @@ pub struct Message {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct MessageId {
     pub message_id: i32,
@@ -980,7 +980,7 @@ pub struct Poll {
     pub close_date: Option<u64>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Builder)]
 #[builder(setter(into))]
 pub struct Location {
     pub longitude: f64,
@@ -1040,13 +1040,13 @@ pub struct ProximityAlertTriggered {
     pub distance: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct MessageAutoDeleteTimerChanged {
     pub message_auto_delete_time: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct VoiceChatEnded {
     pub duration: u32,
@@ -1124,7 +1124,7 @@ pub struct KeyboardButton {
     pub request_poll: Option<KeyboardButtonPollType>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct KeyboardButtonPollType {
     #[serde(rename = "type")]
@@ -1133,7 +1133,7 @@ pub struct KeyboardButtonPollType {
     pub type_field: Option<PollType>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct ReplyKeyboardRemove {
     pub remove_keyboard: bool,
@@ -1319,7 +1319,7 @@ pub struct ChatJoinRequest {
     pub invite_link: Option<ChatInviteLink>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct ChatPermissions {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1371,7 +1371,7 @@ pub struct BotCommand {
     pub description: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 #[builder(setter(into))]
 pub struct ResponseParameters {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2233,7 +2233,7 @@ pub struct InputTextMessageContent {
     pub disable_web_page_preview: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Builder)]
 #[builder(setter(into))]
 pub struct InputLocationMessageContent {
     pub latitude: f64,
