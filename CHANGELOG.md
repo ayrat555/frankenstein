@@ -1,3 +1,9 @@
+## 0.11.0 (2022-03-19)
+
+  * Add ParseMode enum - [#49](https://github.com/ayrat555/frankenstein/pull/49)
+  * Derive Copy when possible - [#50](https://github.com/ayrat555/frankenstein/pull/50)
+  * Improve error handling - [#51](https://github.com/ayrat555/frankenstein/pull/51)
+
 ## 0.10.1 (2022-02-08)
 
   * Remove serde_json from trait features - [#43](https://github.com/ayrat555/frankenstein/pull/43)

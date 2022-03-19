@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.10"
+frankenstein = "0.11"
 ```
 
 ## Features
@@ -35,13 +35,13 @@ frankenstein = "0.10"
 To use the async client add the following line to your `Cargo.toml` file:
 
 ```toml
-frankenstein = { version = "0.10", default-features = false, features = ["async-http-client"] }
+frankenstein = { version = "0.11", default-features = false, features = ["async-http-client"] }
 ```
 
 You can also disable all features:
 
 ```toml
-frankenstein = { version = "0.10", default-features = false }
+frankenstein = { version = "0.11", default-features = false }
 ```
 
 In this case the crate will ship only with telegram types
@@ -183,7 +183,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.10.1/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.11.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
 
 You can check out a real world bot created using this library - [El Monitorro](https://github.com/ayrat555/el_monitorro). El Monitorro is a feed reader bot.
 
@@ -195,7 +195,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.10", default-features = false, features = ["telegram-trait"] }
+frankenstein = { version = "0.11", default-features = false, features = ["telegram-trait"] }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:
