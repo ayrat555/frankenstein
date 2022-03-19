@@ -1,6 +1,8 @@
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 
+use crate::ParseMode;
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum InputMessageContent {
@@ -1540,7 +1542,7 @@ pub struct InlineQueryResultPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1590,7 +1592,7 @@ pub struct InlineQueryResultGif {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1640,7 +1642,7 @@ pub struct InlineQueryResultMpeg4Gif {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1674,7 +1676,7 @@ pub struct InlineQueryResultVideo {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1720,7 +1722,7 @@ pub struct InlineQueryResultAudio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1758,7 +1760,7 @@ pub struct InlineQueryResultVoice {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1790,7 +1792,7 @@ pub struct InlineQueryResultDocument {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1994,7 +1996,7 @@ pub struct InlineQueryResultCachedPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2026,7 +2028,7 @@ pub struct InlineQueryResultCachedGif {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2058,7 +2060,7 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2108,7 +2110,7 @@ pub struct InlineQueryResultCachedDocument {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2142,7 +2144,7 @@ pub struct InlineQueryResultCachedVideo {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2172,7 +2174,7 @@ pub struct InlineQueryResultCachedVoice {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2200,7 +2202,7 @@ pub struct InlineQueryResultCachedAudio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2222,7 +2224,7 @@ pub struct InputTextMessageContent {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
