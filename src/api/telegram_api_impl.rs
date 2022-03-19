@@ -330,6 +330,7 @@ mod tests {
             ok: false,
             description,
             error_code: 400,
+            parameters: None,
         })) = api.send_message(&params)
         {
             assert_eq!("Bad Request: chat not found".to_string(), description);
