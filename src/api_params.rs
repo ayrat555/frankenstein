@@ -13,6 +13,7 @@ use crate::objects::{
     PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
     ShippingOption,
 };
+use crate::ParseMode;
 use derive_builder::Builder;
 use serde::Deserialize;
 use serde::Serialize;
@@ -292,7 +293,7 @@ pub struct SendMessageParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -356,7 +357,7 @@ pub struct CopyMessageParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -396,7 +397,7 @@ pub struct SendPhotoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -436,7 +437,7 @@ pub struct SendAudioParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -496,7 +497,7 @@ pub struct SendDocumentParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -556,7 +557,7 @@ pub struct SendVideoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -616,7 +617,7 @@ pub struct SendAnimationParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -656,7 +657,7 @@ pub struct SendVoiceParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -972,7 +973,7 @@ pub struct SendPollParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub explanation_parse_mode: Option<String>,
+    pub explanation_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1458,7 +1459,7 @@ pub struct EditMessageTextParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1494,7 +1495,7 @@ pub struct EditMessageCaptionParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1940,7 +1941,7 @@ pub struct InputMediaPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -1962,7 +1963,7 @@ pub struct InputMediaVideo {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2000,7 +2001,7 @@ pub struct InputMediaAnimation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2034,7 +2035,7 @@ pub struct InputMediaAudio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
@@ -2068,7 +2069,7 @@ pub struct InputMediaDocument {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
-    pub parse_mode: Option<String>,
+    pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(strip_option), default)]
