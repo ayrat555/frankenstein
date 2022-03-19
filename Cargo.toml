@@ -42,20 +42,10 @@ async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
 async-telegram-trait = ["async-trait"]
 
 [dependencies]
+derive_builder = "0.10"
 
 [dependencies.async-trait]
 version = "0.1"
-optional = true
-
-[dependencies.reqwest]
-version = "0.11"
-default-features = false
-features = ["multipart", "stream", "rustls-tls"]
-optional = true
-
-[dependencies.tokio]
-version = "1.16"
-features = ["fs"]
 optional = true
 
 [dependencies.mime_guess]
@@ -64,19 +54,27 @@ optional = true
 
 [dependencies.multipart]
 version = "0.18"
-default-features=false
-features=['client']
+default-features = false
+features = ['client']
+optional = true
+
+[dependencies.reqwest]
+version = "0.11"
+default-features = false
+features = ["multipart", "stream", "rustls-tls"]
 optional = true
 
 [dependencies.serde]
 version = "1"
 features = ["derive"]
 
-[dependencies.derive_builder]
-version = "0.10"
-
 [dependencies.serde_json]
 version = "1"
+optional = true
+
+[dependencies.tokio]
+version = "1"
+features = ["fs"]
 optional = true
 
 [dependencies.ureq]
@@ -87,4 +85,4 @@ optional = true
 isahc = "1"
 mockito = "0.31"
 serde_json = "1"
-tokio = { version = "1.16", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
