@@ -178,18 +178,17 @@ impl AsyncTelegramApi for AsyncApi {
 mod async_tests {
     use super::AsyncApi;
     use super::Error;
-    use crate::api_params::SendMessageParamsBuilder;
+    use crate::api_params::SendMessageParams;
     use crate::api_traits::ErrorResponse;
     use crate::AsyncTelegramApi;
 
     #[tokio::test]
     async fn async_send_message_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello!\"}}";
-        let params = SendMessageParamsBuilder::default()
+        let params = SendMessageParams::builder()
             .chat_id(275808073)
             .text("Hello!")
-            .build()
-            .unwrap();
+            .build();
         let _m = mockito::mock("POST", "/sendMessage")
             .with_status(200)
             .with_body(response_string)
@@ -206,11 +205,10 @@ mod async_tests {
     async fn send_message_failure() {
         let response_string =
             "{\"ok\":false,\"description\":\"Bad Request: chat not found\",\"error_code\":400}";
-        let params = SendMessageParamsBuilder::default()
+        let params = SendMessageParams::builder()
             .chat_id(1)
             .text("Hello!")
-            .build()
-            .unwrap();
+            .build();
         let _m = mockito::mock("POST", "/sendMessage")
             .with_status(400)
             .with_body(response_string)

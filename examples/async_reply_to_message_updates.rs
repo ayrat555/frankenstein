@@ -1,8 +1,8 @@
 use frankenstein::AsyncApi;
 use frankenstein::AsyncTelegramApi;
-use frankenstein::GetUpdatesParamsBuilder;
+use frankenstein::GetUpdatesParams;
 use frankenstein::Message;
-use frankenstein::SendMessageParamsBuilder;
+use frankenstein::SendMessageParams;
 
 static TOKEN: &str = "API_TOKEN";
 
@@ -10,10 +10,9 @@ static TOKEN: &str = "API_TOKEN";
 async fn main() {
     let api = AsyncApi::new(TOKEN);
 
-    let mut update_params_builder = GetUpdatesParamsBuilder::default();
-    update_params_builder.allowed_updates(vec!["message".to_string()]);
-
-    let mut update_params = update_params_builder.build().unwrap();
+    let update_params_builder =
+        GetUpdatesParams::builder().allowed_updates(vec!["message".to_string()]);
+    let mut update_params = update_params_builder.clone().build();
 
     loop {
         let result = api.get_updates(&update_params).await;
@@ -31,9 +30,9 @@ async fn main() {
                         });
 
                         update_params = update_params_builder
+                            .clone()
                             .offset(update.update_id + 1)
-                            .build()
-                            .unwrap();
+                            .build();
                     }
                 }
             }
@@ -45,12 +44,11 @@ async fn main() {
 }
 
 async fn process_message(message: Message, api: AsyncApi) {
-    let send_message_params = SendMessageParamsBuilder::default()
+    let send_message_params = SendMessageParams::builder()
         .chat_id(message.chat.id)
         .text("hello")
         .reply_to_message_id(message.message_id)
-        .build()
-        .unwrap();
+        .build();
 
     if let Err(err) = api.send_message(&send_message_params).await {
         println!("Failed to send message: {:?}", err);

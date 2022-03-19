@@ -1,5 +1,5 @@
 use frankenstein::ErrorResponse;
-use frankenstein::SendMessageParamsBuilder;
+use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
 use isahc::{prelude::*, Request};
 use std::path::PathBuf;
@@ -120,11 +120,10 @@ impl TelegramApi for Api {
 fn main() {
     let api = Api::new(TOKEN);
 
-    let params = SendMessageParamsBuilder::default()
+    let params = SendMessageParams::builder()
         .chat_id(275_808_073)
         .text("Hello!")
-        .build()
-        .unwrap();
+        .build();
 
     let result = api.send_message(&params);
 

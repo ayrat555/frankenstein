@@ -1,4 +1,4 @@
-use frankenstein::api_params::SendPhotoParamsBuilder;
+use frankenstein::api_params::SendPhotoParams;
 use frankenstein::AsyncApi;
 use frankenstein::AsyncTelegramApi;
 
@@ -11,11 +11,10 @@ async fn main() {
 
     let file = std::path::PathBuf::from("./frankenstein_logo.png");
 
-    let params = SendPhotoParamsBuilder::default()
+    let params = SendPhotoParams::builder()
         .chat_id(CHAT_ID)
         .photo(file)
-        .build()
-        .unwrap();
+        .build();
 
     match api.send_photo(&params).await {
         Ok(response) => {

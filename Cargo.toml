@@ -42,8 +42,8 @@ async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
 async-telegram-trait = ["async-trait"]
 
 [dependencies]
-derive_builder = "0.10"
 thiserror = "1"
+typed-builder = "0.10"
 
 [dependencies.async-trait]
 version = "0.1"
