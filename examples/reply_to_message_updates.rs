@@ -1,6 +1,6 @@
 use frankenstein::Api;
-use frankenstein::GetUpdatesParamsBuilder;
-use frankenstein::SendMessageParamsBuilder;
+use frankenstein::GetUpdatesParams;
+use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
 
 static TOKEN: &str = "API_TOKEN";
@@ -8,10 +8,9 @@ static TOKEN: &str = "API_TOKEN";
 fn main() {
     let api = Api::new(TOKEN);
 
-    let mut update_params_builder = GetUpdatesParamsBuilder::default();
-    update_params_builder.allowed_updates(vec!["message".to_string()]);
-
-    let mut update_params = update_params_builder.build().unwrap();
+    let update_params_builder =
+        GetUpdatesParams::builder().allowed_updates(vec!["message".to_string()]);
+    let mut update_params = update_params_builder.clone().build();
 
     loop {
         let result = api.get_updates(&update_params);
@@ -22,21 +21,20 @@ fn main() {
             Ok(response) => {
                 for update in response.result {
                     if let Some(message) = update.message {
-                        let send_message_params = SendMessageParamsBuilder::default()
+                        let send_message_params = SendMessageParams::builder()
                             .chat_id(message.chat.id)
                             .text("hello")
                             .reply_to_message_id(message.message_id)
-                            .build()
-                            .unwrap();
+                            .build();
 
                         if let Err(err) = api.send_message(&send_message_params) {
                             println!("Failed to send message: {:?}", err);
                         }
 
                         update_params = update_params_builder
+                            .clone()
                             .offset(update.update_id + 1)
-                            .build()
-                            .unwrap();
+                            .build();
                     }
                 }
             }

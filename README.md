@@ -66,55 +66,32 @@ can_read_all_group_messages	Boolean	Optional. True, if privacy mode is disabled 
 supports_inline_queries	Boolean	Optional. True, if the bot supports inline queries. Returned only in getMe.
 ```
 
-In frankenstein, it's described as:
+In frankenstein, it's described like this:
 
 ```rust
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct User {
     pub id: u64,
-
     pub is_bot: bool,
-
     pub first_name: String,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
     pub last_name: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
     pub username: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
     pub language_code: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
     pub can_join_groups: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
     pub can_read_all_group_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
     pub supports_inline_queries: Option<bool>,
 }
 ```
 
-Optional fields are described as Option enum.
+Optional fields are described as `Option`.
 
-Every struct can be created with the associated builder. It accepts only required fields, optional fields are set to `None`:
+Every struct can be created with the associated builder. Only required fields are required to set, optional fields are set to `None` when not provided:
 
 ```rust
-let send_message_params = SendMessageParamsBuilder::default()
+let send_message_params = SendMessageParams::builder()
     .chat_id(message.chat.id)
     .text("hello")
     .reply_to_message_id(message.message_id)
-    .build()
-    .unwrap();
+    .build();
 ```
 
 For api parameters, the same approach is used. The only difference for parameters is the name of the struct in frankenstein ends with `Params` postfix.
@@ -148,10 +125,9 @@ let api = Api::new(token);
 2. Use this api object to make requests to the Bot API:
 
 ```rust
-let mut update_params_builder = GetUpdatesParamsBuilder::default();
-update_params_builder.allowed_updates(vec!["message".to_string()]);
-
-let update_params = update_params_builder.build().unwrap();
+let update_params = GetUpdatesParams::builder()
+    .allowed_updates(vec!["message".to_string()])
+    .build();
 
 let result = api.get_updates(&update_params);
 ```

@@ -14,10 +14,10 @@ use crate::objects::{
     ShippingOption,
 };
 use crate::ParseMode;
-use derive_builder::Builder;
 use serde::Deserialize;
 use serde::Serialize;
 use std::path::PathBuf;
+use typed_builder::TypedBuilder as Builder;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
@@ -206,555 +206,562 @@ pub enum BotCommandScope {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct BotCommandScopeChat {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct BotCommandScopeChatAdministrators {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct BotCommandScopeChatMember {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct InputFile {
     pub path: PathBuf,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetUpdatesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub offset: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub timeout: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allowed_updates: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetWebhookParams {
+    #[builder(setter(into))]
     pub url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub certificate: Option<InputFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub ip_address: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub max_connections: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allowed_updates: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub drop_pending_updates: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
-#[builder(setter(into))]
 pub struct DeleteWebhookParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub drop_pending_updates: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendMessageParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_web_page_preview: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct ForwardMessageParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub from_chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     pub message_id: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct CopyMessageParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub from_chat_id: ChatId,
 
     pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendPhotoParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub photo: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendAudioParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub audio: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub performer: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub title: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendDocumentParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub document: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_content_type_detection: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendVideoParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub video: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub supports_streaming: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendAnimationParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub animation: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendVoiceParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub voice: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendVideoNoteParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub video_note: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub length: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendMediaGroupParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub media: Vec<Media>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendLocationParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub latitude: f64,
@@ -762,55 +769,54 @@ pub struct SendLocationParams {
     pub longitude: f64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct EditMessageLiveLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 
     pub latitude: f64,
@@ -818,289 +824,292 @@ pub struct EditMessageLiveLocationParams {
     pub longitude: f64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct StopMessageLiveLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendVenueParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub latitude: f64,
 
     pub longitude: f64,
 
+    #[builder(setter(into))]
     pub title: String,
 
+    #[builder(setter(into))]
     pub address: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub foursquare_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub foursquare_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub google_place_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub google_place_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendContactParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub phone_number: String,
 
+    #[builder(setter(into))]
     pub first_name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub last_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub vcard: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendPollParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub question: String,
 
     pub options: Vec<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub is_anonymous: Option<bool>,
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub type_field: Option<PollType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allows_multiple_answers: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub correct_option_id: Option<u8>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub explanation: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub explanation_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub open_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub close_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub is_closed: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendDiceParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub emoji: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendChatActionParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub action: ChatAction,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
-#[builder(setter(into))]
 pub struct GetUserProfilePhotosParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub offset: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub limit: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetFileParams {
+    #[builder(setter(into))]
     pub file_id: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct BanChatMemberParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub until_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub revoke_messages: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct UnbanChatMemberParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub only_if_banned: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct RestrictChatMemberParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
@@ -1108,502 +1117,502 @@ pub struct RestrictChatMemberParams {
     pub permissions: ChatPermissions,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub until_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct PromoteChatMemberParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub is_anonymous: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_manage_chat: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_post_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_edit_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_delete_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_manage_voice_chats: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_restrict_members: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_promote_members: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_change_info: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_invite_users: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub can_pin_messages: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetChatAdministratorCustomTitleParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 
+    #[builder(setter(into))]
     pub custom_title: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct BanChatSenderChatParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub sender_chat_id: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct UnbanChatSenderChatParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub sender_chat_id: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetChatPermissionsParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub permissions: ChatPermissions,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct ExportChatInviteLinkParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct CreateChatInviteLinkParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub creates_join_request: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct EditChatInviteLinkParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub invite_link: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub creates_join_request: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct RevokeChatInviteLinkParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub invite_link: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct ApproveChatJoinRequestParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct DeclineChatJoinRequestParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetChatPhotoParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub photo: InputFile,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct DeleteChatPhotoParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetChatTitleParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub title: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetChatDescriptionParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub description: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct PinChatMessageParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct UnpinChatMessageParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct UnpinAllChatMessagesParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct LeaveChatParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetChatParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetChatAdministratorsParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetChatMemberCountParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetChatMemberParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetChatStickerSetParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub sticker_set_name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct DeleteChatStickerSetParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct AnswerCallbackQueryParams {
+    #[builder(setter(into))]
     pub callback_query_id: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub text: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub show_alert: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub cache_time: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub scope: Option<BotCommandScope>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub language_code: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub scope: Option<BotCommandScope>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub language_code: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct DeleteMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub scope: Option<BotCommandScope>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub language_code: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct EditMessageTextParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 
+    #[builder(setter(into))]
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_web_page_preview: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct EditMessageCaptionParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct EditMessageMediaParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 
+    #[builder(setter(into))]
     pub media: InputMedia,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct EditMessageReplyMarkupParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct StopPollParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct DeleteMessageParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub message_id: i32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendStickerParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[builder(setter(into))]
     pub sticker: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetStickerSetParams {
+    #[builder(setter(into))]
     pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct UploadStickerFileParams {
     pub user_id: u64,
 
@@ -1611,245 +1620,251 @@ pub struct UploadStickerFileParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct CreateNewStickerSetParams {
     pub user_id: u64,
 
+    #[builder(setter(into))]
     pub name: String,
 
+    #[builder(setter(into))]
     pub title: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub png_sticker: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub tgs_sticker: Option<InputFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub webm_sticker: Option<InputFile>,
 
+    #[builder(setter(into))]
     pub emojis: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub contains_masks: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub mask_position: Option<MaskPosition>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct AddStickerToSetParams {
     pub user_id: u64,
 
+    #[builder(setter(into))]
     pub name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub png_sticker: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub tgs_sticker: Option<InputFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub webm_sticker: Option<InputFile>,
 
+    #[builder(setter(into))]
     pub emojis: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub mask_position: Option<MaskPosition>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetStickerPositionInSetParams {
+    #[builder(setter(into))]
     pub sticker: String,
 
     pub position: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct DeleteStickerFromSetParams {
+    #[builder(setter(into))]
     pub sticker: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetStickerSetThumbParams {
+    #[builder(setter(into))]
     pub name: String,
 
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct AnswerInlineQueryParams {
+    #[builder(setter(into))]
     pub inline_query_id: String,
 
     pub results: Vec<InlineQueryResult>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub cache_time: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub is_personal: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub next_offset: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub switch_pm_text: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub switch_pm_parameter: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendInvoiceParams {
     pub chat_id: i64,
 
+    #[builder(setter(into))]
     pub title: String,
 
+    #[builder(setter(into))]
     pub description: String,
 
+    #[builder(setter(into))]
     pub payload: String,
 
+    #[builder(setter(into))]
     pub provider_token: String,
 
+    #[builder(setter(into))]
     pub currency: String,
 
     pub prices: Vec<LabeledPrice>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub max_tip_amount: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub suggested_tip_amounts: Option<Vec<u32>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub start_parameter: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub provider_data: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub photo_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub photo_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub need_name: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub need_phone_number: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub need_email: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub need_shipping_address: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub send_phone_number_to_provider: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub send_email_to_provider: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub is_flexible: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct AnswerShippingQueryParams {
+    #[builder(setter(into))]
     pub shipping_query_id: String,
 
     pub ok: bool,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub shipping_options: Option<Vec<ShippingOption>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub error_message: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct AnswerPreCheckoutQueryParams {
+    #[builder(setter(into))]
     pub pre_checkout_query_id: String,
 
     pub ok: bool,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub error_message: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetPassportDataErrorsParams {
     pub user_id: u64,
 
@@ -1857,225 +1872,223 @@ pub struct SetPassportDataErrorsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SendGameParams {
     pub chat_id: i64,
 
+    #[builder(setter(into))]
     pub game_short_name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_to_message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct SetGameScoreParams {
     pub user_id: u64,
 
     pub score: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub force: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_edit_message: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct GetGameHighScoresParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub inline_message_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct InputMediaPhoto {
+    #[builder(setter(into))]
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct InputMediaVideo {
+    #[builder(setter(into))]
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub supports_streaming: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct InputMediaAnimation {
+    #[builder(setter(into))]
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct InputMediaAudio {
+    #[builder(setter(into))]
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub performer: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub title: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[builder(setter(into))]
 pub struct InputMediaDocument {
+    #[builder(setter(into))]
     pub media: File,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(strip_option), default)]
+    #[builder(setter(into, strip_option), default)]
     pub disable_content_type_detection: Option<bool>,
 }
