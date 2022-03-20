@@ -1,3 +1,7 @@
+## 0.12.0 (2022-03-20)
+
+  * Switch from `derive_builder` to `typed-builder` - [#53](https://github.com/ayrat555/frankenstein/pull/53)
+
 ## 0.11.0 (2022-03-19)
 
   * Add ParseMode enum - [#49](https://github.com/ayrat555/frankenstein/pull/49)
