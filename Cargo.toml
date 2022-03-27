@@ -19,6 +19,10 @@ name = "reply_to_message_updates"
 required-features = ["http-client"]
 
 [[example]]
+name = "reply_keyboard"
+required-features = ["http-client"]
+
+[[example]]
 name = "async_get_me"
 required-features = ["async-http-client"]
 
