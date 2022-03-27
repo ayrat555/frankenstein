@@ -8,7 +8,7 @@ use frankenstein::TelegramApi;
 // replace with your token
 static TOKEN: &str = "TOKEN";
 // replace with your chat id
-static CHAT_ID: i64 = 275808073;
+static CHAT_ID: i64 = 275_808_073;
 
 fn main() {
     let api = Api::new(TOKEN);
