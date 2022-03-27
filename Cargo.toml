@@ -23,6 +23,10 @@ name = "reply_keyboard"
 required-features = ["http-client"]
 
 [[example]]
+name = "inline_keyboard"
+required-features = ["http-client"]
+
+[[example]]
 name = "async_get_me"
 required-features = ["async-http-client"]
 
