@@ -33,10 +33,14 @@ jobs:
             os: ubuntu-latest
             features: --all-features
             clippyargs: -W clippy::pedantic -W clippy::cargo
-          - toolchain: nightly
-            os: ubuntu-latest
-            features: --all-features
-            clippyargs: -W clippy::pedantic
+
+          # Wait until this issue is fixed
+          # https://github.com/briansmith/ring/issues/1469
+          # because of it nightly builds are failing
+          # - toolchain: nightly
+          #   os: ubuntu-latest
+          #   features: --all-features
+          #   clippyargs: -W clippy::pedantic
 
           # Check the minimum supported Rust version (MSRV).
           # Sometimes old rust versions don't yet have the lints (allow unknown) or don't have fixes in lints (false positives -> don't error, just warn).
