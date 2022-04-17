@@ -5,6 +5,7 @@ use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
 use crate::api_params::AnswerPreCheckoutQueryParams;
 use crate::api_params::AnswerShippingQueryParams;
+use crate::api_params::AnswerWebAppQueryParams;
 use crate::api_params::ApproveChatJoinRequestParams;
 use crate::api_params::BanChatMemberParams;
 use crate::api_params::BanChatSenderChatParams;
@@ -34,7 +35,7 @@ use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
-use crate::api_params::GetMyDefaultAdministratorRights;
+use crate::api_params::GetMyDefaultAdministratorRightsParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
@@ -91,6 +92,7 @@ use crate::objects::GameHighScore;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
+use crate::objects::SentWebAppMessage;
 use crate::objects::StickerSet;
 use crate::objects::Update;
 use crate::objects::User;
@@ -952,9 +954,16 @@ pub trait TelegramApi {
 
     fn get_my_default_administrator_rights(
         &self,
-        params: &GetMyDefaultAdministratorRights,
+        params: &GetMyDefaultAdministratorRightsParams,
     ) -> Result<MethodResponse<ChatAdministratorRights>, Self::Error> {
         self.request("getMyDefaultAdministratorRights", Some(params))
+    }
+
+    fn answer_web_app_query(
+        &self,
+        params: &AnswerWebAppQueryParams,
+    ) -> Result<MethodResponse<SentWebAppMessage>, Self::Error> {
+        self.request("answerWebAppQuery", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(

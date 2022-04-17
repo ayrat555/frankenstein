@@ -2103,8 +2103,15 @@ pub struct SetMyDefaultAdministratorRightsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct GetMyDefaultAdministratorRights {
+pub struct GetMyDefaultAdministratorRightsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub for_channels: Option<bool>,
+}
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct AnswerWebAppQueryParams {
+    #[builder(setter(into))]
+    pub web_app_query_id: String,
+
+    pub result: InlineQueryResult,
 }
