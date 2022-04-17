@@ -31,6 +31,7 @@ use crate::api_params::ForwardMessageParams;
 use crate::api_params::GetChatAdministratorsParams;
 use crate::api_params::GetChatMemberCountParams;
 use crate::api_params::GetChatMemberParams;
+use crate::api_params::GetChatMenuButtonParams;
 use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
@@ -66,6 +67,7 @@ use crate::api_params::SendVideoParams;
 use crate::api_params::SendVoiceParams;
 use crate::api_params::SetChatAdministratorCustomTitleParams;
 use crate::api_params::SetChatDescriptionParams;
+use crate::api_params::SetChatMenuButtonParams;
 use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetChatPhotoParams;
 use crate::api_params::SetChatStickerSetParams;
@@ -89,6 +91,7 @@ use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
 use crate::objects::File as FileObject;
 use crate::objects::GameHighScore;
+use crate::objects::MenuButton;
 use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
@@ -1020,6 +1023,20 @@ pub trait AsyncTelegramApi {
         params: &AnswerWebAppQueryParams,
     ) -> Result<MethodResponse<SentWebAppMessage>, Self::Error> {
         self.request("answerWebAppQuery", Some(params)).await
+    }
+
+    async fn set_chat_menu_button(
+        &self,
+        params: SetChatMenuButtonParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setChatMenuButton", Some(params)).await
+    }
+
+    async fn get_chat_menu_button(
+        &self,
+        params: GetChatMenuButtonParams,
+    ) -> Result<MethodResponse<MenuButton>, Self::Error> {
+        self.request("getChatMenuButton", Some(params)).await
     }
 
     async fn request_without_body<T: serde::de::DeserializeOwned>(

@@ -6,12 +6,12 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, LabeledPrice, MaskPosition, MessageEntity,
-    PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles,
-    PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie,
-    PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
-    PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
-    ShippingOption,
+    InlineQueryResultVideo, InlineQueryResultVoice, LabeledPrice, MaskPosition, MenuButton,
+    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
+    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
+    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
+    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption,
 };
 use crate::ParseMode;
 use serde::Deserialize;
@@ -2114,4 +2114,22 @@ pub struct AnswerWebAppQueryParams {
     pub web_app_query_id: String,
 
     pub result: InlineQueryResult,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct SetChatMenuButtonParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_id: Option<i64>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub menu_button: Option<MenuButton>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GetChatMenuButtonParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_id: Option<i64>,
 }

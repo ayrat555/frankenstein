@@ -145,6 +145,25 @@ pub enum PassportElementErrorTranslationFileType {
     TemporaryRegistration,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type")]
+pub enum MenuButton {
+    #[serde(rename = "commands")]
+    Commands,
+    #[serde(rename = "web_app")]
+    WebApp(MenuButtonWebApp),
+    #[serde(rename = "default")]
+    Default,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct MenuButtonWebApp {
+    #[builder(setter(into))]
+    pub text: String,
+
+    pub web_app: WebAppInfo,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct ChatMemberOwner {
     pub user: User,
