@@ -180,7 +180,7 @@ pub struct ChatMemberAdministrator {
 
     pub can_delete_messages: bool,
 
-    pub can_manage_voice_chats: bool,
+    pub can_manage_video_chats: bool,
 
     pub can_restrict_members: bool,
 
@@ -239,10 +239,10 @@ pub struct ChatMemberBanned {
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct VoiceChatStarted {}
+pub struct VideoChatStarted {}
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct VoiceChatScheduled {
+pub struct VideoChatScheduled {
     pub start_date: u64,
 }
 
@@ -330,6 +330,10 @@ pub struct WebhookInfo {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub last_error_message: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub last_synchronization_error_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -664,19 +668,19 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub voice_chat_started: Option<VoiceChatStarted>,
+    pub video_chat_started: Option<VideoChatStarted>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub voice_chat_ended: Option<VoiceChatEnded>,
+    pub video_chat_ended: Option<VideoChatEnded>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub voice_chat_scheduled: Option<VoiceChatScheduled>,
+    pub video_chat_scheduled: Option<VideoChatScheduled>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub voice_chat_participants_invited: Option<VoiceChatParticipantsInvited>,
+    pub video_chat_participants_invited: Option<VideoChatParticipantsInvited>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1042,12 +1046,12 @@ pub struct MessageAutoDeleteTimerChanged {
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct VoiceChatEnded {
+pub struct VideoChatEnded {
     pub duration: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct VoiceChatParticipantsInvited {
+pub struct VideoChatParticipantsInvited {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub users: Option<Vec<User>>,
@@ -2775,4 +2779,35 @@ pub struct GameHighScore {
     pub user: User,
 
     pub score: i32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatAdministratorRights {
+    pub is_anonymous: bool,
+
+    pub can_manage_chat: bool,
+
+    pub can_delete_messages: bool,
+
+    pub can_manage_video_chats: bool,
+
+    pub can_restrict_members: bool,
+
+    pub can_promote_members: bool,
+
+    pub can_change_info: bool,
+
+    pub can_invite_users: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_post_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_edit_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_pin_messages: Option<bool>,
 }
