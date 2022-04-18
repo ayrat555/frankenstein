@@ -1,14 +1,14 @@
 use crate::objects::{
-    BotCommand, ChatPermissions, ForceReply, InlineKeyboardMarkup, InlineQueryResultArticle,
-    InlineQueryResultAudio, InlineQueryResultCachedAudio, InlineQueryResultCachedDocument,
-    InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto,
-    InlineQueryResultCachedSticker, InlineQueryResultCachedVideo, InlineQueryResultCachedVoice,
-    InlineQueryResultContact, InlineQueryResultDocument, InlineQueryResultGame,
-    InlineQueryResultGif, InlineQueryResultLocation, InlineQueryResultMpeg4Gif,
-    InlineQueryResultPhoto, InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice,
-    LabeledPrice, MaskPosition, MessageEntity, PassportElementErrorDataField,
-    PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
-    PassportElementErrorReverseSide, PassportElementErrorSelfie,
+    BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
+    InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
+    InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
+    InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
+    InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
+    InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
+    InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
+    InlineQueryResultVideo, InlineQueryResultVoice, LabeledPrice, MaskPosition, MessageEntity,
+    PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles,
+    PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie,
     PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
     PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
     ShippingOption,
@@ -1150,7 +1150,7 @@ pub struct PromoteChatMemberParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub can_manage_voice_chats: Option<bool>,
+    pub can_manage_video_chats: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2091,4 +2091,20 @@ pub struct InputMediaDocument {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub disable_content_type_detection: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct SetMyDefaultAdministratorRightsParams {
+    pub rights: ChatAdministratorRights,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub for_channels: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GetMyDefaultAdministratorRights {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub for_channels: Option<bool>,
 }

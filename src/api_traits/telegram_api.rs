@@ -34,6 +34,7 @@ use crate::api_params::GetChatParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
+use crate::api_params::GetMyDefaultAdministratorRights;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
@@ -70,6 +71,7 @@ use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
+use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetStickerPositionInSetParams;
 use crate::api_params::SetStickerSetThumbParams;
 use crate::api_params::SetWebhookParams;
@@ -81,6 +83,7 @@ use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
 use crate::objects::Chat;
+use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
 use crate::objects::File as FileObject;
@@ -938,6 +941,20 @@ pub trait TelegramApi {
         params: &GetGameHighScoresParams,
     ) -> Result<MethodResponse<Vec<GameHighScore>>, Self::Error> {
         self.request("getGameHighScores", Some(params))
+    }
+
+    fn set_my_default_administrator_rights(
+        &self,
+        params: &SetMyDefaultAdministratorRightsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyDefaultAdministratorRights", Some(params))
+    }
+
+    fn get_my_default_administrator_rights(
+        &self,
+        params: &GetMyDefaultAdministratorRights,
+    ) -> Result<MethodResponse<ChatAdministratorRights>, Self::Error> {
+        self.request("getMyDefaultAdministratorRights", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(
