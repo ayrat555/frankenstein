@@ -1,3 +1,19 @@
+## 0.13.0 (2022-04-18)
+
+### [Bot API 6.0](https://core.telegram.org/bots/api#april-16-2022) - [#58](https://github.com/ayrat555/frankenstein/pull/58), [#59](https://github.com/ayrat555/frankenstein/pull/59)
+
+  * Added support for Web Apps, see the [detailed manual here](https://core.telegram.org/bots/webapps). ([blog announcement](https://telegram.org/blog/notifications-bots))
+  * Added the class [WebAppInfo](https://core.telegram.org/bots/api#webappinfo) and the fields web_app to the classes [KeyboardButton](https://core.telegram.org/bots/api#keyboardbutton) and [InlineKeyboardButton](https://core.telegram.org/bots/api#inlinekeyboardbutton).
+  * Added the class [SentWebAppMessage](https://core.telegram.org/bots/api#sentwebappmessage) and the method [answerWebAppQuery](https://core.telegram.org/bots/api#answerwebappquery) for sending an answer to a Web App query, which originated from an inline button of the 'web_app' type.
+  * Added the class [WebAppData](https://core.telegram.org/bots/api#webappdata) and the field web_app_data to the class [Message](https://core.telegram.org/bots/api#message).
+  * Added the class [MenuButton](https://core.telegram.org/bots/api#menubutton) and the methods [setChatMenuButton](https://core.telegram.org/bots/api#setchatmenubutton) and [getChatMenuButton](https://core.telegram.org/bots/api#getchatmenubutton) for managing the behavior of the bot's menu button in private chats.
+  * Added the class [ChatAdministratorRights](https://core.telegram.org/bots/api#chatadministratorrights) and the methods [setMyDefaultAdministratorRights](https://core.telegram.org/bots/api#setmydefaultadministratorrights) and [getMyDefaultAdministratorRights](https://core.telegram.org/bots/api#getmydefaultadministratorrights) for managing the bot's default administrator rights.
+  * Added support for t.me links that can be used to add the bot to groups and channels as an administrator.
+  * Added the field last_synchronization_error_date to the class [WebhookInfo](https://core.telegram.org/bots/api#webhookinfo).
+  * Renamed the field can_manage_voice_chats to can_manage_video_chats in the class [ChatMemberAdministrator](https://core.telegram.org/bots/api#chatmemberadministrator). The old field will remain temporarily available.
+  * Renamed the parameter can_manage_voice_chats to can_manage_video_chats in the method [promoteChatMember](https://core.telegram.org/bots/api#promotechatmember). The old parameter will remain temporarily available.
+  * Renamed the fields voice_chat_scheduled, voice_chat_started, voice_chat_ended, and voice_chat_participants_invited to video_chat_scheduled, video_chat_started, video_chat_ended, and video_chat_participants_invited in the class [Message](https://core.telegram.org/bots/api#message). The old fields will remain temporarily available.
+
 ## 0.12.0 (2022-03-20)
 
   * Switch from `derive_builder` to `typed-builder` - [#53](https://github.com/ayrat555/frankenstein/pull/53)
