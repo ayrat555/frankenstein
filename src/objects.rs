@@ -268,10 +268,14 @@ pub struct VideoChatScheduled {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct CallbackGame {}
 
+/// Represents an incoming update from telegram.
+/// [Official documentation.](https://core.telegram.org/bots/api#update)
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Update {
     pub update_id: u32,
 
+    /// Maps to exactly one of the many optional fields
+    /// from [the official documentation.](https://core.telegram.org/bots/api#update).
     #[serde(flatten)]
     pub content: UpdateContent,
 }
