@@ -1,3 +1,7 @@
+## 0.14.0 (2022-05-09)
+
+  * Optimize Update struct by migrating its content to enum - [#62](https://github.com/ayrat555/frankenstein/pull/62)
+
 ## 0.13.0 (2022-04-18)
 
 ### [Bot API 6.0](https://core.telegram.org/bots/api#april-16-2022) - [#58](https://github.com/ayrat555/frankenstein/pull/58), [#59](https://github.com/ayrat555/frankenstein/pull/59)
