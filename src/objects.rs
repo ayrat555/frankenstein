@@ -268,7 +268,7 @@ pub struct VideoChatScheduled {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct CallbackGame {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Update {
     pub update_id: u32,
 
