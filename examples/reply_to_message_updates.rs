@@ -1,4 +1,4 @@
-use frankenstein::Api;
+use frankenstein::{Api, UpdateContent};
 use frankenstein::GetUpdatesParams;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
@@ -20,7 +20,7 @@ fn main() {
         match result {
             Ok(response) => {
                 for update in response.result {
-                    if let Some(message) = update.message {
+                    if let UpdateContent::Message(message) = update.content {
                         let send_message_params = SendMessageParams::builder()
                             .chat_id(message.chat.id)
                             .text("hello")

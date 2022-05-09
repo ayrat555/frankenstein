@@ -272,61 +272,27 @@ pub struct CallbackGame {}
 pub struct Update {
     pub update_id: u32,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub message: Option<Message>,
+    #[serde(flatten)]
+    pub content: UpdateContent,
+}
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub edited_message: Option<Message>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub channel_post: Option<Message>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub edited_channel_post: Option<Message>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub inline_query: Option<InlineQuery>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub chosen_inline_result: Option<ChosenInlineResult>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub callback_query: Option<CallbackQuery>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub shipping_query: Option<ShippingQuery>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub pre_checkout_query: Option<PreCheckoutQuery>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub poll: Option<Poll>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub poll_answer: Option<PollAnswer>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub my_chat_member: Option<ChatMemberUpdated>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub chat_member: Option<ChatMemberUpdated>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub chat_join_request: Option<ChatJoinRequest>,
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum UpdateContent {
+    Message(Message),
+    EditedMessage(Message),
+    ChannelPost(Message),
+    EditedChannelPost(Message),
+    InlineQuery(InlineQuery),
+    ChosenInlineResult(ChosenInlineResult),
+    CallbackQuery(CallbackQuery),
+    ShippingQuery(ShippingQuery),
+    PreCheckoutQuery(PreCheckoutQuery),
+    Poll(Poll),
+    PollAnswer(PollAnswer),
+    MyChatMember(ChatMemberUpdated),
+    ChatMember(ChatMemberUpdated),
+    ChatJoinRequest(ChatJoinRequest),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2863,3 +2829,67 @@ pub struct WebAppData {
     #[builder(setter(into))]
     pub button_text: String,
 }
+
+
+#[cfg(test)]
+mod serde_tests {
+    use super::*;
+
+    #[test]
+    pub fn update_content(){
+        let update_content = r#"{
+            "update_id": 2341,
+            "message": {
+                "message_id": 2746,
+                "from": {
+                    "id": 1276618370,
+                    "is_bot": true,
+                    "first_name": "test_el_bot",
+                    "username": "el_mon_test_bot"
+                },
+                "date": 1618207352,
+                "chat": {
+                    "id": 275808073,
+                    "type": "private",
+                    "username": "Ayrat555",
+                    "first_name": "Ayrat",
+                    "last_name": "Badykov"
+                },
+                "text": "Hello!"
+            }
+        }"#;
+
+        let update: Update = serde_json::from_str(update_content).unwrap();
+
+        let message = Message::builder()
+            .message_id(2746)
+            .from(User::builder()
+                .id(1276618370)
+                .is_bot(true)
+                .first_name("test_el_bot")
+                .username("el_mon_test_bot")
+                .build()
+            )
+            .date(1618207352)
+            .chat(Chat::builder()
+                .id(275808073)
+                .type_field(ChatType::Private)
+                .username("Ayrat555")
+                .first_name("Ayrat")
+                .last_name("Badykov")
+                .build()
+            )
+            .text("Hello!")
+            .build();
+
+        let expected = Update {
+            update_id: 2341,
+            content: UpdateContent::Message(message)
+        };
+        
+        assert_eq!(update, expected);
+    }
+
+
+}
+

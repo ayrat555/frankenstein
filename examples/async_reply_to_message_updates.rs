@@ -1,4 +1,4 @@
-use frankenstein::AsyncApi;
+use frankenstein::{AsyncApi, UpdateContent};
 use frankenstein::AsyncTelegramApi;
 use frankenstein::GetUpdatesParams;
 use frankenstein::Message;
@@ -22,7 +22,7 @@ async fn main() {
         match result {
             Ok(response) => {
                 for update in response.result {
-                    if let Some(message) = update.message {
+                    if let UpdateContent::Message(message) = update.content {
                         let api_clone = api.clone();
 
                         tokio::spawn(async move {
