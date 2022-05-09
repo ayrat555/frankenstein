@@ -2830,13 +2830,12 @@ pub struct WebAppData {
     pub button_text: String,
 }
 
-
 #[cfg(test)]
 mod serde_tests {
     use super::*;
 
     #[test]
-    pub fn update_content_is_flattened(){
+    pub fn update_content_is_flattened() {
         let update_content = r#"{
             "update_id": 2341,
             "message": {
@@ -2863,33 +2862,32 @@ mod serde_tests {
 
         let message = Message::builder()
             .message_id(2746)
-            .from(User::builder()
-                .id(1276618370)
-                .is_bot(true)
-                .first_name("test_el_bot")
-                .username("el_mon_test_bot")
-                .build()
+            .from(
+                User::builder()
+                    .id(1276618370)
+                    .is_bot(true)
+                    .first_name("test_el_bot")
+                    .username("el_mon_test_bot")
+                    .build(),
             )
             .date(1618207352)
-            .chat(Chat::builder()
-                .id(275808073)
-                .type_field(ChatType::Private)
-                .username("Ayrat555")
-                .first_name("Ayrat")
-                .last_name("Badykov")
-                .build()
+            .chat(
+                Chat::builder()
+                    .id(275808073)
+                    .type_field(ChatType::Private)
+                    .username("Ayrat555")
+                    .first_name("Ayrat")
+                    .last_name("Badykov")
+                    .build(),
             )
             .text("Hello!")
             .build();
 
         let expected = Update {
             update_id: 2341,
-            content: UpdateContent::Message(message)
+            content: UpdateContent::Message(message),
         };
-        
+
         assert_eq!(update, expected);
     }
-
-
 }
-

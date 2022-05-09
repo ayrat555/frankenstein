@@ -1,8 +1,8 @@
-use frankenstein::{AsyncApi, UpdateContent};
 use frankenstein::AsyncTelegramApi;
 use frankenstein::GetUpdatesParams;
 use frankenstein::Message;
 use frankenstein::SendMessageParams;
+use frankenstein::{AsyncApi, UpdateContent};
 
 static TOKEN: &str = "API_TOKEN";
 
