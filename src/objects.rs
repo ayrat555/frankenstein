@@ -2836,7 +2836,7 @@ mod serde_tests {
     use super::*;
 
     #[test]
-    pub fn update_content(){
+    pub fn update_content_is_flattened(){
         let update_content = r#"{
             "update_id": 2341,
             "message": {
