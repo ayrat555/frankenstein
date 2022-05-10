@@ -2,7 +2,7 @@ use frankenstein::AsyncTelegramApi;
 use frankenstein::GetUpdatesParams;
 use frankenstein::Message;
 use frankenstein::SendMessageParams;
-use frankenstein::{AllowedUpdate, AsyncApi, UpdateContent};
+use frankenstein::{AsyncApi, UpdateContent};
 
 static TOKEN: &str = "API_TOKEN";
 
@@ -10,8 +10,7 @@ static TOKEN: &str = "API_TOKEN";
 async fn main() {
     let api = AsyncApi::new(TOKEN);
 
-    let update_params_builder =
-        GetUpdatesParams::builder().allowed_updates(vec![AllowedUpdate::Message]);
+    let update_params_builder = GetUpdatesParams::builder();
     let mut update_params = update_params_builder.clone().build();
 
     loop {
