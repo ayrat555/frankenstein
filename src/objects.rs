@@ -336,8 +336,9 @@ pub struct WebhookInfo {
 /// Control which updates to receive.
 /// Specify an empty list to receive all update types except `ChatMember`.
 /// [Official documentation](https://core.telegram.org/bots/api#getupdates).
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
+#[non_exhaustive]
 pub enum AllowedUpdate {
     Message,
     EditedMessage,
