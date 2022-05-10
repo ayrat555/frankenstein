@@ -1,7 +1,7 @@
 use frankenstein::GetUpdatesParams;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
-use frankenstein::{Api, UpdateContent, AllowedUpdate};
+use frankenstein::{AllowedUpdate, Api, UpdateContent};
 
 static TOKEN: &str = "API_TOKEN";
 

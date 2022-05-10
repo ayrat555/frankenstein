@@ -184,7 +184,6 @@ impl TelegramApi for Api {
 
 #[cfg(test)]
 mod tests {
-    use crate::AllowedUpdate;
     use super::*;
     use crate::api_params::AnswerCallbackQueryParams;
     use crate::api_params::AnswerInlineQueryParams;
@@ -258,6 +257,7 @@ mod tests {
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
+    use crate::AllowedUpdate;
 
     #[test]
     fn new_sets_correct_url() {
