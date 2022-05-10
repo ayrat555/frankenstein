@@ -1,7 +1,7 @@
 use frankenstein::GetUpdatesParams;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
-use frankenstein::{Api, UpdateContent};
+use frankenstein::{Api, UpdateContent, AllowedUpdate};
 
 static TOKEN: &str = "API_TOKEN";
 
@@ -9,7 +9,7 @@ fn main() {
     let api = Api::new(TOKEN);
 
     let update_params_builder =
-        GetUpdatesParams::builder().allowed_updates(vec!["message".to_string()]);
+        GetUpdatesParams::builder().allowed_updates(vec![AllowedUpdate::Message]);
     let mut update_params = update_params_builder.clone().build();
 
     loop {

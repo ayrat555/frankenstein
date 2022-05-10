@@ -126,7 +126,7 @@ let api = Api::new(token);
 
 ```rust
 let update_params = GetUpdatesParams::builder()
-    .allowed_updates(vec!["message".to_string()])
+    .allowed_updates(vec![AllowedUpdate::Message])
     .build();
 
 let result = api.get_updates(&update_params);
