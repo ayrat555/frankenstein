@@ -1,3 +1,7 @@
+## 0.15.0 (2022-05-11)
+
+  * Convert allowed_update type into enum - [#65](https://github.com/ayrat555/frankenstein/pull/65)
+
 ## 0.14.0 (2022-05-09)
 
   * Optimize Update struct by migrating its content to enum - [#62](https://github.com/ayrat555/frankenstein/pull/62)
