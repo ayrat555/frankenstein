@@ -13,7 +13,7 @@ use crate::objects::{
     PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
     ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption,
 };
-use crate::ParseMode;
+use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
 use serde::Serialize;
 use std::path::PathBuf;
@@ -245,7 +245,7 @@ pub struct GetUpdatesParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub allowed_updates: Option<Vec<String>>,
+    pub allowed_updates: Option<Vec<AllowedUpdate>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -267,7 +267,7 @@ pub struct SetWebhookParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub allowed_updates: Option<Vec<String>>,
+    pub allowed_updates: Option<Vec<AllowedUpdate>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

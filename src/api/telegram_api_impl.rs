@@ -257,6 +257,7 @@ mod tests {
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
+    use crate::AllowedUpdate;
 
     #[test]
     fn new_sets_correct_url() {
@@ -269,7 +270,7 @@ mod tests {
     fn get_updates_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"update_id\":379656753,\"message\":{\"message_id\":2741,\"from\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"date\":1618149703,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"dsaf\"}}]}";
         let params = GetUpdatesParams::builder()
-            .allowed_updates(vec!["message".to_string()])
+            .allowed_updates(vec![AllowedUpdate::Message])
             .build();
 
         let _m = mockito::mock("POST", "/getUpdates")
@@ -1696,7 +1697,7 @@ mod tests {
     fn returns_decode_error_if_response_can_not_be_decoded() {
         let response_string = "{hey this json is invalid}";
         let params = GetUpdatesParams::builder()
-            .allowed_updates(vec!["message".to_string()])
+            .allowed_updates(vec![AllowedUpdate::Message])
             .build();
 
         let _m = mockito::mock("POST", "/getUpdates")

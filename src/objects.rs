@@ -275,7 +275,7 @@ pub struct Update {
     pub update_id: u32,
 
     /// Maps to exactly one of the many optional fields
-    /// from [the official documentation.](https://core.telegram.org/bots/api#update).
+    /// from [the official documentation](https://core.telegram.org/bots/api#update).
     #[serde(flatten)]
     pub content: UpdateContent,
 }
@@ -330,7 +330,30 @@ pub struct WebhookInfo {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub allowed_updates: Option<Vec<String>>,
+    pub allowed_updates: Option<Vec<AllowedUpdate>>,
+}
+
+/// Control which updates to receive.
+/// Specify an empty list to receive all update types except `ChatMember`.
+/// [Official documentation](https://core.telegram.org/bots/api#getupdates).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+#[non_exhaustive]
+pub enum AllowedUpdate {
+    Message,
+    EditedMessage,
+    ChannelPost,
+    EditedChannelPost,
+    InlineQuery,
+    ChosenInlineResult,
+    CallbackQuery,
+    ShippingQuery,
+    PreCheckoutQuery,
+    Poll,
+    PollAnswer,
+    MyChatMember,
+    ChatMember,
+    ChatJoinRequest,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

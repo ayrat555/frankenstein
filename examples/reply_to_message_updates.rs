@@ -8,8 +8,7 @@ static TOKEN: &str = "API_TOKEN";
 fn main() {
     let api = Api::new(TOKEN);
 
-    let update_params_builder =
-        GetUpdatesParams::builder().allowed_updates(vec!["message".to_string()]);
+    let update_params_builder = GetUpdatesParams::builder();
     let mut update_params = update_params_builder.clone().build();
 
     loop {

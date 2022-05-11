@@ -10,8 +10,7 @@ static TOKEN: &str = "API_TOKEN";
 async fn main() {
     let api = AsyncApi::new(TOKEN);
 
-    let update_params_builder =
-        GetUpdatesParams::builder().allowed_updates(vec!["message".to_string()]);
+    let update_params_builder = GetUpdatesParams::builder();
     let mut update_params = update_params_builder.clone().build();
 
     loop {
