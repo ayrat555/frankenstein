@@ -21,6 +21,10 @@ impl AsyncApi {
         Self { api_url, client }
     }
 
+    pub fn new_with_client(client: reqwest::Client, api_url: String) -> Self {
+        Self { api_url, client }
+    }
+
     pub fn new_url(api_url: String) -> Self {
         let client = reqwest::Client::new();
         Self { api_url, client }
