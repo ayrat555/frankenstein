@@ -1,3 +1,7 @@
+## 0.15.1 (2022-06-02)
+
+  * Add `new_with_client` to AsyncApi [#66](https://github.com/ayrat555/frankenstein/pull/66)
+
 ## 0.15.0 (2022-05-11)
 
   * Convert allowed_update type into enum - [#65](https://github.com/ayrat555/frankenstein/pull/65)
