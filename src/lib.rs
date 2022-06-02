@@ -29,7 +29,7 @@ pub use api::*;
 pub use api_traits::*;
 
 #[doc(hidden)]
-#[cfg(any(feature = "async-http-client"))]
+#[cfg(feature = "async-http-client")]
 pub use reqwest;
 
 pub mod api_params;
