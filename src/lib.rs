@@ -28,6 +28,10 @@ pub use api::*;
 #[cfg(any(feature = "telegram-trait", feature = "async-telegram-trait"))]
 pub use api_traits::*;
 
+#[doc(hidden)]
+#[cfg(feature = "async-http-client")]
+pub use reqwest;
+
 pub mod api_params;
 pub mod objects;
 mod parse_mode;
