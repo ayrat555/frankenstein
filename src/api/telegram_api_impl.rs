@@ -1,3 +1,4 @@
+use super::DeserializeJson;
 use super::Error;
 use super::HttpError;
 use crate::api_traits::ErrorResponse;
@@ -47,17 +48,13 @@ impl Api {
 
     pub fn decode_response<T: serde::de::DeserializeOwned>(response: Response) -> Result<T, Error> {
         match response.into_string() {
-            Ok(message) => {
-                let json_result: Result<T, serde_json::Error> = serde_json::from_str(&message);
-
-                match json_result {
-                    Ok(result) => Ok(result),
-                    Err(e) => {
-                        let err = Error::DecodeError(format!("{:?} : {:?}", e, &message));
-                        Err(err)
-                    }
+            Ok(message) => match Self::deserialize_json(&message) {
+                Ok(result) => Ok(result),
+                Err(e) => {
+                    let err = Error::DecodeError(format!("{:?} : {:?}", e, &message));
+                    Err(err)
                 }
-            }
+            },
             Err(e) => {
                 let err = Error::DecodeError(format!("Failed to decode response: {:?}", e));
                 Err(err)
@@ -96,6 +93,8 @@ impl From<ureq::Error> for Error {
         }
     }
 }
+
+impl DeserializeJson for Api {}
 
 impl TelegramApi for Api {
     type Error = Error;

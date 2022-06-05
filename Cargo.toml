@@ -44,9 +44,9 @@ required-features = ["telegram-trait"]
 
 [features]
 default = ["http-client"]
-http-client = ["ureq", "multipart", "mime_guess", "telegram-trait", "serde_json"]
+http-client = ["ureq", "multipart", "mime_guess", "telegram-trait", "serde_json", "serde_stacker"]
 telegram-trait = []
-async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
+async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json", "serde_stacker"]
 async-telegram-trait = ["async-trait"]
 
 [dependencies]
@@ -77,8 +77,13 @@ optional = true
 version = "1"
 features = ["derive"]
 
+[dependencies.serde_stacker]
+version = "0.1"
+optional = true
+
 [dependencies.serde_json]
 version = "1"
+features = ["unbounded_depth"]
 optional = true
 
 [dependencies.tokio]

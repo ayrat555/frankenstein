@@ -1,3 +1,4 @@
+use super::DeserializeJson;
 use super::Error;
 use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
@@ -59,9 +60,7 @@ impl AsyncApi {
     }
 
     fn parse_json<T: serde::de::DeserializeOwned>(body: &str) -> Result<T, Error> {
-        let json_result: Result<T, serde_json::Error> = serde_json::from_str(body);
-
-        match json_result {
+        match Self::deserialize_json(body) {
             Ok(result) => Ok(result),
 
             Err(e) => {
@@ -93,6 +92,8 @@ impl From<std::io::Error> for Error {
         Self::EncodeError(message)
     }
 }
+
+impl DeserializeJson for AsyncApi {}
 
 #[async_trait]
 impl AsyncTelegramApi for AsyncApi {

@@ -32,3 +32,15 @@ pub struct HttpError {
     pub code: u16,
     pub message: String,
 }
+
+pub trait DeserializeJson {
+    fn deserialize_json<T: serde::de::DeserializeOwned>(
+        body: &str,
+    ) -> Result<T, serde_json::Error> {
+        let mut deserializer = serde_json::Deserializer::from_str(body);
+        deserializer.disable_recursion_limit();
+
+        let deserializer = serde_stacker::Deserializer::new(&mut deserializer);
+        T::deserialize(deserializer)
+    }
+}
