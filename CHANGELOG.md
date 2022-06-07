@@ -1,3 +1,7 @@
+## 0.16.0 (2022-06-07)
+
+  * Reduce `Message` struct memory size [#69](https://github.com/ayrat555/frankenstein/pull/69)
+
 ## 0.15.1 (2022-06-02)
 
   * Add `new_with_client` to AsyncApi [#66](https://github.com/ayrat555/frankenstein/pull/66)
