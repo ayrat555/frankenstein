@@ -476,23 +476,24 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub from: Option<User>,
+    pub from: Option<Box<User>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub sender_chat: Option<Chat>,
+    pub sender_chat: Option<Box<Chat>>,
 
     pub date: u64,
 
-    pub chat: Chat,
+    #[builder(setter(into))]
+    pub chat: Box<Chat>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub forward_from: Option<User>,
+    pub forward_from: Option<Box<User>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub forward_from_chat: Option<Chat>,
+    pub forward_from_chat: Option<Box<Chat>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -520,7 +521,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub via_bot: Option<User>,
+    pub via_bot: Option<Box<User>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -544,39 +545,39 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub entities: Option<Vec<MessageEntity>>,
+    pub entities: Option<Vec<Box<MessageEntity>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub animation: Option<Animation>,
+    pub animation: Option<Box<Animation>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub audio: Option<Audio>,
+    pub audio: Option<Box<Audio>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub document: Option<Document>,
+    pub document: Option<Box<Document>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub photo: Option<Vec<PhotoSize>>,
+    pub photo: Option<Vec<Box<PhotoSize>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub sticker: Option<Sticker>,
+    pub sticker: Option<Box<Sticker>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub video: Option<Video>,
+    pub video: Option<Box<Video>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub video_note: Option<VideoNote>,
+    pub video_note: Option<Box<VideoNote>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub voice: Option<Voice>,
+    pub voice: Option<Box<Voice>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -584,39 +585,39 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub caption_entities: Option<Vec<Box<MessageEntity>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub contact: Option<Contact>,
+    pub contact: Option<Box<Contact>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub dice: Option<Dice>,
+    pub dice: Option<Box<Dice>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub game: Option<Game>,
+    pub game: Option<Box<Game>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub poll: Option<Poll>,
+    pub poll: Option<Box<Poll>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub venue: Option<Venue>,
+    pub venue: Option<Box<Venue>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub location: Option<Location>,
+    pub location: Option<Box<Location>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub new_chat_members: Option<Vec<User>>,
+    pub new_chat_members: Option<Vec<Box<User>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub left_chat_member: Option<User>,
+    pub left_chat_member: Option<Box<User>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -624,7 +625,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub new_chat_photo: Option<Vec<PhotoSize>>,
+    pub new_chat_photo: Option<Vec<Box<PhotoSize>>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -644,7 +645,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub message_auto_delete_timer_changed: Option<MessageAutoDeleteTimerChanged>,
+    pub message_auto_delete_timer_changed: Option<Box<MessageAutoDeleteTimerChanged>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -660,11 +661,11 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub invoice: Option<Invoice>,
+    pub invoice: Option<Box<Invoice>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub successful_payment: Option<SuccessfulPayment>,
+    pub successful_payment: Option<Box<SuccessfulPayment>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -672,35 +673,35 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub passport_data: Option<PassportData>,
+    pub passport_data: Option<Box<PassportData>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub proximity_alert_triggered: Option<ProximityAlertTriggered>,
+    pub proximity_alert_triggered: Option<Box<ProximityAlertTriggered>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub video_chat_started: Option<VideoChatStarted>,
+    pub video_chat_started: Option<Box<VideoChatStarted>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub video_chat_ended: Option<VideoChatEnded>,
+    pub video_chat_ended: Option<Box<VideoChatEnded>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub video_chat_scheduled: Option<VideoChatScheduled>,
+    pub video_chat_scheduled: Option<Box<VideoChatScheduled>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub video_chat_participants_invited: Option<VideoChatParticipantsInvited>,
+    pub video_chat_participants_invited: Option<Box<VideoChatParticipantsInvited>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub web_app_data: Option<WebAppData>,
+    pub web_app_data: Option<Box<WebAppData>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub reply_markup: Option<InlineKeyboardMarkup>,
+    pub reply_markup: Option<Box<InlineKeyboardMarkup>>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
