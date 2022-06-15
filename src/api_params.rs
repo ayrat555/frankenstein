@@ -19,7 +19,7 @@ use serde::Serialize;
 use std::path::PathBuf;
 use typed_builder::TypedBuilder as Builder;
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum File {
     InputFile(InputFile),
@@ -91,7 +91,7 @@ pub enum InlineQueryResult {
     Voice(InlineQueryResultVoice),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type")]
 pub enum InputMedia {
     #[serde(rename = "animation")]
@@ -106,7 +106,7 @@ pub enum InputMedia {
     Video(InputMediaVideo),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "source")]
 pub enum PassportElementError {
     #[serde(rename = "data")]
@@ -129,7 +129,7 @@ pub enum PassportElementError {
     Unspecified(PassportElementErrorUnspecified),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum ChatId {
     Integer(i64),
@@ -148,7 +148,7 @@ impl From<String> for ChatId {
     }
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum ReplyMarkup {
     InlineKeyboardMarkup(InlineKeyboardMarkup),
@@ -173,7 +173,7 @@ pub enum ChatAction {
     UploadVideoNote,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type")]
 pub enum Media {
     #[serde(rename = "audio")]
@@ -186,7 +186,7 @@ pub enum Media {
     Video(InputMediaVideo),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type")]
 pub enum BotCommandScope {
     #[serde(rename = "default")]
@@ -205,31 +205,31 @@ pub enum BotCommandScope {
     ChatMember(BotCommandScopeChatMember),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BotCommandScopeChat {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BotCommandScopeChatAdministrators {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BotCommandScopeChatMember {
     #[builder(setter(into))]
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputFile {
     pub path: PathBuf,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetUpdatesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -248,7 +248,7 @@ pub struct GetUpdatesParams {
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetWebhookParams {
     #[builder(setter(into))]
     pub url: String,
@@ -281,7 +281,7 @@ pub struct DeleteWebhookParams {
     pub drop_pending_updates: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -322,7 +322,7 @@ pub struct SendMessageParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ForwardMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -341,7 +341,7 @@ pub struct ForwardMessageParams {
     pub message_id: i32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct CopyMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -384,7 +384,7 @@ pub struct CopyMessageParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendPhotoParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -425,7 +425,7 @@ pub struct SendPhotoParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendAudioParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -482,7 +482,7 @@ pub struct SendAudioParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendDocumentParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -531,7 +531,7 @@ pub struct SendDocumentParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendVideoParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -592,7 +592,7 @@ pub struct SendVideoParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendAnimationParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -649,7 +649,7 @@ pub struct SendAnimationParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendVoiceParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -694,7 +694,7 @@ pub struct SendVoiceParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendVideoNoteParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -735,7 +735,7 @@ pub struct SendVideoNoteParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendMediaGroupParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -840,7 +840,7 @@ pub struct EditMessageLiveLocationParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct StopMessageLiveLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -911,7 +911,7 @@ pub struct SendVenueParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendContactParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -951,7 +951,7 @@ pub struct SendContactParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendPollParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1022,7 +1022,7 @@ pub struct SendPollParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendDiceParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1052,7 +1052,7 @@ pub struct SendDiceParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendChatActionParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1073,13 +1073,13 @@ pub struct GetUserProfilePhotosParams {
     pub limit: Option<u32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetFileParams {
     #[builder(setter(into))]
     pub file_id: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BanChatMemberParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1095,7 +1095,7 @@ pub struct BanChatMemberParams {
     pub revoke_messages: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UnbanChatMemberParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1107,7 +1107,7 @@ pub struct UnbanChatMemberParams {
     pub only_if_banned: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct RestrictChatMemberParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1121,7 +1121,7 @@ pub struct RestrictChatMemberParams {
     pub until_date: Option<u64>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PromoteChatMemberParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1173,7 +1173,7 @@ pub struct PromoteChatMemberParams {
     pub can_pin_messages: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatAdministratorCustomTitleParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1184,7 +1184,7 @@ pub struct SetChatAdministratorCustomTitleParams {
     pub custom_title: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BanChatSenderChatParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1192,7 +1192,7 @@ pub struct BanChatSenderChatParams {
     pub sender_chat_id: i64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UnbanChatSenderChatParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1200,7 +1200,7 @@ pub struct UnbanChatSenderChatParams {
     pub sender_chat_id: i64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatPermissionsParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1208,13 +1208,13 @@ pub struct SetChatPermissionsParams {
     pub permissions: ChatPermissions,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ExportChatInviteLinkParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct CreateChatInviteLinkParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1236,7 +1236,7 @@ pub struct CreateChatInviteLinkParams {
     pub creates_join_request: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditChatInviteLinkParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1261,7 +1261,7 @@ pub struct EditChatInviteLinkParams {
     pub creates_join_request: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct RevokeChatInviteLinkParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1270,7 +1270,7 @@ pub struct RevokeChatInviteLinkParams {
     pub invite_link: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ApproveChatJoinRequestParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1278,7 +1278,7 @@ pub struct ApproveChatJoinRequestParams {
     pub user_id: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct DeclineChatJoinRequestParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1286,7 +1286,7 @@ pub struct DeclineChatJoinRequestParams {
     pub user_id: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatPhotoParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1294,13 +1294,13 @@ pub struct SetChatPhotoParams {
     pub photo: InputFile,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct DeleteChatPhotoParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatTitleParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1309,7 +1309,7 @@ pub struct SetChatTitleParams {
     pub title: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatDescriptionParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1319,7 +1319,7 @@ pub struct SetChatDescriptionParams {
     pub description: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PinChatMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1331,7 +1331,7 @@ pub struct PinChatMessageParams {
     pub disable_notification: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UnpinChatMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1341,37 +1341,37 @@ pub struct UnpinChatMessageParams {
     pub message_id: Option<i32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UnpinAllChatMessagesParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct LeaveChatParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetChatParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetChatAdministratorsParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetChatMemberCountParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetChatMemberParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1379,7 +1379,7 @@ pub struct GetChatMemberParams {
     pub user_id: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatStickerSetParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1388,13 +1388,13 @@ pub struct SetChatStickerSetParams {
     pub sticker_set_name: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct DeleteChatStickerSetParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct AnswerCallbackQueryParams {
     #[builder(setter(into))]
     pub callback_query_id: String,
@@ -1416,7 +1416,7 @@ pub struct AnswerCallbackQueryParams {
     pub cache_time: Option<u32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 
@@ -1429,7 +1429,7 @@ pub struct SetMyCommandsParams {
     pub language_code: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1440,7 +1440,7 @@ pub struct GetMyCommandsParams {
     pub language_code: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct DeleteMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1451,7 +1451,7 @@ pub struct DeleteMyCommandsParams {
     pub language_code: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditMessageTextParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1485,7 +1485,7 @@ pub struct EditMessageTextParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditMessageCaptionParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1516,7 +1516,7 @@ pub struct EditMessageCaptionParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditMessageMediaParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1538,7 +1538,7 @@ pub struct EditMessageMediaParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditMessageReplyMarkupParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1557,7 +1557,7 @@ pub struct EditMessageReplyMarkupParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct StopPollParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1569,7 +1569,7 @@ pub struct StopPollParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct DeleteMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1577,7 +1577,7 @@ pub struct DeleteMessageParams {
     pub message_id: i32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendStickerParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -1606,13 +1606,13 @@ pub struct SendStickerParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetStickerSetParams {
     #[builder(setter(into))]
     pub name: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UploadStickerFileParams {
     pub user_id: u64,
 
@@ -1680,7 +1680,7 @@ pub struct AddStickerToSetParams {
     pub mask_position: Option<MaskPosition>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetStickerPositionInSetParams {
     #[builder(setter(into))]
     pub sticker: String,
@@ -1688,13 +1688,13 @@ pub struct SetStickerPositionInSetParams {
     pub position: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct DeleteStickerFromSetParams {
     #[builder(setter(into))]
     pub sticker: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetStickerSetThumbParams {
     #[builder(setter(into))]
     pub name: String,
@@ -1734,7 +1734,7 @@ pub struct AnswerInlineQueryParams {
     pub switch_pm_parameter: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendInvoiceParams {
     pub chat_id: i64,
 
@@ -1836,7 +1836,7 @@ pub struct SendInvoiceParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct AnswerShippingQueryParams {
     #[builder(setter(into))]
     pub shipping_query_id: String,
@@ -1852,7 +1852,7 @@ pub struct AnswerShippingQueryParams {
     pub error_message: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct AnswerPreCheckoutQueryParams {
     #[builder(setter(into))]
     pub pre_checkout_query_id: String,
@@ -1864,14 +1864,14 @@ pub struct AnswerPreCheckoutQueryParams {
     pub error_message: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetPassportDataErrorsParams {
     pub user_id: u64,
 
     pub errors: Vec<PassportElementError>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendGameParams {
     pub chat_id: i64,
 
@@ -1899,7 +1899,7 @@ pub struct SendGameParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetGameScoreParams {
     pub user_id: u64,
 
@@ -1926,7 +1926,7 @@ pub struct SetGameScoreParams {
     pub inline_message_id: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetGameHighScoresParams {
     pub user_id: u64,
 
@@ -1943,7 +1943,7 @@ pub struct GetGameHighScoresParams {
     pub inline_message_id: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaPhoto {
     #[builder(setter(into))]
     pub media: File,
@@ -1961,7 +1961,7 @@ pub struct InputMediaPhoto {
     pub caption_entities: Option<Vec<MessageEntity>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaVideo {
     #[builder(setter(into))]
     pub media: File,
@@ -1999,7 +1999,7 @@ pub struct InputMediaVideo {
     pub supports_streaming: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaAnimation {
     #[builder(setter(into))]
     pub media: File,
@@ -2033,7 +2033,7 @@ pub struct InputMediaAnimation {
     pub duration: Option<u32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaAudio {
     #[builder(setter(into))]
     pub media: File,
@@ -2067,7 +2067,7 @@ pub struct InputMediaAudio {
     pub title: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaDocument {
     #[builder(setter(into))]
     pub media: File,
@@ -2093,7 +2093,7 @@ pub struct InputMediaDocument {
     pub disable_content_type_detection: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyDefaultAdministratorRightsParams {
     pub rights: ChatAdministratorRights,
 
@@ -2102,7 +2102,7 @@ pub struct SetMyDefaultAdministratorRightsParams {
     pub for_channels: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetMyDefaultAdministratorRightsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2116,7 +2116,7 @@ pub struct AnswerWebAppQueryParams {
     pub result: InlineQueryResult,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetChatMenuButtonParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2127,7 +2127,7 @@ pub struct SetChatMenuButtonParams {
     pub menu_button: Option<MenuButton>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetChatMenuButtonParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

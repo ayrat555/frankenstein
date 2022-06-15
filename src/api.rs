@@ -13,7 +13,7 @@ pub use telegram_api_impl::*;
 
 pub static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
-#[derive(PartialEq, Debug, Serialize, Deserialize, thiserror::Error)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]
 #[serde(untagged)]
 pub enum Error {
     #[error("{0}")]
@@ -26,7 +26,7 @@ pub enum Error {
     EncodeError(String),
 }
 
-#[derive(PartialEq, Debug, Serialize, Deserialize, thiserror::Error)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]
 #[error("Http Error {code}: {message}")]
 pub struct HttpError {
     pub code: u16,
