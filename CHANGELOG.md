@@ -1,3 +1,9 @@
+## 0.17.0 (2022-06-16)
+
+  * Change type of file_size from u32 to u64 by @ayrat555 in [#70](https://github.com/ayrat555/frankenstein/pull/70)
+  * Refactor: specify Eq when possible on PartialEq by @EdJoPaTo in [#71](https://github.com/ayrat555/frankenstein/pull/71)
+  * Refactor: adopt breaking lints by @EdJoPaTo in [#72](https://github.com/ayrat555/frankenstein/pull/72)
+
 ## 0.16.0 (2022-06-07)
 
   * Reduce `Message` struct memory size [#69](https://github.com/ayrat555/frankenstein/pull/69)
