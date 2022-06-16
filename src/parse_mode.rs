@@ -28,7 +28,7 @@ impl FromStr for ParseMode {
 }
 
 impl ParseMode {
-    pub const fn to_str(&self) -> &'static str {
+    pub const fn to_str(self) -> &'static str {
         match self {
             ParseMode::Html => "HTML",
             ParseMode::MarkdownV2 => "MarkdownV2",

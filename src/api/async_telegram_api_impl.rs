@@ -33,8 +33,7 @@ impl AsyncApi {
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
         params: &T,
     ) -> Result<String, Error> {
-        serde_json::to_string(params)
-            .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))
+        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{:?} : {:?}", e, params)))
     }
 
     pub async fn decode_response<T: serde::de::DeserializeOwned>(
@@ -49,10 +48,10 @@ impl AsyncApi {
                 }
 
                 let error_response: ErrorResponse = Self::parse_json(&message)?;
-                Err(Error::ApiError(error_response))
+                Err(Error::Api(error_response))
             }
             Err(e) => {
-                let err = Error::DecodeError(format!("Failed to decode response: {:?}", e));
+                let err = Error::Decode(format!("Failed to decode response: {:?}", e));
                 Err(err)
             }
         }
@@ -65,7 +64,7 @@ impl AsyncApi {
             Ok(result) => Ok(result),
 
             Err(e) => {
-                let err = Error::DecodeError(format!("{:?} : {:?}", e, body));
+                let err = Error::Decode(format!("{:?} : {:?}", e, body));
                 Err(err)
             }
         }
@@ -75,14 +74,12 @@ impl AsyncApi {
 impl From<reqwest::Error> for Error {
     fn from(error: reqwest::Error) -> Self {
         let message = error.to_string();
-        let code = if let Some(status_code) = error.status() {
-            status_code.as_u16()
-        } else {
-            500
-        };
+        let code = error
+            .status()
+            .map_or(500, |status_code| status_code.as_u16());
 
         let error = HttpError { code, message };
-        Self::HttpError(error)
+        Self::Http(error)
     }
 }
 
@@ -90,7 +87,7 @@ impl From<std::io::Error> for Error {
     fn from(error: std::io::Error) -> Self {
         let message = error.to_string();
 
-        Self::EncodeError(message)
+        Self::Encode(message)
     }
 }
 
@@ -219,7 +216,7 @@ mod async_tests {
             .create();
         let api = AsyncApi::new_url(mockito::server_url());
 
-        if let Err(Error::ApiError(ErrorResponse {
+        if let Err(Error::Api(ErrorResponse {
             ok: false,
             description,
             error_code: 400,

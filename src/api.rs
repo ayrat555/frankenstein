@@ -17,13 +17,13 @@ pub static BASE_API_URL: &str = "https://api.telegram.org/bot";
 #[serde(untagged)]
 pub enum Error {
     #[error("{0}")]
-    HttpError(HttpError),
+    Http(HttpError),
     #[error("Api Error {0:?}")]
-    ApiError(ErrorResponse),
+    Api(ErrorResponse),
     #[error("Decode Error {0}")]
-    DecodeError(String),
+    Decode(String),
     #[error("Encode Error {0}")]
-    EncodeError(String),
+    Encode(String),
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]

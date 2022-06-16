@@ -41,8 +41,7 @@ impl Api {
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
         params: &T,
     ) -> Result<String, Error> {
-        serde_json::to_string(params)
-            .map_err(|e| Error::EncodeError(format!("{:?} : {:?}", e, params)))
+        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{:?} : {:?}", e, params)))
     }
 
     pub fn decode_response<T: serde::de::DeserializeOwned>(response: Response) -> Result<T, Error> {
@@ -53,13 +52,13 @@ impl Api {
                 match json_result {
                     Ok(result) => Ok(result),
                     Err(e) => {
-                        let err = Error::DecodeError(format!("{:?} : {:?}", e, &message));
+                        let err = Error::Decode(format!("{:?} : {:?}", e, &message));
                         Err(err)
                     }
                 }
             }
             Err(e) => {
-                let err = Error::DecodeError(format!("Failed to decode response: {:?}", e));
+                let err = Error::Decode(format!("Failed to decode response: {:?}", e));
                 Err(err)
             }
         }
@@ -75,23 +74,23 @@ impl From<ureq::Error> for Error {
                         serde_json::from_str(&message);
 
                     match json_result {
-                        Ok(result) => Self::ApiError(result),
+                        Ok(result) => Self::Api(result),
                         Err(_) => {
                             let error = HttpError { code, message };
-                            Self::HttpError(error)
+                            Self::Http(error)
                         }
                     }
                 }
                 Err(_) => {
                     let message = "Failed to decode response".to_string();
                     let error = HttpError { code, message };
-                    Self::HttpError(error)
+                    Self::Http(error)
                 }
             },
             ureq::Error::Transport(transport_error) => {
                 let message = format!("{:?}", transport_error);
                 let error = HttpError { message, code: 500 };
-                Self::HttpError(error)
+                Self::Http(error)
             }
         }
     }
@@ -324,7 +323,7 @@ mod tests {
             .create();
         let api = Api::new_url(mockito::server_url());
 
-        if let Err(Error::ApiError(ErrorResponse {
+        if let Err(Error::Api(ErrorResponse {
             ok: false,
             description,
             error_code: 400,
@@ -1709,7 +1708,7 @@ mod tests {
         let response = api.get_updates(&params);
 
         assert_eq!(
-            Err(Error::DecodeError("Error(\"key must be a string\", line: 1, column: 2) : \"{hey this json is invalid}\"".to_string())),
+            Err(Error::Decode("Error(\"key must be a string\", line: 1, column: 2) : \"{hey this json is invalid}\"".to_string())),
             response
         );
     }
