@@ -745,7 +745,7 @@ pub struct PhotoSize {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -776,7 +776,7 @@ pub struct Animation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -807,7 +807,7 @@ pub struct Audio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -836,7 +836,7 @@ pub struct Document {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -867,7 +867,7 @@ pub struct Video {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -888,7 +888,7 @@ pub struct VideoNote {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -907,7 +907,7 @@ pub struct Voice {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1091,7 +1091,7 @@ pub struct File {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1435,7 +1435,7 @@ pub struct Sticker {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub file_size: Option<u32>,
+    pub file_size: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2607,7 +2607,7 @@ pub struct PassportFile {
     #[builder(setter(into))]
     pub file_unique_id: String,
 
-    pub file_size: u32,
+    pub file_size: u64,
 
     pub file_date: u64,
 }
