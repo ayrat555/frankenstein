@@ -7,7 +7,6 @@ use std::path::PathBuf;
 static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
-#[derive(PartialEq, Debug)]
 pub struct Api {
     pub api_url: String,
 }
@@ -18,7 +17,7 @@ pub enum Error {
     ApiError(ErrorResponse),
 }
 
-#[derive(PartialEq, Debug)]
+#[derive(Debug)]
 pub struct HttpError {
     pub code: u16,
     pub message: String,

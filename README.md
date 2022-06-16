@@ -99,7 +99,6 @@ For api parameters, the same approach is used. The only difference for parameter
 For example, parameters for `leaveChat` method:
 
 ```rust
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct LeaveChatParams {
     chat_id: ChatId,
 }
