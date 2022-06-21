@@ -11,6 +11,7 @@ use crate::api_params::BanChatMemberParams;
 use crate::api_params::BanChatSenderChatParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
+use crate::api_params::CreateInvoiceLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
 use crate::api_params::DeclineChatJoinRequestParams;
 use crate::api_params::DeleteChatPhotoParams;
@@ -965,6 +966,13 @@ pub trait AsyncTelegramApi {
         params: &SendInvoiceParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         self.request("sendInvoice", Some(params)).await
+    }
+
+    async fn create_invoice_link(
+        &self,
+        params: &CreateInvoiceLinkParams,
+    ) -> Result<MethodResponse<String>, Self::Error> {
+        self.request("createInvoiceLink", Some(params)).await
     }
 
     async fn answer_shipping_query(

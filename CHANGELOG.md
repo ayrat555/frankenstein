@@ -1,3 +1,13 @@
+## 0.18.0 (2022-06-21)
+### [Bot API 6.1](https://core.telegram.org/bots/api-changelog#june-20-2022) - [#73](https://github.com/ayrat555/frankenstein/pull/73)
+
+  * Added the fields `join_to_send_messages` and `join_by_request` to the struct `Chat`.
+  * Added the method `create_invoice_link` to generate an HTTP link for an invoice
+  * Added the field `is_premium` to the struct `User`.
+  * Added the field `premium_animation` to the struct `Sticker`.
+  * Added the field `added_to_attachment_menu` to the struct `User`.
+  * Added the parameter `secret_token` to the method `set_webhook`.
+
 ## 0.17.0 (2022-06-16)
 
   * Change type of file_size from u32 to u64 by @ayrat555 in [#70](https://github.com/ayrat555/frankenstein/pull/70)
