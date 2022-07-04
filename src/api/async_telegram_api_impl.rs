@@ -6,28 +6,25 @@ use async_trait::async_trait;
 use reqwest::multipart;
 use serde_json::Value;
 use std::path::PathBuf;
+use std::time::Duration;
 use tokio::fs::File;
+use typed_builder::TypedBuilder as Builder;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Builder)]
 pub struct AsyncApi {
+    #[builder(setter(into))]
     pub api_url: String,
-    client: reqwest::Client,
+    #[builder(
+        default_code = "reqwest::ClientBuilder::new().connect_timeout(Duration::from_secs(10)).timeout(Duration::from_secs(10)).build()"
+    )]
+    pub client: reqwest::Client,
 }
 
 impl AsyncApi {
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
-        let client = reqwest::Client::new();
-        Self { api_url, client }
-    }
 
-    pub const fn new_with_client(client: reqwest::Client, api_url: String) -> Self {
-        Self { api_url, client }
-    }
-
-    pub fn new_url(api_url: String) -> Self {
-        let client = reqwest::Client::new();
-        Self { api_url, client }
+        Self::builder().api_url(api_url).build()
     }
 
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
@@ -227,5 +224,9 @@ mod async_tests {
         } else {
             panic!("Error was expected but there is none");
         }
+    }
+
+    fn client(url: String) -> AsyncApi {
+        Self::builder().api_url(url).build()
     }
 }
