@@ -191,7 +191,7 @@ mod async_tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = AsyncApi::new_url(mockito::server_url());
+        let api = client(mockito::server_url());
 
         let response = api.send_message(&params).await.unwrap();
 
@@ -211,7 +211,7 @@ mod async_tests {
             .with_status(400)
             .with_body(response_string)
             .create();
-        let api = AsyncApi::new_url(mockito::server_url());
+        let api = client(mockito::server_url());
 
         if let Err(Error::Api(ErrorResponse {
             ok: false,
