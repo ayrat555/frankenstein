@@ -227,6 +227,6 @@ mod async_tests {
     }
 
     fn client(url: String) -> AsyncApi {
-        Self::builder().api_url(url).build()
+        AsyncApi::builder().api_url(url).build()
     }
 }
