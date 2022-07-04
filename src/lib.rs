@@ -32,6 +32,10 @@ pub use api_traits::*;
 #[cfg(feature = "async-http-client")]
 pub use reqwest;
 
+#[doc(hidden)]
+#[cfg(feature = "http-client")]
+pub use ureq;
+
 pub mod api_params;
 pub mod objects;
 mod parse_mode;
