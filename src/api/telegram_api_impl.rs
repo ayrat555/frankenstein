@@ -18,6 +18,7 @@ pub struct Api {
 }
 
 impl Api {
+    /// Create a new `Api`. You can use `Api::builder()` for more options.
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
         Self::builder().api_url(api_url).build()
