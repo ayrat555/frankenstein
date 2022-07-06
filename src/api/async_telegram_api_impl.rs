@@ -26,7 +26,7 @@ impl AsyncApi {
         Self::builder().api_url(api_url).build()
     }
 
-    /// You can use AsyncApi.builder() to modify the http client (reqwest)
+    /// Create a new `AsyncApi`. You can use `AsyncApi::builder()` for more options.
     pub fn new_url<T: Into<String>>(api_url: T) -> Self {
         Self::builder().api_url(api_url).build()
     }
