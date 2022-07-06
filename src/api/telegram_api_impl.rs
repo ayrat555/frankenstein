@@ -6,36 +6,27 @@ use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
+use typed_builder::TypedBuilder;
 use ureq::Response;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, TypedBuilder)]
 pub struct Api {
+    #[builder(setter(into))]
     pub api_url: String,
-    request_agent: ureq::Agent,
+    #[builder(default_code = "ureq::builder().timeout(Duration::from_secs(10)).build()")]
+    pub request_agent: ureq::Agent,
 }
 
 impl Api {
+    /// Create a new `Api`. You can use `Api::builder()` for more options.
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
-
-        let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
-        Self {
-            api_url,
-            request_agent,
-        }
+        Self::builder().api_url(api_url).build()
     }
 
-    pub fn new_url(api_url: String) -> Self {
-        let request_agent = ureq::builder().timeout(Duration::from_secs(60)).build();
-        Self {
-            api_url,
-            request_agent,
-        }
-    }
-
-    pub fn with_timeout(&mut self, timeout: Duration) {
-        let request_agent = ureq::builder().timeout(timeout).build();
-        self.request_agent = request_agent;
+    /// Create a new `Api`. You can use `Api::builder()` for more options.
+    pub fn new_url<T: Into<String>>(api_url: T) -> Self {
+        Api::builder().api_url(api_url).build()
     }
 
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(

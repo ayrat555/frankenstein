@@ -1,3 +1,7 @@
+## 0.19.0 (2022-07-06)
+
+  * Add builders for api clients [#77](https://github.com/ayrat555/frankenstein/pull/77)
+
 ## 0.18.0 (2022-06-21)
 ### [Bot API 6.1](https://core.telegram.org/bots/api-changelog#june-20-2022) - [#73](https://github.com/ayrat555/frankenstein/pull/73)
 
