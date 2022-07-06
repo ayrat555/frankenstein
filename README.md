@@ -156,6 +156,43 @@ It has two variants:
 - `File::InputFile` is used to upload a new file using multipart upload.
 
 
+### Customizing http clients
+
+Both the async (`reqwest`) and the blocking (`ureq`) HTTP clients can be customized with their builders.
+
+Customizing the blocking client:
+
+```rust
+use frankenstein::ureq;
+use frankenstein::Api;
+use std::time::Duration;
+
+let request_agent = ureq::builder().timeout(Duration::from_secs(100)).build();
+let api_url = format!("{}{}", BASE_API_URL, TOKEN);
+
+Api::builder()
+     .api_url(api_url)
+     .request_agent(request_agent)
+     .build()
+```
+
+Customizing the async client:
+
+```rust
+use frankenstein::reqwest;
+use frankenstein::AsyncApi;
+use std::time::Duration;
+
+let client = reqwest::ClientBuilder::new()
+    .connect_timeout(Duration::from_secs(100))
+    .timeout(Duration::from_secs(100))
+    .build()
+    .unwrap();
+let api_url = format!("{}{}", BASE_API_URL, TOKEN);
+
+AsyncApi::builder().api_url(api_url).client(client).build()
+```
+
 ### Documentation
 
 Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.18.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)

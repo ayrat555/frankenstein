@@ -23,11 +23,10 @@ pub struct AsyncApi {
 impl AsyncApi {
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
-
         Self::builder().api_url(api_url).build()
     }
 
-    pub fn new_url(api_url: &str) -> Self {
+    pub fn new_url<T: Into<String>>(api_url: T) -> Self {
         Self::builder().api_url(api_url).build()
     }
 
@@ -195,7 +194,7 @@ mod async_tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = AsyncApi::new_url(&mockito::server_url());
+        let api = AsyncApi::new_url(mockito::server_url());
 
         let response = api.send_message(&params).await.unwrap();
 
@@ -215,7 +214,7 @@ mod async_tests {
             .with_status(400)
             .with_body(response_string)
             .create();
-        let api = AsyncApi::new_url(&mockito::server_url());
+        let api = AsyncApi::new_url(mockito::server_url());
 
         if let Err(Error::Api(ErrorResponse {
             ok: false,

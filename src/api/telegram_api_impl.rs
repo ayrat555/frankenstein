@@ -20,11 +20,10 @@ pub struct Api {
 impl Api {
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
-
         Self::builder().api_url(api_url).build()
     }
 
-    pub fn new_url(api_url: &str) -> Self {
+    pub fn new_url<T: Into<String>>(api_url: T) -> Self {
         Api::builder().api_url(api_url).build()
     }
 
@@ -266,7 +265,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_updates(&params).unwrap();
 
@@ -291,7 +290,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_message(&params).unwrap();
 
@@ -311,7 +310,7 @@ mod tests {
             .with_status(400)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         if let Err(Error::Api(ErrorResponse {
             ok: false,
@@ -335,7 +334,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_webhook(&params).unwrap();
 
@@ -352,7 +351,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.delete_webhook(&params).unwrap();
 
@@ -367,7 +366,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_webhook_info().unwrap();
 
@@ -382,7 +381,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_me().unwrap();
 
@@ -397,7 +396,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.log_out().unwrap();
 
@@ -413,7 +412,7 @@ mod tests {
             .with_status(400)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.close().err();
 
@@ -428,7 +427,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.close().unwrap();
 
@@ -449,7 +448,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.forward_message(&params).unwrap();
 
@@ -470,7 +469,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.copy_message(&params).unwrap();
 
@@ -491,7 +490,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_location(&params).unwrap();
 
@@ -513,7 +512,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.edit_message_live_location(&params).unwrap();
 
@@ -533,7 +532,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.stop_message_live_location(&params).unwrap();
 
@@ -556,7 +555,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_venue(&params).unwrap();
 
@@ -577,7 +576,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_contact(&params).unwrap();
 
@@ -598,7 +597,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_poll(&params).unwrap();
 
@@ -615,7 +614,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_dice(&params).unwrap();
 
@@ -635,7 +634,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_chat_action(&params).unwrap();
 
@@ -654,7 +653,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_user_profile_photos(&params).unwrap();
 
@@ -673,7 +672,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_file(&params).unwrap();
 
@@ -693,7 +692,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.ban_chat_member(&params).unwrap();
 
@@ -713,7 +712,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.unban_chat_member(&params).unwrap();
 
@@ -738,7 +737,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.restrict_chat_member(&params).unwrap();
 
@@ -759,7 +758,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.promote_chat_member(&params).unwrap();
 
@@ -780,7 +779,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_chat_administrator_custom_title(&params).unwrap();
 
@@ -804,7 +803,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_chat_permissions(&params).unwrap();
 
@@ -824,7 +823,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.export_chat_invite_link(&params).unwrap();
 
@@ -844,7 +843,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.create_chat_invite_link(&params).unwrap();
 
@@ -865,7 +864,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.edit_chat_invite_link(&params).unwrap();
 
@@ -886,7 +885,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.revoke_chat_invite_link(&params).unwrap();
 
@@ -905,7 +904,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.delete_chat_photo(&params).unwrap();
 
@@ -926,7 +925,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_photo(&params).unwrap();
 
@@ -946,7 +945,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_audio(&params).unwrap();
 
@@ -968,7 +967,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_audio(&params).unwrap();
 
@@ -991,7 +990,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_audio(&params).unwrap();
 
@@ -1013,7 +1012,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_document(&params).unwrap();
 
@@ -1035,7 +1034,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_video(&params).unwrap();
 
@@ -1057,7 +1056,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_animation(&params).unwrap();
 
@@ -1077,7 +1076,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_voice(&params).unwrap();
 
@@ -1097,7 +1096,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_video_note(&params).unwrap();
 
@@ -1120,7 +1119,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_chat_photo(&params).unwrap();
 
@@ -1140,7 +1139,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_chat_title(&params).unwrap();
 
@@ -1160,7 +1159,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_chat_description(&params).unwrap();
 
@@ -1180,7 +1179,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.pin_chat_message(&params).unwrap();
 
@@ -1197,7 +1196,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.unpin_chat_message(&params).unwrap();
 
@@ -1214,7 +1213,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.leave_chat(&params).unwrap();
 
@@ -1231,7 +1230,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_chat(&params).unwrap();
 
@@ -1250,7 +1249,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_chat_administrators(&params).unwrap();
 
@@ -1269,7 +1268,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_chat_member_count(&params).unwrap();
 
@@ -1289,7 +1288,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_chat_member(&params).unwrap();
 
@@ -1309,7 +1308,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_chat_sticker_set(&params).unwrap();
 
@@ -1328,7 +1327,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.delete_chat_sticker_set(&params).unwrap();
 
@@ -1348,7 +1347,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.answer_callback_query(&params).unwrap();
 
@@ -1376,7 +1375,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_my_commands(&params).unwrap();
 
@@ -1405,7 +1404,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.set_my_commands(&params).unwrap();
 
@@ -1428,7 +1427,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.delete_my_commands(&params).unwrap();
 
@@ -1445,7 +1444,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_my_commands(&params).unwrap();
 
@@ -1466,7 +1465,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_my_commands(&params).unwrap();
 
@@ -1498,7 +1497,7 @@ mod tests {
             .with_body(response_string)
             .create();
 
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.answer_inline_query(&params).unwrap();
 
@@ -1520,7 +1519,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.edit_message_text(&params).unwrap();
 
@@ -1542,7 +1541,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.edit_message_caption(&params).unwrap();
 
@@ -1563,7 +1562,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.stop_poll(&params).unwrap();
 
@@ -1584,7 +1583,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.delete_message(&params).unwrap();
 
@@ -1606,7 +1605,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_sticker(&params).unwrap();
 
@@ -1622,7 +1621,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_sticker_set(&params).unwrap();
 
@@ -1648,7 +1647,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.send_media_group(&params).unwrap();
 
@@ -1674,7 +1673,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.edit_message_media(&params).unwrap();
 
@@ -1693,7 +1692,7 @@ mod tests {
             .with_status(200)
             .with_body(response_string)
             .create();
-        let api = Api::new_url(&mockito::server_url());
+        let api = Api::new_url(mockito::server_url());
 
         let response = api.get_updates(&params);
 

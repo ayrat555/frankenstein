@@ -27,6 +27,10 @@ name = "inline_keyboard"
 required-features = ["http-client"]
 
 [[example]]
+name = "custom_client"
+required-features = ["http-client"]
+
+[[example]]
 name = "async_get_me"
 required-features = ["async-http-client"]
 
@@ -36,6 +40,10 @@ required-features = ["async-http-client"]
 
 [[example]]
 name = "async_file_upload"
+required-features = ["async-http-client"]
+
+[[example]]
+name = "async_custom_client"
 required-features = ["async-http-client"]
 
 [[example]]
