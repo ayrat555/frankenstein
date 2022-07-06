@@ -23,6 +23,7 @@ impl Api {
         Self::builder().api_url(api_url).build()
     }
 
+    /// You can use Api.builder() to modify the http client (ureq)
     pub fn new_url<T: Into<String>>(api_url: T) -> Self {
         Api::builder().api_url(api_url).build()
     }
