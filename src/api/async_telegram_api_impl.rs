@@ -21,6 +21,7 @@ pub struct AsyncApi {
 }
 
 impl AsyncApi {
+    /// Create a new `AsyncApi`. You can use `AsyncApi::builder()` for more options.
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{}", super::BASE_API_URL, api_key);
         Self::builder().api_url(api_url).build()
