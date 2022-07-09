@@ -1,3 +1,7 @@
+## 0.19.1 (2022-07-09)
+
+  * Fix status field of banned chat members [#78](https://github.com/ayrat555/frankenstein/pull/78)
+
 ## 0.19.0 (2022-07-06)
 
   * Add builders for api clients [#77](https://github.com/ayrat555/frankenstein/pull/77)
