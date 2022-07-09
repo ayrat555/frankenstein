@@ -26,7 +26,7 @@ pub enum ChatMember {
     Restricted(ChatMemberRestricted),
     #[serde(rename = "left")]
     Left(ChatMemberLeft),
-    #[serde(rename = "banned")]
+    #[serde(rename = "kicked")]
     Banned(ChatMemberBanned),
 }
 
