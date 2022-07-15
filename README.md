@@ -200,10 +200,10 @@ Frankenstein implements all telegram bot api methods. To see which parameters yo
 You can check out real-world bots created using this library:
 
 -  [subvt-telegram-bot](https://github.com/helikon-labs/subvt-backend/tree/main/subvt-telegram-bot) - A telegram bot for the validators of the [Polkadot](https://polkadot.network/) and [Kusama](https://kusama.network/).
- - [El Monitorro](https://github.com/ayrat555/el_monitorro) - RSS/Atom/JSON feed readeer
- - [wdr-maus-downloader](https://github.com/EdJoPaTo/wdr-maus-downloader) - checks for a new episode of the WDR Maus and downloads it
- - [weather_bot_rust](https://github.com/pxp9/weather_bot_rust)
- - [ledit](https://github.com/jflessau/ledit) - task assignment bot 
+ - [El Monitorro](https://github.com/ayrat555/el_monitorro) - RSS/Atom/JSON feed readeer.
+ - [wdr-maus-downloader](https://github.com/EdJoPaTo/wdr-maus-downloader) - checks for a new episode of the WDR Maus and downloads it.
+ - [weather_bot_rust](https://github.com/pxp9/weather_bot_rust) - A telegram bot that provides weather info around the world.
+ - [ledit](https://github.com/jflessau/ledit) - task assignment bot.
 
 
 ## Replacing the default http client
