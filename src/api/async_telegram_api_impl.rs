@@ -15,7 +15,7 @@ pub struct AsyncApi {
     #[builder(setter(into))]
     pub api_url: String,
     #[builder(
-        default_code = "reqwest::ClientBuilder::new().connect_timeout(Duration::from_secs(10)).timeout(Duration::from_secs(10)).build().unwrap()"
+        default_code = "reqwest::ClientBuilder::new().connect_timeout(Duration::from_secs(500)).timeout(Duration::from_secs(500)).build().unwrap()"
     )]
     pub client: reqwest::Client,
 }
