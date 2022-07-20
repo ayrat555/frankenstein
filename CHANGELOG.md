@@ -1,3 +1,8 @@
+## 0.19.2 (2022-07-20)
+
+  * Fix: Use client timeout of 500 seconds by @EdJoPaTo in [#82](https://github.com/ayrat555/frankenstein/pull/82)
+  * Chore: build with all features on docs.rs by @OpenByteDev in [#81](https://github.com/ayrat555/frankenstein/pull/81)
+
 ## 0.19.1 (2022-07-09)
 
   * Fix status field of banned chat members [#78](https://github.com/ayrat555/frankenstein/pull/78)
