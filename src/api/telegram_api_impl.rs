@@ -13,7 +13,7 @@ use ureq::Response;
 pub struct Api {
     #[builder(setter(into))]
     pub api_url: String,
-    #[builder(default_code = "ureq::builder().timeout(Duration::from_secs(10)).build()")]
+    #[builder(default_code = "ureq::builder().timeout(Duration::from_secs(500)).build()")]
     pub request_agent: ureq::Agent,
 }
 
