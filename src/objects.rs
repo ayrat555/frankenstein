@@ -58,6 +58,7 @@ pub enum MessageEntityType {
     Pre,
     TextLink,
     TextMention,
+    CustomEmoji,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -745,6 +746,10 @@ pub struct MessageEntity {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub language: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub custom_emoji_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1452,10 +1457,25 @@ pub struct Sticker {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub mask_position: Option<MaskPosition>,
-
+    
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub custom_emoji_id : Option<String>
+    
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub file_size: Option<u64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "sticker_type")]
+pub enum StickerType {
+    #[serde(rename = "regular")]
+    Regular,
+    #[serde(rename = "mask")]
+    Mask,
+    #[serde(rename = "custom_emoji")]
+    CustomEmoji,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1465,11 +1485,14 @@ pub struct StickerSet {
 
     #[builder(setter(into))]
     pub title: String,
+    
+    pub sticker_type : StickerType,
 
     pub is_animated: bool,
 
     pub is_video: bool,
-
+    
+    #[doc(hidden)]
     pub contains_masks: bool,
 
     pub stickers: Vec<Sticker>,
