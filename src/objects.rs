@@ -1422,6 +1422,17 @@ pub struct ResponseParameters {
     pub retry_after: Option<u16>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename = "type")]
+pub enum StickerType {
+    #[serde(rename = "regular")]
+    Regular,
+    #[serde(rename = "mask")]
+    Mask,
+    #[serde(rename = "custom_emoji")]
+    CustomEmoji,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct Sticker {
     #[builder(setter(into))]
@@ -1429,6 +1440,9 @@ pub struct Sticker {
 
     #[builder(setter(into))]
     pub file_unique_id: String,
+
+    #[serde(rename = "type")]
+    pub sticker_type: StickerType,
 
     pub width: u32,
 
@@ -1468,8 +1482,8 @@ pub struct Sticker {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "sticker_type")]
-pub enum StickerType {
+#[serde(rename = "sticker_type")]
+pub enum StickerTypeSet {
     #[serde(rename = "regular")]
     Regular,
     #[serde(rename = "mask")]
@@ -1486,14 +1500,11 @@ pub struct StickerSet {
     #[builder(setter(into))]
     pub title: String,
 
-    pub sticker_type: StickerType,
+    pub sticker_type: StickerTypeSet,
 
     pub is_animated: bool,
 
     pub is_video: bool,
-
-    #[doc(hidden)]
-    pub contains_masks: bool,
 
     pub stickers: Vec<Sticker>,
 
