@@ -1427,7 +1427,6 @@ pub struct ResponseParameters {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename = "type")]
 pub enum StickerType {
     #[serde(rename = "regular")]
     Regular,
@@ -1485,17 +1484,6 @@ pub struct Sticker {
     pub file_size: Option<u64>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename = "sticker_type")]
-pub enum StickerTypeSet {
-    #[serde(rename = "regular")]
-    Regular,
-    #[serde(rename = "mask")]
-    Mask,
-    #[serde(rename = "custom_emoji")]
-    CustomEmoji,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StickerSet {
     #[builder(setter(into))]
@@ -1504,7 +1492,8 @@ pub struct StickerSet {
     #[builder(setter(into))]
     pub title: String,
 
-    pub sticker_type: StickerTypeSet,
+    #[serde(rename = "sticker_type")]
+    pub sticker_type: StickerType,
 
     pub is_animated: bool,
 
