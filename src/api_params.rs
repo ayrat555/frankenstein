@@ -1662,7 +1662,7 @@ pub struct CreateNewStickerSetParams {
     pub mask_position: Option<MaskPosition>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetCustomEmojiStickersParams {
     #[builder(setter(into))]
     pub custom_emoji_ids: Vec<String>,
