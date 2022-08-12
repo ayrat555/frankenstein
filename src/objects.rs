@@ -436,6 +436,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub has_restricted_voice_and_video_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub join_to_send_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]

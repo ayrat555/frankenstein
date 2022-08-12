@@ -11,7 +11,7 @@ use crate::objects::{
     PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
     PassportElementErrorSelfie, PassportElementErrorTranslationFile,
     PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
-    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerType,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerTypeSet,
 };
 use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
@@ -1646,8 +1646,8 @@ pub struct CreateNewStickerSetParams {
     pub webm_sticker: Option<InputFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option))]
-    pub sticker_type: Option<StickerType>,
+    #[builder(setter(into, strip_option), default=Some(StickerTypeSet::Regular))]
+    pub sticker_type: Option<StickerTypeSet>,
 
     #[builder(setter(into))]
     pub emojis: String,
