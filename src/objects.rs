@@ -1457,11 +1457,11 @@ pub struct Sticker {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub mask_position: Option<MaskPosition>,
-    
+
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub custom_emoji_id : Option<String>
-    
+    pub custom_emoji_id: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub file_size: Option<u64>,
@@ -1485,13 +1485,13 @@ pub struct StickerSet {
 
     #[builder(setter(into))]
     pub title: String,
-    
-    pub sticker_type : StickerType,
+
+    pub sticker_type: StickerType,
 
     pub is_animated: bool,
 
     pub is_video: bool,
-    
+
     #[doc(hidden)]
     pub contains_masks: bool,
 
