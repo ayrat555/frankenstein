@@ -233,7 +233,7 @@ pub struct InputFile {
 pub struct GetUpdatesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub offset: Option<u32>,
+    pub offset: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
