@@ -103,6 +103,7 @@ use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
+use crate::Sticker;
 use async_trait::async_trait;
 use std::path::PathBuf;
 
