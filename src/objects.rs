@@ -1,7 +1,18 @@
+#![allow(deprecated)]
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
 use crate::ParseMode;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum StickerType {
+    #[serde(rename = "regular")]
+    Regular,
+    #[serde(rename = "mask")]
+    Mask,
+    #[serde(rename = "custom_emoji")]
+    CustomEmoji,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
@@ -1426,16 +1437,6 @@ pub struct ResponseParameters {
     pub retry_after: Option<u16>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum StickerType {
-    #[serde(rename = "regular")]
-    Regular,
-    #[serde(rename = "mask")]
-    Mask,
-    #[serde(rename = "custom_emoji")]
-    CustomEmoji,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct Sticker {
     #[builder(setter(into))]
@@ -1498,6 +1499,9 @@ pub struct StickerSet {
     pub is_animated: bool,
 
     pub is_video: bool,
+
+    #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
+    pub contains_masks: bool,
 
     pub stickers: Vec<Sticker>,
 

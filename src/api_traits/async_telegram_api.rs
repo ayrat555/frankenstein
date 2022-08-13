@@ -917,7 +917,7 @@ pub trait AsyncTelegramApi {
     async fn get_custom_emoji_stickers(
         &self,
         params: &GetCustomEmojiStickersParams,
-    ) -> Result<MethodResponse<bool>, Self::Error> {
+    ) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
         self.request("getCustomEmojiStickers", Some(params)).await
     }
     async fn add_sticker_to_set(

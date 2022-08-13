@@ -1646,7 +1646,7 @@ pub struct CreateNewStickerSetParams {
     pub webm_sticker: Option<InputFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default=Some(StickerType::Regular))]
+    #[builder(setter(into, strip_option))]
     pub sticker_type: Option<StickerType>,
 
     #[builder(setter(into))]
