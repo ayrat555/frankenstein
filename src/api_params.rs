@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 use crate::objects::{
     BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
     InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
