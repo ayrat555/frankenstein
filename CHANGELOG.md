@@ -1,3 +1,19 @@
+## 0.20.0 (2022-08-13)
+
+  * Change the offset field's type for getUpdates - [#86](https://github.com/ayrat555/frankenstein/pull/86)
+  * Change connect_timeout for async client - [#83](https://github.com/ayrat555/frankenstein/pull/83)
+
+### [Bot API 6.2](https://core.telegram.org/bots/api#august-12-2022) - [#85](https://github.com/ayrat555/frankenstein/pull/85)
+
+  * Added the MessageEntity type “custom_emoji”.
+  * Added the field custom_emoji_id to the class MessageEntity for “custom_emoji” entities.
+  * Added the method getCustomEmojiStickers.
+  * Added the fields type and custom_emoji_id to the class Sticker.
+  * Added the field sticker_type to the class StickerSet, describing the type of stickers in the set.
+  * The field contains_masks has been removed from the documentation of the class StickerSet. The field is still returned in the object for backward compatibility, but new bots should use the field sticker_type instead.
+  * Added the parameter sticker_type to the method createNewStickerSet.
+  * The parameter contains_masks has been removed from the documentation of the method createNewStickerSet. The parameter will still work for backward compatibility, but new bots should use the parameter sticker_type instead.
+
 ## 0.19.2 (2022-07-20)
 
   * Fix: Use client timeout of 500 seconds by @EdJoPaTo in [#82](https://github.com/ayrat555/frankenstein/pull/82)
