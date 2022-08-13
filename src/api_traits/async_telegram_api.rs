@@ -34,6 +34,7 @@ use crate::api_params::GetChatMemberCountParams;
 use crate::api_params::GetChatMemberParams;
 use crate::api_params::GetChatMenuButtonParams;
 use crate::api_params::GetChatParams;
+use crate::api_params::GetCustomEmojiStickersParams;
 use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
@@ -102,6 +103,7 @@ use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
+use crate::Sticker;
 use async_trait::async_trait;
 use std::path::PathBuf;
 
@@ -913,6 +915,12 @@ pub trait AsyncTelegramApi {
             .await
     }
 
+    async fn get_custom_emoji_stickers(
+        &self,
+        params: &GetCustomEmojiStickersParams,
+    ) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
+        self.request("getCustomEmojiStickers", Some(params)).await
+    }
     async fn add_sticker_to_set(
         &self,
         params: &AddStickerToSetParams,

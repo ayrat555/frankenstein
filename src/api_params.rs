@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 use crate::objects::{
     BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
     InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
@@ -11,7 +12,7 @@ use crate::objects::{
     PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
     PassportElementErrorSelfie, PassportElementErrorTranslationFile,
     PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
-    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerType,
 };
 use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
@@ -1645,9 +1646,15 @@ pub struct CreateNewStickerSetParams {
     #[builder(setter(into, strip_option), default)]
     pub webm_sticker: Option<InputFile>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option))]
+    pub sticker_type: Option<StickerType>,
+
     #[builder(setter(into))]
     pub emojis: String,
 
+    #[doc(hidden)]
+    #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub contains_masks: Option<bool>,
@@ -1655,6 +1662,12 @@ pub struct CreateNewStickerSetParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub mask_position: Option<MaskPosition>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetCustomEmojiStickersParams {
+    #[builder(setter(into))]
+    pub custom_emoji_ids: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

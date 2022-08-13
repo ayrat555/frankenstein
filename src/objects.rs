@@ -1,7 +1,18 @@
+#![allow(deprecated)]
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
 use crate::ParseMode;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum StickerType {
+    #[serde(rename = "regular")]
+    Regular,
+    #[serde(rename = "mask")]
+    Mask,
+    #[serde(rename = "custom_emoji")]
+    CustomEmoji,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
@@ -58,6 +69,7 @@ pub enum MessageEntityType {
     Pre,
     TextLink,
     TextMention,
+    CustomEmoji,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -435,6 +447,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub has_restricted_voice_and_video_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub join_to_send_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -745,6 +761,10 @@ pub struct MessageEntity {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub language: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub custom_emoji_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1425,6 +1445,9 @@ pub struct Sticker {
     #[builder(setter(into))]
     pub file_unique_id: String,
 
+    #[serde(rename = "type")]
+    pub sticker_type: StickerType,
+
     pub width: u32,
 
     pub height: u32,
@@ -1455,6 +1478,10 @@ pub struct Sticker {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub custom_emoji_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub file_size: Option<u64>,
 }
 
@@ -1466,10 +1493,15 @@ pub struct StickerSet {
     #[builder(setter(into))]
     pub title: String,
 
+    #[serde(rename = "sticker_type")]
+    pub sticker_type: StickerType,
+
     pub is_animated: bool,
 
     pub is_video: bool,
 
+    #[doc(hidden)]
+    #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
     pub contains_masks: bool,
 
     pub stickers: Vec<Sticker>,

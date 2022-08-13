@@ -102,6 +102,8 @@ use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
+use crate::GetCustomEmojiStickersParams;
+use crate::Sticker;
 use std::path::PathBuf;
 
 pub trait TelegramApi {
@@ -862,6 +864,13 @@ pub trait TelegramApi {
         }
 
         self.request_with_possible_form_data(method_name, params, files)
+    }
+
+    fn get_custom_emoji_stickers(
+        &self,
+        params: &GetCustomEmojiStickersParams,
+    ) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
+        self.request("getCustomEmojiStickers", Some(params))
     }
 
     fn add_sticker_to_set(
