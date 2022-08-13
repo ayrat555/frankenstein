@@ -1500,6 +1500,7 @@ pub struct StickerSet {
 
     pub is_video: bool,
 
+    #[doc(hidden)]
     #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
     pub contains_masks: bool,
 

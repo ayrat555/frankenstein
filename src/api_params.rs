@@ -1653,6 +1653,7 @@ pub struct CreateNewStickerSetParams {
     pub emojis: String,
 
     #[doc(hidden)]
+    #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub contains_masks: Option<bool>,
