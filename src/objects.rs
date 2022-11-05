@@ -1467,6 +1467,20 @@ pub struct ChatLocation {
     pub address: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ForumTopic {
+    pub message_thread_id: i32,
+
+    #[builder(setter(into))]
+    pub name: String,
+
+    pub icon_color: i8,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub icon_custom_emoji_id: Option<String>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BotCommand {
     #[builder(setter(into))]

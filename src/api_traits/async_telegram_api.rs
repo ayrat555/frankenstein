@@ -662,6 +662,12 @@ pub trait AsyncTelegramApi {
         self.request("deleteChatStickerSet", Some(params)).await
     }
 
+    async fn get_forum_topic_icon_stickers(
+        &self,
+    ) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
+        self.request_without_body("getForumTopicIconStickers").await
+    }
+
     async fn answer_callback_query(
         &self,
         params: &AnswerCallbackQueryParams,

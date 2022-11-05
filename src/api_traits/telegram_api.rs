@@ -620,6 +620,10 @@ pub trait TelegramApi {
         self.request("deleteChatStickerSet", Some(params))
     }
 
+    fn get_forum_topic_icon_stickers(&self) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
+        self.request_without_body("getForumTopicIconStickers")
+    }
+
     fn answer_callback_query(
         &self,
         params: &AnswerCallbackQueryParams,
