@@ -1467,7 +1467,7 @@ pub struct ChatLocation {
     pub address: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Builder)]
 pub struct ForumTopic {
     pub message_thread_id: i32,
 
