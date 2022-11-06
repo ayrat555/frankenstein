@@ -1404,6 +1404,74 @@ pub struct DeleteChatStickerSetParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct CreateForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub icon_color: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub icon_custom_emoji_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct EditForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub message_thread_id: i32,
+
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[builder(setter(into))]
+    pub icon_custom_emoji_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct CloseForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub message_thread_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ReopenForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub message_thread_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct DeleteForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub message_thread_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct UnpinAllForumTopicMessagesParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub message_thread_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct AnswerCallbackQueryParams {
     #[builder(setter(into))]
     pub callback_query_id: String,

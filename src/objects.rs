@@ -1131,7 +1131,7 @@ pub struct ForumTopicCreated {
     #[builder(setter(into))]
     pub name: String,
 
-    pub icon_color: u8,
+    pub icon_color: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1474,7 +1474,7 @@ pub struct ForumTopic {
     #[builder(setter(into))]
     pub name: String,
 
-    pub icon_color: i8,
+    pub icon_color: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
