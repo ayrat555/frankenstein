@@ -1,3 +1,16 @@
+## 0.21.0 (2022-10-06)
+
+### [Bot API 6.3](https://core.telegram.org/bots/api#november-5-2022) - [#91](https://github.com/ayrat555/frankenstein/pull/91)
+
+  * Added the fields `is_topic_message` and `message_thread_id` to the struct `Message` to allow detection of messages belonging to a forum topic and their message thread identifier.
+  * Added the structs `ForumTopicCreated`, `ForumTopicClosed`, and `ForumTopicReopened` and the fields `forum_topic_created`, `forum_topic_closed`, and `forum_topic_reopened` to the struct `Message`
+  * Added the field `can_manage_topics` to the structs `ChatAdministratorRights`, `ChatPermissions`, `ChatMemberAdministrator`, and `ChatMemberRestricted`.
+  * Added the parameter `can_manage_topics` to the struct `PromoteChatMemberParams`.
+  * Added the methods `create_forum_topic`, `edit_forum_topic`, `close_forum_topic`, `reopen_forum_topic`, `delete_forum_topic`, `unpin_all_forum_topic_messages`, and `get_forum_topic_icon_stickers` for forum topic management.
+  * Added the field `message_thread_id` to the methods `SendMessageParams`, `SendPhotoParams`, `SendVideoParams`, `SendAnimationParams`, `SendAudioParams`, `SendDocumentParams`, `SendStickerParams`, `SendVideoNoteParams`, `SendVoiceParams`, `SendLocationParams`, `SendVenueParams`, `SendContactParams`, `SendPollParams`, `SendDiceParams`, `SendInvoiceParams`, `SendGameParams`, `SendMediaGroupParams`, `CopyMessageParams`, `ForwardMessageParams` to support sending of messages to a forum topic.
+  * Added support for Multiple Usernames via the field `active_usernames` in the struct Chat.
+  * Added the field `emoji_status_custom_emoji_id` to the struct `Chat`.
+
 ## 0.20.0 (2022-08-13)
 
   * Change the offset field's type for getUpdates - [#86](https://github.com/ayrat555/frankenstein/pull/86)
