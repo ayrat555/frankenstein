@@ -291,6 +291,10 @@ pub struct SendMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub text: String,
 
@@ -332,6 +336,10 @@ pub struct ForwardMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub from_chat_id: ChatId,
 
@@ -350,6 +358,10 @@ pub struct ForwardMessageParams {
 pub struct CopyMessageParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
     pub from_chat_id: ChatId,
@@ -394,6 +406,10 @@ pub struct SendPhotoParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub photo: File,
 
@@ -434,6 +450,10 @@ pub struct SendPhotoParams {
 pub struct SendAudioParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
     pub audio: File,
@@ -492,6 +512,10 @@ pub struct SendDocumentParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub document: File,
 
@@ -540,6 +564,10 @@ pub struct SendDocumentParams {
 pub struct SendVideoParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
     pub video: File,
@@ -602,6 +630,10 @@ pub struct SendAnimationParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub animation: File,
 
@@ -659,6 +691,10 @@ pub struct SendVoiceParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub voice: File,
 
@@ -704,6 +740,10 @@ pub struct SendVideoNoteParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub video_note: File,
 
@@ -745,6 +785,10 @@ pub struct SendMediaGroupParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     pub media: Vec<Media>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -768,6 +812,10 @@ pub struct SendMediaGroupParams {
 pub struct SendLocationParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     pub latitude: f64,
 
@@ -869,6 +917,10 @@ pub struct SendVenueParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     pub latitude: f64,
 
     pub longitude: f64,
@@ -921,6 +973,10 @@ pub struct SendContactParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub phone_number: String,
 
@@ -960,6 +1016,10 @@ pub struct SendContactParams {
 pub struct SendPollParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
     pub question: String,
@@ -1031,6 +1091,10 @@ pub struct SendPollParams {
 pub struct SendDiceParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1659,6 +1723,10 @@ pub struct SendStickerParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     #[builder(setter(into))]
     pub sticker: File,
 
@@ -1826,6 +1894,10 @@ pub struct AnswerInlineQueryParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendInvoiceParams {
     pub chat_id: i64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
     pub title: String,
@@ -2039,6 +2111,10 @@ pub struct SetPassportDataErrorsParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendGameParams {
     pub chat_id: i64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
     pub game_short_name: String,
