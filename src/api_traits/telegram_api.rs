@@ -9,18 +9,22 @@ use crate::api_params::AnswerWebAppQueryParams;
 use crate::api_params::ApproveChatJoinRequestParams;
 use crate::api_params::BanChatMemberParams;
 use crate::api_params::BanChatSenderChatParams;
+use crate::api_params::CloseForumTopicParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
+use crate::api_params::CreateForumTopicParams;
 use crate::api_params::CreateInvoiceLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
 use crate::api_params::DeclineChatJoinRequestParams;
 use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
+use crate::api_params::DeleteForumTopicParams;
 use crate::api_params::DeleteMessageParams;
 use crate::api_params::DeleteMyCommandsParams;
 use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
+use crate::api_params::EditForumTopicParams;
 use crate::api_params::EditMessageCaptionParams;
 use crate::api_params::EditMessageLiveLocationParams;
 use crate::api_params::EditMessageMediaParams;
@@ -46,6 +50,7 @@ use crate::api_params::LeaveChatParams;
 use crate::api_params::Media;
 use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
+use crate::api_params::ReopenForumTopicParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
 use crate::api_params::SendAnimationParams;
@@ -83,6 +88,7 @@ use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::api_params::UnbanChatSenderChatParams;
+use crate::api_params::UnpinAllForumTopicMessagesParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
@@ -91,6 +97,7 @@ use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
 use crate::objects::File as FileObject;
+use crate::objects::ForumTopic;
 use crate::objects::GameHighScore;
 use crate::objects::MenuButton;
 use crate::objects::Message;
@@ -618,6 +625,52 @@ pub trait TelegramApi {
         params: &DeleteChatStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("deleteChatStickerSet", Some(params))
+    }
+
+    fn get_forum_topic_icon_stickers(&self) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
+        self.request_without_body("getForumTopicIconStickers")
+    }
+
+    fn create_forum_topic(
+        &self,
+        params: &CreateForumTopicParams,
+    ) -> Result<MethodResponse<ForumTopic>, Self::Error> {
+        self.request("createForumTopic", Some(params))
+    }
+
+    fn edit_forum_topic(
+        &self,
+        params: &EditForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("editForumTopic", Some(params))
+    }
+
+    fn close_forum_topic(
+        &self,
+        params: &CloseForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("closeForumTopic", Some(params))
+    }
+
+    fn reopen_forum_topic(
+        &self,
+        params: &ReopenForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("reopenForumTopic", Some(params))
+    }
+
+    fn delete_forum_topic(
+        &self,
+        params: &DeleteForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteForumTopic", Some(params))
+    }
+
+    fn unpin_all_forum_topic_messages(
+        &self,
+        params: UnpinAllForumTopicMessagesParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unpinAllForumTopicMessages", Some(params))
     }
 
     fn answer_callback_query(
