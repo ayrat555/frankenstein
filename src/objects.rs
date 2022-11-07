@@ -1143,7 +1143,7 @@ pub struct ForumTopicCreated {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub icon_custom_emoji_id: Option<String>,
+    pub icon_custom_emoji_id: Option<u128>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1486,7 +1486,7 @@ pub struct ForumTopic {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub icon_custom_emoji_id: Option<String>,
+    pub icon_custom_emoji_id: Option<u128>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
