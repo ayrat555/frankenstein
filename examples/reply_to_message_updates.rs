@@ -29,12 +29,11 @@ fn main() {
                         if let Err(err) = api.send_message(&send_message_params) {
                             println!("Failed to send message: {:?}", err);
                         }
-
-                        update_params = update_params_builder
-                            .clone()
-                            .offset(update.update_id + 1)
-                            .build();
                     }
+                    update_params = update_params_builder
+                        .clone()
+                        .offset(update.update_id + 1)
+                        .build();
                 }
             }
             Err(error) => {

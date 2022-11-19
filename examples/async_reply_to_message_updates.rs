@@ -27,12 +27,11 @@ async fn main() {
                         tokio::spawn(async move {
                             process_message(message, api_clone).await;
                         });
-
-                        update_params = update_params_builder
-                            .clone()
-                            .offset(update.update_id + 1)
-                            .build();
                     }
+                    update_params = update_params_builder
+                        .clone()
+                        .offset(update.update_id + 1)
+                        .build();
                 }
             }
             Err(error) => {
