@@ -20,7 +20,7 @@ async fn main() {
             );
         }
         Err(error) => {
-            eprintln!("Failed to get me: {:?}", error);
+            eprintln!("Failed to get me: {error:?}");
         }
     }
 }
@@ -31,7 +31,7 @@ fn custom_client() -> AsyncApi {
         .timeout(Duration::from_secs(100))
         .build()
         .unwrap();
-    let api_url = format!("{}{}", BASE_API_URL, TOKEN);
+    let api_url = format!("{BASE_API_URL}{TOKEN}");
 
     AsyncApi::builder().api_url(api_url).client(client).build()
 }
