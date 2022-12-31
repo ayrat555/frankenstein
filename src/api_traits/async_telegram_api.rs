@@ -723,35 +723,35 @@ pub trait AsyncTelegramApi {
             .await
     }
 
-    fn edit_general_forum_topic(
+    async fn edit_general_forum_topic(
         &self,
         params: EditGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("editGeneralForumTopic", Some(params)).await
     }
 
-    fn close_general_forum_topic(
+    async fn close_general_forum_topic(
         &self,
         params: CloseGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("closeGeneralForumTopic", Some(params)).await
     }
 
-    fn reopen_general_forum_topic(
+    async fn reopen_general_forum_topic(
         &self,
         params: ReopenGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("reopenGeneralForumTopic", Some(params)).await
     }
 
-    fn hide_general_forum_topic(
+    async fn hide_general_forum_topic(
         &self,
         params: HideGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("hideGeneralForumTopic", Some(params)).await
     }
 
-    fn unhide_general_forum_topic(
+    async fn unhide_general_forum_topic(
         &self,
         params: UnhideGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
