@@ -499,6 +499,14 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub has_aggressive_anti_spam_enabled: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub has_hidden_members: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_protected_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]

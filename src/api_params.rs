@@ -1138,6 +1138,10 @@ pub struct SendChatActionParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
     pub action: ChatAction,
 }
 
@@ -1547,6 +1551,39 @@ pub struct UnpinAllForumTopicMessagesParams {
 
     #[builder(setter(into))]
     pub message_thread_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct EditGeneralForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub name: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct CloseGeneralForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ReopenGeneralForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct HideGeneralForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct UnhideGeneralForumTopicParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
