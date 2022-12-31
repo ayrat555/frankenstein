@@ -19,14 +19,14 @@ fn main() {
             );
         }
         Err(error) => {
-            eprintln!("Failed to get me: {:?}", error);
+            eprintln!("Failed to get me: {error:?}");
         }
     }
 }
 
 fn custom_client() -> Api {
     let request_agent = ureq::builder().timeout(Duration::from_secs(100)).build();
-    let api_url = format!("{}{}", BASE_API_URL, TOKEN);
+    let api_url = format!("{BASE_API_URL}{TOKEN}");
 
     Api::builder()
         .api_url(api_url)

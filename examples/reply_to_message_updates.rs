@@ -14,7 +14,7 @@ fn main() {
     loop {
         let result = api.get_updates(&update_params);
 
-        println!("result: {:?}", result);
+        println!("result: {result:?}");
 
         match result {
             Ok(response) => {
@@ -27,7 +27,7 @@ fn main() {
                             .build();
 
                         if let Err(err) = api.send_message(&send_message_params) {
-                            println!("Failed to send message: {:?}", err);
+                            println!("Failed to send message: {err:?}");
                         }
 
                         update_params = update_params_builder
@@ -38,7 +38,7 @@ fn main() {
                 }
             }
             Err(error) => {
-                println!("Failed to get updates: {:?}", error);
+                println!("Failed to get updates: {error:?}");
             }
         }
     }

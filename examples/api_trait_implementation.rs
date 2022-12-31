@@ -6,6 +6,7 @@ use std::path::PathBuf;
 
 static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
+static CHAT_ID: i64 = 1;
 
 pub struct Api {
     pub api_url: String,
@@ -26,7 +27,7 @@ pub struct HttpError {
 impl Api {
     #[must_use]
     pub fn new(api_key: &str) -> Self {
-        let api_url = format!("{}{}", BASE_API_URL, api_key);
+        let api_url = format!("{BASE_API_URL}{api_key}");
         Self { api_url }
     }
 
@@ -38,7 +39,7 @@ impl Api {
 
 impl From<isahc::http::Error> for Error {
     fn from(error: isahc::http::Error) -> Self {
-        let message = format!("{:?}", error);
+        let message = format!("{error:?}");
         let error = HttpError { code: 500, message };
         Self::HttpError(error)
     }
@@ -46,7 +47,7 @@ impl From<isahc::http::Error> for Error {
 
 impl From<std::io::Error> for Error {
     fn from(error: std::io::Error) -> Self {
-        let message = format!("{:?}", error);
+        let message = format!("{error:?}");
         let error = HttpError { code: 500, message };
         Self::HttpError(error)
     }
@@ -54,7 +55,7 @@ impl From<std::io::Error> for Error {
 
 impl From<isahc::Error> for Error {
     fn from(error: isahc::Error) -> Self {
-        let message = format!("{:?}", error);
+        let message = format!("{error:?}");
         let error = HttpError { code: 500, message };
         Self::HttpError(error)
     }
@@ -68,7 +69,7 @@ impl TelegramApi for Api {
         method: &str,
         params: Option<T1>,
     ) -> Result<T2, Error> {
-        let url = format!("{}/{}", self.api_url, method);
+        let url = format!("{}/{method}", self.api_url);
 
         let request_builder = Request::post(url).header("Content-Type", "application/json");
 
@@ -91,7 +92,7 @@ impl TelegramApi for Api {
             match parsed_error {
                 Ok(result) => Error::ApiError(result),
                 Err(error) => {
-                    let message = format!("{:?}", error);
+                    let message = format!("{error:?}");
                     let error = HttpError { code: 500, message };
                     Error::HttpError(error)
                 }
@@ -120,11 +121,11 @@ fn main() {
     let api = Api::new(TOKEN);
 
     let params = SendMessageParams::builder()
-        .chat_id(275_808_073)
+        .chat_id(CHAT_ID)
         .text("Hello!")
         .build();
 
     let result = api.send_message(&params);
 
-    eprintln!("{:?}", result);
+    eprintln!("{result:?}");
 }

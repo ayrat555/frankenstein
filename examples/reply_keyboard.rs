@@ -19,7 +19,7 @@ fn main() {
         let mut row: Vec<KeyboardButton> = Vec::new();
 
         for j in 1..5 {
-            let name = format!("{}{}", i, j);
+            let name = format!("{i}{j}");
             let button = KeyboardButton::builder().text(name).build();
 
             row.push(button);

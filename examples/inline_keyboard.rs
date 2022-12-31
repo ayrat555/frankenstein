@@ -19,7 +19,7 @@ fn main() {
         let mut row: Vec<InlineKeyboardButton> = Vec::new();
 
         for j in 1..5 {
-            let name = format!("{}{}", i, j);
+            let name = format!("{i}{j}");
             let button = InlineKeyboardButton::builder()
                 .text(name)
                 .url("https://github.com/ayrat555/frankenstein")
