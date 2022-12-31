@@ -217,8 +217,8 @@ pub trait TelegramApi {
                     let mut new_audio = audio.clone();
 
                     if let File::InputFile(input_file) = &audio.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_audio.media = File::String(attach_name);
@@ -227,8 +227,8 @@ pub trait TelegramApi {
                     };
 
                     if let Some(File::InputFile(input_file)) = &audio.thumb {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_audio.thumb = Some(File::String(attach_name));
@@ -243,8 +243,8 @@ pub trait TelegramApi {
                     let mut new_document = document.clone();
 
                     if let File::InputFile(input_file) = &document.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_document.media = File::String(attach_name);
@@ -258,8 +258,8 @@ pub trait TelegramApi {
                     let mut new_photo = photo.clone();
 
                     if let File::InputFile(input_file) = &photo.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_photo.media = File::String(attach_name);
@@ -274,8 +274,8 @@ pub trait TelegramApi {
                     let mut new_video = video.clone();
 
                     if let File::InputFile(input_file) = &video.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_video.media = File::String(attach_name);
@@ -284,8 +284,8 @@ pub trait TelegramApi {
                     };
 
                     if let Some(File::InputFile(input_file)) = &video.thumb {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_video.thumb = Some(File::String(attach_name));
@@ -775,7 +775,7 @@ pub trait TelegramApi {
 
                 if let File::InputFile(input_file) = &animation.media {
                     let name = "animation".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_animation.media = File::String(attach_name);
 
@@ -784,7 +784,7 @@ pub trait TelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &animation.thumb {
                     let name = "animation_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_animation.thumb = Some(File::String(attach_name));
 
@@ -798,7 +798,7 @@ pub trait TelegramApi {
 
                 if let File::InputFile(input_file) = &document.media {
                     let name = "document".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_document.media = File::String(attach_name);
 
@@ -807,7 +807,7 @@ pub trait TelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &document.thumb {
                     let name = "document_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_document.thumb = Some(File::String(attach_name));
 
@@ -821,7 +821,7 @@ pub trait TelegramApi {
 
                 if let File::InputFile(input_file) = &audio.media {
                     let name = "audio".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_audio.media = File::String(attach_name);
 
@@ -830,7 +830,7 @@ pub trait TelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &audio.thumb {
                     let name = "audio_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_audio.thumb = Some(File::String(attach_name));
 
@@ -844,7 +844,7 @@ pub trait TelegramApi {
 
                 if let File::InputFile(input_file) = &photo.media {
                     let name = "photo".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_photo.media = File::String(attach_name);
 
@@ -858,7 +858,7 @@ pub trait TelegramApi {
 
                 if let File::InputFile(input_file) = &video.media {
                     let name = "video".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_video.media = File::String(attach_name);
 
@@ -867,7 +867,7 @@ pub trait TelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &video.thumb {
                     let name = "video_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_video.thumb = Some(File::String(attach_name));
 
