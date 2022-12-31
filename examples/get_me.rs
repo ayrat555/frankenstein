@@ -16,7 +16,7 @@ fn main() {
             );
         }
         Err(error) => {
-            eprintln!("Failed to get me: {:?}", error);
+            eprintln!("Failed to get me: {error:?}");
         }
     }
 }

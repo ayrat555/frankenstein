@@ -16,7 +16,7 @@ async fn main() {
     loop {
         let result = api.get_updates(&update_params).await;
 
-        println!("result: {:?}", result);
+        println!("result: {result:?}");
 
         match result {
             Ok(response) => {
@@ -35,7 +35,7 @@ async fn main() {
                 }
             }
             Err(error) => {
-                println!("Failed to get updates: {:?}", error);
+                println!("Failed to get updates: {error:?}");
             }
         }
     }
@@ -49,6 +49,6 @@ async fn process_message(message: Message, api: AsyncApi) {
         .build();
 
     if let Err(err) = api.send_message(&send_message_params).await {
-        println!("Failed to send message: {:?}", err);
+        println!("Failed to send message: {err:?}");
     }
 }

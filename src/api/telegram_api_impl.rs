@@ -20,7 +20,8 @@ pub struct Api {
 impl Api {
     /// Create a new `Api`. You can use `Api::builder()` for more options.
     pub fn new(api_key: &str) -> Self {
-        let api_url = format!("{}{}", super::BASE_API_URL, api_key);
+        let api_url = format!("{}{api_key}", super::BASE_API_URL);
+
         Self::builder().api_url(api_url).build()
     }
 
@@ -32,7 +33,7 @@ impl Api {
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
         params: &T,
     ) -> Result<String, Error> {
-        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{:?} : {:?}", e, params)))
+        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
     }
 
     pub fn decode_response<T: serde::de::DeserializeOwned>(response: Response) -> Result<T, Error> {
@@ -43,13 +44,13 @@ impl Api {
                 match json_result {
                     Ok(result) => Ok(result),
                     Err(e) => {
-                        let err = Error::Decode(format!("{:?} : {:?}", e, &message));
+                        let err = Error::Decode(format!("{e:?} : {message:?}"));
                         Err(err)
                     }
                 }
             }
             Err(e) => {
-                let err = Error::Decode(format!("Failed to decode response: {:?}", e));
+                let err = Error::Decode(format!("Failed to decode response: {e:?}"));
                 Err(err)
             }
         }
@@ -79,7 +80,7 @@ impl From<ureq::Error> for Error {
                 }
             },
             ureq::Error::Transport(transport_error) => {
-                let message = format!("{:?}", transport_error);
+                let message = format!("{transport_error:?}");
                 let error = HttpError { message, code: 500 };
                 Self::Http(error)
             }
@@ -95,7 +96,7 @@ impl TelegramApi for Api {
         method: &str,
         params: Option<T1>,
     ) -> Result<T2, Error> {
-        let url = format!("{}/{}", self.api_url, method);
+        let url = format!("{}/{method}", self.api_url);
         let prepared_request = self
             .request_agent
             .post(&url)
@@ -155,7 +156,7 @@ impl TelegramApi for Api {
             form.add_stream(parameter_name, file, file_name, Some(mime));
         }
 
-        let url = format!("{}/{}", self.api_url, method);
+        let url = format!("{}/{method}", self.api_url);
         let form_data = form.prepare().unwrap();
         let response = self
             .request_agent

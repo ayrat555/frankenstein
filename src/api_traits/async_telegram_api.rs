@@ -10,6 +10,7 @@ use crate::api_params::ApproveChatJoinRequestParams;
 use crate::api_params::BanChatMemberParams;
 use crate::api_params::BanChatSenderChatParams;
 use crate::api_params::CloseForumTopicParams;
+use crate::api_params::CloseGeneralForumTopicParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::CreateForumTopicParams;
@@ -25,6 +26,7 @@ use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditForumTopicParams;
+use crate::api_params::EditGeneralForumTopicParams;
 use crate::api_params::EditMessageCaptionParams;
 use crate::api_params::EditMessageLiveLocationParams;
 use crate::api_params::EditMessageMediaParams;
@@ -46,12 +48,14 @@ use crate::api_params::GetMyDefaultAdministratorRightsParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
+use crate::api_params::HideGeneralForumTopicParams;
 use crate::api_params::InputMedia;
 use crate::api_params::LeaveChatParams;
 use crate::api_params::Media;
 use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::ReopenForumTopicParams;
+use crate::api_params::ReopenGeneralForumTopicParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
 use crate::api_params::SendAnimationParams;
@@ -89,6 +93,7 @@ use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::api_params::UnbanChatSenderChatParams;
+use crate::api_params::UnhideGeneralForumTopicParams;
 use crate::api_params::UnpinAllForumTopicMessagesParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
@@ -225,8 +230,8 @@ pub trait AsyncTelegramApi {
                     let mut new_audio = audio.clone();
 
                     if let File::InputFile(input_file) = &audio.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_audio.media = File::String(attach_name);
@@ -235,8 +240,8 @@ pub trait AsyncTelegramApi {
                     };
 
                     if let Some(File::InputFile(input_file)) = &audio.thumb {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_audio.thumb = Some(File::String(attach_name));
@@ -251,8 +256,8 @@ pub trait AsyncTelegramApi {
                     let mut new_document = document.clone();
 
                     if let File::InputFile(input_file) = &document.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_document.media = File::String(attach_name);
@@ -266,8 +271,8 @@ pub trait AsyncTelegramApi {
                     let mut new_photo = photo.clone();
 
                     if let File::InputFile(input_file) = &photo.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_photo.media = File::String(attach_name);
@@ -282,8 +287,8 @@ pub trait AsyncTelegramApi {
                     let mut new_video = video.clone();
 
                     if let File::InputFile(input_file) = &video.media {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_video.media = File::String(attach_name);
@@ -292,8 +297,8 @@ pub trait AsyncTelegramApi {
                     };
 
                     if let Some(File::InputFile(input_file)) = &video.thumb {
-                        let name = format!("file{}", file_idx);
-                        let attach_name = format!("attach://{}", name);
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_video.thumb = Some(File::String(attach_name));
@@ -712,10 +717,45 @@ pub trait AsyncTelegramApi {
 
     async fn unpin_all_forum_topic_messages(
         &self,
-        params: UnpinAllForumTopicMessagesParams,
+        params: &UnpinAllForumTopicMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllForumTopicMessages", Some(params))
             .await
+    }
+
+    async fn edit_general_forum_topic(
+        &self,
+        params: EditGeneralForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("editGeneralForumTopic", Some(params)).await
+    }
+
+    async fn close_general_forum_topic(
+        &self,
+        params: CloseGeneralForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("closeGeneralForumTopic", Some(params)).await
+    }
+
+    async fn reopen_general_forum_topic(
+        &self,
+        params: ReopenGeneralForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("reopenGeneralForumTopic", Some(params)).await
+    }
+
+    async fn hide_general_forum_topic(
+        &self,
+        params: HideGeneralForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("hideGeneralForumTopic", Some(params)).await
+    }
+
+    async fn unhide_general_forum_topic(
+        &self,
+        params: UnhideGeneralForumTopicParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unhideGeneralForumTopic", Some(params)).await
     }
 
     async fn answer_callback_query(
@@ -780,7 +820,7 @@ pub trait AsyncTelegramApi {
 
                 if let File::InputFile(input_file) = &animation.media {
                     let name = "animation".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_animation.media = File::String(attach_name);
 
@@ -789,7 +829,7 @@ pub trait AsyncTelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &animation.thumb {
                     let name = "animation_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_animation.thumb = Some(File::String(attach_name));
 
@@ -803,7 +843,7 @@ pub trait AsyncTelegramApi {
 
                 if let File::InputFile(input_file) = &document.media {
                     let name = "document".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_document.media = File::String(attach_name);
 
@@ -812,7 +852,7 @@ pub trait AsyncTelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &document.thumb {
                     let name = "document_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_document.thumb = Some(File::String(attach_name));
 
@@ -826,7 +866,7 @@ pub trait AsyncTelegramApi {
 
                 if let File::InputFile(input_file) = &audio.media {
                     let name = "audio".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_audio.media = File::String(attach_name);
 
@@ -835,7 +875,7 @@ pub trait AsyncTelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &audio.thumb {
                     let name = "audio_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_audio.thumb = Some(File::String(attach_name));
 
@@ -849,7 +889,7 @@ pub trait AsyncTelegramApi {
 
                 if let File::InputFile(input_file) = &photo.media {
                     let name = "photo".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_photo.media = File::String(attach_name);
 
@@ -863,7 +903,7 @@ pub trait AsyncTelegramApi {
 
                 if let File::InputFile(input_file) = &video.media {
                     let name = "video".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_video.media = File::String(attach_name);
 
@@ -872,7 +912,7 @@ pub trait AsyncTelegramApi {
 
                 if let Some(File::InputFile(input_file)) = &video.thumb {
                     let name = "video_thumb".to_string();
-                    let attach_name = format!("attach://{}", name);
+                    let attach_name = format!("attach://{name}");
 
                     new_video.thumb = Some(File::String(attach_name));
 

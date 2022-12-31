@@ -18,10 +18,10 @@ async fn main() {
 
     match api.send_photo(&params).await {
         Ok(response) => {
-            println!("Photo was uploaded {:?}", response);
+            println!("Photo was uploaded {response:?}");
         }
         Err(error) => {
-            eprintln!("Failed to upload photo: {:?}", error);
+            eprintln!("Failed to upload photo: {error:?}");
         }
     }
 }

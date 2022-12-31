@@ -23,7 +23,7 @@ pub struct AsyncApi {
 impl AsyncApi {
     /// Create a new `AsyncApi`. You can use `AsyncApi::builder()` for more options.
     pub fn new(api_key: &str) -> Self {
-        let api_url = format!("{}{}", super::BASE_API_URL, api_key);
+        let api_url = format!("{}{api_key}", super::BASE_API_URL);
         Self::builder().api_url(api_url).build()
     }
 
@@ -35,7 +35,7 @@ impl AsyncApi {
     pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
         params: &T,
     ) -> Result<String, Error> {
-        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{:?} : {:?}", e, params)))
+        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
     }
 
     pub async fn decode_response<T: serde::de::DeserializeOwned>(
@@ -53,7 +53,7 @@ impl AsyncApi {
                 Err(Error::Api(error_response))
             }
             Err(e) => {
-                let err = Error::Decode(format!("Failed to decode response: {:?}", e));
+                let err = Error::Decode(format!("Failed to decode response: {e:?}"));
                 Err(err)
             }
         }
@@ -66,7 +66,7 @@ impl AsyncApi {
             Ok(result) => Ok(result),
 
             Err(e) => {
-                let err = Error::Decode(format!("{:?} : {:?}", e, body));
+                let err = Error::Decode(format!("{e:?} : {body:?}"));
                 Err(err)
             }
         }
@@ -105,7 +105,7 @@ impl AsyncTelegramApi for AsyncApi {
         method: &str,
         params: Option<T1>,
     ) -> Result<T2, Self::Error> {
-        let url = format!("{}/{}", self.api_url, method);
+        let url = format!("{}/{method}", self.api_url);
 
         let mut prepared_request = self
             .client
@@ -168,7 +168,7 @@ impl AsyncTelegramApi for AsyncApi {
             form = form.part(parameter_name, part);
         }
 
-        let url = format!("{}/{}", self.api_url, method);
+        let url = format!("{}/{method}", self.api_url);
 
         let response = self.client.post(url).multipart(form).send().await?;
         let parsed_response: T2 = Self::decode_response(response).await?;
