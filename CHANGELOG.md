@@ -1,3 +1,17 @@
+## 0.22.0 (2022-12-31)
+
+### [Bot API 6.4](https://core.telegram.org/bots/api#december-30-2022) - [#94](https://github.com/ayrat555/frankenstein/pull/94)
+  * Added the field `is_persistent` to the struct `ReplyKeyboardMarkup`, allowing to control when the keyboard is shown.
+  * Added the parameter `has_spoiler` to the methods `send_photo`, `send_video`, and `send_animation`.
+  * Added the field `has_spoiler` to the structs `InputMediaPhoto`, `InputMediaVideo`, and `InputMediaAnimation`.
+  * Added the field `has_media_spoiler` to the struct `Message`.
+  * The parameters `name` and `icon_custom_emoji_id` of the method `edit_forum_topic` are now optional. If they are omitted, the existing values are kept.
+  * Added the structs `ForumTopicEdited`, `GeneralForumTopicHidden`, `GeneralForumTopicUnhidden`, and `WriteAccessAllowed` and the fields `forum_topic_edited`, `general_forum_topic_hidden`, `general_forum_topic_unhidden`, and `write_access_allowed` to the struct `Message`.
+  * Added the methods `edit_general_forum_topic`, `close_general_forum_topic`, `reopen_general_forum_topic`, `hide_general_forum_topic`, `unhide_general_forum_topic` for managing the General topic in forums.
+  * Added the parameter `message_thread_id` to the method `send_chat_action` for sending chat actions to a specific message thread or a forum topic.
+  * Added the field `has_hidden_members` to the struct `Chat`. Note that the method `get_chat_member` is only guaranteed to work if the bot is an administrator in the chat.
+  * Added the field `has_aggressive_anti_spam_enabled` to the struct `Chat`.
+
 ## 0.21.0 (2022-10-06)
 
 ### [Bot API 6.3](https://core.telegram.org/bots/api#november-5-2022) - [#91](https://github.com/ayrat555/frankenstein/pull/91)
