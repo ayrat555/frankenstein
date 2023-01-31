@@ -150,14 +150,14 @@ impl AsyncTelegramApi for AsyncApi {
             .collect();
 
         let mut form = multipart::Form::new();
-        for (key, val) in json_struct.as_object().unwrap().iter() {
+        for (key, val) in json_struct.as_object().unwrap() {
             if !file_keys.contains(&key.as_str()) {
                 let val = match val {
-                    &Value::String(ref val) => val.to_string(),
+                    Value::String(val) => val.to_string(),
                     other => other.to_string(),
                 };
 
-                form = form.text(key.clone(), val.clone());
+                form = form.text(key.clone(), val);
             }
         }
 
