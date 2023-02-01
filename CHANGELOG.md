@@ -1,3 +1,8 @@
+## 0.22.1 (2023-02-01)
+
+  * Improve code style - [#96](https://github.com/ayrat555/frankenstein/pull/96)
+  * Update typed-builder requirement from 0.11 to 0.12 - [#95](https://github.com/ayrat555/frankenstein/pull/95)
+
 ## 0.22.0 (2022-12-31)
 
 ### [Bot API 6.4](https://core.telegram.org/bots/api#december-30-2022) - [#94](https://github.com/ayrat555/frankenstein/pull/94)
