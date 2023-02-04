@@ -1203,6 +1203,10 @@ pub struct RestrictChatMemberParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub use_independent_chat_permissions: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub until_date: Option<u64>,
 }
 
@@ -1295,6 +1299,10 @@ pub struct SetChatPermissionsParams {
     pub chat_id: ChatId,
 
     pub permissions: ChatPermissions,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub use_independent_chat_permissions: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
