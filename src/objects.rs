@@ -1221,19 +1221,15 @@ pub struct GeneralForumTopicUnhidden {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UserShared {
-    #[builder(setter(into))]
     pub request_id: i32,
 
-    #[builder(setter(into))]
     pub user_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatShared {
-    #[builder(setter(into))]
     pub request_id: i32,
 
-    #[builder(setter(into))]
     pub user_id: u64,
 }
 
@@ -1333,7 +1329,6 @@ pub struct KeyboardButton {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct KeyboardButtonRequestUser {
-    #[builder(setter(into))]
     pub request_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1347,7 +1342,6 @@ pub struct KeyboardButtonRequestUser {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct KeyboardButtonRequestChat {
-    #[builder(setter(into))]
     pub request_id: i32,
 
     pub chat_is_channel: bool,
