@@ -237,9 +237,32 @@ pub struct ChatMemberMember {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatMemberRestricted {
+    #[builder(setter(into))]
+    pub status: String,
+
     pub user: User,
 
     pub is_member: bool,
+
+    pub can_send_messages: bool,
+
+    pub can_send_audios: bool,
+
+    pub can_send_documents: bool,
+
+    pub can_send_photos: bool,
+
+    pub can_send_videos: bool,
+
+    pub can_send_video_notes: bool,
+
+    pub can_send_voice_notes: bool,
+
+    pub can_send_polls: bool,
+
+    pub can_send_other_messages: bool,
+
+    pub can_add_web_page_previews: bool,
 
     pub can_change_info: bool,
 
@@ -248,16 +271,6 @@ pub struct ChatMemberRestricted {
     pub can_pin_messages: bool,
 
     pub can_manage_topics: bool,
-
-    pub can_send_messages: bool,
-
-    pub can_send_media_messages: bool,
-
-    pub can_send_polls: bool,
-
-    pub can_send_other_messages: bool,
-
-    pub can_add_web_page_previews: bool,
 
     pub until_date: u64,
 }
@@ -737,6 +750,14 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub user_shared: Option<Box<UserShared>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_shared: Option<Box<ChatShared>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub connected_website: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1198,6 +1219,20 @@ pub struct GeneralForumTopicHidden {}
 pub struct GeneralForumTopicUnhidden {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct UserShared {
+    pub request_id: i32,
+
+    pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatShared {
+    pub request_id: i32,
+
+    pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct WriteAccessAllowed {}
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1268,6 +1303,14 @@ pub struct KeyboardButton {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub request_user: Option<KeyboardButtonRequestUser>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_chat: Option<KeyboardButtonRequestChat>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub request_contact: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1281,6 +1324,50 @@ pub struct KeyboardButton {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub web_app: Option<WebAppInfo>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct KeyboardButtonRequestUser {
+    pub request_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user_is_bot: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user_is_premium: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct KeyboardButtonRequestChat {
+    pub request_id: i32,
+
+    pub chat_is_channel: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_is_forum: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_has_username: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_is_created: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user_administrator_rights: Option<ChatAdministratorRights>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub bot_administrator_rights: Option<ChatAdministratorRights>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub bot_is_member: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1469,6 +1556,8 @@ pub struct ChatJoinRequest {
 
     pub from: User,
 
+    pub user_chat_id: u64,
+
     pub date: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1488,7 +1577,27 @@ pub struct ChatPermissions {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub can_send_media_messages: Option<bool>,
+    pub can_send_audios: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_send_documents: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_send_photos: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_send_videos: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_send_video_notes: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_send_voice_notes: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

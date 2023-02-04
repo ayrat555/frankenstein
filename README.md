@@ -6,7 +6,7 @@
 
 Telegram bot API client for Rust.
 
-It's a complete wrapper for Telegram bot API and it's up to date with version 6.4 of the API.
+It's a complete wrapper for Telegram bot API and it's up to date with version 6.5 of the API.
 
 Frankenstein data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method params.
 
@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.22"
+frankenstein = "0.23"
 ```
 
 ## Features
@@ -35,13 +35,13 @@ frankenstein = "0.22"
 To use the async client add the following line to your `Cargo.toml` file:
 
 ```toml
-frankenstein = { version = "0.22", default-features = false, features = ["async-http-client"] }
+frankenstein = { version = "0.23", default-features = false, features = ["async-http-client"] }
 ```
 
 You can also disable all features:
 
 ```toml
-frankenstein = { version = "0.22", default-features = false }
+frankenstein = { version = "0.23", default-features = false }
 ```
 
 In this case the crate will ship only with telegram types
@@ -195,7 +195,7 @@ AsyncApi::builder().api_url(api_url).client(client).build()
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.22.1/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.23.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 
@@ -213,7 +213,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.22", default-features = false, features = ["telegram-trait"] }
+frankenstein = { version = "0.23", default-features = false, features = ["telegram-trait"] }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:

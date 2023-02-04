@@ -1,3 +1,16 @@
+# Changelog
+
+## 0.23.0 (2023-02-04)
+
+### [Bot API 6.5](https://core.telegram.org/bots/api#february-3-2023) - [#97](https://github.com/ayrat555/frankenstein/pull/97)
+
+  * Added the struct `KeyboardButtonRequestUser` and the field `request_user` to the struct `KeyboardButton`.
+  * Added the struct `KeyboardButtonRequestChat` and the field `request_chat` to the struct `KeyboardButton`.
+  * Added the structs `UserShared`, `ChatShared` and the fields `user_shared`, and `chat_shared` to the struct `Message`.
+  * Replaced the fields `can_send_media_messages` in the structs `ChatMemberRestricted` and `ChatPermissions` with separate fields `can_send_audios`, `can_send_documents`, `can_send_photos`, `can_send_videos`, `can_send_video_notes`, and `can_send_voice_notes` for different media types.
+  * Added the parameter `use_independent_chat_permissions` to the structs `RestrictChatMemberParams` and `SetChatPermissionsParams`.
+  * Added the field `user_chat_id` to the struct `ChatJoinRequest`.
+
 ## 0.22.1 (2023-02-01)
 
   * Improve code style - [#96](https://github.com/ayrat555/frankenstein/pull/96)
