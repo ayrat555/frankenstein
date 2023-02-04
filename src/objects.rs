@@ -272,7 +272,6 @@ pub struct ChatMemberRestricted {
 
     pub can_manage_topics: bool,
 
-    #[builder(setter(into))]
     pub until_date: u64,
 }
 
