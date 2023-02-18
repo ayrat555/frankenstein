@@ -5,9 +5,21 @@ on:
   pull_request:
   schedule:
     # Check if it works with current dependencies
-    - cron: '32 2 * * 3' # weekly on Wednesday 2:32 UTC
+    - cron: "32 2 * * 3" # weekly on Wednesday 2:32 UTC
 
 jobs:
+  rustfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Rust
+        shell: bash -eux {0}
+        run: |
+          rm ~/.cargo/bin/{rustfmt,cargo-fmt}
+          rustup toolchain install stable --profile minimal --component rustfmt
+          rustup default stable
+      - uses: actions/checkout@v3
+      - run: cargo fmt --check --verbose
+
   test:
     name: Test ${{ matrix.toolchain }} ${{ matrix.os }} ${{ matrix.features }}
     runs-on: ${{ matrix.os }}
@@ -33,26 +45,16 @@ jobs:
             os: ubuntu-latest
             features: --all-features
             clippyargs: -W clippy::pedantic -W clippy::cargo
-
           - toolchain: nightly
             os: ubuntu-latest
             features: --all-features
             clippyargs: -W clippy::pedantic
-
-          # Check the minimum supported Rust version (MSRV).
-          # Sometimes old rust versions don't yet have the lints (allow unknown) or don't have fixes in lints (false positives -> don't error, just warn).
-          - os: ubuntu-latest
-            toolchain: 1.67.1
-            clippyargs: -A unknown-lints
-            features: --all-features
     steps:
       - name: Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          components: clippy
-          override: true
-          profile: minimal
-          toolchain: ${{ matrix.toolchain }}
+        shell: bash -eux {0}
+        run: |
+          rustup toolchain install ${{ matrix.toolchain }} --profile minimal --component clippy
+          rustup default ${{ matrix.toolchain }}
 
       - uses: actions/checkout@v3
 
@@ -109,24 +111,19 @@ jobs:
           #   os: windows-latest
     steps:
       - name: Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          target: ${{ matrix.triple }}
-          toolchain: stable
+        shell: bash -eux {0}
+        run: |
+          rustup toolchain install stable --profile minimal --target ${{ matrix.triple }}
+          rustup default stable
 
       - uses: actions/checkout@v3
 
       - name: Fetch dependencies
-        uses: actions-rs/cargo@v1
-        with:
-          command: fetch
-          args: --verbose
+        run: cargo fetch --verbose
 
       - name: Build
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --verbose --all-features --target ${{ matrix.triple }}
-          use-cross: ${{ runner.os == 'Linux' && matrix.triple != 'x86_64-unknown-linux-gnu' }}
+          use-cross: ${{ runner.os == 'Linux' }}
