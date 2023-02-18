@@ -192,7 +192,9 @@ mod async_tests {
             .chat_id(275808073)
             .text("Hello!")
             .build();
-        let _m = mockito::mock("POST", "/sendMessage")
+        let mut server = mockito::Server::new();
+        let _m = server
+            .mock("POST", "/sendMessage")
             .with_status(200)
             .with_body(response_string)
             .create();
@@ -212,7 +214,9 @@ mod async_tests {
             .chat_id(1)
             .text("Hello!")
             .build();
-        let _m = mockito::mock("POST", "/sendMessage")
+        let mut server = mockito::Server::new();
+        let _m = server
+            .mock("POST", "/sendMessage")
             .with_status(400)
             .with_body(response_string)
             .create();
