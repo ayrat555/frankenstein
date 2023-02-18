@@ -42,7 +42,7 @@ jobs:
           # Check the minimum supported Rust version (MSRV).
           # Sometimes old rust versions don't yet have the lints (allow unknown) or don't have fixes in lints (false positives -> don't error, just warn).
           - os: ubuntu-latest
-            toolchain: 1.60.0
+            toolchain: 1.67.1
             clippyargs: -A unknown-lints
             features: --all-features
     steps:
