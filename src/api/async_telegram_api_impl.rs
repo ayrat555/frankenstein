@@ -192,12 +192,13 @@ mod async_tests {
             .chat_id(275808073)
             .text("Hello!")
             .build();
-        let mut server = mockito::Server::new();
+        let mut server = mockito::Server::new_async().await;
         let _m = server
             .mock("POST", "/sendMessage")
             .with_status(200)
             .with_body(response_string)
-            .create();
+            .create_async()
+            .await;
         let api = AsyncApi::new_url(server.url());
 
         let response = api.send_message(&params).await.unwrap();
@@ -214,12 +215,13 @@ mod async_tests {
             .chat_id(1)
             .text("Hello!")
             .build();
-        let mut server = mockito::Server::new();
+        let mut server = mockito::Server::new_async().await;
         let _m = server
             .mock("POST", "/sendMessage")
             .with_status(400)
             .with_body(response_string)
-            .create();
+            .create_async()
+            .await;
         let api = AsyncApi::new_url(server.url());
 
         if let Err(Error::Api(ErrorResponse {
