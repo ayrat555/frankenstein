@@ -13,6 +13,7 @@ use crate::objects::{
     PassportElementErrorSelfie, PassportElementErrorTranslationFile,
     PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
     ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
+    WebAppInfo,
 };
 use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
@@ -1619,6 +1620,24 @@ pub struct SetMyCommandsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetMyNameParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetMyNameParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyDescriptionParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1993,11 +2012,21 @@ pub struct AnswerInlineQueryParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub switch_pm_text: Option<String>,
+    pub button: Option<InlineQueryResultsButton>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct InlineQueryResultsButton {
+    #[builder(setter(into))]
+    pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub switch_pm_parameter: Option<String>,
+    pub web_app: Option<WebAppInfo>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub start_parameter: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

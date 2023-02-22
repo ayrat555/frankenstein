@@ -46,6 +46,7 @@ use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
 use crate::api_params::GetMyDefaultAdministratorRightsParams;
 use crate::api_params::GetMyDescriptionParams;
+use crate::api_params::GetMyNameParams;
 use crate::api_params::GetMyShortDescriptionParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
@@ -90,6 +91,7 @@ use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetMyDescriptionParams;
+use crate::api_params::SetMyNameParams;
 use crate::api_params::SetMyShortDescriptionParams;
 use crate::api_params::SetStickerEmojiListParams;
 use crate::api_params::SetStickerKeywordsParams;
@@ -108,6 +110,7 @@ use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
 use crate::objects::BotDescription;
+use crate::objects::BotName;
 use crate::objects::BotShortDescription;
 use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
@@ -733,6 +736,13 @@ pub trait TelegramApi {
         self.request("answerCallbackQuery", Some(params))
     }
 
+    fn get_my_commands(
+        &self,
+        params: &GetMyCommandsParams,
+    ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
+        self.request("getMyCommands", Some(params))
+    }
+
     fn set_my_commands(
         &self,
         params: &SetMyCommandsParams,
@@ -740,11 +750,22 @@ pub trait TelegramApi {
         self.request("setMyCommands", Some(params))
     }
 
-    fn get_my_commands(
+    fn delete_my_commands(
         &self,
-        params: &GetMyCommandsParams,
-    ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
-        self.request("getMyCommands", Some(params))
+        params: &DeleteMyCommandsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteMyCommands", Some(params))
+    }
+
+    fn set_my_name(&self, params: &SetMyNameParams) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyName", Some(params))
+    }
+
+    fn get_my_name(
+        &self,
+        params: &GetMyNameParams,
+    ) -> Result<MethodResponse<BotName>, Self::Error> {
+        self.request("getMyName", Some(params))
     }
 
     fn set_my_description(
@@ -773,13 +794,6 @@ pub trait TelegramApi {
         params: &GetMyShortDescriptionParams,
     ) -> Result<MethodResponse<BotShortDescription>, Self::Error> {
         self.request("getMyShortDescription", Some(params))
-    }
-
-    fn delete_my_commands(
-        &self,
-        params: &DeleteMyCommandsParams,
-    ) -> Result<MethodResponse<bool>, Self::Error> {
-        self.request("deleteMyCommands", Some(params))
     }
 
     fn answer_inline_query(
