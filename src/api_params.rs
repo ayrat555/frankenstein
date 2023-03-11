@@ -7,12 +7,12 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, LabeledPrice, MaskPosition, MenuButton,
-    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, MaskPosition,
+    MenuButton, MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
     PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
     PassportElementErrorSelfie, PassportElementErrorTranslationFile,
     PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
-    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerType,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
 };
 use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
@@ -175,34 +175,23 @@ pub enum ChatAction {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "lowercase")]
 pub enum Media {
-    #[serde(rename = "audio")]
     Audio(InputMediaAudio),
-    #[serde(rename = "document")]
     Document(InputMediaDocument),
-    #[serde(rename = "photo")]
     Photo(InputMediaPhoto),
-    #[serde(rename = "video")]
     Video(InputMediaVideo),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum BotCommandScope {
-    #[serde(rename = "default")]
     Default,
-    #[serde(rename = "all_private_chats")]
     AllPrivateChats,
-    #[serde(rename = "all_group_chats")]
     AllGroupChats,
-    #[serde(rename = "all_chat_administrators")]
     AllChatAdministrators,
-    #[serde(rename = "chat")]
     Chat(BotCommandScopeChat),
-    #[serde(rename = "chat_administrators")]
     ChatAdministrators(BotCommandScopeChatAdministrators),
-    #[serde(rename = "chat_member")]
     ChatMember(BotCommandScopeChatMember),
 }
 
@@ -223,6 +212,18 @@ pub struct BotCommandScopeChatMember {
     #[builder(setter(into))]
     pub chat_id: ChatId,
     pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BotDescription {
+    #[builder(setter(into))]
+    pub description: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BotShortDescription {
+    #[builder(setter(into))]
+    pub short_description: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1630,6 +1631,42 @@ pub struct SetMyCommandsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetMyDescriptionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub description: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetMyDescriptionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetMyShortDescriptionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub short_description: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetMyShortDescriptionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub language_code: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GetMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1791,6 +1828,10 @@ pub struct SendStickerParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub emoji: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1833,34 +1874,17 @@ pub struct CreateNewStickerSetParams {
     #[builder(setter(into))]
     pub title: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub png_sticker: Option<File>,
+    pub stickers: Vec<InputSticker>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub tgs_sticker: Option<InputFile>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub webm_sticker: Option<InputFile>,
+    pub sticker_format: StickerFormat,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option))]
     pub sticker_type: Option<StickerType>,
 
-    #[builder(setter(into))]
-    pub emojis: String,
-
-    #[doc(hidden)]
-    #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub contains_masks: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub mask_position: Option<MaskPosition>,
+    #[builder(setter(into, strip_option))]
+    pub needs_repainting: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

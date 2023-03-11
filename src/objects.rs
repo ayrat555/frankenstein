@@ -5,13 +5,19 @@ use typed_builder::TypedBuilder as Builder;
 use crate::ParseMode;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
 pub enum StickerType {
-    #[serde(rename = "regular")]
     Regular,
-    #[serde(rename = "mask")]
     Mask,
-    #[serde(rename = "custom_emoji")]
     CustomEmoji,
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum StickerFormat {
+    Static,
+    Animated,
+    Video,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -25,19 +31,13 @@ pub enum InputMessageContent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "status")]
+#[serde(tag = "status", rename_all = "lowercase")]
 pub enum ChatMember {
-    #[serde(rename = "creator")]
     Owner(ChatMemberOwner),
-    #[serde(rename = "administrator")]
     Administrator(ChatMemberAdministrator),
-    #[serde(rename = "member")]
     Member(ChatMemberMember),
-    #[serde(rename = "restricted")]
     Restricted(ChatMemberRestricted),
-    #[serde(rename = "left")]
     Left(ChatMemberLeft),
-    #[serde(rename = "kicked")]
     Banned(ChatMemberBanned),
 }
 
@@ -158,13 +158,10 @@ pub enum PassportElementErrorTranslationFileType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum MenuButton {
-    #[serde(rename = "commands")]
     Commands,
-    #[serde(rename = "web_app")]
     WebApp(MenuButtonWebApp),
-    #[serde(rename = "default")]
     Default,
 }
 
@@ -1754,6 +1751,20 @@ pub struct MaskPosition {
     pub y_shift: f64,
 
     pub scale: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InputSticker {
+    pub sticker: File,
+    pub emoji_list: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub mask_position: Option<MaskPosition>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub keywords: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

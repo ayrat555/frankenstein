@@ -9,6 +9,8 @@ use crate::api_params::AnswerWebAppQueryParams;
 use crate::api_params::ApproveChatJoinRequestParams;
 use crate::api_params::BanChatMemberParams;
 use crate::api_params::BanChatSenderChatParams;
+use crate::api_params::BotDescription;
+use crate::api_params::BotShortDescription;
 use crate::api_params::CloseForumTopicParams;
 use crate::api_params::CloseGeneralForumTopicParams;
 use crate::api_params::CopyMessageParams;
@@ -44,6 +46,8 @@ use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
 use crate::api_params::GetMyDefaultAdministratorRightsParams;
+use crate::api_params::GetMyDescriptionParams;
+use crate::api_params::GetMyShortDescriptionParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
@@ -85,6 +89,8 @@ use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
+use crate::api_params::SetMyDescriptionParams;
+use crate::api_params::SetMyShortDescriptionParams;
 use crate::api_params::SetStickerPositionInSetParams;
 use crate::api_params::SetStickerSetThumbParams;
 use crate::api_params::SetWebhookParams;
@@ -732,6 +738,34 @@ pub trait TelegramApi {
         params: &GetMyCommandsParams,
     ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
         self.request("getMyCommands", Some(params))
+    }
+
+    fn set_my_description(
+        &self,
+        params: &SetMyDescriptionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyDescription", Some(params))
+    }
+
+    fn get_my_description(
+        &self,
+        params: &GetMyDescriptionParams,
+    ) -> Result<MethodResponse<BotDescription>, Self::Error> {
+        self.request("getMyDescription", Some(params))
+    }
+
+    fn set_my_short_description(
+        &self,
+        params: &SetMyShortDescriptionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyShortDescription", Some(params))
+    }
+
+    fn get_my_short_description(
+        &self,
+        params: &GetMyShortDescriptionParams,
+    ) -> Result<MethodResponse<BotShortDescription>, Self::Error> {
+        self.request("getMyShortDescription", Some(params))
     }
 
     fn delete_my_commands(
