@@ -489,7 +489,7 @@ pub struct SendAudioParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -526,7 +526,7 @@ pub struct SendDocumentParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -591,7 +591,7 @@ pub struct SendVideoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -660,7 +660,7 @@ pub struct SendAnimationParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -770,7 +770,7 @@ pub struct SendVideoNoteParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

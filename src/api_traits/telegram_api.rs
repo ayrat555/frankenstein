@@ -208,8 +208,8 @@ pub trait TelegramApi {
             files.push(("audio", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -239,12 +239,12 @@ pub trait TelegramApi {
                         files.push((name, input_file.path.clone()));
                     };
 
-                    if let Some(File::InputFile(input_file)) = &audio.thumb {
+                    if let Some(File::InputFile(input_file)) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
-                        new_audio.thumb = Some(File::String(attach_name));
+                        new_audio.thumbnail = Some(File::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
                     };
@@ -296,12 +296,12 @@ pub trait TelegramApi {
                         files.push((name, input_file.path.clone()));
                     };
 
-                    if let Some(File::InputFile(input_file)) = &video.thumb {
+                    if let Some(File::InputFile(input_file)) = &video.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
-                        new_video.thumb = Some(File::String(attach_name));
+                        new_video.thumbnail = Some(File::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
                     };
@@ -333,8 +333,8 @@ pub trait TelegramApi {
             files.push(("document", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -348,8 +348,8 @@ pub trait TelegramApi {
             files.push(("video", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -366,8 +366,8 @@ pub trait TelegramApi {
             files.push(("animation", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -395,8 +395,8 @@ pub trait TelegramApi {
             files.push(("video_note", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -823,11 +823,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &animation.thumb {
+                if let Some(File::InputFile(input_file)) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_animation.thumb = Some(File::String(attach_name));
+                    new_animation.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -846,11 +846,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &document.thumb {
+                if let Some(File::InputFile(input_file)) = &document.thumbnail {
                     let name = "document_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_document.thumb = Some(File::String(attach_name));
+                    new_document.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -869,11 +869,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &audio.thumb {
+                if let Some(File::InputFile(input_file)) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_audio.thumb = Some(File::String(attach_name));
+                    new_audio.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -906,11 +906,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &video.thumb {
+                if let Some(File::InputFile(input_file)) = &video.thumbnail {
                     let name = "video_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_video.thumb = Some(File::String(attach_name));
+                    new_video.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
