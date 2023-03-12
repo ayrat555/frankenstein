@@ -93,7 +93,7 @@ use crate::api_params::SetStickerEmojiListParams;
 use crate::api_params::SetStickerKeywordsParams;
 use crate::api_params::SetStickerMaskPositionParams;
 use crate::api_params::SetStickerPositionInSetParams;
-use crate::api_params::SetStickerSetThumbParams;
+use crate::api_params::SetStickerSetThumbnailParams;
 use crate::api_params::SetStickerSetTitleParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
@@ -1101,13 +1101,13 @@ pub trait AsyncTelegramApi {
 
     async fn set_sticker_set_thumb(
         &self,
-        params: &SetStickerSetThumbParams,
+        params: &SetStickerSetThumbnailParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let method_name = "setStickerSetThumb";
+        let method_name = "setStickerSetThumbnail";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)

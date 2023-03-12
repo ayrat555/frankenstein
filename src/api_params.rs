@@ -1971,7 +1971,7 @@ pub struct SetStickerSetTitleParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct SetStickerSetThumbParams {
+pub struct SetStickerSetThumbnailParams {
     #[builder(setter(into))]
     pub name: String,
 
@@ -1979,7 +1979,7 @@ pub struct SetStickerSetThumbParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2348,7 +2348,7 @@ pub struct InputMediaVideo {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2390,7 +2390,7 @@ pub struct InputMediaAnimation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2428,7 +2428,7 @@ pub struct InputMediaAudio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2462,7 +2462,7 @@ pub struct InputMediaDocument {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<File>,
+    pub thumbnail: Option<File>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

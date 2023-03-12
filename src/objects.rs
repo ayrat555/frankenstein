@@ -882,7 +882,7 @@ pub struct Animation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -929,7 +929,7 @@ pub struct Audio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -942,7 +942,7 @@ pub struct Document {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -973,7 +973,7 @@ pub struct Video {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1002,7 +1002,7 @@ pub struct VideoNote {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1688,7 +1688,7 @@ pub struct Sticker {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1742,7 +1742,7 @@ pub struct StickerSet {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
