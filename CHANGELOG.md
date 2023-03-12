@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.24.0 (2023-03-12)
+
+### [Bot API 6.6](https://core.telegram.org/bots/api#march-9-2023) - [#102](https://github.com/ayrat555/frankenstein/pull/102)
+
 ## 0.23.0 (2023-02-04)
 
 ### [Bot API 6.5](https://core.telegram.org/bots/api#february-3-2023) - [#97](https://github.com/ayrat555/frankenstein/pull/97)
