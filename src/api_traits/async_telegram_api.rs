@@ -1066,7 +1066,7 @@ pub trait AsyncTelegramApi {
             .map(|(key, path)| (key.as_str(), path.clone()))
             .collect();
 
-        self.request_with_possible_form_data(method_name, params, files_with_str_names)
+        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
             .await
     }
 
