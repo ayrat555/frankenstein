@@ -1,6 +1,6 @@
 <p align="center"><img src="frankenstein_logo.png" alt="frankenstein" height="300px"></p>
 
-[![Crates.io][s1]][ci] [![docs page][docs-badge]][docs] ![test][ga-test] ![style][ga-style]
+[![Crates.io][s1]][ci] [![docs page][docs-badge]][docs] ![test][ga-test]
 
 # Frankenstein
 
