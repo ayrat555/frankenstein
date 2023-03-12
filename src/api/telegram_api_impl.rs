@@ -1034,7 +1034,7 @@ mod tests {
         let params = SendAudioParams::builder()
             .chat_id(275808073)
             .audio(file.clone())
-            .thumb(file)
+            .thumbnail(file)
             .build();
         let mut server = mockito::Server::new();
         let _m = server
