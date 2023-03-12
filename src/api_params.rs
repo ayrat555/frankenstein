@@ -1934,6 +1934,34 @@ pub struct DeleteStickerFromSetParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetStickerEmojiListParams {
+    #[builder(setter(into))]
+    pub sticker: String,
+
+    pub emoji_list: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetStickerKeywordsParams {
+    #[builder(setter(into))]
+    pub sticker: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub keywords: Option<Vec<String>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct SetStickerMaskPositionParams {
+    #[builder(setter(into))]
+    pub sticker: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub mask_position: Option<MaskPosition>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetStickerSetTitleParams {
     #[builder(setter(into))]
     pub name: String,
@@ -1962,6 +1990,12 @@ pub struct SetCustomEmojiStickerSetThumbnailParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub custom_emoji_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct DeleteStickerSetParams {
+    #[builder(setter(into))]
+    pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

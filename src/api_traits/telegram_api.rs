@@ -25,6 +25,7 @@ use crate::api_params::DeleteForumTopicParams;
 use crate::api_params::DeleteMessageParams;
 use crate::api_params::DeleteMyCommandsParams;
 use crate::api_params::DeleteStickerFromSetParams;
+use crate::api_params::DeleteStickerSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditForumTopicParams;
@@ -93,6 +94,9 @@ use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetMyDescriptionParams;
 use crate::api_params::SetMyShortDescriptionParams;
+use crate::api_params::SetStickerEmojiListParams;
+use crate::api_params::SetStickerKeywordsParams;
+use crate::api_params::SetStickerMaskPositionParams;
 use crate::api_params::SetStickerPositionInSetParams;
 use crate::api_params::SetStickerSetThumbParams;
 use crate::api_params::SetStickerSetTitleParams;
@@ -1049,6 +1053,27 @@ pub trait TelegramApi {
         self.request("deleteStickerFromSet", Some(params))
     }
 
+    fn set_sticker_emoji_list(
+        &self,
+        params: &SetStickerEmojiListParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerEmojiList", Some(params))
+    }
+
+    fn set_sticker_keywords(
+        &self,
+        params: &SetStickerKeywordsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerKeywords", Some(params))
+    }
+
+    fn set_sticker_mask_position(
+        &self,
+        params: &SetStickerMaskPositionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerMaskPosition", Some(params))
+    }
+
     fn set_sticker_set_title(
         &self,
         params: &SetStickerSetTitleParams,
@@ -1075,6 +1100,13 @@ pub trait TelegramApi {
         params: &SetCustomEmojiStickerSetThumbnailParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("setCustomEmojiStickerSetThumbnail", Some(params))
+    }
+
+    fn delete_sticker_set(
+        &self,
+        params: &DeleteStickerSetParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteStickerSet", Some(params))
     }
 
     fn send_invoice(
