@@ -1712,6 +1712,10 @@ pub struct Sticker {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub needs_repainting: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub file_size: Option<u64>,
 }
 

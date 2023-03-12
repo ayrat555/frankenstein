@@ -1861,7 +1861,9 @@ pub struct GetStickerSetParams {
 pub struct UploadStickerFileParams {
     pub user_id: u64,
 
-    pub png_sticker: InputFile,
+    pub sticker: InputFile,
+
+    pub sticker_format: StickerFormat,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1914,24 +1916,7 @@ pub struct AddStickerToSetParams {
     #[builder(setter(into))]
     pub name: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub png_sticker: Option<File>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub tgs_sticker: Option<InputFile>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub webm_sticker: Option<InputFile>,
-
-    #[builder(setter(into))]
-    pub emojis: String,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub mask_position: Option<MaskPosition>,
+    pub sticker: InputSticker,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1949,6 +1934,15 @@ pub struct DeleteStickerFromSetParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetStickerSetTitleParams {
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[builder(setter(into))]
+    pub title: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetStickerSetThumbParams {
     #[builder(setter(into))]
     pub name: String,
@@ -1958,6 +1952,16 @@ pub struct SetStickerSetThumbParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub thumb: Option<File>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetCustomEmojiStickerSetThumbnailParams {
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub custom_emoji_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

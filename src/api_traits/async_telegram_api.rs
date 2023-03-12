@@ -83,11 +83,13 @@ use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetChatPhotoParams;
 use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
+use crate::api_params::SetCustomEmojiStickerSetThumbnailParams;
 use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetStickerPositionInSetParams;
 use crate::api_params::SetStickerSetThumbParams;
+use crate::api_params::SetStickerSetTitleParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
@@ -982,12 +984,12 @@ pub trait AsyncTelegramApi {
         &self,
         params: &UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = &params.png_sticker;
+        let sticker = &params.sticker;
 
         self.request_with_form_data(
             "uploadStickerFile",
             params,
-            vec![("png_sticker", sticker.path.clone())],
+            vec![("sticker", sticker.path.clone())],
         )
         .await
     }
@@ -1042,12 +1044,8 @@ pub trait AsyncTelegramApi {
         let method_name = "addStickerToSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = &params.png_sticker {
-            files.push(("png_sticker", input_file.path.clone()));
-        }
-
-        if let Some(input_file) = &params.tgs_sticker {
-            files.push(("tgs_sticker", input_file.path.clone()));
+        if let File::InputFile(input_file) = &params.sticker.sticker {
+            files.push(("sticker", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -1068,6 +1066,13 @@ pub trait AsyncTelegramApi {
         self.request("deleteStickerFromSet", Some(params)).await
     }
 
+    async fn set_sticker_set_title(
+        &self,
+        params: &SetStickerSetTitleParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerSetTitle", Some(params)).await
+    }
+
     async fn set_sticker_set_thumb(
         &self,
         params: &SetStickerSetThumbParams,
@@ -1080,6 +1085,14 @@ pub trait AsyncTelegramApi {
         }
 
         self.request_with_possible_form_data(method_name, params, files)
+            .await
+    }
+
+    async fn set_custom_emoji_sticker_set_thumbnail(
+        &self,
+        params: &SetCustomEmojiStickerSetThumbnailParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setCustomEmojiStickerSetThumbnail", Some(params))
             .await
     }
 
