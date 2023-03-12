@@ -33,7 +33,7 @@ pub enum InputMessageContent {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "status", rename_all = "lowercase")]
 pub enum ChatMember {
-    Owner(ChatMemberOwner),
+    Creator(ChatMemberOwner),
     Administrator(ChatMemberAdministrator),
     Member(ChatMemberMember),
     Restricted(ChatMemberRestricted),
