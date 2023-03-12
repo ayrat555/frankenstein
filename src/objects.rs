@@ -1,4 +1,5 @@
 #![allow(deprecated)]
+use super::api_params::File as InputFile;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
@@ -293,6 +294,18 @@ pub struct VideoChatScheduled {
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct CallbackGame {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BotDescription {
+    #[builder(setter(into))]
+    pub description: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BotShortDescription {
+    #[builder(setter(into))]
+    pub short_description: String,
+}
 
 /// Represents an incoming update from telegram.
 /// [Official documentation.](https://core.telegram.org/bots/api#update)
@@ -1717,6 +1730,20 @@ pub struct Sticker {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub file_size: Option<u64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InputSticker {
+    pub sticker: InputFile,
+    pub emoji_list: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub mask_position: Option<MaskPosition>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub keywords: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

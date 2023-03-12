@@ -51,7 +51,6 @@ use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::HideGeneralForumTopicParams;
 use crate::api_params::InputMedia;
-use crate::api_params::InputSticker;
 use crate::api_params::LeaveChatParams;
 use crate::api_params::Media;
 use crate::api_params::PinChatMessageParams;
@@ -89,6 +88,8 @@ use crate::api_params::SetCustomEmojiStickerSetThumbnailParams;
 use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
+use crate::api_params::SetMyDescriptionParams;
+use crate::api_params::SetMyShortDescriptionParams;
 use crate::api_params::SetStickerEmojiListParams;
 use crate::api_params::SetStickerKeywordsParams;
 use crate::api_params::SetStickerMaskPositionParams;
@@ -105,6 +106,8 @@ use crate::api_params::UnpinAllForumTopicMessagesParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
+use crate::objects::BotDescription;
+use crate::objects::BotShortDescription;
 use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatInviteLink;
@@ -112,6 +115,7 @@ use crate::objects::ChatMember;
 use crate::objects::File as FileObject;
 use crate::objects::ForumTopic;
 use crate::objects::GameHighScore;
+use crate::objects::InputSticker;
 use crate::objects::MenuButton;
 use crate::objects::Message;
 use crate::objects::MessageId;
@@ -784,6 +788,34 @@ pub trait AsyncTelegramApi {
         params: &GetMyCommandsParams,
     ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
         self.request("getMyCommands", Some(params)).await
+    }
+
+    async fn set_my_description(
+        &self,
+        params: &SetMyDescriptionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyDescription", Some(params)).await
+    }
+
+    async fn get_my_description(
+        &self,
+        params: &GetMyDescriptionParams,
+    ) -> Result<MethodResponse<BotDescription>, Self::Error> {
+        self.request("getMyDescription", Some(params)).await
+    }
+
+    async fn set_my_short_description(
+        &self,
+        params: &SetMyShortDescriptionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyShortDescription", Some(params)).await
+    }
+
+    async fn get_my_short_description(
+        &self,
+        params: &GetMyShortDescriptionParams,
+    ) -> Result<MethodResponse<BotShortDescription>, Self::Error> {
+        self.request("getMyShortDescription", Some(params)).await
     }
 
     async fn delete_my_commands(

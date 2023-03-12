@@ -7,8 +7,8 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, LabeledPrice, MaskPosition, MenuButton,
-    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, MaskPosition,
+    MenuButton, MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
     PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
     PassportElementErrorSelfie, PassportElementErrorTranslationFile,
     PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
@@ -212,18 +212,6 @@ pub struct BotCommandScopeChatMember {
     #[builder(setter(into))]
     pub chat_id: ChatId,
     pub user_id: u64,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct BotDescription {
-    #[builder(setter(into))]
-    pub description: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct BotShortDescription {
-    #[builder(setter(into))]
-    pub short_description: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1887,20 +1875,6 @@ pub struct CreateNewStickerSetParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option))]
     pub needs_repainting: Option<bool>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct InputSticker {
-    pub sticker: File,
-    pub emoji_list: Vec<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub mask_position: Option<MaskPosition>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub keywords: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
