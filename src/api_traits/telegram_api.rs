@@ -23,6 +23,7 @@ use crate::api_params::DeleteForumTopicParams;
 use crate::api_params::DeleteMessageParams;
 use crate::api_params::DeleteMyCommandsParams;
 use crate::api_params::DeleteStickerFromSetParams;
+use crate::api_params::DeleteStickerSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
 use crate::api_params::EditForumTopicParams;
@@ -44,6 +45,8 @@ use crate::api_params::GetFileParams;
 use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
 use crate::api_params::GetMyDefaultAdministratorRightsParams;
+use crate::api_params::GetMyDescriptionParams;
+use crate::api_params::GetMyShortDescriptionParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
@@ -82,11 +85,18 @@ use crate::api_params::SetChatPermissionsParams;
 use crate::api_params::SetChatPhotoParams;
 use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
+use crate::api_params::SetCustomEmojiStickerSetThumbnailParams;
 use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
+use crate::api_params::SetMyDescriptionParams;
+use crate::api_params::SetMyShortDescriptionParams;
+use crate::api_params::SetStickerEmojiListParams;
+use crate::api_params::SetStickerKeywordsParams;
+use crate::api_params::SetStickerMaskPositionParams;
 use crate::api_params::SetStickerPositionInSetParams;
-use crate::api_params::SetStickerSetThumbParams;
+use crate::api_params::SetStickerSetThumbnailParams;
+use crate::api_params::SetStickerSetTitleParams;
 use crate::api_params::SetWebhookParams;
 use crate::api_params::StopMessageLiveLocationParams;
 use crate::api_params::StopPollParams;
@@ -97,6 +107,8 @@ use crate::api_params::UnpinAllForumTopicMessagesParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
+use crate::objects::BotDescription;
+use crate::objects::BotShortDescription;
 use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatInviteLink;
@@ -104,6 +116,7 @@ use crate::objects::ChatMember;
 use crate::objects::File as FileObject;
 use crate::objects::ForumTopic;
 use crate::objects::GameHighScore;
+use crate::objects::InputSticker;
 use crate::objects::MenuButton;
 use crate::objects::Message;
 use crate::objects::MessageId;
@@ -195,8 +208,8 @@ pub trait TelegramApi {
             files.push(("audio", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -226,12 +239,12 @@ pub trait TelegramApi {
                         files.push((name, input_file.path.clone()));
                     };
 
-                    if let Some(File::InputFile(input_file)) = &audio.thumb {
+                    if let Some(File::InputFile(input_file)) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
-                        new_audio.thumb = Some(File::String(attach_name));
+                        new_audio.thumbnail = Some(File::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
                     };
@@ -283,12 +296,12 @@ pub trait TelegramApi {
                         files.push((name, input_file.path.clone()));
                     };
 
-                    if let Some(File::InputFile(input_file)) = &video.thumb {
+                    if let Some(File::InputFile(input_file)) = &video.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
-                        new_video.thumb = Some(File::String(attach_name));
+                        new_video.thumbnail = Some(File::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
                     };
@@ -320,8 +333,8 @@ pub trait TelegramApi {
             files.push(("document", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -335,8 +348,8 @@ pub trait TelegramApi {
             files.push(("video", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -353,8 +366,8 @@ pub trait TelegramApi {
             files.push(("animation", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -382,8 +395,8 @@ pub trait TelegramApi {
             files.push(("video_note", input_file.path.clone()));
         }
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -734,6 +747,34 @@ pub trait TelegramApi {
         self.request("getMyCommands", Some(params))
     }
 
+    fn set_my_description(
+        &self,
+        params: &SetMyDescriptionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyDescription", Some(params))
+    }
+
+    fn get_my_description(
+        &self,
+        params: &GetMyDescriptionParams,
+    ) -> Result<MethodResponse<BotDescription>, Self::Error> {
+        self.request("getMyDescription", Some(params))
+    }
+
+    fn set_my_short_description(
+        &self,
+        params: &SetMyShortDescriptionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyShortDescription", Some(params))
+    }
+
+    fn get_my_short_description(
+        &self,
+        params: &GetMyShortDescriptionParams,
+    ) -> Result<MethodResponse<BotShortDescription>, Self::Error> {
+        self.request("getMyShortDescription", Some(params))
+    }
+
     fn delete_my_commands(
         &self,
         params: &DeleteMyCommandsParams,
@@ -782,11 +823,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &animation.thumb {
+                if let Some(File::InputFile(input_file)) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_animation.thumb = Some(File::String(attach_name));
+                    new_animation.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -805,11 +846,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &document.thumb {
+                if let Some(File::InputFile(input_file)) = &document.thumbnail {
                     let name = "document_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_document.thumb = Some(File::String(attach_name));
+                    new_document.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -828,11 +869,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &audio.thumb {
+                if let Some(File::InputFile(input_file)) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_audio.thumb = Some(File::String(attach_name));
+                    new_audio.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -865,11 +906,11 @@ pub trait TelegramApi {
                     files.push((name, input_file.path.clone()));
                 };
 
-                if let Some(File::InputFile(input_file)) = &video.thumb {
+                if let Some(File::InputFile(input_file)) = &video.thumbnail {
                     let name = "video_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
-                    new_video.thumb = Some(File::String(attach_name));
+                    new_video.thumbnail = Some(File::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 };
@@ -932,12 +973,12 @@ pub trait TelegramApi {
         &self,
         params: &UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = &params.png_sticker;
+        let sticker = &params.sticker;
 
         self.request_with_form_data(
             "uploadStickerFile",
             params,
-            vec![("png_sticker", sticker.path.clone())],
+            vec![("sticker", sticker.path.clone())],
         )
     }
 
@@ -946,17 +987,35 @@ pub trait TelegramApi {
         params: &CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "createNewStickerSet";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut new_stickers: Vec<InputSticker> = vec![];
+        let mut files: Vec<(String, PathBuf)> = vec![];
+        let mut file_idx = 0;
 
-        if let Some(File::InputFile(input_file)) = &params.png_sticker {
-            files.push(("png_sticker", input_file.path.clone()));
+        for sticker in &params.stickers {
+            let mut new_sticker = sticker.clone();
+
+            if let File::InputFile(input_file) = &sticker.sticker {
+                let name = format!("file{file_idx}");
+                let attach_name = format!("attach://{name}");
+                file_idx += 1;
+
+                new_sticker.sticker = File::String(attach_name);
+
+                files.push((name, input_file.path.clone()));
+            };
+
+            new_stickers.push(new_sticker);
         }
 
-        if let Some(input_file) = &params.tgs_sticker {
-            files.push(("tgs_sticker", input_file.path.clone()));
-        }
+        let mut new_params = params.clone();
+        new_params.stickers = new_stickers;
 
-        self.request_with_possible_form_data(method_name, params, files)
+        let files_with_str_names: Vec<(&str, PathBuf)> = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+
+        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
     }
 
     fn get_custom_emoji_stickers(
@@ -973,12 +1032,8 @@ pub trait TelegramApi {
         let method_name = "addStickerToSet";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = &params.png_sticker {
-            files.push(("png_sticker", input_file.path.clone()));
-        }
-
-        if let Some(input_file) = &params.tgs_sticker {
-            files.push(("tgs_sticker", input_file.path.clone()));
+        if let File::InputFile(input_file) = &params.sticker.sticker {
+            files.push(("sticker", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -998,18 +1053,60 @@ pub trait TelegramApi {
         self.request("deleteStickerFromSet", Some(params))
     }
 
-    fn set_sticker_set_thumb(
+    fn set_sticker_emoji_list(
         &self,
-        params: &SetStickerSetThumbParams,
+        params: &SetStickerEmojiListParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let method_name = "setStickerSetThumb";
+        self.request("setStickerEmojiList", Some(params))
+    }
+
+    fn set_sticker_keywords(
+        &self,
+        params: &SetStickerKeywordsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerKeywords", Some(params))
+    }
+
+    fn set_sticker_mask_position(
+        &self,
+        params: &SetStickerMaskPositionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerMaskPosition", Some(params))
+    }
+
+    fn set_sticker_set_title(
+        &self,
+        params: &SetStickerSetTitleParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setStickerSetTitle", Some(params))
+    }
+
+    fn set_sticker_set_thumbnail(
+        &self,
+        params: &SetStickerSetThumbnailParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let method_name = "setStickerSetThumbnail";
         let mut files: Vec<(&str, PathBuf)> = vec![];
 
-        if let Some(File::InputFile(input_file)) = &params.thumb {
-            files.push(("thumb", input_file.path.clone()));
+        if let Some(File::InputFile(input_file)) = &params.thumbnail {
+            files.push(("thumbnail", input_file.path.clone()));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
+    }
+
+    fn set_custom_emoji_sticker_set_thumbnail(
+        &self,
+        params: &SetCustomEmojiStickerSetThumbnailParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setCustomEmojiStickerSetThumbnail", Some(params))
+    }
+
+    fn delete_sticker_set(
+        &self,
+        params: &DeleteStickerSetParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteStickerSet", Some(params))
     }
 
     fn send_invoice(

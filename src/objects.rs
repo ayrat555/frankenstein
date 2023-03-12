@@ -1,17 +1,24 @@
 #![allow(deprecated)]
+use super::api_params::File as InputFile;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
 use crate::ParseMode;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
 pub enum StickerType {
-    #[serde(rename = "regular")]
     Regular,
-    #[serde(rename = "mask")]
     Mask,
-    #[serde(rename = "custom_emoji")]
     CustomEmoji,
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum StickerFormat {
+    Static,
+    Animated,
+    Video,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -25,19 +32,13 @@ pub enum InputMessageContent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "status")]
+#[serde(tag = "status", rename_all = "lowercase")]
 pub enum ChatMember {
-    #[serde(rename = "creator")]
-    Owner(ChatMemberOwner),
-    #[serde(rename = "administrator")]
+    Creator(ChatMemberOwner),
     Administrator(ChatMemberAdministrator),
-    #[serde(rename = "member")]
     Member(ChatMemberMember),
-    #[serde(rename = "restricted")]
     Restricted(ChatMemberRestricted),
-    #[serde(rename = "left")]
     Left(ChatMemberLeft),
-    #[serde(rename = "kicked")]
     Banned(ChatMemberBanned),
 }
 
@@ -158,13 +159,10 @@ pub enum PassportElementErrorTranslationFileType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum MenuButton {
-    #[serde(rename = "commands")]
     Commands,
-    #[serde(rename = "web_app")]
     WebApp(MenuButtonWebApp),
-    #[serde(rename = "default")]
     Default,
 }
 
@@ -296,6 +294,18 @@ pub struct VideoChatScheduled {
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct CallbackGame {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BotDescription {
+    #[builder(setter(into))]
+    pub description: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BotShortDescription {
+    #[builder(setter(into))]
+    pub short_description: String,
+}
 
 /// Represents an incoming update from telegram.
 /// [Official documentation.](https://core.telegram.org/bots/api#update)
@@ -885,7 +895,7 @@ pub struct Animation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -932,7 +942,7 @@ pub struct Audio {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -945,7 +955,7 @@ pub struct Document {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -976,7 +986,7 @@ pub struct Video {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1005,7 +1015,7 @@ pub struct VideoNote {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1691,7 +1701,7 @@ pub struct Sticker {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1715,7 +1725,25 @@ pub struct Sticker {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub needs_repainting: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub file_size: Option<u64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InputSticker {
+    pub sticker: InputFile,
+    pub emoji_list: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub mask_position: Option<MaskPosition>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub keywords: Option<Vec<String>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1741,7 +1769,7 @@ pub struct StickerSet {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb: Option<PhotoSize>,
+    pub thumbnail: Option<PhotoSize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1806,15 +1834,15 @@ pub struct InlineQueryResultArticle {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1826,7 +1854,7 @@ pub struct InlineQueryResultPhoto {
     pub photo_url: String,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1886,11 +1914,11 @@ pub struct InlineQueryResultGif {
     pub gif_duration: Option<u32>,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_mime_type: Option<String>,
+    pub thumbnail_mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1938,11 +1966,11 @@ pub struct InlineQueryResultMpeg4Gif {
     pub mpeg4_duration: Option<u32>,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_mime_type: Option<String>,
+    pub thumbnail_mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1981,7 +2009,7 @@ pub struct InlineQueryResultVideo {
     pub mime_type: String,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[builder(setter(into))]
     pub title: String,
@@ -2139,15 +2167,15 @@ pub struct InlineQueryResultDocument {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2188,15 +2216,15 @@ pub struct InlineQueryResultLocation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2240,15 +2268,15 @@ pub struct InlineQueryResultVenue {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2280,15 +2308,15 @@ pub struct InlineQueryResultContact {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
