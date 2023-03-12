@@ -92,7 +92,6 @@ use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetMyDescriptionParams;
 use crate::api_params::SetMyShortDescriptionParams;
-use crate::api_params::SetMyShortDescriptionParams;
 use crate::api_params::SetStickerEmojiListParams;
 use crate::api_params::SetStickerKeywordsParams;
 use crate::api_params::SetStickerMaskPositionParams;
