@@ -1754,20 +1754,6 @@ pub struct MaskPosition {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct InputSticker {
-    pub sticker: File,
-    pub emoji_list: Vec<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub mask_position: Option<MaskPosition>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub keywords: Option<Vec<String>>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct InlineQuery {
     #[builder(setter(into))]
     pub id: String,

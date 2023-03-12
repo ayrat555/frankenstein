@@ -997,17 +997,35 @@ pub trait AsyncTelegramApi {
         params: &CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "createNewStickerSet";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut new_stickers: Vec<InputSticker> = vec![];
+        let mut files: Vec<(String, PathBuf)> = vec![];
+        let mut file_idx = 0;
 
-        if let Some(File::InputFile(input_file)) = &params.png_sticker {
-            files.push(("png_sticker", input_file.path.clone()));
+        for sticker in &params.stickers {
+            let mut new_sticker = sticker.clone();
+
+            if let File::InputFile(input_file) = &sticker.sticker {
+                let name = format!("file{file_idx}");
+                let attach_name = format!("attach://{name}");
+                file_idx += 1;
+
+                new_sticker.sticker = File::String(attach_name);
+
+                files.push((name, input_file.path.clone()));
+            };
+
+            new_stickers.push(new_sticker);
         }
 
-        if let Some(input_file) = &params.tgs_sticker {
-            files.push(("tgs_sticker", input_file.path.clone()));
-        }
+        let mut new_params = params.clone();
+        new_params.stickers = new_stickers;
 
-        self.request_with_possible_form_data(method_name, params, files)
+        let files_with_str_names: Vec<(&str, PathBuf)> = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+
+        self.request_with_possible_form_data(method_name, params, files_with_str_names)
             .await
     }
 
