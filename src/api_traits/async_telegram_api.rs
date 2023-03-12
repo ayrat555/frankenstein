@@ -50,6 +50,7 @@ use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::HideGeneralForumTopicParams;
 use crate::api_params::InputMedia;
+use crate::api_params::InputSticker;
 use crate::api_params::LeaveChatParams;
 use crate::api_params::Media;
 use crate::api_params::PinChatMessageParams;
