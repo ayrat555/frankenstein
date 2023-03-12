@@ -1807,15 +1807,15 @@ pub struct InlineQueryResultArticle {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1827,7 +1827,7 @@ pub struct InlineQueryResultPhoto {
     pub photo_url: String,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1887,11 +1887,11 @@ pub struct InlineQueryResultGif {
     pub gif_duration: Option<u32>,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_mime_type: Option<String>,
+    pub thumbnail_mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1939,11 +1939,11 @@ pub struct InlineQueryResultMpeg4Gif {
     pub mpeg4_duration: Option<u32>,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_mime_type: Option<String>,
+    pub thumbnail_mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1982,7 +1982,7 @@ pub struct InlineQueryResultVideo {
     pub mime_type: String,
 
     #[builder(setter(into))]
-    pub thumb_url: String,
+    pub thumbnail_url: String,
 
     #[builder(setter(into))]
     pub title: String,
@@ -2140,15 +2140,15 @@ pub struct InlineQueryResultDocument {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2189,15 +2189,15 @@ pub struct InlineQueryResultLocation {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2241,15 +2241,15 @@ pub struct InlineQueryResultVenue {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -2281,15 +2281,15 @@ pub struct InlineQueryResultContact {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_url: Option<String>,
+    pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_width: Option<u32>,
+    pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumb_height: Option<u32>,
+    pub thumbnail_height: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
