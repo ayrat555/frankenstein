@@ -100,7 +100,7 @@ optional = true
 
 [dev-dependencies]
 isahc = "1"
-mockito = "0.32"
+mockito = "1.0"
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }
 
