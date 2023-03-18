@@ -195,12 +195,11 @@ AsyncApi::builder().api_url(api_url).client(client).build()
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.24.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.24.1/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 
 - [El Monitorro](https://github.com/ayrat555/el_monitorro) - RSS/Atom/JSON feed reader.
-- [ledit](https://github.com/jflessau/ledit) - task assignment bot.
 - [subvt-telegram-bot](https://github.com/helikon-labs/subvt-backend/tree/main/subvt-telegram-bot) - A telegram bot for the validators of the [Polkadot](https://polkadot.network/) and [Kusama](https://kusama.network/).
 - [wdr-maus-downloader](https://github.com/EdJoPaTo/wdr-maus-downloader) - checks for a new episode of the WDR Maus and downloads it.
 - [weather_bot_rust](https://github.com/pxp9/weather_bot_rust) - A telegram bot that provides weather info around the world.
@@ -245,4 +244,3 @@ Ayrat Badykov (@ayrat555)
 [ci]: https://crates.io/crates/frankenstein
 [docs]: https://docs.rs/frankenstein/
 [ga-test]: https://github.com/ayrat555/frankenstein/actions/workflows/rust.yml/badge.svg
-[ga-style]: https://github.com/ayrat555/frankenstein/actions/workflows/style.yml/badge.svg

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.24.1 (2023-03-18)
+
+  * Update `typed-builder` to 0.14
+  * Update `mockito` dependency to 1.0
+
 ## 0.24.0 (2023-03-12)
 
 ### [Bot API 6.6](https://core.telegram.org/bots/api#march-9-2023) - [#102](https://github.com/ayrat555/frankenstein/pull/102)
