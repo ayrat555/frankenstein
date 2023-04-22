@@ -47,6 +47,7 @@ use crate::api_params::GetGameHighScoresParams;
 use crate::api_params::GetMyCommandsParams;
 use crate::api_params::GetMyDefaultAdministratorRightsParams;
 use crate::api_params::GetMyDescriptionParams;
+use crate::api_params::GetMyNameParams;
 use crate::api_params::GetMyShortDescriptionParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
@@ -91,6 +92,7 @@ use crate::api_params::SetGameScoreParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetMyDescriptionParams;
+use crate::api_params::SetMyNameParams;
 use crate::api_params::SetMyShortDescriptionParams;
 use crate::api_params::SetStickerEmojiListParams;
 use crate::api_params::SetStickerKeywordsParams;
@@ -109,6 +111,7 @@ use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
 use crate::objects::BotCommand;
 use crate::objects::BotDescription;
+use crate::objects::BotName;
 use crate::objects::BotShortDescription;
 use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
@@ -778,6 +781,13 @@ pub trait AsyncTelegramApi {
         self.request("answerCallbackQuery", Some(params)).await
     }
 
+    async fn get_my_commands(
+        &self,
+        params: &GetMyCommandsParams,
+    ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
+        self.request("getMyCommands", Some(params)).await
+    }
+
     async fn set_my_commands(
         &self,
         params: &SetMyCommandsParams,
@@ -785,11 +795,25 @@ pub trait AsyncTelegramApi {
         self.request("setMyCommands", Some(params)).await
     }
 
-    async fn get_my_commands(
+    async fn delete_my_commands(
         &self,
-        params: &GetMyCommandsParams,
-    ) -> Result<MethodResponse<Vec<BotCommand>>, Self::Error> {
-        self.request("getMyCommands", Some(params)).await
+        params: &DeleteMyCommandsParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteMyCommands", Some(params)).await
+    }
+
+    async fn set_my_name(
+        &self,
+        params: &SetMyNameParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMyName", Some(params)).await
+    }
+
+    async fn get_my_name(
+        &self,
+        params: &GetMyNameParams,
+    ) -> Result<MethodResponse<BotName>, Self::Error> {
+        self.request("getMyName", Some(params)).await
     }
 
     async fn set_my_description(
@@ -818,13 +842,6 @@ pub trait AsyncTelegramApi {
         params: &GetMyShortDescriptionParams,
     ) -> Result<MethodResponse<BotShortDescription>, Self::Error> {
         self.request("getMyShortDescription", Some(params)).await
-    }
-
-    async fn delete_my_commands(
-        &self,
-        params: &DeleteMyCommandsParams,
-    ) -> Result<MethodResponse<bool>, Self::Error> {
-        self.request("deleteMyCommands", Some(params)).await
     }
 
     async fn answer_inline_query(
