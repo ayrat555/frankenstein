@@ -39,6 +39,7 @@ pub enum ChatMember {
     Member(ChatMemberMember),
     Restricted(ChatMemberRestricted),
     Left(ChatMemberLeft),
+    #[serde(rename = "kicked")]
     Banned(ChatMemberBanned),
 }
 
