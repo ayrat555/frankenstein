@@ -119,62 +119,6 @@ impl TelegramApi for Api {
         Ok(parsed_response)
     }
 
-    // fn request_with_form_data<
-    //     T1: serde::ser::Serialize + std::fmt::Debug,
-    //     T2: serde::de::DeserializeOwned,
-    // >(
-    //     &self,
-    //     method: &str,
-    //     params: T1,
-    //     files: Vec<(&str, PathBuf)>,
-    // ) -> Result<T2, Error> {
-    //     let json_string = Self::encode_params(&params)?;
-    //     let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-    //     let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-    //     let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
-    //         .iter()
-    //         .map(|(key, path)| (*key, path.file_name().unwrap().to_str(), path.clone()))
-    //         .collect();
-    //
-    //     let mut form = Multipart::new();
-    //     for (key, val) in json_struct.as_object().unwrap() {
-    //         if !file_keys.contains(&key.as_str()) {
-    //             let val = match val {
-    //                 Value::String(val) => val.to_string(),
-    //                 other => other.to_string(),
-    //             };
-    //
-    //             form.add_text(key, val);
-    //         }
-    //     }
-    //
-    //     for (parameter_name, file_name, file_path) in files_with_names {
-    //         let file = std::fs::File::open(&file_path).unwrap();
-    //         let file_extension = file_path
-    //             .extension()
-    //             .and_then(std::ffi::OsStr::to_str)
-    //             .unwrap_or("");
-    //         let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
-    //
-    //         form.add_stream(parameter_name, file, file_name, Some(mime));
-    //     }
-    //
-    //     let url = format!("{}/{method}", self.api_url);
-    //     let form_data = form.prepare().unwrap();
-    //     let response = self
-    //         .request_agent
-    //         .post(&url)
-    //         .set(
-    //             "Content-Type",
-    //             &format!("multipart/form-data; boundary={}", form_data.boundary()),
-    //         )
-    //         .send(form_data)?;
-    //
-    //     let parsed_response: T2 = Self::decode_response(response)?;
-    //
-    //     Ok(parsed_response)
-    // }
-
     fn request_with_form_data<
         T1: serde::ser::Serialize + std::fmt::Debug,
         T2: serde::de::DeserializeOwned,
@@ -215,9 +159,8 @@ impl TelegramApi for Api {
 
                 api_params::File::InputBuf(input_buf) => {
                     let file = std::io::Cursor::<Vec<u8>>::new(input_buf.data.clone());
-                    let file_name = input_buf.file_name.clone();
                     let file_extension = {
-                        let parts = file_name.split(".").collect::<Vec<_>>();
+                        let parts = input_buf.file_name.split(".").collect::<Vec<_>>();
                         if parts.len() > 1 {
                             *parts.last().unwrap()
                         } else {
@@ -226,10 +169,10 @@ impl TelegramApi for Api {
                     };
                     let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
 
-                    form.add_stream(*parameter_name, file, Some(file_name), Some(mime));
+                    form.add_stream(*parameter_name, file, Some(&input_buf.file_name), Some(mime));
                 }
 
-                _ => {}
+                _ => continue
             }
         }
 
