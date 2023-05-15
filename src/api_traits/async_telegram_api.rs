@@ -126,6 +126,7 @@ use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
 use crate::objects::SentWebAppMessage;
+use crate::objects::Sticker;
 use crate::objects::StickerSet;
 use crate::objects::Update;
 use crate::objects::User;
@@ -496,7 +497,7 @@ pub trait AsyncTelegramApi {
     async fn get_file(
         &self,
         params: &GetFileParams,
-    ) -> Result<MethodResponse<FileObject>, Self::Error> {
+    ) -> Result<MethodResponse<File>, Self::Error> {
         self.request("getFile", Some(params)).await
     }
 

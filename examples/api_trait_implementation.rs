@@ -1,4 +1,5 @@
 use frankenstein::ErrorResponse;
+use frankenstein::File;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
 use isahc::{prelude::*, Request};
@@ -106,8 +107,8 @@ impl TelegramApi for Api {
         &self,
         _method: &str,
         _params: T1,
-        _files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Error> {
+        _files: Vec<(&str, File)>,
+    ) -> Result<T2, Self::Error> {
         let error = HttpError {
             code: 500,
             message: "isahc doesn't support form data requests".to_string(),

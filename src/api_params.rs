@@ -1,6 +1,6 @@
 #![allow(deprecated)]
 use crate::objects::{
-    BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
+    AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
     InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
     InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
     InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
@@ -15,7 +15,7 @@ use crate::objects::{
     ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
     WebAppInfo,
 };
-use crate::{AllowedUpdate, ParseMode};
+use crate::ParseMode;
 use serde::Deserialize;
 use serde::Serialize;
 use std::path::PathBuf;
@@ -25,27 +25,33 @@ use typed_builder::TypedBuilder as Builder;
 #[serde(untagged)]
 pub enum File {
     InputFile(InputFile),
+    InputBuf(InputBuf),
     String(String),
 }
 
 impl From<PathBuf> for File {
     fn from(path: PathBuf) -> Self {
         let input_file = InputFile { path };
-
         Self::InputFile(input_file)
     }
 }
 
-impl From<InputFile> for File {
-    fn from(file: InputFile) -> Self {
-        Self::InputFile(file)
+impl From<(String, Vec<u8>)> for File {
+    fn from((file_name, data): (String, Vec<u8>)) -> Self {
+        Self::InputBuf(InputBuf { file_name, data })
     }
 }
 
+impl From<InputFile> for File {
+    fn from(file: InputFile) -> Self { Self::InputFile(file) }
+}
+
+impl From<InputBuf> for File {
+    fn from(input: InputBuf) -> Self { Self::InputBuf(input) }
+}
+
 impl From<String> for File {
-    fn from(file: String) -> Self {
-        Self::String(file)
-    }
+    fn from(file: String) -> Self { Self::String(file) }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -139,15 +145,11 @@ pub enum ChatId {
 }
 
 impl From<i64> for ChatId {
-    fn from(id: i64) -> Self {
-        Self::Integer(id)
-    }
+    fn from(id: i64) -> Self { Self::Integer(id) }
 }
 
 impl From<String> for ChatId {
-    fn from(id: String) -> Self {
-        Self::String(id)
-    }
+    fn from(id: String) -> Self { Self::String(id) }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -218,6 +220,12 @@ pub struct BotCommandScopeChatMember {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputFile {
     pub path: PathBuf,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct InputBuf {
+    pub file_name: String,
+    pub data: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2499,6 +2507,7 @@ pub struct GetMyDefaultAdministratorRightsParams {
     #[builder(setter(into, strip_option), default)]
     pub for_channels: Option<bool>,
 }
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct AnswerWebAppQueryParams {
     #[builder(setter(into))]

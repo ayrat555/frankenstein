@@ -1,13 +1,16 @@
-use super::Error;
-use super::HttpError;
-use crate::api_traits::ErrorResponse;
-use crate::api_traits::TelegramApi;
+use std::time::Duration;
+
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
-use std::path::PathBuf;
-use std::time::Duration;
 use typed_builder::TypedBuilder;
 use ureq::Response;
+
+use crate::api_params;
+use crate::api_traits::ErrorResponse;
+use crate::api_traits::TelegramApi;
+
+use super::Error;
+use super::HttpError;
 
 #[derive(Debug, Clone, TypedBuilder)]
 pub struct Api {
@@ -116,6 +119,62 @@ impl TelegramApi for Api {
         Ok(parsed_response)
     }
 
+    // fn request_with_form_data<
+    //     T1: serde::ser::Serialize + std::fmt::Debug,
+    //     T2: serde::de::DeserializeOwned,
+    // >(
+    //     &self,
+    //     method: &str,
+    //     params: T1,
+    //     files: Vec<(&str, PathBuf)>,
+    // ) -> Result<T2, Error> {
+    //     let json_string = Self::encode_params(&params)?;
+    //     let json_struct: Value = serde_json::from_str(&json_string).unwrap();
+    //     let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+    //     let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
+    //         .iter()
+    //         .map(|(key, path)| (*key, path.file_name().unwrap().to_str(), path.clone()))
+    //         .collect();
+    //
+    //     let mut form = Multipart::new();
+    //     for (key, val) in json_struct.as_object().unwrap() {
+    //         if !file_keys.contains(&key.as_str()) {
+    //             let val = match val {
+    //                 Value::String(val) => val.to_string(),
+    //                 other => other.to_string(),
+    //             };
+    //
+    //             form.add_text(key, val);
+    //         }
+    //     }
+    //
+    //     for (parameter_name, file_name, file_path) in files_with_names {
+    //         let file = std::fs::File::open(&file_path).unwrap();
+    //         let file_extension = file_path
+    //             .extension()
+    //             .and_then(std::ffi::OsStr::to_str)
+    //             .unwrap_or("");
+    //         let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
+    //
+    //         form.add_stream(parameter_name, file, file_name, Some(mime));
+    //     }
+    //
+    //     let url = format!("{}/{method}", self.api_url);
+    //     let form_data = form.prepare().unwrap();
+    //     let response = self
+    //         .request_agent
+    //         .post(&url)
+    //         .set(
+    //             "Content-Type",
+    //             &format!("multipart/form-data; boundary={}", form_data.boundary()),
+    //         )
+    //         .send(form_data)?;
+    //
+    //     let parsed_response: T2 = Self::decode_response(response)?;
+    //
+    //     Ok(parsed_response)
+    // }
+
     fn request_with_form_data<
         T1: serde::ser::Serialize + std::fmt::Debug,
         T2: serde::de::DeserializeOwned,
@@ -123,15 +182,11 @@ impl TelegramApi for Api {
         &self,
         method: &str,
         params: T1,
-        files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Error> {
+        files: Vec<(&str, api_params::File)>,
+    ) -> Result<T2, Self::Error> {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-        let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
-            .iter()
-            .map(|(key, path)| (*key, path.file_name().unwrap().to_str(), path.clone()))
-            .collect();
 
         let mut form = Multipart::new();
         for (key, val) in json_struct.as_object().unwrap() {
@@ -145,15 +200,37 @@ impl TelegramApi for Api {
             }
         }
 
-        for (parameter_name, file_name, file_path) in files_with_names {
-            let file = std::fs::File::open(&file_path).unwrap();
-            let file_extension = file_path
-                .extension()
-                .and_then(std::ffi::OsStr::to_str)
-                .unwrap_or("");
-            let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
+        for (parameter_name, file) in files.iter() {
+            match file {
+                api_params::File::InputFile(input_file) => {
+                    let file = std::fs::File::open(&input_file.path).unwrap();
+                    let file_name = input_file.path.file_name().unwrap().to_str();
+                    let file_extension = &input_file.path
+                        .extension().unwrap()
+                        .to_str().unwrap_or("");
+                    let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
 
-            form.add_stream(parameter_name, file, file_name, Some(mime));
+                    form.add_stream(*parameter_name, file, file_name, Some(mime));
+                }
+
+                api_params::File::InputBuf(input_buf) => {
+                    let file = std::io::Cursor::<Vec<u8>>::new(input_buf.data.clone());
+                    let file_name = input_buf.file_name.clone();
+                    let file_extension = {
+                        let parts = file_name.split(".").collect::<Vec<_>>();
+                        if parts.len() > 1 {
+                            *parts.last().unwrap()
+                        } else {
+                            ""
+                        }
+                    };
+                    let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
+
+                    form.add_stream(*parameter_name, file, Some(file_name), Some(mime));
+                }
+
+                _ => {}
+            }
         }
 
         let url = format!("{}/{method}", self.api_url);
@@ -175,7 +252,6 @@ impl TelegramApi for Api {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::api_params::AnswerCallbackQueryParams;
     use crate::api_params::AnswerInlineQueryParams;
     use crate::api_params::BanChatMemberParams;
@@ -245,10 +321,12 @@ mod tests {
     use crate::api_params::StopPollParams;
     use crate::api_params::UnbanChatMemberParams;
     use crate::api_params::UnpinChatMessageParams;
+    use crate::objects::AllowedUpdate;
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
-    use crate::AllowedUpdate;
+
+    use super::*;
 
     #[test]
     fn new_sets_correct_url() {
@@ -322,11 +400,11 @@ mod tests {
         let api = Api::new_url(server.url());
 
         if let Err(Error::Api(ErrorResponse {
-            ok: false,
-            description,
-            error_code: 400,
-            parameters: None,
-        })) = api.send_message(&params)
+                                  ok: false,
+                                  description,
+                                  error_code: 400,
+                                  parameters: None,
+                              })) = api.send_message(&params)
         {
             assert_eq!("Bad Request: chat not found".to_string(), description);
         } else {
@@ -709,7 +787,7 @@ mod tests {
     #[test]
     fn get_file_success() {
         let response_string = "{\"ok\":true,\"result\":{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"file_size\":8068,\"file_path\":\"photos/file_0.jpg\"}}";
-        let  params = GetFileParams::builder()
+        let params = GetFileParams::builder()
             .file_id("AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA")
             .build();
 
