@@ -5,7 +5,8 @@ use reqwest::multipart;
 use serde_json::Value;
 use typed_builder::TypedBuilder;
 
-use crate::{api_params, FormFile};
+use crate::api_params::File;
+use crate::api_params::FormFile;
 use crate::api_traits::AsyncTelegramApi;
 use crate::api_traits::ErrorResponse;
 
@@ -156,7 +157,7 @@ impl AsyncTelegramApi for AsyncApi {
 
         for (parameter_name, file) in files {
             match file {
-                api_params::File::InputFile(input_file) => {
+                File::InputFile(input_file) => {
                     let file_path = input_file.path;
                     let file = tokio::fs::File::open(&file_path).await?;
                     let file_name = file_path.file_name().unwrap().to_str().unwrap().to_string();
@@ -165,7 +166,7 @@ impl AsyncTelegramApi for AsyncApi {
                     form = form.part(parameter_name, part);
                 }
 
-                api_params::File::InputBuf(input_buf) => {
+                File::InputBuf(input_buf) => {
                     let buf = input_buf.data.clone();
                     let file_name = input_buf.file_name.clone();
 

@@ -230,19 +230,15 @@ pub trait TelegramApi {
                     let mut new_audio = audio.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_audio.media = File::String(attach_name);
+                    new_audio.media = File::attach_string(&name);
 
                     files.push(audio.media.to_form_file(&name));
 
                     if let Some(thumbnail) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
-
-                        new_audio.thumbnail = Some(File::String(attach_name));
+                        new_audio.thumbnail = Some(File::attach_string(&name));
 
                         files.push(thumbnail.to_form_file(&name));
                     };
@@ -254,10 +250,8 @@ pub trait TelegramApi {
                     let mut new_document = document.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_document.media = File::String(attach_name);
+                    new_document.media = File::attach_string(&name);
 
                     files.push(document.media.to_form_file(&name));
 
@@ -268,10 +262,8 @@ pub trait TelegramApi {
                     let mut new_photo = photo.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_photo.media = File::String(attach_name);
+                    new_photo.media = File::attach_string(&name);
 
                     files.push(photo.media.to_form_file(&name));
 
@@ -282,19 +274,15 @@ pub trait TelegramApi {
                     let mut new_video = video.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_video.media = File::String(attach_name);
+                    new_video.media = File::attach_string(&name);
 
                     files.push(video.media.to_form_file(&name));
 
                     if let Some(thumbnail) = &video.thumbnail {
                         let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
-
-                        new_video.thumbnail = Some(File::String(attach_name));
+                        new_video.thumbnail = Some(File::attach_string(&name));
 
                         files.push(thumbnail.to_form_file(&name));
                     };
@@ -540,8 +528,8 @@ pub trait TelegramApi {
         &self,
         params: &SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let photo = File::from(&params.photo);
-        self.request_with_form_data("setChatPhoto", params, vec![photo.to_form_file("photo")])
+        let files = vec![File::from(&params.photo).to_form_file("photo")];
+        self.request_with_form_data("setChatPhoto", params, files)
     }
 
     fn delete_chat_photo(
@@ -803,17 +791,13 @@ pub trait TelegramApi {
                 let mut new_animation = animation.clone();
 
                 let name = "animation".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_animation.media = File::String(attach_name);
+                new_animation.media = File::attach_string(&name);
 
                 files.push(animation.media.to_form_file(&name));
 
                 if let Some(thumbnail) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_animation.thumbnail = Some(File::String(attach_name));
+                    new_animation.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -825,17 +809,13 @@ pub trait TelegramApi {
                 let mut new_document = document.clone();
 
                 let name = "document".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_document.media = File::String(attach_name);
+                new_document.media = File::attach_string(&name);
 
                 files.push(document.media.to_form_file(&name));
 
                 if let Some(thumbnail) = &document.thumbnail {
                     let name = "document_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_document.thumbnail = Some(File::String(attach_name));
+                    new_document.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -847,17 +827,13 @@ pub trait TelegramApi {
                 let mut new_audio = audio.clone();
 
                 let name = "audio".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_audio.media = File::String(attach_name);
+                new_audio.media = File::attach_string(&name);
 
                 files.push(audio.media.to_form_file(&name));
 
                 if let Some(thumbnail) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_audio.thumbnail = Some(File::String(attach_name));
+                    new_audio.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -869,9 +845,7 @@ pub trait TelegramApi {
                 let mut new_photo = photo.clone();
 
                 let name = "photo".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_photo.media = File::String(attach_name);
+                new_photo.media = File::attach_string(&name);
 
                 files.push(photo.media.to_form_file(&name));
 
@@ -882,17 +856,13 @@ pub trait TelegramApi {
                 let mut new_video = video.clone();
 
                 let name = "video".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_video.media = File::String(attach_name);
+                new_video.media = File::attach_string(&name);
 
                 files.push(video.media.to_form_file(&name));
 
                 if let Some(thumbnail) = &video.thumbnail {
                     let name = "video_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_video.thumbnail = Some(File::String(attach_name));
+                    new_video.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -929,12 +899,8 @@ pub trait TelegramApi {
         &self,
         params: &SendStickerParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendSticker";
-        let mut files: Vec<FormFile> = vec![];
-
-        files.push(params.sticker.to_form_file("sticker"));
-
-        self.request_with_possible_form_data(method_name, params, files)
+        let files = vec![params.sticker.to_form_file("sticker")];
+        self.request_with_possible_form_data("sendSticker", params, files)
     }
 
     fn get_sticker_set(
@@ -948,12 +914,8 @@ pub trait TelegramApi {
         &self,
         params: &UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = File::from(&params.sticker);
-        self.request_with_form_data(
-            "uploadStickerFile",
-            params,
-            vec![sticker.to_form_file("sticker")],
-        )
+        let files = vec![File::from(&params.sticker).to_form_file("sticker")];
+        self.request_with_form_data("uploadStickerFile", params, files)
     }
 
     fn create_new_sticker_set(
@@ -969,10 +931,9 @@ pub trait TelegramApi {
             let mut new_sticker = sticker.clone();
 
             let name = format!("file{file_idx}");
-            let attach_name = format!("attach://{name}");
             file_idx += 1;
 
-            new_sticker.sticker = File::String(attach_name);
+            new_sticker.sticker = File::attach_string(&name);
 
             files.push(sticker.sticker.to_form_file(&name));
 
@@ -1160,7 +1121,6 @@ pub trait TelegramApi {
         method: &str,
     ) -> Result<T, Self::Error> {
         let params: Option<()> = None;
-
         self.request(method, params)
     }
 
@@ -1180,6 +1140,12 @@ pub trait TelegramApi {
         }
     }
 
+    fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
+        &self,
+        method: &str,
+        params: Option<T1>,
+    ) -> Result<T2, Self::Error>;
+
     fn request_with_form_data<
         T1: serde::ser::Serialize + std::fmt::Debug,
         T2: serde::de::DeserializeOwned,
@@ -1188,11 +1154,5 @@ pub trait TelegramApi {
         method: &str,
         params: T1,
         files: Vec<FormFile>,
-    ) -> Result<T2, Self::Error>;
-
-    fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
-        &self,
-        method: &str,
-        params: Option<T1>,
     ) -> Result<T2, Self::Error>;
 }

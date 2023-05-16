@@ -1,25 +1,28 @@
 #![allow(deprecated)]
-use crate::objects::{
-    AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
-    InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
-    InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
-    InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
-    InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
-    InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
-    InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, MaskPosition,
-    MenuButton, MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
-    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
-    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
-    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
-    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
-    WebAppInfo,
-};
-use crate::ParseMode;
+
+use std::path::PathBuf;
+
 use serde::Deserialize;
 use serde::Serialize;
-use std::path::PathBuf;
 use typed_builder::TypedBuilder as Builder;
+
+use crate::objects::{
+    AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
+    InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
+    InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif,
+    InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker,
+    InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact,
+    InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif,
+    InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto,
+    InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice, InputSticker,
+    LabeledPrice, MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
+    PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
+    PassportElementErrorReverseSide, PassportElementErrorSelfie,
+    PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
+    PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
+    ShippingOption, StickerFormat, StickerType, WebAppInfo,
+};
+use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
@@ -32,7 +35,13 @@ pub enum File {
 pub type FormFile = (String, File);
 
 impl File {
-    pub fn to_form_file(&self, key: &str) -> FormFile { (key.to_string(), self.clone()) }
+    pub fn to_form_file(&self, key: &str) -> FormFile {
+        (key.to_string(), self.clone())
+    }
+
+    pub fn attach_string(name: &str) -> File {
+        File::String(format!("attach://{name}"))
+    }
 }
 
 impl From<PathBuf> for File {
@@ -49,19 +58,27 @@ impl From<(String, Vec<u8>)> for File {
 }
 
 impl From<InputFile> for File {
-    fn from(file: InputFile) -> Self { Self::InputFile(file) }
+    fn from(file: InputFile) -> Self {
+        Self::InputFile(file)
+    }
 }
 
 impl From<&InputFile> for File {
-    fn from(file: &InputFile) -> Self { Self::InputFile(file.clone()) }
+    fn from(file: &InputFile) -> Self {
+        Self::InputFile(file.clone())
+    }
 }
 
 impl From<InputBuf> for File {
-    fn from(input: InputBuf) -> Self { Self::InputBuf(input) }
+    fn from(input: InputBuf) -> Self {
+        Self::InputBuf(input)
+    }
 }
 
 impl From<String> for File {
-    fn from(file: String) -> Self { Self::String(file) }
+    fn from(file: String) -> Self {
+        Self::String(file)
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -155,11 +172,15 @@ pub enum ChatId {
 }
 
 impl From<i64> for ChatId {
-    fn from(id: i64) -> Self { Self::Integer(id) }
+    fn from(id: i64) -> Self {
+        Self::Integer(id)
+    }
 }
 
 impl From<String> for ChatId {
-    fn from(id: String) -> Self { Self::String(id) }
+    fn from(id: String) -> Self {
+        Self::String(id)
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]

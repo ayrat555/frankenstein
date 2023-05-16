@@ -243,19 +243,15 @@ pub trait AsyncTelegramApi {
                     let mut new_audio = audio.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_audio.media = File::String(attach_name);
+                    new_audio.media = File::attach_string(&name);
 
                     files.push((name, audio.media.clone()));
 
                     if let Some(thumbnail) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
-
-                        new_audio.thumbnail = Some(File::String(attach_name));
+                        new_audio.thumbnail = Some(File::attach_string(&name));
 
                         files.push(thumbnail.to_form_file(&name));
                     };
@@ -267,26 +263,21 @@ pub trait AsyncTelegramApi {
                     let mut new_document = document.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_document.media = File::String(attach_name);
+                    new_document.media = File::attach_string(&name);
 
                     files.push((name, document.media.clone()));
-
                     new_medias.push(Media::Document(new_document));
                 }
+
                 Media::Photo(photo) => {
                     let mut new_photo = photo.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_photo.media = File::String(attach_name);
+                    new_photo.media = File::attach_string(&name);
 
                     files.push((name, photo.media.clone()));
-
                     new_medias.push(Media::Photo(new_photo));
                 }
 
@@ -294,19 +285,15 @@ pub trait AsyncTelegramApi {
                     let mut new_video = video.clone();
 
                     let name = format!("file{file_idx}");
-                    let attach_name = format!("attach://{name}");
                     file_idx += 1;
-
-                    new_video.media = File::String(attach_name);
+                    new_video.media = File::attach_string(&name);
 
                     files.push((name, video.media.clone()));
 
                     if let Some(thumbnail) = &video.thumbnail {
                         let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
                         file_idx += 1;
-
-                        new_video.thumbnail = Some(File::String(attach_name));
+                        new_video.thumbnail = Some(File::attach_string(&name));
 
                         files.push(thumbnail.to_form_file(&name));
                     };
@@ -847,17 +834,13 @@ pub trait AsyncTelegramApi {
                 let mut new_animation = animation.clone();
 
                 let name = "animation".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_animation.media = File::String(attach_name);
+                new_animation.media = File::attach_string(&name);
 
                 files.push((name, animation.media.clone()));
 
                 if let Some(thumbnail) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_animation.thumbnail = Some(File::String(attach_name));
+                    new_animation.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -869,17 +852,13 @@ pub trait AsyncTelegramApi {
                 let mut new_document = document.clone();
 
                 let name = "document".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_document.media = File::String(attach_name);
+                new_document.media = File::attach_string(&name);
 
                 files.push((name, document.media.clone()));
 
                 if let Some(thumbnail) = &document.thumbnail {
                     let name = "document_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_document.thumbnail = Some(File::String(attach_name));
+                    new_document.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -891,17 +870,13 @@ pub trait AsyncTelegramApi {
                 let mut new_audio = audio.clone();
 
                 let name = "audio".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_audio.media = File::String(attach_name);
+                new_audio.media = File::attach_string(&name);
 
                 files.push((name, audio.media.clone()));
 
                 if let Some(thumbnail) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_audio.thumbnail = Some(File::String(attach_name));
+                    new_audio.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -913,9 +888,7 @@ pub trait AsyncTelegramApi {
                 let mut new_photo = photo.clone();
 
                 let name = "photo".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_photo.media = File::String(attach_name);
+                new_photo.media = File::attach_string(&name);
 
                 files.push((name, photo.media.clone()));
 
@@ -926,17 +899,13 @@ pub trait AsyncTelegramApi {
                 let mut new_video = video.clone();
 
                 let name = "video".to_string();
-                let attach_name = format!("attach://{name}");
-
-                new_video.media = File::String(attach_name);
+                new_video.media = File::attach_string(&name);
 
                 files.push((name, video.media.clone()));
 
                 if let Some(thumbnail) = &video.thumbnail {
                     let name = "video_thumb".to_string();
-                    let attach_name = format!("attach://{name}");
-
-                    new_video.thumbnail = Some(File::String(attach_name));
+                    new_video.thumbnail = Some(File::attach_string(&name));
 
                     files.push(thumbnail.to_form_file(&name));
                 };
@@ -997,13 +966,9 @@ pub trait AsyncTelegramApi {
         &self,
         params: &UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = File::from(&params.sticker);
-        self.request_with_form_data(
-            "uploadStickerFile",
-            params,
-            vec![sticker.to_form_file("sticker")],
-        )
-        .await
+        let files = vec![File::from(&params.sticker).to_form_file("sticker")];
+        self.request_with_form_data("uploadStickerFile", params, files)
+            .await
     }
 
     async fn create_new_sticker_set(
@@ -1016,17 +981,14 @@ pub trait AsyncTelegramApi {
         let mut file_idx = 0;
 
         for sticker in &params.stickers {
-            let mut new_sticker = sticker.clone();
-
             let name = format!("file{file_idx}");
-            let attach_name = format!("attach://{name}");
             file_idx += 1;
 
-            new_sticker.sticker = File::String(attach_name);
+            let mut new_sticker = sticker.clone();
+            new_sticker.sticker = File::attach_string(&name);
+            new_stickers.push(new_sticker);
 
             files.push((name, sticker.sticker.clone()));
-
-            new_stickers.push(new_sticker);
         }
 
         let mut new_params = params.clone();
@@ -1218,18 +1180,8 @@ pub trait AsyncTelegramApi {
         method: &str,
     ) -> Result<T, Self::Error> {
         let params: Option<()> = None;
-
         self.request(method, params).await
     }
-
-    async fn request<
-        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
-        T2: serde::de::DeserializeOwned,
-    >(
-        &self,
-        method: &str,
-        params: Option<T1>,
-    ) -> Result<T2, Self::Error>;
 
     async fn request_with_possible_form_data<
         T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
@@ -1247,6 +1199,15 @@ pub trait AsyncTelegramApi {
                 .await
         }
     }
+
+    async fn request<
+        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
+        T2: serde::de::DeserializeOwned,
+    >(
+        &self,
+        method: &str,
+        params: Option<T1>,
+    ) -> Result<T2, Self::Error>;
 
     async fn request_with_form_data<
         T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,

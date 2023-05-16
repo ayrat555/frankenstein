@@ -5,9 +5,10 @@ use serde_json::Value;
 use typed_builder::TypedBuilder;
 use ureq::Response;
 
+use crate::api_params::File;
+use crate::api_params::FormFile;
 use crate::api_traits::ErrorResponse;
 use crate::api_traits::TelegramApi;
-use crate::{api_params, FormFile};
 
 use super::Error;
 use super::HttpError;
@@ -147,7 +148,7 @@ impl TelegramApi for Api {
 
         for (parameter_name, file) in files.iter() {
             match file {
-                api_params::File::InputFile(input_file) => {
+                File::InputFile(input_file) => {
                     let file = std::fs::File::open(&input_file.path).unwrap();
                     let file_name = input_file.path.file_name().unwrap().to_str();
                     let file_extension =
@@ -157,7 +158,7 @@ impl TelegramApi for Api {
                     form.add_stream(parameter_name, file, file_name, Some(mime));
                 }
 
-                api_params::File::InputBuf(input_buf) => {
+                File::InputBuf(input_buf) => {
                     let file = std::io::Cursor::<Vec<u8>>::new(input_buf.data.clone());
                     let file_extension = input_buf.file_name.rsplit_once(".").unwrap_or(("", "")).1;
                     let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
