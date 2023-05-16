@@ -29,6 +29,12 @@ pub enum File {
     String(String),
 }
 
+pub type FormFile = (String, File);
+
+impl File {
+    pub fn to_form_file(&self, key: &str) -> FormFile { (key.to_string(), self.clone()) }
+}
+
 impl From<PathBuf> for File {
     fn from(path: PathBuf) -> Self {
         let input_file = InputFile { path };
@@ -44,6 +50,10 @@ impl From<(String, Vec<u8>)> for File {
 
 impl From<InputFile> for File {
     fn from(file: InputFile) -> Self { Self::InputFile(file) }
+}
+
+impl From<&InputFile> for File {
+    fn from(file: &InputFile) -> Self { Self::InputFile(file.clone()) }
 }
 
 impl From<InputBuf> for File {

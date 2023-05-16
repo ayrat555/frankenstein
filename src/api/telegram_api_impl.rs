@@ -5,9 +5,9 @@ use serde_json::Value;
 use typed_builder::TypedBuilder;
 use ureq::Response;
 
-use crate::api_params;
 use crate::api_traits::ErrorResponse;
 use crate::api_traits::TelegramApi;
+use crate::{api_params, FormFile};
 
 use super::Error;
 use super::HttpError;
@@ -126,13 +126,14 @@ impl TelegramApi for Api {
         &self,
         method: &str,
         params: T1,
-        files: Vec<(&str, api_params::File)>,
+        files: Vec<FormFile>,
     ) -> Result<T2, Self::Error> {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| key.as_str()).collect();
 
         let mut form = Multipart::new();
+
         for (key, val) in json_struct.as_object().unwrap() {
             if !file_keys.contains(&key.as_str()) {
                 let val = match val {
@@ -149,30 +150,22 @@ impl TelegramApi for Api {
                 api_params::File::InputFile(input_file) => {
                     let file = std::fs::File::open(&input_file.path).unwrap();
                     let file_name = input_file.path.file_name().unwrap().to_str();
-                    let file_extension = &input_file.path
-                        .extension().unwrap()
-                        .to_str().unwrap_or("");
+                    let file_extension =
+                        input_file.path.extension().unwrap().to_str().unwrap_or("");
                     let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
 
-                    form.add_stream(*parameter_name, file, file_name, Some(mime));
+                    form.add_stream(parameter_name, file, file_name, Some(mime));
                 }
 
                 api_params::File::InputBuf(input_buf) => {
                     let file = std::io::Cursor::<Vec<u8>>::new(input_buf.data.clone());
-                    let file_extension = {
-                        let parts = input_buf.file_name.split(".").collect::<Vec<_>>();
-                        if parts.len() > 1 {
-                            *parts.last().unwrap()
-                        } else {
-                            ""
-                        }
-                    };
+                    let file_extension = input_buf.file_name.rsplit_once(".").unwrap_or(("", "")).1;
                     let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
 
-                    form.add_stream(*parameter_name, file, Some(&input_buf.file_name), Some(mime));
+                    form.add_stream(parameter_name, file, Some(&input_buf.file_name), Some(mime));
                 }
 
-                _ => continue
+                _ => continue,
             }
         }
 
@@ -343,11 +336,11 @@ mod tests {
         let api = Api::new_url(server.url());
 
         if let Err(Error::Api(ErrorResponse {
-                                  ok: false,
-                                  description,
-                                  error_code: 400,
-                                  parameters: None,
-                              })) = api.send_message(&params)
+            ok: false,
+            description,
+            error_code: 400,
+            parameters: None,
+        })) = api.send_message(&params)
         {
             assert_eq!("Bad Request: chat not found".to_string(), description);
         } else {
