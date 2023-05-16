@@ -127,7 +127,7 @@ impl TelegramApi for Api {
         method: &str,
         params: T1,
         files: Vec<FormFile>,
-    ) -> Result<T2, Self::Error> {
+    ) -> Result<T2, Error> {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| key.as_str()).collect();
