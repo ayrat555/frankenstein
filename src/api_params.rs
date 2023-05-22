@@ -1,19 +1,19 @@
 #![allow(deprecated)]
 use crate::objects::{
-    BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
-    InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
-    InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif,
-    InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker,
-    InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact,
-    InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif,
-    InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto,
-    InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice, InputSticker,
-    LabeledPrice, MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
-    PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
-    PassportElementErrorReverseSide, PassportElementErrorSelfie,
-    PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
-    PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
-    ShippingOption, StickerFormat, StickerType, WebAppInfo,
+    BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
+    InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
+    InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
+    InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
+    InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
+    InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
+    InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, MaskPosition,
+    MenuButton, MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
+    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
+    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
+    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
+    WebAppInfo,
 };
 use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
