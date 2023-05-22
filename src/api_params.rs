@@ -1,13 +1,6 @@
 #![allow(deprecated)]
-
-use std::path::PathBuf;
-
-use serde::Deserialize;
-use serde::Serialize;
-use typed_builder::TypedBuilder as Builder;
-
 use crate::objects::{
-    AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
+    BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
     InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
     InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif,
     InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker,
@@ -22,7 +15,11 @@ use crate::objects::{
     PassportElementErrorUnspecified, PollType, ReplyKeyboardMarkup, ReplyKeyboardRemove,
     ShippingOption, StickerFormat, StickerType, WebAppInfo,
 };
-use crate::ParseMode;
+use crate::{AllowedUpdate, ParseMode};
+use serde::Deserialize;
+use serde::Serialize;
+use std::path::PathBuf;
+use typed_builder::TypedBuilder as Builder;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
