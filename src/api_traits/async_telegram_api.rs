@@ -1,5 +1,5 @@
-use async_trait::async_trait;
-
+use super::EditMessageResponse;
+use super::MethodResponse;
 use crate::api_params::AddStickerToSetParams;
 use crate::api_params::AnswerCallbackQueryParams;
 use crate::api_params::AnswerInlineQueryParams;
@@ -132,9 +132,7 @@ use crate::objects::Update;
 use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
-
-use super::EditMessageResponse;
-use super::MethodResponse;
+use async_trait::async_trait;
 
 #[async_trait]
 pub trait AsyncTelegramApi {

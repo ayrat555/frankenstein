@@ -41,5 +41,5 @@ pub mod objects;
 mod parse_mode;
 
 pub use api_params::*;
-// pub use objects::*;
+pub use objects::*;
 pub use parse_mode::*;

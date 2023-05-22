@@ -1,17 +1,14 @@
-use std::time::Duration;
-
+use super::Error;
+use super::HttpError;
+use crate::api_traits::AsyncTelegramApi;
+use crate::api_traits::ErrorResponse;
+use crate::api_params::File;
+use crate::api_params::FormFile;
 use async_trait::async_trait;
 use reqwest::multipart;
 use serde_json::Value;
+use std::time::Duration;
 use typed_builder::TypedBuilder;
-
-use crate::api_params::File;
-use crate::api_params::FormFile;
-use crate::api_traits::AsyncTelegramApi;
-use crate::api_traits::ErrorResponse;
-
-use super::Error;
-use super::HttpError;
 
 #[derive(Debug, Clone, TypedBuilder)]
 pub struct AsyncApi {
@@ -189,12 +186,11 @@ impl AsyncTelegramApi for AsyncApi {
 
 #[cfg(test)]
 mod async_tests {
+    use super::AsyncApi;
+    use super::Error;
     use crate::api_params::SendMessageParams;
     use crate::api_traits::ErrorResponse;
     use crate::AsyncTelegramApi;
-
-    use super::AsyncApi;
-    use super::Error;
 
     #[tokio::test]
     async fn async_send_message_success() {

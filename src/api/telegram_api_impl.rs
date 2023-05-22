@@ -1,17 +1,14 @@
-use std::time::Duration;
-
-use multipart::client::lazy::Multipart;
-use serde_json::Value;
-use typed_builder::TypedBuilder;
-use ureq::Response;
-
-use crate::api_params::File;
-use crate::api_params::FormFile;
-use crate::api_traits::ErrorResponse;
-use crate::api_traits::TelegramApi;
-
 use super::Error;
 use super::HttpError;
+use crate::api_traits::ErrorResponse;
+use crate::api_traits::TelegramApi;
+use crate::api_params::File;
+use crate::api_params::FormFile;
+use multipart::client::lazy::Multipart;
+use serde_json::Value;
+use std::time::Duration;
+use typed_builder::TypedBuilder;
+use ureq::Response;
 
 #[derive(Debug, Clone, TypedBuilder)]
 pub struct Api {
@@ -189,6 +186,7 @@ impl TelegramApi for Api {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use crate::api_params::AnswerCallbackQueryParams;
     use crate::api_params::AnswerInlineQueryParams;
     use crate::api_params::BanChatMemberParams;
@@ -262,8 +260,6 @@ mod tests {
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
-
-    use super::*;
 
     #[test]
     fn new_sets_correct_url() {
