@@ -35,10 +35,6 @@ impl File {
     pub fn to_form_file(&self, key: &str) -> FormFile {
         (key.to_string(), self.clone())
     }
-
-    pub fn attach_string(name: &str) -> File {
-        File::String(format!("attach://{name}"))
-    }
 }
 
 impl From<PathBuf> for File {
