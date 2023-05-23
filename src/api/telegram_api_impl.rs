@@ -1,9 +1,9 @@
 use super::Error;
 use super::HttpError;
-use crate::api_traits::ErrorResponse;
-use crate::api_traits::TelegramApi;
 use crate::api_params::File;
 use crate::api_params::FormFile;
+use crate::api_traits::ErrorResponse;
+use crate::api_traits::TelegramApi;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::time::Duration;

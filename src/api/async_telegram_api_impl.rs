@@ -1,9 +1,9 @@
 use super::Error;
 use super::HttpError;
-use crate::api_traits::AsyncTelegramApi;
-use crate::api_traits::ErrorResponse;
 use crate::api_params::File;
 use crate::api_params::FormFile;
+use crate::api_traits::AsyncTelegramApi;
+use crate::api_traits::ErrorResponse;
 use async_trait::async_trait;
 use reqwest::multipart;
 use serde_json::Value;
