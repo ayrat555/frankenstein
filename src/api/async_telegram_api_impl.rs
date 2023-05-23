@@ -171,7 +171,7 @@ impl AsyncTelegramApi for AsyncApi {
                     form = form.part(parameter_name, part);
                 }
 
-                _ => continue,
+                File::String(_) => continue,
             }
         }
 

@@ -157,13 +157,13 @@ impl TelegramApi for Api {
 
                 File::InputBuf(input_buf) => {
                     let file = std::io::Cursor::<Vec<u8>>::new(input_buf.data.clone());
-                    let file_extension = input_buf.file_name.rsplit_once(".").unwrap_or(("", "")).1;
+                    let file_extension = input_buf.file_name.rsplit_once('.').unwrap_or(("", "")).1;
                     let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
 
                     form.add_stream(parameter_name, file, Some(&input_buf.file_name), Some(mime));
                 }
 
-                _ => continue,
+                File::String(_) => continue,
             }
         }
 

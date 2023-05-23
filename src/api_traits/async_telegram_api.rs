@@ -1011,14 +1011,12 @@ pub trait AsyncTelegramApi {
         let method_name = "createNewStickerSet";
         let mut new_stickers: Vec<InputSticker> = vec![];
         let mut files: Vec<FormFile> = vec![];
-        let mut file_idx = 0;
 
-        for sticker in &params.stickers {
+        for (file_idx, sticker) in params.stickers.iter().enumerate() {
             let mut new_sticker = sticker.clone();
 
             let name = format!("file{file_idx}");
             let attach_name = format!("attach://{name}");
-            file_idx += 1;
 
             new_sticker.sticker = File::String(attach_name);
 
@@ -1040,6 +1038,7 @@ pub trait AsyncTelegramApi {
     ) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
         self.request("getCustomEmojiStickers", Some(params)).await
     }
+
     async fn add_sticker_to_set(
         &self,
         params: &AddStickerToSetParams,

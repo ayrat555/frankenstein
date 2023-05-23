@@ -194,11 +194,11 @@ pub trait TelegramApi {
 
     fn send_photo(&self, params: &SendPhotoParams) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendPhoto";
-        let mut files: Vec<FormFile> = vec![];
-
-        files.push(params.photo.to_form_file("photo"));
-
-        self.request_with_possible_form_data(method_name, params, files)
+        self.request_with_possible_form_data(
+            method_name,
+            params,
+            vec![params.photo.to_form_file("photo")],
+        )
     }
 
     fn send_audio(&self, params: &SendAudioParams) -> Result<MethodResponse<Message>, Self::Error> {
@@ -356,11 +356,11 @@ pub trait TelegramApi {
 
     fn send_voice(&self, params: &SendVoiceParams) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendVoice";
-        let mut files: Vec<FormFile> = vec![];
-
-        files.push(params.voice.to_form_file("voice"));
-
-        self.request_with_possible_form_data(method_name, params, files)
+        self.request_with_possible_form_data(
+            method_name,
+            params,
+            vec![params.voice.to_form_file("voice")],
+        )
     }
 
     fn send_video_note(
@@ -929,11 +929,11 @@ pub trait TelegramApi {
         params: &SendStickerParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendSticker";
-        let mut files: Vec<FormFile> = vec![];
-
-        files.push(params.sticker.to_form_file("sticker"));
-
-        self.request_with_possible_form_data(method_name, params, files)
+        self.request_with_possible_form_data(
+            method_name,
+            params,
+            vec![params.sticker.to_form_file("sticker")],
+        )
     }
 
     fn get_sticker_set(
@@ -962,14 +962,12 @@ pub trait TelegramApi {
         let method_name = "createNewStickerSet";
         let mut new_stickers: Vec<InputSticker> = vec![];
         let mut files: Vec<FormFile> = vec![];
-        let mut file_idx = 0;
 
-        for sticker in &params.stickers {
+        for (file_idx, sticker) in params.stickers.iter().enumerate() {
             let mut new_sticker = sticker.clone();
 
             let name = format!("file{file_idx}");
             let attach_name = format!("attach://{name}");
-            file_idx += 1;
 
             new_sticker.sticker = File::String(attach_name);
 
@@ -996,11 +994,11 @@ pub trait TelegramApi {
         params: &AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "addStickerToSet";
-        let mut files: Vec<FormFile> = vec![];
-
-        files.push(params.sticker.sticker.to_form_file("sticker"));
-
-        self.request_with_possible_form_data(method_name, params, files)
+        self.request_with_possible_form_data(
+            method_name,
+            params,
+            vec![params.sticker.sticker.to_form_file("sticker")],
+        )
     }
 
     fn set_sticker_position_in_set(
