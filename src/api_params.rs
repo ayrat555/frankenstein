@@ -23,12 +23,12 @@ use typed_builder::TypedBuilder as Builder;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
-pub enum File {
+pub enum FileUpload {
     InputFile(InputFile),
     String(String),
 }
 
-impl From<PathBuf> for File {
+impl From<PathBuf> for FileUpload {
     fn from(path: PathBuf) -> Self {
         let input_file = InputFile { path };
 
@@ -36,13 +36,13 @@ impl From<PathBuf> for File {
     }
 }
 
-impl From<InputFile> for File {
+impl From<InputFile> for FileUpload {
     fn from(file: InputFile) -> Self {
         Self::InputFile(file)
     }
 }
 
-impl From<String> for File {
+impl From<String> for FileUpload {
     fn from(file: String) -> Self {
         Self::String(file)
     }
@@ -401,7 +401,7 @@ pub struct SendPhotoParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub photo: File,
+    pub photo: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -450,7 +450,7 @@ pub struct SendAudioParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub audio: File,
+    pub audio: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -478,7 +478,7 @@ pub struct SendAudioParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -511,11 +511,11 @@ pub struct SendDocumentParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub document: File,
+    pub document: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -564,7 +564,7 @@ pub struct SendVideoParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub video: File,
+    pub video: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -580,7 +580,7 @@ pub struct SendVideoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -633,7 +633,7 @@ pub struct SendAnimationParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub animation: File,
+    pub animation: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -649,7 +649,7 @@ pub struct SendAnimationParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -698,7 +698,7 @@ pub struct SendVoiceParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub voice: File,
+    pub voice: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -747,7 +747,7 @@ pub struct SendVideoNoteParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub video_note: File,
+    pub video_note: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -759,7 +759,7 @@ pub struct SendVideoNoteParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1831,7 +1831,7 @@ pub struct SendStickerParams {
     pub message_thread_id: Option<i32>,
 
     #[builder(setter(into))]
-    pub sticker: File,
+    pub sticker: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1972,7 +1972,7 @@ pub struct SetStickerSetThumbnailParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2325,7 +2325,7 @@ pub struct GetGameHighScoresParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaPhoto {
     #[builder(setter(into))]
-    pub media: File,
+    pub media: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2347,11 +2347,11 @@ pub struct InputMediaPhoto {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaVideo {
     #[builder(setter(into))]
-    pub media: File,
+    pub media: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2389,11 +2389,11 @@ pub struct InputMediaVideo {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaAnimation {
     #[builder(setter(into))]
-    pub media: File,
+    pub media: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2427,11 +2427,11 @@ pub struct InputMediaAnimation {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaAudio {
     #[builder(setter(into))]
-    pub media: File,
+    pub media: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2461,11 +2461,11 @@ pub struct InputMediaAudio {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputMediaDocument {
     #[builder(setter(into))]
-    pub media: File,
+    pub media: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub thumbnail: Option<File>,
+    pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
