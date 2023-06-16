@@ -1,5 +1,5 @@
 #![allow(deprecated)]
-use super::api_params::File as InputFile;
+use super::api_params::FileUpload;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
@@ -1775,7 +1775,7 @@ pub struct Sticker {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct InputSticker {
-    pub sticker: InputFile,
+    pub sticker: FileUpload,
     pub emoji_list: Vec<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]

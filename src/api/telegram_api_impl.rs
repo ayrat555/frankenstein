@@ -196,7 +196,7 @@ mod tests {
     use crate::api_params::EditMessageMediaParams;
     use crate::api_params::EditMessageTextParams;
     use crate::api_params::ExportChatInviteLinkParams;
-    use crate::api_params::File;
+    use crate::api_params::FileUpload;
     use crate::api_params::ForwardMessageParams;
     use crate::api_params::GetChatAdministratorsParams;
     use crate::api_params::GetChatMemberCountParams;
@@ -1053,7 +1053,7 @@ mod tests {
     #[test]
     fn send_audio_file_id_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let file = File::String(
+        let file = FileUpload::String(
             "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ".to_string(),
         );
         let params = SendAudioParams::builder()
