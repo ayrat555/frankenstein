@@ -17,7 +17,7 @@ Add this to your Cargo.toml
 
 ```toml
 [dependencies]
-frankenstein = "0.25"
+frankenstein = "0.26"
 ```
 
 ## Features
@@ -35,13 +35,13 @@ frankenstein = "0.25"
 To use the async client add the following line to your `Cargo.toml` file:
 
 ```toml
-frankenstein = { version = "0.25", default-features = false, features = ["async-http-client"] }
+frankenstein = { version = "0.26", default-features = false, features = ["async-http-client"] }
 ```
 
 You can also disable all features:
 
 ```toml
-frankenstein = { version = "0.25", default-features = false }
+frankenstein = { version = "0.26", default-features = false }
 ```
 
 In this case the crate will ship only with telegram types
@@ -137,10 +137,10 @@ See a complete example in the `examples` directory.
 
 ### Uploading files
 
-Some methods in the API allow uploading files. In the frankenstein for this `File` struct is used:
+Some methods in the API allow uploading files. In the frankenstein for this `FileUpload` enum is used:
 
 ```rust
-pub enum File {
+pub enum FileUpload {
     InputFile(InputFile),
     String(String),
 }
@@ -152,8 +152,8 @@ pub struct InputFile {
 
 It has two variants:
 
-- `File::String` is used to pass id of the already uploaded file
-- `File::InputFile` is used to upload a new file using multipart upload.
+- `FileUpload::String` is used to pass id of the already uploaded file
+- `FileUpload::InputFile` is used to upload a new file using multipart upload.
 
 
 ### Customizing http clients
@@ -195,7 +195,7 @@ AsyncApi::builder().api_url(api_url).client(client).build()
 
 ### Documentation
 
-Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.25.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all telegram bot api methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.26.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 
@@ -212,7 +212,7 @@ The library uses `ureq` http client by default, but it can be easily replaced wi
 1. `ureq` comes with a default feature (`impl`). So the feature should be disabled:
 
 ```toml
-frankenstein = { version = "0.25", default-features = false, features = ["telegram-trait"] }
+frankenstein = { version = "0.26", default-features = false, features = ["telegram-trait"] }
 ```
 
 2. Implement `TelegramApi` trait which requires two functions:
