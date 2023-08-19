@@ -132,6 +132,7 @@ use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
 use crate::GetCustomEmojiStickersParams;
 use crate::Sticker;
+use crate::UnpinAllGeneralForumTopicMessagesParams;
 use std::path::PathBuf;
 
 pub trait TelegramApi {
@@ -1202,6 +1203,13 @@ pub trait TelegramApi {
         params: GetChatMenuButtonParams,
     ) -> Result<MethodResponse<MenuButton>, Self::Error> {
         self.request("getChatMenuButton", Some(params))
+    }
+
+    fn unpin_all_general_forum_topic_messages(
+        &self,
+        params: UnpinAllGeneralForumTopicMessagesParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unpinAllGeneralForumTopicMessages", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(

@@ -484,6 +484,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub emoji_status_expiration_date: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub bio: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -659,6 +663,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub sticker: Option<Box<Sticker>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub story: Option<Box<Story>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1084,12 +1092,18 @@ pub struct PollOption {
     pub voter_count: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct PollAnswer {
     #[builder(setter(into))]
     pub poll_id: String,
 
-    pub user: User,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    voter_chat: Option<Box<Chat>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user: Option<Box<User>>,
 
     pub option_ids: Vec<u8>,
 }
@@ -1786,6 +1800,13 @@ pub struct InputSticker {
     #[builder(setter(into, strip_option), default)]
     pub keywords: Option<Vec<String>>,
 }
+
+// https://core.telegram.org/bots/api#story
+// This object represents a message about a forwarded story in the chat.
+// Currently holds no information.
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct Story {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StickerSet {

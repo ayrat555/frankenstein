@@ -1266,6 +1266,14 @@ pub trait AsyncTelegramApi {
         self.request("getChatMenuButton", Some(params)).await
     }
 
+    async fn unpin_all_general_forum_topic_messages(
+        &self,
+        params: UnpinAllGeneralForumTopicMessagesParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unpinAllGeneralForumTopicMessages", Some(params))
+            .await
+    }
+
     async fn request_without_body<T: serde::de::DeserializeOwned>(
         &self,
         method: &str,
