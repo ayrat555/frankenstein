@@ -132,6 +132,7 @@ use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
 use crate::Sticker;
+use crate::UnpinAllGeneralForumTopicMessagesParams;
 use async_trait::async_trait;
 use std::path::PathBuf;
 
