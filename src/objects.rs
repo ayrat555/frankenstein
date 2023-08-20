@@ -1099,7 +1099,7 @@ pub struct PollAnswer {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    voter_chat: Option<Box<Chat>>,
+    pub voter_chat: Option<Chat>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
