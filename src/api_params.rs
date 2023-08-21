@@ -2031,7 +2031,7 @@ pub struct InlineQueryResultsButton {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendInvoiceParams {
-    pub chat_id: i64,
+    pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2523,4 +2523,9 @@ pub struct GetChatMenuButtonParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<i64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct UnpinAllGeneralForumTopicMessagesParams {
+    pub chat_id: ChatId,
 }

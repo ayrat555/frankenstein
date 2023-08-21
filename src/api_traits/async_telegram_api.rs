@@ -132,6 +132,7 @@ use crate::objects::User;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
 use crate::Sticker;
+use crate::UnpinAllGeneralForumTopicMessagesParams;
 use async_trait::async_trait;
 use std::path::PathBuf;
 
@@ -1264,6 +1265,14 @@ pub trait AsyncTelegramApi {
         params: GetChatMenuButtonParams,
     ) -> Result<MethodResponse<MenuButton>, Self::Error> {
         self.request("getChatMenuButton", Some(params)).await
+    }
+
+    async fn unpin_all_general_forum_topic_messages(
+        &self,
+        params: UnpinAllGeneralForumTopicMessagesParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unpinAllGeneralForumTopicMessages", Some(params))
+            .await
     }
 
     async fn request_without_body<T: serde::de::DeserializeOwned>(
