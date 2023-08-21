@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.27.0 (2023-08-21)
+
+### [Bot API 6.8](https://core.telegram.org/bots/api#august-18-2023) - [#112](https://github.com/ayrat555/frankenstein/pull/112)
+
 ## 0.26.0 (2023-06-16)
 
   * Rename `File` enum into `FileUpload` - [#109](https://github.com/ayrat555/frankenstein/pull/109)
