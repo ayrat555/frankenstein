@@ -3,6 +3,7 @@ name: Test and Build Rust
 on:
   push:
   pull_request:
+    types: [opened, reopened]
   schedule:
     # Check if it works with current dependencies
     - cron: "32 2 * * 3" # weekly on Wednesday 2:32 UTC
@@ -17,7 +18,7 @@ jobs:
           rm ~/.cargo/bin/{rustfmt,cargo-fmt}
           rustup toolchain install stable --profile minimal --component rustfmt
           rustup default stable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: cargo fmt --check --verbose
 
   test:
@@ -56,7 +57,7 @@ jobs:
           rustup toolchain install ${{ matrix.toolchain }} --profile minimal --component clippy
           rustup default ${{ matrix.toolchain }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Fetch dependencies
         uses: actions-rs/cargo@v1
@@ -116,7 +117,7 @@ jobs:
           rustup toolchain install stable --profile minimal --target ${{ matrix.triple }}
           rustup default stable
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Fetch dependencies
         run: cargo fetch --verbose
