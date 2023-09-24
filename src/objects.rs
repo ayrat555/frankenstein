@@ -195,14 +195,6 @@ pub struct ChatMemberAdministrator {
 
     pub can_manage_chat: bool,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub can_post_messages: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub can_edit_messages: Option<bool>,
-
     pub can_delete_messages: bool,
 
     pub can_manage_video_chats: bool,
@@ -217,7 +209,27 @@ pub struct ChatMemberAdministrator {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub can_post_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_edit_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub can_pin_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_post_stories: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_edit_stories: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_delete_stories: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1266,7 +1278,15 @@ pub struct ChatShared {
 pub struct WriteAccessAllowed {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub from_request: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub web_app_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub from_attachment_menu: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -3210,6 +3230,18 @@ pub struct ChatAdministratorRights {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub can_pin_messages: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_post_stories: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_edit_stories: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_delete_stories: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
