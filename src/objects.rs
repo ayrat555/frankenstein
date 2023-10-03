@@ -39,6 +39,7 @@ pub enum ChatMember {
     Member(ChatMemberMember),
     Restricted(ChatMemberRestricted),
     Left(ChatMemberLeft),
+    #[serde(rename = "kicked")]
     Banned(ChatMemberBanned),
 }
 
@@ -3328,5 +3329,21 @@ mod serde_tests {
         };
 
         assert_eq!(update, expected);
+    }
+
+    #[test]
+    pub fn kicked_user_status_is_parsed() {
+        let member_content = r#"{
+            "status": "kicked",
+            "until_date": 0,
+            "user": {
+                "id": 0,
+                "is_bot": false,
+                "first_name": "First"
+            }
+        }"#;
+
+        let member: ChatMember = serde_json::from_str(member_content).unwrap();
+        assert!(matches!(member, ChatMember::Banned(_)));
     }
 }
