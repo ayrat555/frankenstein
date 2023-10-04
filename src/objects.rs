@@ -3343,6 +3343,6 @@ mod serde_tests {
         }"#;
 
         let member: ChatMember = serde_json::from_str(member_content).unwrap();
-        assert!(matches!(member, ChatMember::Banned(_)));
+        assert!(matches!(member, ChatMember::Kicked(_)));
     }
 }

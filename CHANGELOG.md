@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.29.0 (2023-10-04)
+
+  * Fix parsing 'kicked' chat member status - [#119](https://github.com/ayrat555/frankenstein/pull/119)
+
 ## 0.28.0 (2023-09-24)
 
 ### [Bot API 6.9](https://core.telegram.org/bots/api#september-22-2023) - [#117](https://github.com/ayrat555/frankenstein/pull/117)
