@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.29.1 (2023-10-14)
+
+  * Add unpin_all_chat_messages method - [#122](https://github.com/ayrat555/frankenstein/pull/122)
+
 ## 0.29.0 (2023-10-04)
 
   * Fix parsing 'kicked' chat member status - [#119](https://github.com/ayrat555/frankenstein/pull/119)
