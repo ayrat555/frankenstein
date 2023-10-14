@@ -646,7 +646,7 @@ pub trait AsyncTelegramApi {
         self.request("unpinChatMessage", Some(params)).await
     }
 
-    fn unpin_all_chat_messages(
+    async fn unpin_all_chat_messages(
         &self,
         params: &UnpinAllChatMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
