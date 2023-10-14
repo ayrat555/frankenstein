@@ -106,6 +106,7 @@ use crate::api_params::StopPollParams;
 use crate::api_params::UnbanChatMemberParams;
 use crate::api_params::UnbanChatSenderChatParams;
 use crate::api_params::UnhideGeneralForumTopicParams;
+use crate::api_params::UnpinAllChatMessagesParams;
 use crate::api_params::UnpinAllForumTopicMessagesParams;
 use crate::api_params::UnpinChatMessageParams;
 use crate::api_params::UploadStickerFileParams;
@@ -643,6 +644,13 @@ pub trait AsyncTelegramApi {
         params: &UnpinChatMessageParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinChatMessage", Some(params)).await
+    }
+
+    fn unpin_all_chat_messages(
+        &self,
+        params: &UnpinAllChatMessagesParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("unpinAllChatMessages", Some(params)).await
     }
 
     async fn leave_chat(
