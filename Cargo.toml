@@ -59,7 +59,7 @@ async-telegram-trait = ["async-trait"]
 
 [dependencies]
 thiserror = "1"
-typed-builder = "0.16"
+typed-builder = "0.18"
 
 [dependencies.async-trait]
 version = "0.1"
