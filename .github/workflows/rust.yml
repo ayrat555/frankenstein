@@ -8,23 +8,25 @@ on:
     # Check if it works with current dependencies
     - cron: "32 2 * * 3" # weekly on Wednesday 2:32 UTC
 
+env:
+  RUSTFLAGS: --deny warnings
+
 jobs:
   rustfmt:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Rust
-        shell: bash -eux {0}
-        run: |
-          rm ~/.cargo/bin/{rustfmt,cargo-fmt}
-          rustup toolchain install stable --profile minimal --component rustfmt
-          rustup default stable
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          components: rustfmt
       - uses: actions/checkout@v4
       - run: cargo fmt --check --verbose
 
   test:
     name: Test ${{ matrix.toolchain }} ${{ matrix.os }} ${{ matrix.features }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.toolchain == 'nightly' }}
+    continue-on-error: ${{ (matrix.toolchain == 'beta') || (matrix.toolchain == 'nightly') }}
     strategy:
       fail-fast: false
       matrix:
@@ -35,7 +37,7 @@ jobs:
           - macos-latest
           - windows-latest
         clippyargs:
-          - -D clippy::pedantic -D warnings
+          - -D clippy::pedantic
         features:
           - --no-default-features
           - "" # default features
@@ -45,43 +47,34 @@ jobs:
           - toolchain: beta
             os: ubuntu-latest
             features: --all-features
-            clippyargs: -W clippy::pedantic -W clippy::cargo
+            clippyargs: -D clippy::pedantic
           - toolchain: nightly
             os: ubuntu-latest
             features: --all-features
-            clippyargs: -W clippy::pedantic
+            clippyargs: -D clippy::pedantic
     steps:
       - name: Setup Rust
-        shell: bash -eux {0}
-        run: |
-          rustup toolchain install ${{ matrix.toolchain }} --profile minimal --component clippy
-          rustup default ${{ matrix.toolchain }}
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: clippy
 
       - uses: actions/checkout@v4
 
       - name: Fetch dependencies
-        uses: actions-rs/cargo@v1
-        with:
-          command: fetch
-          args: --verbose
+        run: cargo fetch --verbose
 
       - name: Check clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --verbose --all-targets ${{ matrix.features }} -- ${{ matrix.clippyargs }}
+        run: cargo clippy --verbose --all-targets ${{ matrix.features }} -- ${{ matrix.clippyargs }}
 
       - name: Check docs
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --verbose --no-deps ${{ matrix.features }}
+        run: cargo doc --verbose --no-deps ${{ matrix.features }}
+
+      - name: Build
+        run: cargo build --verbose --all-targets ${{ matrix.features }}
 
       - name: Run tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --verbose ${{ matrix.features }}
+        run: cargo test --verbose ${{ matrix.features }}
 
   release:
     name: Release ${{ matrix.triple }}
@@ -99,6 +92,8 @@ jobs:
             os: ubuntu-latest
           - triple: arm-unknown-linux-gnueabihf
             os: ubuntu-latest
+          - triple: riscv64gc-unknown-linux-gnu
+            os: ubuntu-latest
 
           - triple: x86_64-apple-darwin
             os: macos-latest
@@ -107,15 +102,20 @@ jobs:
 
           - triple: x86_64-pc-windows-msvc
             os: windows-latest
-          # https://github.com/briansmith/ring/issues/1167
-          # - triple: aarch64-pc-windows-msvc
-          #   os: windows-latest
+          - triple: aarch64-pc-windows-msvc
+            os: windows-latest
     steps:
       - name: Setup Rust
-        shell: bash -eux {0}
-        run: |
-          rustup toolchain install stable --profile minimal --target ${{ matrix.triple }}
-          rustup default stable
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          targets: ${{ matrix.triple }}
+
+      - name: Install cargo tools
+        if: runner.os == 'Linux'
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cross
 
       - uses: actions/checkout@v4
 
@@ -123,8 +123,4 @@ jobs:
         run: cargo fetch --verbose
 
       - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --verbose --all-features --target ${{ matrix.triple }}
-          use-cross: ${{ runner.os == 'Linux' }}
+        run: ${{ runner.os == 'Linux' && 'cross' || 'cargo' }} build --release --verbose --target ${{ matrix.triple }}

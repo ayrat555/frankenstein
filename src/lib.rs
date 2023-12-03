@@ -1,19 +1,18 @@
+#![forbid(unsafe_code)]
+#![warn(clippy::pedantic)]
 // TODO: remove and fix (or allow explicitly on the specific problem)
 #![allow(
-    clippy::large_enum_variant,
-    clippy::missing_const_for_fn,
     clippy::missing_errors_doc,
-    clippy::module_name_repetitions,
     clippy::must_use_candidate,
-    clippy::needless_collect,
-    clippy::new_without_default,
-    clippy::non_ascii_literal,
     clippy::single_match_else,
     clippy::struct_excessive_bools,
-    clippy::too_many_arguments,
     clippy::unreadable_literal,
-    clippy::use_self,
-    clippy::wildcard_imports
+
+    // from clippy::nursery
+    // clippy::derive_partial_eq_without_eq,
+    // clippy::option_if_let_else,
+    // clippy::significant_drop_tightening,
+    // clippy::use_self,
 )]
 
 #[cfg(any(feature = "http-client", feature = "async-http-client"))]
