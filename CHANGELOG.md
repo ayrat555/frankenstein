@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.29.2 (2023-12-29)
+
+  * Add blockquote to MessageEntityType - [#126](https://github.com/ayrat555/frankenstein/pull/126)
+
 ## 0.29.1 (2023-10-14)
 
   * Add unpin_all_chat_messages method - [#122](https://github.com/ayrat555/frankenstein/pull/122)
