@@ -71,6 +71,7 @@ pub enum MessageEntityType {
     TextLink,
     TextMention,
     CustomEmoji,
+    Blockquote,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
