@@ -345,6 +345,8 @@ pub enum UpdateContent {
     EditedMessage(Message),
     ChannelPost(Message),
     EditedChannelPost(Message),
+    MessageReaction(MessageReactionUpdated),
+    MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
     ChosenInlineResult(ChosenInlineResult),
     CallbackQuery(CallbackQuery),
@@ -402,6 +404,8 @@ pub enum AllowedUpdate {
     EditedMessage,
     ChannelPost,
     EditedChannelPost,
+    MessageReaction,
+    MessageReactionCount,
     InlineQuery,
     ChosenInlineResult,
     CallbackQuery,
@@ -490,6 +494,10 @@ pub struct Chat {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub active_usernames: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub available_reactions: Option<Vec<ReactionType>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1720,6 +1728,74 @@ pub struct ChatLocation {
 
     #[builder(setter(into))]
     pub address: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum ReactionType {
+    Emoji(ReactionTypeEmoji),
+    CustomEmoji(ReactionTypeCustomEmoji),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct ReactionTypeEmoji {
+    #[builder(setter(into))]
+    #[serde(rename = "type")]
+    pub type_field: String,
+
+    #[builder(setter(into))]
+    pub emoji: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct ReactionTypeCustomEmoji {
+    #[builder(setter(into))]
+    #[serde(rename = "type")]
+    pub type_field: String,
+
+    #[builder(setter(into))]
+    pub custom_emoji: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ReactionCount {
+    #[builder(setter(into))]
+    #[serde(rename = "type")]
+    pub type_field: ReactionType,
+
+    pub total_count: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct MessageReactionUpdated {
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user: Option<User>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub actor_chat: Option<Chat>,
+
+    pub date: u64,
+
+    pub old_reaction: Vec<ReactionType>,
+
+    pub new_reaction: Vec<ReactionType>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct MessageReactionCountUpdated {
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    pub date: u64,
+
+    pub reactions: Vec<ReactionCount>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Builder)]

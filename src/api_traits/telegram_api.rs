@@ -88,6 +88,7 @@ use crate::api_params::SetChatStickerSetParams;
 use crate::api_params::SetChatTitleParams;
 use crate::api_params::SetCustomEmojiStickerSetThumbnailParams;
 use crate::api_params::SetGameScoreParams;
+use crate::api_params::SetMessageReactionParams;
 use crate::api_params::SetMyCommandsParams;
 use crate::api_params::SetMyDefaultAdministratorRightsParams;
 use crate::api_params::SetMyDescriptionParams;
@@ -452,6 +453,13 @@ pub trait TelegramApi {
         params: &SendChatActionParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("sendChatAction", Some(params))
+    }
+
+    fn set_message_reaction(
+        &self,
+        params: &SetMessageReactionParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("setMessageReaction", Some(params))
     }
 
     fn get_user_profile_photos(

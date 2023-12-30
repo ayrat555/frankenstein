@@ -11,7 +11,7 @@ use crate::objects::{
     MenuButton, MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
     PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
     PassportElementErrorSelfie, PassportElementErrorTranslationFile,
-    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType,
+    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType, ReactionType,
     ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
     WebAppInfo,
 };
@@ -1133,6 +1133,20 @@ pub struct SendChatActionParams {
     pub message_thread_id: Option<i32>,
 
     pub action: ChatAction,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SetMessageReactionParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    pub message_id: i32,
+
+    pub reacion: Vec<ReactionType>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_big: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
