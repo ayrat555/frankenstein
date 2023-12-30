@@ -1740,19 +1740,11 @@ pub enum ReactionType {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct ReactionTypeEmoji {
     #[builder(setter(into))]
-    #[serde(rename = "type")]
-    pub type_field: String,
-
-    #[builder(setter(into))]
     pub emoji: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct ReactionTypeCustomEmoji {
-    #[builder(setter(into))]
-    #[serde(rename = "type")]
-    pub type_field: String,
-
     #[builder(setter(into))]
     pub custom_emoji: String,
 }
