@@ -1,9 +1,10 @@
 use frankenstein::GetUpdatesParams;
+use frankenstein::ReplyParameters;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
 use frankenstein::{Api, UpdateContent};
 
-static TOKEN: &str = "API_TOKEN";
+static TOKEN: &str = "1276618370:AAGx5YhNQvUG4eUcQXN-OB_a09ZzYl6uh6o";
 
 fn main() {
     let api = Api::new(TOKEN);
@@ -20,10 +21,14 @@ fn main() {
             Ok(response) => {
                 for update in response.result {
                     if let UpdateContent::Message(message) = update.content {
+                        let reply_parameters = ReplyParameters::builder()
+                            .message_id(message.message_id)
+                            .build();
+
                         let send_message_params = SendMessageParams::builder()
                             .chat_id(message.chat.id)
                             .text("hello")
-                            .reply_to_message_id(message.message_id)
+                            .reply_parameters(reply_parameters)
                             .build();
 
                         if let Err(err) = api.send_message(&send_message_params) {
