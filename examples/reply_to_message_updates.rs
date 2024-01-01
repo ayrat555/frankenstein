@@ -4,7 +4,7 @@ use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
 use frankenstein::{Api, UpdateContent};
 
-static TOKEN: &str = "1276618370:AAGx5YhNQvUG4eUcQXN-OB_a09ZzYl6uh6o";
+static TOKEN: &str = "API_TOKEN";
 
 fn main() {
     let api = Api::new(TOKEN);
