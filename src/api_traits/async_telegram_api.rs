@@ -12,6 +12,7 @@ use crate::api_params::BanChatSenderChatParams;
 use crate::api_params::CloseForumTopicParams;
 use crate::api_params::CloseGeneralForumTopicParams;
 use crate::api_params::CopyMessageParams;
+use crate::api_params::CopyMessagesParams;
 use crate::api_params::CreateChatInviteLinkParams;
 use crate::api_params::CreateForumTopicParams;
 use crate::api_params::CreateInvoiceLinkParams;
@@ -21,6 +22,7 @@ use crate::api_params::DeleteChatPhotoParams;
 use crate::api_params::DeleteChatStickerSetParams;
 use crate::api_params::DeleteForumTopicParams;
 use crate::api_params::DeleteMessageParams;
+use crate::api_params::DeleteMessagesParams;
 use crate::api_params::DeleteMyCommandsParams;
 use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteStickerSetParams;
@@ -36,6 +38,7 @@ use crate::api_params::EditMessageTextParams;
 use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::FileUpload;
 use crate::api_params::ForwardMessageParams;
+use crate::api_params::ForwardMessagesParams;
 use crate::api_params::GetChatAdministratorsParams;
 use crate::api_params::GetChatMemberCountParams;
 use crate::api_params::GetChatMemberParams;
@@ -193,11 +196,25 @@ pub trait AsyncTelegramApi {
         self.request("forwardMessage", Some(params)).await
     }
 
+    async fn forward_messages(
+        &self,
+        params: &ForwardMessagesParams,
+    ) -> Result<MethodResponse<Vec<MessageId>>, Self::Error> {
+        self.request("forwardMessages", Some(params)).await
+    }
+
     async fn copy_message(
         &self,
         params: &CopyMessageParams,
     ) -> Result<MethodResponse<MessageId>, Self::Error> {
         self.request("copyMessage", Some(params)).await
+    }
+
+    async fn copy_messages(
+        &self,
+        params: &CopyMessagesParams,
+    ) -> Result<MethodResponse<Vec<MessageId>>, Self::Error> {
+        self.request("copyMessages", Some(params)).await
     }
 
     async fn send_photo(
@@ -1029,6 +1046,13 @@ pub trait AsyncTelegramApi {
         params: &DeleteMessageParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("deleteMessage", Some(params)).await
+    }
+
+    async fn delete_messages(
+        &self,
+        params: &DeleteMessagesParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("deleteMessages", Some(params)).await
     }
 
     async fn send_sticker(
