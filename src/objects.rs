@@ -675,6 +675,10 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub link_preview_options: Option<LinkPreviewOptions>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub animation: Option<Box<Animation>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1060,7 +1064,7 @@ pub struct MessageOriginChannel {
     pub author_signature: Option<String>,
 }
 
-#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct LinkPreviewOptions {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2937,7 +2941,7 @@ pub struct InputTextMessageContent {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub disable_web_page_preview: Option<bool>,
+    pub link_preview_options: Option<LinkPreviewOptions>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Builder)]
