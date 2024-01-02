@@ -807,7 +807,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub user_shared: Option<Box<UserShared>>,
+    pub users_shared: Option<Box<UsersShared>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1460,17 +1460,17 @@ pub struct GeneralForumTopicHidden {}
 pub struct GeneralForumTopicUnhidden {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct UserShared {
+pub struct UsersShared {
     pub request_id: i32,
 
-    pub user_id: u64,
+    pub user_ids: Vec<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatShared {
     pub request_id: i32,
 
-    pub user_id: u64,
+    pub chat_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1556,7 +1556,7 @@ pub struct KeyboardButton {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub request_user: Option<KeyboardButtonRequestUser>,
+    pub request_users: Option<KeyboardButtonRequestUsers>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1580,7 +1580,7 @@ pub struct KeyboardButton {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct KeyboardButtonRequestUser {
+pub struct KeyboardButtonRequestUsers {
     pub request_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1590,6 +1590,10 @@ pub struct KeyboardButtonRequestUser {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub user_is_premium: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub max_quantity: Option<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
