@@ -1593,7 +1593,7 @@ pub struct KeyboardButtonRequestUsers {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub max_quantity: Option<i32>,
+    pub max_quantity: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
