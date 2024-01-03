@@ -1623,6 +1623,14 @@ pub struct AnswerCallbackQueryParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetUserChatBoostsParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 

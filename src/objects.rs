@@ -357,6 +357,8 @@ pub enum UpdateContent {
     MyChatMember(ChatMemberUpdated),
     ChatMember(ChatMemberUpdated),
     ChatJoinRequest(ChatJoinRequest),
+    ChatBoost(ChatBoost),
+    RemovedChatBoost(ChatBoostRemoved),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -416,6 +418,8 @@ pub enum AllowedUpdate {
     MyChatMember,
     ChatMember,
     ChatJoinRequest,
+    ChatBoost,
+    RemovedChatBoost,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -3596,6 +3600,73 @@ pub struct WebAppData {
 
     #[builder(setter(into))]
     pub button_text: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "source", rename_all = "snake_case")]
+pub enum ChatBoostSource {
+    Premium(ChatBoostSourcePremium),
+    GiftCode(ChatBoostSourceGiftCode),
+    Giveaway(ChatBoostSourceGiveaway),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostSourcePremium {
+    pub user: User,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostSourceGiftCode {
+    pub user: User,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostSourceGiveaway {
+    pub giveaway_message_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user: Option<User>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_unclaimed: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoost {
+    #[builder(setter(into))]
+    pub boost_id: String,
+
+    pub add_date: u64,
+
+    pub expiration_date: u64,
+
+    pub source: ChatBoostSource,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ChatBoostUpdated {
+    pub chat: Chat,
+
+    pub boost: ChatBoost,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ChatBoostRemoved {
+    pub chat: Chat,
+
+    #[builder(setter(into))]
+    pub boost_id: String,
+
+    pub remove_date: u64,
+
+    pub source: ChatBoostSource,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct UserChatBoosts {
+    pub boosts: Vec<ChatBoost>,
 }
 
 #[cfg(test)]
