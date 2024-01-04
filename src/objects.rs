@@ -859,6 +859,22 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub giveaway_created: Option<GiveawayCreated>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway: Option<Giveaway>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_winners: Option<GiveawayWinners>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_completed: Option<GiveawayCompleted>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub video_chat_started: Option<Box<VideoChatStarted>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3469,6 +3485,9 @@ pub struct GameHighScore {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GiveawayCreated {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct Giveaway {
     pub chats: Vec<Chat>,
 
@@ -3532,6 +3551,19 @@ pub struct GiveawayWinners {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub prize_description: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GiveawayCompleted {
+    pub winner_count: u32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub unclaimed_prize_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_message: Option<Box<Message>>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
