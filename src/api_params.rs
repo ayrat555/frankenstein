@@ -1142,7 +1142,7 @@ pub struct SetMessageReactionParams {
 
     pub message_id: i32,
 
-    pub reacion: Vec<ReactionType>,
+    pub reaction: Vec<ReactionType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
