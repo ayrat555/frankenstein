@@ -7,13 +7,13 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, MaskPosition,
-    MenuButton, MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
-    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
-    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
-    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType, ReactionType,
-    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
-    WebAppInfo,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, LinkPreviewOptions,
+    MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
+    PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
+    PassportElementErrorReverseSide, PassportElementErrorSelfie,
+    PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
+    PassportElementErrorUnspecified, PollType, ReactionType, ReplyKeyboardMarkup,
+    ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType, WebAppInfo,
 };
 use crate::{AllowedUpdate, ParseMode};
 use serde::Deserialize;
@@ -298,7 +298,7 @@ pub struct SendMessageParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub disable_web_page_preview: Option<bool>,
+    pub link_preview_options: Option<LinkPreviewOptions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -338,6 +338,29 @@ pub struct ForwardMessageParams {
     pub protect_content: Option<bool>,
 
     pub message_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ForwardMessagesParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
+    #[builder(setter(into))]
+    pub from_chat_id: ChatId,
+
+    pub message_ids: Vec<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub protect_content: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -381,6 +404,33 @@ pub struct CopyMessageParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct CopyMessagesParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_thread_id: Option<i32>,
+
+    #[builder(setter(into))]
+    pub from_chat_id: ChatId,
+
+    pub message_ids: Vec<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub remove_caption: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1573,6 +1623,14 @@ pub struct AnswerCallbackQueryParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetUserChatBoostsParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    pub user_id: u64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 
@@ -1688,7 +1746,7 @@ pub struct EditMessageTextParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub disable_web_page_preview: Option<bool>,
+    pub link_preview_options: Option<LinkPreviewOptions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1785,6 +1843,14 @@ pub struct DeleteMessageParams {
     pub chat_id: ChatId,
 
     pub message_id: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct DeleteMessagesParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    pub message_ids: Vec<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
