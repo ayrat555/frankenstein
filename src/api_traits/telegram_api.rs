@@ -53,6 +53,7 @@ use crate::api_params::GetMyNameParams;
 use crate::api_params::GetMyShortDescriptionParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
+use crate::api_params::GetUserChatBoostsParams;
 use crate::api_params::GetUserProfilePhotosParams;
 use crate::api_params::HideGeneralForumTopicParams;
 use crate::api_params::InputMedia;
@@ -133,6 +134,7 @@ use crate::objects::SentWebAppMessage;
 use crate::objects::StickerSet;
 use crate::objects::Update;
 use crate::objects::User;
+use crate::objects::UserChatBoosts;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
 use crate::GetCustomEmojiStickersParams;
@@ -768,6 +770,13 @@ pub trait TelegramApi {
         params: &AnswerCallbackQueryParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("answerCallbackQuery", Some(params))
+    }
+
+    fn get_user_chat_boosts(
+        &self,
+        params: &GetUserChatBoostsParams,
+    ) -> Result<MethodResponse<UserChatBoosts>, Self::Error> {
+        self.request("getUserChatBoosts", Some(params))
     }
 
     fn get_my_commands(
