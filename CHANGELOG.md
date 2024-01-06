@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.0 (2024-01-06)
+
+### [Bot API 7.0](https://core.telegram.org/bots/api#december-29-2023) - [#128](https://github.com/ayrat555/frankenstein/pull/128)
+
 ## 0.29.2 (2023-12-29)
 
   * Add blockquote to MessageEntityType - [#126](https://github.com/ayrat555/frankenstein/pull/126)
