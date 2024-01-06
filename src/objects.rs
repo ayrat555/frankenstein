@@ -505,6 +505,22 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub accent_color_id: Option<u16>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub background_custom_emoji_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub profile_accent_color_id: Option<u16>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub profile_background_custom_emoji_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub emoji_status_custom_emoji_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -569,6 +585,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub has_visible_history: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub sticker_set_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -607,27 +627,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub forward_from: Option<Box<User>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_from_chat: Option<Box<Chat>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_from_message_id: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_signature: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_sender_name: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_date: Option<u64>,
+    pub forward_origin: Option<Box<MessageOrigin>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -799,7 +799,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub pinned_message: Option<Box<Message>>,
+    pub pinned_message: Option<Box<MaybeInaccessibleMessage>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1761,7 +1761,7 @@ pub struct CallbackQuery {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub message: Option<Message>,
+    pub message: Option<MaybeInaccessibleMessage>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -3699,6 +3699,21 @@ pub struct ChatBoostRemoved {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct UserChatBoosts {
     pub boosts: Vec<ChatBoost>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum MaybeInaccessibleMessage {
+    Message(Message),
+    InaccessibleMessage(InaccessibleMessage),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InaccessibleMessage {
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    pub date: u64,
 }
 
 #[cfg(test)]
