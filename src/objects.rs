@@ -345,6 +345,8 @@ pub enum UpdateContent {
     EditedMessage(Message),
     ChannelPost(Message),
     EditedChannelPost(Message),
+    MessageReaction(MessageReactionUpdated),
+    MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
     ChosenInlineResult(ChosenInlineResult),
     CallbackQuery(CallbackQuery),
@@ -355,6 +357,8 @@ pub enum UpdateContent {
     MyChatMember(ChatMemberUpdated),
     ChatMember(ChatMemberUpdated),
     ChatJoinRequest(ChatJoinRequest),
+    ChatBoost(ChatBoost),
+    RemovedChatBoost(ChatBoostRemoved),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -402,6 +406,8 @@ pub enum AllowedUpdate {
     EditedMessage,
     ChannelPost,
     EditedChannelPost,
+    MessageReaction,
+    MessageReactionCount,
     InlineQuery,
     ChosenInlineResult,
     CallbackQuery,
@@ -412,6 +418,8 @@ pub enum AllowedUpdate {
     MyChatMember,
     ChatMember,
     ChatJoinRequest,
+    ChatBoost,
+    RemovedChatBoost,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -493,6 +501,26 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub available_reactions: Option<Vec<ReactionType>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub accent_color_id: Option<u16>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub background_custom_emoji_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub profile_accent_color_id: Option<u16>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub profile_background_custom_emoji_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub emoji_status_custom_emoji_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -557,6 +585,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub has_visible_history: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub sticker_set_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -595,27 +627,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub forward_from: Option<Box<User>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_from_chat: Option<Box<Chat>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_from_message_id: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_signature: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_sender_name: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub forward_date: Option<u64>,
+    pub forward_origin: Option<Box<MessageOrigin>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -628,6 +640,14 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub reply_to_message: Option<Box<Message>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub external_reply: Option<Box<ExternalReplyInfo>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub quote: Option<Box<TextQuote>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -656,6 +676,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub link_preview_options: Option<LinkPreviewOptions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -775,7 +799,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub pinned_message: Option<Box<Message>>,
+    pub pinned_message: Option<Box<MaybeInaccessibleMessage>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -787,7 +811,7 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub user_shared: Option<Box<UserShared>>,
+    pub users_shared: Option<Box<UsersShared>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -832,6 +856,22 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub general_forum_topic_unhidden: Option<Box<GeneralForumTopicUnhidden>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_created: Option<GiveawayCreated>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway: Option<Giveaway>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_winners: Option<GiveawayWinners>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_completed: Option<GiveawayCompleted>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -887,6 +927,184 @@ pub struct MessageEntity {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub custom_emoji_id: Option<String>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct TextQuote {
+    #[builder(setter(into))]
+    pub text: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub entities: Option<Vec<MessageEntity>>,
+
+    pub position: u32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_manual: Option<bool>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ExternalReplyInfo {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub origin: Option<MessageOrigin>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chain: Option<Chat>,
+
+    pub message_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub link_preview_options: Option<LinkPreviewOptions>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub animation: Option<Animation>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub audio: Option<Audio>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub document: Option<Document>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub photo: Option<Vec<PhotoSize>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub sticker: Option<Sticker>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub story: Option<Story>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub video: Option<Video>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub video_note: Option<VideoNote>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub voice: Option<Voice>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub has_media_spoiler: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub contact: Option<Contact>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub dice: Option<Dice>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub game: Option<Game>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway: Option<Giveaway>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_winners: Option<GiveawayWinners>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub invoice: Option<Invoice>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub location: Option<Location>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub poll: Option<Poll>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub venue: Option<Venue>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum MessageOrigin {
+    User(MessageOriginUser),
+    HiddenUser(MessageOriginHiddenUser),
+    Chat(MessageOriginChat),
+    Channel(MessageOriginChannel),
+}
+
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct MessageOriginUser {
+    pub date: u64,
+    pub sender_user: User,
+}
+
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct MessageOriginHiddenUser {
+    pub date: u64,
+    #[builder(setter(into))]
+    pub sender_user_name: String,
+}
+
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct MessageOriginChat {
+    pub date: u64,
+
+    pub sender_chat: Chat,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub author_signature: Option<String>,
+}
+
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct MessageOriginChannel {
+    pub date: u64,
+
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub author_signature: Option<String>,
+}
+
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct LinkPreviewOptions {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_disabled: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub url: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub prefer_small_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub prefer_large_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_above_text: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1262,17 +1480,17 @@ pub struct GeneralForumTopicHidden {}
 pub struct GeneralForumTopicUnhidden {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct UserShared {
+pub struct UsersShared {
     pub request_id: i32,
 
-    pub user_id: u64,
+    pub user_ids: Vec<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatShared {
     pub request_id: i32,
 
-    pub user_id: u64,
+    pub chat_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1358,7 +1576,7 @@ pub struct KeyboardButton {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub request_user: Option<KeyboardButtonRequestUser>,
+    pub request_users: Option<KeyboardButtonRequestUsers>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1382,7 +1600,7 @@ pub struct KeyboardButton {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct KeyboardButtonRequestUser {
+pub struct KeyboardButtonRequestUsers {
     pub request_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1392,6 +1610,10 @@ pub struct KeyboardButtonRequestUser {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub user_is_premium: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub max_quantity: Option<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1539,7 +1761,7 @@ pub struct CallbackQuery {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub message: Option<Message>,
+    pub message: Option<MaybeInaccessibleMessage>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1720,6 +1942,66 @@ pub struct ChatLocation {
 
     #[builder(setter(into))]
     pub address: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum ReactionType {
+    Emoji(ReactionTypeEmoji),
+    CustomEmoji(ReactionTypeCustomEmoji),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct ReactionTypeEmoji {
+    #[builder(setter(into))]
+    pub emoji: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct ReactionTypeCustomEmoji {
+    #[builder(setter(into))]
+    pub custom_emoji: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ReactionCount {
+    #[builder(setter(into))]
+    #[serde(rename = "type")]
+    pub type_field: ReactionType,
+
+    pub total_count: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct MessageReactionUpdated {
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user: Option<User>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub actor_chat: Option<Chat>,
+
+    pub date: u64,
+
+    pub old_reaction: Vec<ReactionType>,
+
+    pub new_reaction: Vec<ReactionType>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct MessageReactionCountUpdated {
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    pub date: u64,
+
+    pub reactions: Vec<ReactionCount>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Builder)]
@@ -2683,7 +2965,7 @@ pub struct InputTextMessageContent {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub disable_web_page_preview: Option<bool>,
+    pub link_preview_options: Option<LinkPreviewOptions>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Builder)]
@@ -3202,6 +3484,88 @@ pub struct GameHighScore {
     pub score: i32,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GiveawayCreated {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct Giveaway {
+    pub chats: Vec<Chat>,
+
+    pub winners_selection_date: u64,
+
+    pub winners_count: u32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub only_new_members: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub has_public_winners: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub prize_description: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub country_codes: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub premium_subscription_month_count: Option<u32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GiveawayWinners {
+    pub chat: Chat,
+
+    pub giveaway_message_id: i32,
+
+    pub winners_selection_date: u64,
+
+    pub winner_count: u32,
+
+    pub winners: Vec<User>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub additional_chat_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub premium_subscription_month_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub unclaimed_prize_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub only_new_members: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub was_refunded: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub prize_description: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct GiveawayCompleted {
+    pub winner_count: u32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub unclaimed_prize_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub giveaway_message: Option<Box<Message>>,
+}
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatAdministratorRights {
     pub is_anonymous: bool,
@@ -3268,6 +3632,88 @@ pub struct WebAppData {
 
     #[builder(setter(into))]
     pub button_text: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "source", rename_all = "snake_case")]
+pub enum ChatBoostSource {
+    Premium(ChatBoostSourcePremium),
+    GiftCode(ChatBoostSourceGiftCode),
+    Giveaway(ChatBoostSourceGiveaway),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostSourcePremium {
+    pub user: User,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostSourceGiftCode {
+    pub user: User,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostSourceGiveaway {
+    pub giveaway_message_id: i32,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub user: Option<User>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_unclaimed: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoost {
+    #[builder(setter(into))]
+    pub boost_id: String,
+
+    pub add_date: u64,
+
+    pub expiration_date: u64,
+
+    pub source: ChatBoostSource,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ChatBoostUpdated {
+    pub chat: Chat,
+
+    pub boost: ChatBoost,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ChatBoostRemoved {
+    pub chat: Chat,
+
+    #[builder(setter(into))]
+    pub boost_id: String,
+
+    pub remove_date: u64,
+
+    pub source: ChatBoostSource,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct UserChatBoosts {
+    pub boosts: Vec<ChatBoost>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum MaybeInaccessibleMessage {
+    Message(Message),
+    InaccessibleMessage(InaccessibleMessage),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InaccessibleMessage {
+    pub chat: Chat,
+
+    pub message_id: i32,
+
+    pub date: u64,
 }
 
 #[cfg(test)]
