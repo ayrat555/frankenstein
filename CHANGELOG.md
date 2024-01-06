@@ -30,7 +30,7 @@
 
 ## 0.25.0 (2023-04-23)
 
-### [Bot API 6.7](https://core.telegram.org/bots/api#april-21-2023) - [#106](https://github.com/ayrat555/frankenstein/pull/106)p
+### [Bot API 6.7](https://core.telegram.org/bots/api#april-21-2023) - [#106](https://github.com/ayrat555/frankenstein/pull/106)
 
 ## 0.24.1 (2023-03-18)
 
