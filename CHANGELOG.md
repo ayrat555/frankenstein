@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.1 (2024-01-07)
+
+  * Fix parsing of callback queries - [#137](https://github.com/ayrat555/frankenstein/pull/137)
+
 ## 0.30.0 (2024-01-06)
 
 ### [Bot API 7.0](https://core.telegram.org/bots/api#december-29-2023) - [#128](https://github.com/ayrat555/frankenstein/pull/128)
