@@ -3702,6 +3702,7 @@ pub struct UserChatBoosts {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
 pub enum MaybeInaccessibleMessage {
     Message(Message),
     InaccessibleMessage(InaccessibleMessage),
