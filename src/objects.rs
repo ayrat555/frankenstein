@@ -1960,7 +1960,7 @@ pub struct ReactionTypeEmoji {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct ReactionTypeCustomEmoji {
     #[builder(setter(into))]
-    pub custom_emoji: String,
+    pub custom_emoji_id: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
