@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.2 (2024-01-17)
+
+- Fix custom emoji decoding - [#143](https://github.com/ayrat555/frankenstein/pull/143)
+
 ## 0.30.1 (2024-01-07)
 
 - Fix parsing of callback queries - [#137](https://github.com/ayrat555/frankenstein/pull/137)
