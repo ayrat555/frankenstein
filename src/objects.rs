@@ -72,6 +72,8 @@ pub enum MessageEntityType {
     TextMention,
     CustomEmoji,
     Blockquote,
+    #[serde(other)]
+    Unknown,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -3792,5 +3794,23 @@ mod serde_tests {
 
         let member: ChatMember = serde_json::from_str(member_content).unwrap();
         assert!(matches!(member, ChatMember::Kicked(_)));
+    }
+
+    #[test]
+    pub fn unknown_entity_kind_is_parsed() {
+        let entity_content = r#"{
+            "type": "__unknown__",
+            "offset": 10,
+            "length": 20
+        }"#;
+
+        let entity: MessageEntity = serde_json::from_str(entity_content).unwrap();
+        assert!(matches!(
+            entity,
+            MessageEntity {
+                type_field: MessageEntityType::Unknown,
+                ..
+            }
+        ));
     }
 }
