@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.3 (2024-02-12)
+
+- Support unknown message entity types - [#146](https://github.com/ayrat555/frankenstein/pull/146)
+
 ## 0.30.2 (2024-01-17)
 
 - Fix custom emoji decoding - [#143](https://github.com/ayrat555/frankenstein/pull/143)
