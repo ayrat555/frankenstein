@@ -1,5 +1,6 @@
 #![allow(deprecated)]
 
+use std::fmt::Display;
 use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
@@ -37,9 +38,9 @@ impl ParseMode {
     }
 }
 
-impl ToString for ParseMode {
-    fn to_string(&self) -> String {
-        self.to_str().to_string()
+impl Display for ParseMode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.to_str())
     }
 }
 
