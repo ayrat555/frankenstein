@@ -571,7 +571,7 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
-    pub unrestrict_boost_count: Option<u64>,
+    pub unrestrict_boost_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
