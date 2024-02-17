@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.4 (2024-02-17)
+
+- [Bot API 7.1](https://core.telegram.org/bots/api#february-16-2024) - [#148](https://github.com/ayrat555/frankenstein/pull/148)
+
 ## 0.30.3 (2024-02-12)
 
 - Support unknown message entity types - [#146](https://github.com/ayrat555/frankenstein/pull/146)
