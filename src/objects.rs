@@ -571,6 +571,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub unrestrict_boost_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub message_auto_delete_time: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -599,6 +603,10 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub custom_emoji_sticker_set_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub linked_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -621,6 +629,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub sender_chat: Option<Box<Chat>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub sender_boost_count: Option<u32>,
 
     pub date: u64,
 
@@ -650,6 +662,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub quote: Option<Box<TextQuote>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub reply_to_story: Option<Box<Story>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -834,6 +850,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub proximity_alert_triggered: Option<Box<ProximityAlertTriggered>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub boost_added: Option<Box<ChatBoostAdded>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1444,6 +1464,11 @@ pub struct ProximityAlertTriggered {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct MessageAutoDeleteTimerChanged {
     pub message_auto_delete_time: u32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct ChatBoostAdded {
+    pub boost_count: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2106,12 +2131,11 @@ pub struct InputSticker {
     pub keywords: Option<Vec<String>>,
 }
 
-// https://core.telegram.org/bots/api#story
-// This object represents a message about a forwarded story in the chat.
-// Currently holds no information.
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct Story {}
+pub struct Story {
+    pub chat: Chat,
+    pub id: u64,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StickerSet {
