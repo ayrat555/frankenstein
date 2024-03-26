@@ -3519,7 +3519,7 @@ pub struct Giveaway {
 
     pub winners_selection_date: u64,
 
-    pub winners_count: u32,
+    pub winner_count: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
