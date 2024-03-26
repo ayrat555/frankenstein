@@ -1,4 +1,3 @@
-use frankenstein::reqwest;
 use frankenstein::AsyncApi;
 use frankenstein::AsyncTelegramApi;
 use std::time::Duration;
@@ -26,7 +25,7 @@ async fn main() {
 }
 
 fn custom_client() -> AsyncApi {
-    let client = reqwest::ClientBuilder::new()
+    let client = frankenstein::reqwest::ClientBuilder::new()
         .connect_timeout(Duration::from_secs(100))
         .timeout(Duration::from_secs(100))
         .build()

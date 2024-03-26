@@ -1,4 +1,3 @@
-use frankenstein::ureq;
 use frankenstein::Api;
 use frankenstein::TelegramApi;
 use std::time::Duration;
@@ -25,7 +24,9 @@ fn main() {
 }
 
 fn custom_client() -> Api {
-    let request_agent = ureq::builder().timeout(Duration::from_secs(100)).build();
+    let request_agent = frankenstein::ureq::builder()
+        .timeout(Duration::from_secs(100))
+        .build();
     let api_url = format!("{BASE_API_URL}{TOKEN}");
 
     Api::builder()
