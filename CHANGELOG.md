@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.30.5 (2024-03-26)
+
+-  Fix the winners_count field in the Giveaway struct - [#150](https://github.com/ayrat555/frankenstein/pull/150)
+-  Improve ci - [#152](https://github.com/ayrat555/frankenstein/pull/152)
+-  Fix lints - [#151](https://github.com/ayrat555/frankenstein/pull/151)
+
 ## 0.30.4 (2024-02-17)
 
 - [Bot API 7.1](https://core.telegram.org/bots/api#february-16-2024) - [#148](https://github.com/ayrat555/frankenstein/pull/148)
