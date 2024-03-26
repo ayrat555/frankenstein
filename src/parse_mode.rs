@@ -20,9 +20,9 @@ impl FromStr for ParseMode {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "HTML" | "Html" | "html" => Ok(ParseMode::Html),
-            "Markdown" | "markdown" => Ok(ParseMode::Markdown),
-            "MarkdownV2" | "markdownv2" => Ok(ParseMode::MarkdownV2),
+            "HTML" | "Html" | "html" => Ok(Self::Html),
+            "Markdown" | "markdown" => Ok(Self::Markdown),
+            "MarkdownV2" | "markdownv2" => Ok(Self::MarkdownV2),
             _ => Err(()),
         }
     }
@@ -31,9 +31,9 @@ impl FromStr for ParseMode {
 impl ParseMode {
     pub const fn to_str(self) -> &'static str {
         match self {
-            ParseMode::Html => "HTML",
-            ParseMode::MarkdownV2 => "MarkdownV2",
-            ParseMode::Markdown => "Markdown",
+            Self::Html => "HTML",
+            Self::MarkdownV2 => "MarkdownV2",
+            Self::Markdown => "Markdown",
         }
     }
 }

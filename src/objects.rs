@@ -1069,13 +1069,13 @@ pub enum MessageOrigin {
     Channel(MessageOriginChannel),
 }
 
-#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MessageOriginUser {
     pub date: u64,
     pub sender_user: User,
 }
 
-#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MessageOriginHiddenUser {
     pub date: u64,
     #[builder(setter(into))]
@@ -1990,7 +1990,7 @@ pub struct ReactionTypeCustomEmoji {
     pub custom_emoji_id: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ReactionCount {
     #[builder(setter(into))]
     #[serde(rename = "type")]
@@ -3510,7 +3510,7 @@ pub struct GameHighScore {
     pub score: i32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GiveawayCreated {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -3722,7 +3722,7 @@ pub struct ChatBoostRemoved {
     pub source: ChatBoostSource,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UserChatBoosts {
     pub boosts: Vec<ChatBoost>,
 }
