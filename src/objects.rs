@@ -347,6 +347,10 @@ pub enum UpdateContent {
     EditedMessage(Message),
     ChannelPost(Message),
     EditedChannelPost(Message),
+    BusinessConnection(BusinessConnection),
+    BusinessMessage(Message),
+    EditedBusinessMessage(Message),
+    DeletedBusinessMessages(BusinessMessagesDeleted),
     MessageReaction(MessageReactionUpdated),
     MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
@@ -3725,6 +3729,32 @@ pub struct ChatBoostRemoved {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UserChatBoosts {
     pub boosts: Vec<ChatBoost>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BusinessConnection {
+    #[builder(setter(into))]
+    pub id: String,
+
+    pub user: User,
+
+    pub user_chat_id: u64,
+
+    pub date: u64,
+
+    pub can_reply: bool,
+
+    pub is_enabled: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessMessagesDeleted {
+    #[builder(setter(into))]
+    pub business_connection_id: String,
+
+    pub chat: Chat,
+
+    pub message_ids: Vec<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

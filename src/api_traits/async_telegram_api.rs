@@ -39,6 +39,7 @@ use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::FileUpload;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::ForwardMessagesParams;
+use crate::api_params::GetBusinessConnectionParams;
 use crate::api_params::GetChatAdministratorsParams;
 use crate::api_params::GetChatMemberCountParams;
 use crate::api_params::GetChatMemberParams;
@@ -119,6 +120,7 @@ use crate::objects::BotCommand;
 use crate::objects::BotDescription;
 use crate::objects::BotName;
 use crate::objects::BotShortDescription;
+use crate::objects::BusinessConnection;
 use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatInviteLink;
@@ -822,6 +824,13 @@ pub trait AsyncTelegramApi {
         params: &GetUserChatBoostsParams,
     ) -> Result<MethodResponse<UserChatBoosts>, Self::Error> {
         self.request("getUserChatBoosts", Some(params)).await
+    }
+
+    async fn get_business_connection(
+        &self,
+        params: &GetBusinessConnectionParams,
+    ) -> Result<MethodResponse<BusinessConnection>, Self::Error> {
+        self.request("getBusinessConnection", Some(params)).await
     }
 
     async fn get_my_commands(

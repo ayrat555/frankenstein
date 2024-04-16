@@ -1631,6 +1631,12 @@ pub struct GetUserChatBoostsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetBusinessConnectionParams {
+    #[builder(setter(into))]
+    pub business_connection_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 
