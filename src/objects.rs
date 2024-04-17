@@ -638,7 +638,15 @@ pub struct Message {
     #[builder(setter(into, strip_option), default)]
     pub sender_boost_count: Option<u32>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub sender_business_bot: Option<Box<User>>,
+
     pub date: u64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
 
     #[builder(setter(into))]
     pub chat: Box<Chat>,
