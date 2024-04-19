@@ -39,6 +39,7 @@ use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::FileUpload;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::ForwardMessagesParams;
+use crate::api_params::GetBusinessConnectionParams;
 use crate::api_params::GetChatAdministratorsParams;
 use crate::api_params::GetChatMemberCountParams;
 use crate::api_params::GetChatMemberParams;
@@ -64,6 +65,7 @@ use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::ReopenForumTopicParams;
 use crate::api_params::ReopenGeneralForumTopicParams;
+use crate::api_params::ReplaceStickerInSetParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
 use crate::api_params::SendAnimationParams;
@@ -119,6 +121,7 @@ use crate::objects::BotCommand;
 use crate::objects::BotDescription;
 use crate::objects::BotName;
 use crate::objects::BotShortDescription;
+use crate::objects::BusinessConnection;
 use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatInviteLink;
@@ -824,6 +827,13 @@ pub trait AsyncTelegramApi {
         self.request("getUserChatBoosts", Some(params)).await
     }
 
+    async fn get_business_connection(
+        &self,
+        params: &GetBusinessConnectionParams,
+    ) -> Result<MethodResponse<BusinessConnection>, Self::Error> {
+        self.request("getBusinessConnection", Some(params)).await
+    }
+
     async fn get_my_commands(
         &self,
         params: &GetMyCommandsParams,
@@ -1163,6 +1173,13 @@ pub trait AsyncTelegramApi {
         params: &SetStickerPositionInSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("setStickerPositionInSet", Some(params)).await
+    }
+
+    async fn replace_sticker_in_set(
+        &self,
+        params: &ReplaceStickerInSetParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("replaceStickerInSet", Some(params)).await
     }
 
     async fn delete_sticker_from_set(

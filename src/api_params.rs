@@ -278,6 +278,10 @@ pub struct DeleteWebhookParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendMessageParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -435,6 +439,10 @@ pub struct CopyMessagesParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendPhotoParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -480,6 +488,10 @@ pub struct SendPhotoParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendAudioParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -537,6 +549,10 @@ pub struct SendAudioParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendDocumentParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -586,6 +602,10 @@ pub struct SendDocumentParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendVideoParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -651,6 +671,10 @@ pub struct SendVideoParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendAnimationParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -712,6 +736,10 @@ pub struct SendAnimationParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendVoiceParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -757,6 +785,10 @@ pub struct SendVoiceParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendVideoNoteParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -798,6 +830,10 @@ pub struct SendVideoNoteParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendMediaGroupParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -822,6 +858,10 @@ pub struct SendMediaGroupParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct SendLocationParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -922,6 +962,10 @@ pub struct StopMessageLiveLocationParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct SendVenueParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -974,6 +1018,10 @@ pub struct SendVenueParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendContactParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -1014,6 +1062,10 @@ pub struct SendContactParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendPollParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -1085,6 +1137,10 @@ pub struct SendPollParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendDiceParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -1115,6 +1171,10 @@ pub struct SendDiceParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendChatActionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -1631,6 +1691,12 @@ pub struct GetUserChatBoostsParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetBusinessConnectionParams {
+    #[builder(setter(into))]
+    pub business_connection_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 
@@ -1855,6 +1921,10 @@ pub struct DeleteMessagesParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendStickerParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -1913,8 +1983,6 @@ pub struct CreateNewStickerSetParams {
 
     pub stickers: Vec<InputSticker>,
 
-    pub sticker_format: StickerFormat,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option))]
     pub sticker_type: Option<StickerType>,
@@ -1952,6 +2020,19 @@ pub struct SetStickerPositionInSetParams {
 pub struct DeleteStickerFromSetParams {
     #[builder(setter(into))]
     pub sticker: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ReplaceStickerInSetParams {
+    pub user_id: u64,
+
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[builder(setter(into))]
+    pub old_sticker: String,
+
+    pub sticker: InputSticker,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2001,6 +2082,8 @@ pub struct SetStickerSetThumbnailParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub thumbnail: Option<FileUpload>,
+
+    pub format: StickerFormat,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2272,6 +2355,10 @@ pub struct SetPassportDataErrorsParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendGameParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     pub chat_id: i64,
 
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -347,6 +347,10 @@ pub enum UpdateContent {
     EditedMessage(Message),
     ChannelPost(Message),
     EditedChannelPost(Message),
+    BusinessConnection(BusinessConnection),
+    BusinessMessage(Message),
+    EditedBusinessMessage(Message),
+    DeletedBusinessMessages(BusinessMessagesDeleted),
     MessageReaction(MessageReactionUpdated),
     MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
@@ -464,6 +468,10 @@ pub struct User {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub supports_inline_queries: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub can_connect_to_business: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -500,6 +508,26 @@ pub struct Chat {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub active_usernames: Option<Vec<String>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub birthdate: Option<Birthdate>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_intro: Option<BusinessIntro>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_location: Option<BusinessLocation>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_opening_hours: Option<BusinessOpeningHours>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub personal_chat: Option<Box<Chat>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -634,7 +662,15 @@ pub struct Message {
     #[builder(setter(into, strip_option), default)]
     pub sender_boost_count: Option<u32>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub sender_business_bot: Option<Box<User>>,
+
     pub date: u64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
 
     #[builder(setter(into))]
     pub chat: Box<Chat>,
@@ -678,6 +714,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub has_protected_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_from_offline: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1507,10 +1547,31 @@ pub struct GeneralForumTopicHidden {}
 pub struct GeneralForumTopicUnhidden {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct SharedUser {
+    pub user_id: u64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub first_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub last_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub username: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub photo: Option<Vec<PhotoSize>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UsersShared {
     pub request_id: i32,
 
-    pub user_ids: Vec<u64>,
+    pub users: Vec<SharedUser>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1518,6 +1579,18 @@ pub struct ChatShared {
     pub request_id: i32,
 
     pub chat_id: u64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub title: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub username: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub photo: Option<Vec<PhotoSize>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1641,6 +1714,18 @@ pub struct KeyboardButtonRequestUsers {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub max_quantity: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_name: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_username: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_photo: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1672,6 +1757,18 @@ pub struct KeyboardButtonRequestChat {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub bot_is_member: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_title: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_username: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub request_photo: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1963,6 +2060,54 @@ pub struct ChatPermissions {
     pub can_manage_topics: Option<bool>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct Birthdate {
+    pub day: u8,
+
+    pub month: u8,
+
+    pub year: u16,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessIntro {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub title: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub sticker: Option<Sticker>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessLocation {
+    #[builder(setter(into))]
+    pub address: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub location: Option<Location>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessOpeningHoursInterval {
+    pub opening_minute: u16,
+
+    pub closing_minute: u16,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessOpeningHours {
+    pub time_zone_name: String,
+
+    pub opening_hours: Vec<BusinessOpeningHoursInterval>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct ChatLocation {
     pub location: Location,
@@ -2120,6 +2265,7 @@ pub struct Sticker {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct InputSticker {
     pub sticker: FileUpload,
+    pub format: StickerFormat,
     pub emoji_list: Vec<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2147,10 +2293,6 @@ pub struct StickerSet {
 
     #[serde(rename = "sticker_type")]
     pub sticker_type: StickerType,
-
-    pub is_animated: bool,
-
-    pub is_video: bool,
 
     #[doc(hidden)]
     #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
@@ -3725,6 +3867,32 @@ pub struct ChatBoostRemoved {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UserChatBoosts {
     pub boosts: Vec<ChatBoost>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BusinessConnection {
+    #[builder(setter(into))]
+    pub id: String,
+
+    pub user: User,
+
+    pub user_chat_id: u64,
+
+    pub date: u64,
+
+    pub can_reply: bool,
+
+    pub is_enabled: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessMessagesDeleted {
+    #[builder(setter(into))]
+    pub business_connection_id: String,
+
+    pub chat: Chat,
+
+    pub message_ids: Vec<i32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
