@@ -188,7 +188,7 @@ AsyncApi::builder().api_url(api_url).client(client).build()
 
 ### Documentation
 
-Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.30.4/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.30.6/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 
