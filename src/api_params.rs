@@ -1983,8 +1983,6 @@ pub struct CreateNewStickerSetParams {
 
     pub stickers: Vec<InputSticker>,
 
-    pub sticker_format: StickerFormat,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option))]
     pub sticker_type: Option<StickerType>,
@@ -2071,6 +2069,8 @@ pub struct SetStickerSetThumbnailParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub thumbnail: Option<FileUpload>,
+
+    pub format: StickerFormat,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

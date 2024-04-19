@@ -2183,6 +2183,7 @@ pub struct Sticker {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct InputSticker {
     pub sticker: FileUpload,
+    pub format: StickerFormat,
     pub emoji_list: Vec<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2210,10 +2211,6 @@ pub struct StickerSet {
 
     #[serde(rename = "sticker_type")]
     pub sticker_type: StickerType,
-
-    pub is_animated: bool,
-
-    pub is_video: bool,
 
     #[doc(hidden)]
     #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
