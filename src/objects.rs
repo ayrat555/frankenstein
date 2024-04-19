@@ -507,6 +507,18 @@ pub struct Chat {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub business_intro: Option<BusinessIntro>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_location: Option<BusinessLocation>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_opening_hours: Option<BusinessOpeningHours>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub available_reactions: Option<Vec<ReactionType>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1973,6 +1985,45 @@ pub struct ChatPermissions {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub can_manage_topics: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessIntro {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub title: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub sticker: Option<Sticker>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessLocation {
+    #[builder(setter(into))]
+    pub address: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub location: Option<Location>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessOpeningHoursInterval {
+    pub opening_minute: u16,
+
+    pub closing_minute: u16,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct BusinessOpeningHours {
+    pub time_zone_name: String,
+
+    pub opening_hours: Vec<BusinessOpeningHoursInterval>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
