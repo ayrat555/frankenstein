@@ -1983,8 +1983,6 @@ pub struct CreateNewStickerSetParams {
 
     pub stickers: Vec<InputSticker>,
 
-    pub sticker_format: StickerFormat,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option))]
     pub sticker_type: Option<StickerType>,
@@ -2022,6 +2020,19 @@ pub struct SetStickerPositionInSetParams {
 pub struct DeleteStickerFromSetParams {
     #[builder(setter(into))]
     pub sticker: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ReplaceStickerInSetParams {
+    pub user_id: u64,
+
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[builder(setter(into))]
+    pub old_sticker: String,
+
+    pub sticker: InputSticker,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2071,6 +2082,8 @@ pub struct SetStickerSetThumbnailParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub thumbnail: Option<FileUpload>,
+
+    pub format: StickerFormat,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
