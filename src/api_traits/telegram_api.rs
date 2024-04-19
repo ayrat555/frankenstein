@@ -64,6 +64,7 @@ use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
 use crate::api_params::ReopenForumTopicParams;
 use crate::api_params::ReopenGeneralForumTopicParams;
+use crate::api_params::ReplaceStickerInSetParams;
 use crate::api_params::RestrictChatMemberParams;
 use crate::api_params::RevokeChatInviteLinkParams;
 use crate::api_params::SendAnimationParams;
@@ -1124,6 +1125,13 @@ pub trait TelegramApi {
         params: &DeleteStickerFromSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("deleteStickerFromSet", Some(params))
+    }
+
+    fn replace_sticker_in_set(
+        &self,
+        params: &ReplaceStickerInSetParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("replaceStickerInSet", Some(params))
     }
 
     fn set_sticker_emoji_list(
