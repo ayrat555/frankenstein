@@ -2022,6 +2022,19 @@ pub struct DeleteStickerFromSetParams {
     pub sticker: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ReplaceStickerInSetParams {
+    pub user_id: u64,
+
+    #[builder(setter(into))]
+    pub name: String,
+
+    #[builder(setter(into))]
+    pub old_sticker: String,
+
+    pub sticker: InputSticker,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetStickerEmojiListParams {
     #[builder(setter(into))]
