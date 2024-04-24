@@ -1578,7 +1578,7 @@ pub struct UsersShared {
 pub struct ChatShared {
     pub request_id: i32,
 
-    pub chat_id: u64,
+    pub chat_id: i64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
