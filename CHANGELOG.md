@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.7 (2024-04-20)
+
+- Use i64 for ChatShared::chat_id - [#162](https://github.com/ayrat555/frankenstein/pull/162)
+
 ## 0.30.6 (2024-04-19)
 
 - [Bot API 7.2](https://core.telegram.org/bots/api#march-31-2024) - [#155](https://github.com/ayrat555/frankenstein/pull/155)
