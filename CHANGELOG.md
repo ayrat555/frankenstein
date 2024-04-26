@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.30.8 (2024-04-26)
+
+- fix: remove "status" from ChatMemberRestricted  - [#165](https://github.com/ayrat555/frankenstein/pull/165)
+- fix: message_id is optional in ExternalReplyInfo - [#166](https://github.com/ayrat555/frankenstein/pull/166)
+
 ## 0.30.7 (2024-04-20)
 
 - Use i64 for ChatShared::chat_id - [#162](https://github.com/ayrat555/frankenstein/pull/162)
