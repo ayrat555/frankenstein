@@ -1014,7 +1014,9 @@ pub struct ExternalReplyInfo {
     #[builder(setter(into, strip_option), default)]
     pub chain: Option<Chat>,
 
-    pub message_id: i32,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
