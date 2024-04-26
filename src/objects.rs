@@ -250,9 +250,6 @@ pub struct ChatMemberMember {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatMemberRestricted {
-    #[builder(setter(into))]
-    pub status: String,
-
     pub user: User,
 
     pub is_member: bool,
