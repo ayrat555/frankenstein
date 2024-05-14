@@ -1381,6 +1381,10 @@ pub struct PollOption {
     #[builder(setter(into))]
     pub text: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text_entities: Option<Vec<MessageEntity>>,
+
     pub voter_count: u32,
 }
 
@@ -1407,6 +1411,10 @@ pub struct Poll {
 
     #[builder(setter(into))]
     pub question: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub question_entities: Option<Vec<MessageEntity>>,
 
     pub options: Vec<PollOption>,
 
@@ -1975,6 +1983,10 @@ pub struct ChatMemberUpdated {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub invite_link: Option<ChatInviteLink>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub via_join_request: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
