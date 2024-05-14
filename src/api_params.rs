@@ -7,8 +7,8 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, LinkPreviewOptions,
-    MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputPollOption, InputSticker, LabeledPrice,
+    LinkPreviewOptions, MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
     PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
     PassportElementErrorReverseSide, PassportElementErrorSelfie,
     PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
@@ -1088,7 +1088,7 @@ pub struct SendPollParams {
     #[builder(setter(into, strip_option), default)]
     pub question_entities: Option<Vec<MessageEntity>>,
 
-    pub options: Vec<String>,
+    pub options: Vec<InputPollOption>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

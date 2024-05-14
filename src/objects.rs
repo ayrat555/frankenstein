@@ -1388,6 +1388,21 @@ pub struct PollOption {
     pub voter_count: u32,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct InputPollOption {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text_parse_mode: Option<ParseMode>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text_entities: Option<Vec<MessageEntity>>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct PollAnswer {
     #[builder(setter(into))]
