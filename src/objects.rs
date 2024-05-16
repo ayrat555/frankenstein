@@ -169,6 +169,23 @@ pub enum MenuButton {
     Default,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum ChatBackground {
+    Fill(BackgroundTypeFill),
+    Wallpaper(BackgroundTypeWallpaper),
+    Patter(BackgroundTypePattern),
+    ChatTheme(BackgroundTypeChatTheme),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum BackgroundFill {
+    Solid(BackgroundFillSolid),
+    Gradient(BackgroundFillGradient),
+    FreeformGradient(BackgroundFillFreeformGradient),
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct MenuButtonWebApp {
     #[builder(setter(into))]
@@ -1531,6 +1548,25 @@ pub struct MessageAutoDeleteTimerChanged {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatBoostAdded {
     pub boost_count: u32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundFillSolid {
+    pub color: u32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundFillGradient {
+    pub top_color: u32,
+
+    pub bottom_color: u32,
+
+    pub rotation_angle: u16,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundFillFreeformGradient {
+    pub colors: Vec<u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
