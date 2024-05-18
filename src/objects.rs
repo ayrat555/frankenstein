@@ -911,6 +911,10 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub chat_background_set: Option<Box<ChatBackground>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub forum_topic_created: Option<Box<ForumTopicCreated>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1567,6 +1571,51 @@ pub struct BackgroundFillGradient {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BackgroundFillFreeformGradient {
     pub colors: Vec<u32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypeFill {
+    pub fill: BackgroundFill,
+
+    pub dark_theme_dimming: u8,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypeWallpaper {
+    pub document: Document,
+
+    pub dark_theme_dimming: u8,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_blurred: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_moving: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypePattern {
+    pub document: Document,
+
+    pub fill: BackgroundFill,
+
+    pub intensity: u8,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_inverted: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_moving: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypeChatTheme {
+    #[builder(setter(into))]
+    pub theme_name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
