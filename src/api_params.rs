@@ -7,8 +7,8 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputSticker, LabeledPrice, LinkPreviewOptions,
-    MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputPollOption, InputSticker, LabeledPrice,
+    LinkPreviewOptions, MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
     PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
     PassportElementErrorReverseSide, PassportElementErrorSelfie,
     PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
@@ -926,6 +926,10 @@ pub struct EditMessageLiveLocationParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub live_period: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1076,7 +1080,15 @@ pub struct SendPollParams {
     #[builder(setter(into))]
     pub question: String,
 
-    pub options: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub question_parse_mode: Option<ParseMode>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub question_entities: Option<Vec<MessageEntity>>,
+
+    pub options: Vec<InputPollOption>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

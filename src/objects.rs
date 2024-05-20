@@ -169,6 +169,23 @@ pub enum MenuButton {
     Default,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum ChatBackground {
+    Fill(BackgroundTypeFill),
+    Wallpaper(BackgroundTypeWallpaper),
+    Patter(BackgroundTypePattern),
+    ChatTheme(BackgroundTypeChatTheme),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum BackgroundFill {
+    Solid(BackgroundFillSolid),
+    Gradient(BackgroundFillGradient),
+    FreeformGradient(BackgroundFillFreeformGradient),
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct MenuButtonWebApp {
     #[builder(setter(into))]
@@ -497,6 +514,34 @@ pub struct Chat {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub is_forum: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct ChatFullInfo {
+    pub id: i64,
+
+    #[serde(rename = "type")]
+    pub type_field: ChatType,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub title: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub username: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub first_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub last_name: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_forum: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -533,6 +578,10 @@ pub struct Chat {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub accent_color_id: Option<u16>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub max_reaction_count: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -891,6 +940,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub boost_added: Option<Box<ChatBoostAdded>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub chat_background_set: Option<Box<ChatBackground>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1381,7 +1434,26 @@ pub struct PollOption {
     #[builder(setter(into))]
     pub text: String,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text_entities: Option<Vec<MessageEntity>>,
+
     pub voter_count: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct InputPollOption {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text_parse_mode: Option<ParseMode>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub text_entities: Option<Vec<MessageEntity>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
@@ -1407,6 +1479,10 @@ pub struct Poll {
 
     #[builder(setter(into))]
     pub question: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub question_entities: Option<Vec<MessageEntity>>,
 
     pub options: Vec<PollOption>,
 
@@ -1508,6 +1584,70 @@ pub struct MessageAutoDeleteTimerChanged {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatBoostAdded {
     pub boost_count: u32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundFillSolid {
+    pub color: u32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundFillGradient {
+    pub top_color: u32,
+
+    pub bottom_color: u32,
+
+    pub rotation_angle: u16,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundFillFreeformGradient {
+    pub colors: Vec<u32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypeFill {
+    pub fill: BackgroundFill,
+
+    pub dark_theme_dimming: u8,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypeWallpaper {
+    pub document: Document,
+
+    pub dark_theme_dimming: u8,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_blurred: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_moving: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypePattern {
+    pub document: Document,
+
+    pub fill: BackgroundFill,
+
+    pub intensity: u8,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_inverted: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_moving: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct BackgroundTypeChatTheme {
+    #[builder(setter(into))]
+    pub theme_name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -1975,6 +2115,10 @@ pub struct ChatMemberUpdated {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub invite_link: Option<ChatInviteLink>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub via_join_request: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]

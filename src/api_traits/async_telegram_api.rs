@@ -122,8 +122,8 @@ use crate::objects::BotDescription;
 use crate::objects::BotName;
 use crate::objects::BotShortDescription;
 use crate::objects::BusinessConnection;
-use crate::objects::Chat;
 use crate::objects::ChatAdministratorRights;
+use crate::objects::ChatFullInfo;
 use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
 use crate::objects::File as FileObject;
@@ -690,7 +690,10 @@ pub trait AsyncTelegramApi {
         self.request("leaveChat", Some(params)).await
     }
 
-    async fn get_chat(&self, params: &GetChatParams) -> Result<MethodResponse<Chat>, Self::Error> {
+    async fn get_chat(
+        &self,
+        params: &GetChatParams,
+    ) -> Result<MethodResponse<ChatFullInfo>, Self::Error> {
         self.request("getChat", Some(params)).await
     }
 

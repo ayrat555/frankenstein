@@ -248,6 +248,7 @@ mod tests {
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
+    use crate::objects::InputPollOption;
     use crate::AllowedUpdate;
 
     #[test]
@@ -627,7 +628,10 @@ mod tests {
         let params = SendPollParams::builder()
             .chat_id(275808073)
             .question("are you?")
-            .options(vec!["1".to_string(), "2".to_string()])
+            .options(vec![
+                InputPollOption::builder().text("1").build(),
+                InputPollOption::builder().text("2").build(),
+            ])
             .build();
 
         let mut server = mockito::Server::new();
