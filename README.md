@@ -16,7 +16,7 @@ Run `cargo add frankenstein` or add the following to your `Cargo.toml`.
 
 ```toml
 [dependencies]
-frankenstein = "0.30"
+frankenstein = "0.31"
 ```
 
 ## Features
