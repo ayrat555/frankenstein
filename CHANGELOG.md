@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.31.0 (2024-05-20)
+
+-  [Bot API 7.3](https://core.telegram.org/bots/api#may-6-2024) - [#169](https://github.com/ayrat555/frankenstein/pull/169)
+
 ## 0.30.8 (2024-04-26)
 
 - fix: remove "status" from ChatMemberRestricted  - [#165](https://github.com/ayrat555/frankenstein/pull/165)
