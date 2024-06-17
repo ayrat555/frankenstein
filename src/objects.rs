@@ -787,6 +787,10 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub animation: Option<Box<Animation>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3313,8 +3317,9 @@ pub struct InputInvoiceMessageContent {
     #[builder(setter(into))]
     pub payload: String,
 
-    #[builder(setter(into))]
-    pub provider_token: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub provider_token: Option<String>,
 
     #[builder(setter(into))]
     pub currency: String,
