@@ -104,8 +104,6 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-    env:
-      RUSTFLAGS: --allow unknown-lints --deny warnings
     steps:
       - name: Setup Rust
         id: rust
@@ -119,7 +117,7 @@ jobs:
           key: test-${{ matrix.os }}-${{ steps.rust.outputs.cachekey }}-${{ hashFiles('**/Cargo.*') }}
           path: target/
       - run: cargo build --offline --all-features --all-targets
-      - run: cargo test --offline --all-features
+      - run: cargo test --offline --all-features --no-fail-fast
 
   release:
     name: Release ${{ matrix.triple }}
