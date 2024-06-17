@@ -10,6 +10,21 @@ readme = "README.md"
 keywords = ["request", "http", "client", "bot", "telegram"]
 categories = ["web-programming::http-client"]
 
+[package.metadata.docs.rs]
+all-features = true
+
+[features]
+default = ["http-client"]
+http-client = ["ureq", "multipart", "mime_guess", "telegram-trait", "serde_json"]
+telegram-trait = []
+async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
+async-telegram-trait = ["async-trait"]
+
+[lints.rust]
+unsafe_code = "forbid"
+[lints.clippy]
+pedantic = "warn"
+
 [[example]]
 name = "get_me"
 required-features = ["http-client"]
@@ -50,13 +65,6 @@ required-features = ["async-http-client"]
 name = "api_trait_implementation"
 required-features = ["telegram-trait"]
 
-[features]
-default = ["http-client"]
-http-client = ["ureq", "multipart", "mime_guess", "telegram-trait", "serde_json"]
-telegram-trait = []
-async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
-async-telegram-trait = ["async-trait"]
-
 [dependencies]
 thiserror = "1"
 typed-builder = "0.18"
@@ -72,7 +80,7 @@ optional = true
 [dependencies.multipart]
 version = "0.18"
 default-features = false
-features = ['client']
+features = ["client"]
 optional = true
 
 [dependencies.reqwest]
@@ -103,6 +111,3 @@ isahc = "1"
 mockito = "1.0"
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }
-
-[package.metadata.docs.rs]
-all-features = true

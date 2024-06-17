@@ -42,7 +42,7 @@ jobs:
           components: clippy
       - uses: actions/checkout@v4
       - run: cargo fetch
-      - run: cargo clippy --offline --all-features --all-targets -- -D clippy::pedantic
+      - run: cargo clippy --offline --all-features --all-targets
       - run: cargo doc --offline --all-features --no-deps
 
   features:
@@ -138,7 +138,7 @@ jobs:
           - triple: aarch64-pc-windows-msvc
             os: windows-latest
     env:
-      RUSTFLAGS: --allow unknown-lints --deny warnings
+      RUSTFLAGS: --deny warnings
     steps:
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@master

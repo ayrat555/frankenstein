@@ -1,5 +1,3 @@
-#![forbid(unsafe_code)]
-#![warn(clippy::pedantic)]
 // TODO: remove and fix (or allow explicitly on the specific problem)
 #![allow(
     clippy::missing_errors_doc,
