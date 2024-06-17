@@ -124,9 +124,6 @@ jobs:
   release:
     name: Release ${{ matrix.triple }}
     runs-on: ${{ matrix.os }}
-    needs:
-      - features
-      - test
     strategy:
       fail-fast: false
       matrix:
