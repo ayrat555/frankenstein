@@ -399,6 +399,10 @@ pub struct CopyMessageParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -468,6 +472,10 @@ pub struct SendPhotoParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -662,6 +670,10 @@ pub struct SendVideoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -732,6 +744,10 @@ pub struct SendAnimationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1915,6 +1931,10 @@ pub struct EditMessageCaptionParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -2537,6 +2557,10 @@ pub struct InputMediaPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_spoiler: Option<bool>,
 }
 
@@ -2560,6 +2584,10 @@ pub struct InputMediaVideo {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2602,6 +2630,10 @@ pub struct InputMediaAnimation {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
