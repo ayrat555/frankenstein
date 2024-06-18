@@ -72,6 +72,7 @@ pub enum MessageEntityType {
     TextMention,
     CustomEmoji,
     Blockquote,
+    ExpandableBlockquote,
     #[serde(other)]
     Unknown,
 }
@@ -787,6 +788,10 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub animation: Option<Box<Animation>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -828,6 +833,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2562,6 +2571,10 @@ pub struct InlineQueryResultPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2611,6 +2624,10 @@ pub struct InlineQueryResultGif {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2666,6 +2683,10 @@ pub struct InlineQueryResultMpeg4Gif {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2717,6 +2738,10 @@ pub struct InlineQueryResultVideo {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub description: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -3038,6 +3063,10 @@ pub struct InlineQueryResultCachedPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3071,6 +3100,10 @@ pub struct InlineQueryResultCachedGif {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3101,6 +3134,10 @@ pub struct InlineQueryResultCachedMpeg4Gif {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -3190,6 +3227,10 @@ pub struct InlineQueryResultCachedVideo {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -3313,8 +3354,9 @@ pub struct InputInvoiceMessageContent {
     #[builder(setter(into))]
     pub payload: String,
 
-    #[builder(setter(into))]
-    pub provider_token: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub provider_token: Option<String>,
 
     #[builder(setter(into))]
     pub currency: String,

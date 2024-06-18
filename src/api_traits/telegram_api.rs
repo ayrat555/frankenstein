@@ -62,6 +62,7 @@ use crate::api_params::LeaveChatParams;
 use crate::api_params::Media;
 use crate::api_params::PinChatMessageParams;
 use crate::api_params::PromoteChatMemberParams;
+use crate::api_params::RefundStarPaymentParams;
 use crate::api_params::ReopenForumTopicParams;
 use crate::api_params::ReopenGeneralForumTopicParams;
 use crate::api_params::ReplaceStickerInSetParams;
@@ -1219,6 +1220,13 @@ pub trait TelegramApi {
         params: &AnswerPreCheckoutQueryParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("answerPreCheckoutQuery", Some(params))
+    }
+
+    fn refund_star_payment(
+        &self,
+        params: &RefundStarPaymentParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        self.request("refundStarPayment", Some(params))
     }
 
     fn send_game(&self, params: &SendGameParams) -> Result<MethodResponse<Message>, Self::Error> {

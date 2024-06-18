@@ -314,6 +314,10 @@ pub struct SendMessageParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -395,6 +399,10 @@ pub struct CopyMessageParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -467,6 +475,10 @@ pub struct SendPhotoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -476,6 +488,10 @@ pub struct SendPhotoParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -540,6 +556,10 @@ pub struct SendAudioParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -590,6 +610,10 @@ pub struct SendDocumentParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -646,6 +670,10 @@ pub struct SendVideoParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -659,6 +687,10 @@ pub struct SendVideoParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -715,6 +747,10 @@ pub struct SendAnimationParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -724,6 +760,10 @@ pub struct SendAnimationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -776,6 +816,10 @@ pub struct SendVoiceParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -821,6 +865,10 @@ pub struct SendVideoNoteParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -846,6 +894,10 @@ pub struct SendMediaGroupParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -896,6 +948,10 @@ pub struct SendLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1013,6 +1069,10 @@ pub struct SendVenueParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1054,6 +1114,10 @@ pub struct SendContactParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1140,6 +1204,10 @@ pub struct SendPollParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1171,6 +1239,10 @@ pub struct SendDiceParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1859,6 +1931,10 @@ pub struct EditMessageCaptionParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1958,6 +2034,10 @@ pub struct SendStickerParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2169,8 +2249,9 @@ pub struct SendInvoiceParams {
     #[builder(setter(into))]
     pub payload: String,
 
-    #[builder(setter(into))]
-    pub provider_token: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub provider_token: Option<String>,
 
     #[builder(setter(into))]
     pub currency: String,
@@ -2247,6 +2328,10 @@ pub struct SendInvoiceParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2265,8 +2350,9 @@ pub struct CreateInvoiceLinkParams {
     #[builder(setter(into))]
     pub payload: String,
 
-    #[builder(setter(into))]
-    pub provider_token: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub provider_token: Option<String>,
 
     #[builder(setter(into))]
     pub currency: String,
@@ -2359,6 +2445,13 @@ pub struct AnswerPreCheckoutQueryParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct RefundStarPaymentParams {
+    pub user_id: u64,
+
+    pub telegram_payment_charge_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SetPassportDataErrorsParams {
     pub user_id: u64,
 
@@ -2387,6 +2480,10 @@ pub struct SendGameParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2460,6 +2557,10 @@ pub struct InputMediaPhoto {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub has_spoiler: Option<bool>,
 }
 
@@ -2483,6 +2584,10 @@ pub struct InputMediaVideo {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -2525,6 +2630,10 @@ pub struct InputMediaAnimation {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
