@@ -52,6 +52,7 @@ use crate::api_params::GetMyDefaultAdministratorRightsParams;
 use crate::api_params::GetMyDescriptionParams;
 use crate::api_params::GetMyNameParams;
 use crate::api_params::GetMyShortDescriptionParams;
+use crate::api_params::GetStarTransactionsParams;
 use crate::api_params::GetStickerSetParams;
 use crate::api_params::GetUpdatesParams;
 use crate::api_params::GetUserChatBoostsParams;
@@ -135,6 +136,7 @@ use crate::objects::Message;
 use crate::objects::MessageId;
 use crate::objects::Poll;
 use crate::objects::SentWebAppMessage;
+use crate::objects::StarTransactions;
 use crate::objects::StickerSet;
 use crate::objects::Update;
 use crate::objects::User;
@@ -1287,6 +1289,13 @@ pub trait TelegramApi {
         params: UnpinAllGeneralForumTopicMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
+    }
+
+    fn get_star_transactions(
+        &self,
+        params: GetStarTransactionsParams,
+    ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
+        self.request("getStarTransactions", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(

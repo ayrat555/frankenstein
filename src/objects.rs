@@ -4154,6 +4154,7 @@ pub struct StarTransaction {
     pub receiver: TransactionPartner,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
 }

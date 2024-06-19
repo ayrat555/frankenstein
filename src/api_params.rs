@@ -1712,6 +1712,15 @@ pub struct UnpinAllForumTopicMessagesParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetStarTransactionsParams {
+    #[builder(setter(into))]
+    offset: i32,
+
+    #[builder(setter(into))]
+    limit: i32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditGeneralForumTopicParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
