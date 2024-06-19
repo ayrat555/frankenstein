@@ -4096,6 +4096,68 @@ pub struct InaccessibleMessage {
     pub date: u64,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum RevenueWithdrawalState {
+    RevenueWithdrawalStatePending(RevenueWithdrawalStatePending),
+    RevenueWithdrawalStateSucceeded(RevenueWithdrawalStateSucceeded),
+    RevenueWithdrawalStateFailed(RevenueWithdrawalStateFailed),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct RevenueWithdrawalStatePending {
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct RevenueWithdrawalStateFailed {
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct RevenueWithdrawalStateSucceeded {
+    pub r#type: String,
+    pub date: u64,
+    url: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum TransactionPartner {
+    TransactionPartnerFragment(TransactionPartnerFragment),
+    TransactionPartnerUser(TransactionPartnerUser),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerFragment {
+    pub r#type: String,
+    withdrawal_state: RevenueWithdrawalState,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerUser {
+    pub r#type: String,
+    pub user: User,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerOther {
+    pub r#type: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct StarTransaction {
+    pub id: String,
+    pub amount: i32,
+    // u64 since it is Unix Timestamp and
+    // this makes it compatible with chrono
+    pub date: u64,
+    pub source: TransactionPartner,
+    pub receiver: TransactionPartner,
+}
+
+pub struct StarTransactions {
+    pub transactions: Vec<StarTransaction>,
+}
+
 #[cfg(test)]
 mod serde_tests {
     use super::*;
