@@ -4104,23 +4104,18 @@ pub enum RevenueWithdrawalState {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct RevenueWithdrawalStatePending {
-    #[builder(setter(into))]
-    pub r#type: String,
-}
+#[serde(tag = "pending", rename_all = "snake_case")]
+pub struct RevenueWithdrawalStatePending {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct RevenueWithdrawalStateFailed {
-    #[builder(setter(into))]
-    pub r#type: String,
-}
+#[serde(tag = "failed", rename_all = "snake_case")]
+pub struct RevenueWithdrawalStateFailed {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[serde(tag = "succeeded", rename_all = "snake_case")]
 pub struct RevenueWithdrawalStateSucceeded {
-    #[builder(setter(into))]
-    pub r#type: String,
     pub date: u64,
-    url: String,
+    pub url: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -4131,24 +4126,20 @@ pub enum TransactionPartner {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[serde(tag = "fragment", rename_all = "snake_case")]
 pub struct TransactionPartnerFragment {
-    #[builder(setter(into))]
-    pub r#type: String,
-    withdrawal_state: RevenueWithdrawalState,
+    pub withdrawal_state: RevenueWithdrawalState,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[serde(tag = "user", rename_all = "snake_case")]
 pub struct TransactionPartnerUser {
-    #[builder(setter(into))]
-    pub r#type: String,
     pub user: User,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct TransactionPartnerOther {
-    #[builder(setter(into))]
-    pub r#type: String,
-}
+#[serde(tag = "other", rename_all = "snake_case")]
+pub struct TransactionPartnerOther {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StarTransaction {
