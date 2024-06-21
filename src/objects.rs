@@ -4105,16 +4105,19 @@ pub enum RevenueWithdrawalState {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct RevenueWithdrawalStatePending {
+    #[builder(setter(into))]
     pub r#type: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct RevenueWithdrawalStateFailed {
+    #[builder(setter(into))]
     pub r#type: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct RevenueWithdrawalStateSucceeded {
+    #[builder(setter(into))]
     pub r#type: String,
     pub date: u64,
     url: String,
@@ -4124,31 +4127,34 @@ pub struct RevenueWithdrawalStateSucceeded {
 pub enum TransactionPartner {
     TransactionPartnerFragment(TransactionPartnerFragment),
     TransactionPartnerUser(TransactionPartnerUser),
+    TransactionPartnerOther(TransactionPartnerOther),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct TransactionPartnerFragment {
+    #[builder(setter(into))]
     pub r#type: String,
     withdrawal_state: RevenueWithdrawalState,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct TransactionPartnerUser {
+    #[builder(setter(into))]
     pub r#type: String,
     pub user: User,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct TransactionPartnerOther {
+    #[builder(setter(into))]
     pub r#type: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StarTransaction {
+    #[builder(setter(into))]
     pub id: String,
     pub amount: i32,
-    // u64 since it is Unix Timestamp and
-    // this makes it compatible with chrono
     pub date: u64,
     pub source: TransactionPartner,
     pub receiver: TransactionPartner,
