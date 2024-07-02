@@ -1720,15 +1720,6 @@ pub struct UnpinAllForumTopicMessagesParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct GetStarTransactionsParams {
-    #[builder(setter(into))]
-    offset: i32,
-
-    #[builder(setter(into))]
-    limit: i32,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditGeneralForumTopicParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
@@ -2479,6 +2470,15 @@ pub struct AnswerPreCheckoutQueryParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub error_message: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetStarTransactionsParams {
+    #[builder(setter(into))]
+    offset: u32,
+
+    #[builder(setter(into))]
+    limit: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

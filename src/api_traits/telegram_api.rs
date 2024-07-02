@@ -1224,6 +1224,13 @@ pub trait TelegramApi {
         self.request("answerPreCheckoutQuery", Some(params))
     }
 
+    fn get_star_transactions(
+        &self,
+        params: GetStarTransactionsParams,
+    ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
+        self.request("getStarTransactions", Some(params))
+    }
+
     fn refund_star_payment(
         &self,
         params: &RefundStarPaymentParams,
@@ -1289,13 +1296,6 @@ pub trait TelegramApi {
         params: UnpinAllGeneralForumTopicMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
-    }
-
-    fn get_star_transactions(
-        &self,
-        params: GetStarTransactionsParams,
-    ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
-        self.request("getStarTransactions", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(

@@ -4096,59 +4096,69 @@ pub struct InaccessibleMessage {
     pub date: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum RevenueWithdrawalState {
-    RevenueWithdrawalStatePending(RevenueWithdrawalStatePending),
-    RevenueWithdrawalStateSucceeded(RevenueWithdrawalStateSucceeded),
-    RevenueWithdrawalStateFailed(RevenueWithdrawalStateFailed),
+    Pending(RevenueWithdrawalStatePending),
+    Succeeded(RevenueWithdrawalStateSucceeded),
+    Failed(RevenueWithdrawalStateFailed),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[serde(tag = "pending", rename_all = "snake_case")]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct RevenueWithdrawalStatePending {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[serde(tag = "failed", rename_all = "snake_case")]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[serde(tag = "succeeded", rename_all = "snake_case")]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct RevenueWithdrawalStateSucceeded {
     pub date: u64,
+
+    #[builder(setter(into))]
     pub url: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum TransactionPartner {
-    TransactionPartnerFragment(TransactionPartnerFragment),
-    TransactionPartnerUser(TransactionPartnerUser),
-    TransactionPartnerOther(TransactionPartnerOther),
+    Fragment(TransactionPartnerFragment),
+    User(TransactionPartnerUser),
+    TelegramAds(TransactionPartnerTelegramAds),
+    Other(TransactionPartnerOther),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[serde(tag = "fragment", rename_all = "snake_case")]
 pub struct TransactionPartnerFragment {
     pub withdrawal_state: RevenueWithdrawalState,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[serde(tag = "user", rename_all = "snake_case")]
 pub struct TransactionPartnerUser {
     pub user: User,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-#[serde(tag = "other", rename_all = "snake_case")]
+pub struct TransactionPartnerTelegramAds {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct TransactionPartnerOther {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StarTransaction {
     #[builder(setter(into))]
     pub id: String,
-    pub amount: i32,
+
+    pub amount: u32,
+
     pub date: u64,
-    pub source: TransactionPartner,
-    pub receiver: TransactionPartner,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub source: Option<TransactionPartner>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub receiver: Option<TransactionPartner>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]

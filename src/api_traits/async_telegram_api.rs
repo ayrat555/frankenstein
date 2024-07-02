@@ -1281,6 +1281,13 @@ pub trait AsyncTelegramApi {
         self.request("answerPreCheckoutQuery", Some(params)).await
     }
 
+    async fn get_star_transactions(
+        &self,
+        params: GetStarTransactionsParams,
+    ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
+        self.request("getStarTransactions", Some(params)).await
+    }
+
     async fn refund_star_payment(
         &self,
         params: &RefundStarPaymentParams,
@@ -1352,13 +1359,6 @@ pub trait AsyncTelegramApi {
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
             .await
-    }
-
-    async fn get_star_transactions(
-        &self,
-        params: GetStarTransactionsParams,
-    ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
-        self.request("getStarTransactions", Some(params)).await
     }
 
     async fn request_without_body<T: serde::de::DeserializeOwned>(
