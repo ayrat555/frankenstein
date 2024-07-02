@@ -4096,6 +4096,82 @@ pub struct InaccessibleMessage {
     pub date: u64,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum RevenueWithdrawalState {
+    Pending(RevenueWithdrawalStatePending),
+    Succeeded(RevenueWithdrawalStateSucceeded),
+    Failed(RevenueWithdrawalStateFailed),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct RevenueWithdrawalStatePending {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct RevenueWithdrawalStateSucceeded {
+    pub date: u64,
+
+    #[builder(setter(into))]
+    pub url: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct RevenueWithdrawalStateFailed {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum TransactionPartner {
+    User(TransactionPartnerUser),
+    Fragment(TransactionPartnerFragment),
+    TelegramAds(TransactionPartnerTelegramAds),
+    Other(TransactionPartnerOther),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerUser {
+    pub user: User,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub invoice_payload: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerFragment {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub withdrawal_state: Option<RevenueWithdrawalState>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerTelegramAds {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct TransactionPartnerOther {}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct StarTransaction {
+    #[builder(setter(into))]
+    pub id: String,
+
+    pub amount: u32,
+
+    pub date: u64,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub source: Option<TransactionPartner>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub receiver: Option<TransactionPartner>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct StarTransactions {
+    pub transactions: Vec<StarTransaction>,
+}
+
 #[cfg(test)]
 mod serde_tests {
     use super::*;

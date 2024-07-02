@@ -966,6 +966,10 @@ pub struct SendLocationParams {
 pub struct EditMessageLiveLocationParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1003,6 +1007,10 @@ pub struct EditMessageLiveLocationParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct StopMessageLiveLocationParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
@@ -1873,6 +1881,10 @@ pub struct DeleteMyCommandsParams {
 pub struct EditMessageTextParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1905,6 +1917,10 @@ pub struct EditMessageTextParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct EditMessageCaptionParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
@@ -1942,6 +1958,10 @@ pub struct EditMessageCaptionParams {
 pub struct EditMessageMediaParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1964,6 +1984,10 @@ pub struct EditMessageMediaParams {
 pub struct EditMessageReplyMarkupParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1981,6 +2005,10 @@ pub struct EditMessageReplyMarkupParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct StopPollParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -2442,6 +2470,15 @@ pub struct AnswerPreCheckoutQueryParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub error_message: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct GetStarTransactionsParams {
+    #[builder(setter(into))]
+    offset: u32,
+
+    #[builder(setter(into))]
+    limit: u32,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
