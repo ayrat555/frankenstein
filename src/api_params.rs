@@ -7,10 +7,10 @@ use crate::objects::{
     InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
     InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputPollOption, InputSticker, LabeledPrice,
-    LinkPreviewOptions, MaskPosition, MenuButton, MessageEntity, PassportElementErrorDataField,
-    PassportElementErrorFile, PassportElementErrorFiles, PassportElementErrorFrontSide,
-    PassportElementErrorReverseSide, PassportElementErrorSelfie,
+    InlineQueryResultVideo, InlineQueryResultVoice, InputPaidMedia, InputPollOption, InputSticker,
+    LabeledPrice, LinkPreviewOptions, MaskPosition, MenuButton, MessageEntity,
+    PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles,
+    PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie,
     PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
     PassportElementErrorUnspecified, PollType, ReactionType, ReplyKeyboardMarkup,
     ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType, WebAppInfo,
@@ -2794,6 +2794,45 @@ pub struct GetChatMenuButtonParams {
 pub struct UnpinAllGeneralForumTopicMessagesParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct SendPaidMediaParams {
+    pub chat_id: ChatId,
+    pub star_count: i32,
+    pub media: Vec<InputPaidMedia>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub parse_mode: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub reply_parameters: Option<ReplyParameters>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
