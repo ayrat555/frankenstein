@@ -3,7 +3,7 @@ use super::api_params::FileUpload;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
-use crate::{InputFile, ParseMode};
+use crate::ParseMode;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
