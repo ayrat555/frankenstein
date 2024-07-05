@@ -3,7 +3,7 @@ use super::api_params::FileUpload;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder as Builder;
 
-use crate::ParseMode;
+use crate::{InputFile, ParseMode};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -4170,6 +4170,73 @@ pub struct StarTransaction {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum PaidMedia {
+    Preview(PaidMediaPreview),
+    Photo(PaidMediaPhoto),
+    Video(PaidMediaVideo),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct PaidMediaPreview {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub width: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub height: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub duration: Option<i32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct PaidMediaPhoto {
+    pub photo: Vec<PhotoSize>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct PaidMediaVideo {
+    pub video: Video,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputPaidMedia {
+    Photo(InputPaidMediaPhoto),
+    Video(InputPaidMediaVideo),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InputPaidMediaPhoto {
+    pub media: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InputPaidMediaVideo {
+    pub media: String,
+    pub thumbnail: FileUpload,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub width: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub height: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub duration: Option<i32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub supports_streaming: Option<bool>,
 }
 
 #[cfg(test)]
