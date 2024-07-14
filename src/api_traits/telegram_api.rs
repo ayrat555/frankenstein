@@ -434,6 +434,13 @@ pub trait TelegramApi {
         self.request_with_possible_form_data(method_name, params, files)
     }
 
+    fn send_paid_media(
+        &self,
+        params: SendPaidMediaParams,
+    ) -> Result<MethodResponse<Message>, Self::Error> {
+        self.request("sendPaidMedia", Some(params))
+    }
+
     fn send_location(
         &self,
         params: &SendLocationParams,
@@ -1297,13 +1304,6 @@ pub trait TelegramApi {
         params: UnpinAllGeneralForumTopicMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
-    }
-
-    fn send_paid_media(
-        &self,
-        params: SendPaidMediaParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        self.request("sendPaidMedia", Some(params))
     }
 
     fn request_without_body<T: serde::de::DeserializeOwned>(

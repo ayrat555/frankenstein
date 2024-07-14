@@ -642,6 +642,10 @@ pub struct ChatFullInfo {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub can_send_paid_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub slow_mode_delay: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -801,6 +805,10 @@ pub struct Message {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub document: Option<Box<Document>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub paid_media: Option<Box<PaidMediaInfo>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -1095,6 +1103,10 @@ pub struct ExternalReplyInfo {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub document: Option<Document>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub paid_media: Option<PaidMediaInfo>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -3510,6 +3522,84 @@ pub struct Invoice {
     pub total_amount: u32,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct PaidMediaInfo {
+    pub start_count: u32,
+
+    pub paid_media: Vec<PaidMedia>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum PaidMedia {
+    Preview(PaidMediaPreview),
+    Photo(PaidMediaPhoto),
+    Video(PaidMediaVideo),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct PaidMediaPreview {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub width: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub height: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub duration: Option<u32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct PaidMediaPhoto {
+    pub photo: Vec<PhotoSize>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct PaidMediaVideo {
+    pub video: Video,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputPaidMedia {
+    Photo(InputPaidMediaPhoto),
+    Video(InputPaidMediaVideo),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InputPaidMediaPhoto {
+    #[builder(setter(into))]
+    pub media: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct InputPaidMediaVideo {
+    #[builder(setter(into))]
+    pub media: String,
+
+    #[builder(setter(into))]
+    pub thumbnail: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub width: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub height: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub duration: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub supports_streaming: Option<bool>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ShippingAddress {
     #[builder(setter(into))]
@@ -4170,73 +4260,6 @@ pub struct StarTransaction {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum PaidMedia {
-    Preview(PaidMediaPreview),
-    Photo(PaidMediaPhoto),
-    Video(PaidMediaVideo),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct PaidMediaPreview {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub width: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub height: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub duration: Option<i32>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct PaidMediaPhoto {
-    pub photo: Vec<PhotoSize>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct PaidMediaVideo {
-    pub video: Video,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum InputPaidMedia {
-    Photo(InputPaidMediaPhoto),
-    Video(InputPaidMediaVideo),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct InputPaidMediaPhoto {
-    pub media: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct InputPaidMediaVideo {
-    pub media: String,
-    pub thumbnail: FileUpload,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub width: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub height: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub duration: Option<i32>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub supports_streaming: Option<bool>,
 }
 
 #[cfg(test)]

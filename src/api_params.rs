@@ -876,6 +876,47 @@ pub struct SendVideoNoteParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+pub struct SendPaidMediaParams {
+    pub chat_id: ChatId,
+
+    pub star_count: u32,
+
+    pub media: Vec<InputPaidMedia>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub caption: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub parse_mode: Option<ParseMode>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub caption_entities: Option<Vec<MessageEntity>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub show_caption_above_media: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub disable_notification: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub protect_content: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub reply_parameters: Option<ReplyParameters>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub reply_markup: Option<ReplyMarkup>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendMediaGroupParams {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2794,45 +2835,6 @@ pub struct GetChatMenuButtonParams {
 pub struct UnpinAllGeneralForumTopicMessagesParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
-pub struct SendPaidMediaParams {
-    pub chat_id: ChatId,
-    pub star_count: i32,
-    pub media: Vec<InputPaidMedia>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub caption: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub parse_mode: Option<String>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub caption_entities: Option<Vec<MessageEntity>>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub show_caption_above_media: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub disable_notification: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub protect_content: Option<bool>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub reply_parameters: Option<ReplyParameters>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(setter(into, strip_option), default)]
-    pub reply_markup: Option<ReplyMarkup>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

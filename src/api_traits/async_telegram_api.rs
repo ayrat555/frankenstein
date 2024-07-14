@@ -459,6 +459,13 @@ pub trait AsyncTelegramApi {
             .await
     }
 
+    async fn send_paid_media(
+        &self,
+        params: SendPaidMediaParams,
+    ) -> Result<MethodResponse<Message>, Self::Error> {
+        self.request("sendPaidMedia", Some(params)).await
+    }
+
     async fn send_location(
         &self,
         params: &SendLocationParams,
@@ -1360,13 +1367,6 @@ pub trait AsyncTelegramApi {
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
             .await
-    }
-
-    async fn send_paid_media(
-        &self,
-        params: SendPaidMediaParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        self.request("sendPaidMedia", Some(params)).await
     }
 
     async fn request_without_body<T: serde::de::DeserializeOwned>(
