@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.32.0 (2024-07-14)
+
+- [Bot API 7.4](https://core.telegram.org/bots/api#may-28-2024) - [#171](https://github.com/ayrat555/frankenstein/pull/171)
+- [Bot API 7.5](https://core.telegram.org/bots/api#june-18-2024) - [#174](https://github.com/ayrat555/frankenstein/pull/174)
+- [Bot API 7.6](https://core.telegram.org/bots/api#july-1-2024) - [#175](https://github.com/ayrat555/frankenstein/pull/175)
+- [Bot API 7.7](https://core.telegram.org/bots/api#july-7-2024) - [#177](https://github.com/ayrat555/frankenstein/pull/177)
+- fix: ChatBoostUpdated in UpdateContent  - [#176](https://github.com/ayrat555/frankenstein/pull/176)
+
 ## 0.31.0 (2024-05-20)
 
 -  [Bot API 7.3](https://core.telegram.org/bots/api#may-6-2024) - [#169](https://github.com/ayrat555/frankenstein/pull/169)
