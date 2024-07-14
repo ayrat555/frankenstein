@@ -81,6 +81,7 @@ use crate::api_params::SendInvoiceParams;
 use crate::api_params::SendLocationParams;
 use crate::api_params::SendMediaGroupParams;
 use crate::api_params::SendMessageParams;
+use crate::api_params::SendPaidMediaParams;
 use crate::api_params::SendPhotoParams;
 use crate::api_params::SendPollParams;
 use crate::api_params::SendStickerParams;
@@ -456,6 +457,13 @@ pub trait AsyncTelegramApi {
 
         self.request_with_possible_form_data(method_name, params, files)
             .await
+    }
+
+    async fn send_paid_media(
+        &self,
+        params: SendPaidMediaParams,
+    ) -> Result<MethodResponse<Message>, Self::Error> {
+        self.request("sendPaidMedia", Some(params)).await
     }
 
     async fn send_location(
