@@ -932,6 +932,10 @@ pub struct Message {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub refunded_payment: Option<Box<RefundedPayment>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub users_shared: Option<Box<UsersShared>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3674,6 +3678,23 @@ pub struct SuccessfulPayment {
 
     #[builder(setter(into))]
     pub provider_payment_charge_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct RefundedPayment {
+    #[builder(setter(into))]
+    pub currency: String,
+
+    pub total_amount: u32,
+
+    #[builder(setter(into))]
+    pub invoice_payload: String,
+
+    #[builder(setter(into))]
+    pub telegram_payment_charge_id: String,
+
+    #[builder(setter(into))]
+    pub provider_payment_charge_id: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
