@@ -34,13 +34,13 @@ frankenstein = "0.32"
 To use the async client add the following line to your `Cargo.toml` file:
 
 ```toml
-frankenstein = { version = "0.30", default-features = false, features = ["async-http-client"] }
+frankenstein = { version = "0.32", default-features = false, features = ["async-http-client"] }
 ```
 
 You can also disable all features. In this case the crate will ship only with Telegram types.
 
 ```toml
-frankenstein = { version = "0.30", default-features = false }
+frankenstein = { version = "0.32", default-features = false }
 ```
 
 ## Usage
@@ -204,7 +204,7 @@ The library uses `ureq` HTTP client by default, but it can be easily replaced wi
 `ureq` comes with a default feature (`impl`). So the feature should be disabled.
 
 ```toml
-frankenstein = { version = "0.30", default-features = false, features = ["telegram-trait"] }
+frankenstein = { version = "0.32", default-features = false, features = ["telegram-trait"] }
 ```
 
 Then implement the `TelegramApi` trait for your HTTP client which requires two functions:
