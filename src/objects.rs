@@ -378,7 +378,7 @@ pub enum UpdateContent {
     MyChatMember(ChatMemberUpdated),
     ChatMember(ChatMemberUpdated),
     ChatJoinRequest(ChatJoinRequest),
-    ChatBoost(ChatBoost),
+    ChatBoost(ChatBoostUpdated),
     RemovedChatBoost(ChatBoostRemoved),
 }
 
