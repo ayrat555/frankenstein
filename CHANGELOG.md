@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.32.1 (2024-07-16)
+
+- Update typed-builder requirement from 0.18 to 0.19 - [#180](https://github.com/ayrat555/frankenstein/pull/180)
+
 ## 0.32.0 (2024-07-14)
 
 - [Bot API 7.4](https://core.telegram.org/bots/api#may-28-2024) - [#171](https://github.com/ayrat555/frankenstein/pull/171)
