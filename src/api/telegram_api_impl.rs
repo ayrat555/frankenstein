@@ -142,7 +142,7 @@ impl TelegramApi for Api {
             }
         }
 
-        for (parameter_name, file) in files.iter() {
+        for (parameter_name, file) in &files {
             match file {
                 FileUpload::InputFile(input_file) => {
                     let file = std::fs::File::open(&input_file.path).unwrap();
