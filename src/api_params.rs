@@ -32,8 +32,12 @@ pub enum FileUpload {
 pub type FileUploadForm = (String, FileUpload);
 
 impl FileUpload {
-    pub fn to_form(&self, key: &str) -> FileUploadForm {
+    pub fn to_form_with_key(&self, key: &str) -> FileUploadForm {
         (key.to_string(), self.clone())
+    }
+
+    pub fn is_input(&self) -> bool {
+        matches!(self, FileUpload::InputFile(_) | FileUpload::InputBuf(_))
     }
 }
 
