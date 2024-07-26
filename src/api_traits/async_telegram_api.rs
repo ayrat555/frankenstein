@@ -1095,7 +1095,7 @@ pub trait AsyncTelegramApi {
     async fn upload_sticker_file(
         &self,
         params: &UploadStickerFileParams,
-    ) -> Result<MethodResponse<FileUpload>, Self::Error> {
+    ) -> Result<MethodResponse<FileObject>, Self::Error> {
         let sticker = FileUpload::from(&params.sticker);
 
         self.request_with_form_data(
