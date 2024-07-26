@@ -1,8 +1,8 @@
 use frankenstein::ErrorResponse;
+use frankenstein::FileUploadForm;
 use frankenstein::SendMessageParams;
 use frankenstein::TelegramApi;
 use isahc::{prelude::*, Request};
-use std::path::PathBuf;
 
 static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
@@ -106,7 +106,7 @@ impl TelegramApi for Api {
         &self,
         _method: &str,
         _params: T1,
-        _files: Vec<(&str, PathBuf)>,
+        _files: Vec<FileUploadForm>,
     ) -> Result<T2, Error> {
         let error = HttpError {
             code: 500,

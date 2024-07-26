@@ -37,6 +37,7 @@ use crate::api_params::EditMessageReplyMarkupParams;
 use crate::api_params::EditMessageTextParams;
 use crate::api_params::ExportChatInviteLinkParams;
 use crate::api_params::FileUpload;
+use crate::api_params::FileUploadForm;
 use crate::api_params::ForwardMessageParams;
 use crate::api_params::ForwardMessagesParams;
 use crate::api_params::GetBusinessConnectionParams;
@@ -129,7 +130,6 @@ use crate::objects::ChatAdministratorRights;
 use crate::objects::ChatFullInfo;
 use crate::objects::ChatInviteLink;
 use crate::objects::ChatMember;
-use crate::objects::File as FileObject;
 use crate::objects::ForumTopic;
 use crate::objects::GameHighScore;
 use crate::objects::InputSticker;
@@ -148,7 +148,6 @@ use crate::objects::WebhookInfo;
 use crate::Sticker;
 use crate::UnpinAllGeneralForumTopicMessagesParams;
 use async_trait::async_trait;
-use std::path::PathBuf;
 
 #[async_trait]
 pub trait AsyncTelegramApi {
@@ -231,11 +230,9 @@ pub trait AsyncTelegramApi {
         params: &SendPhotoParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendPhoto";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.photo {
-            files.push(("photo", input_file.path.clone()));
-        }
+        files.push(params.photo.to_form("photo"));
 
         self.request_with_possible_form_data(method_name, params, files)
             .await
@@ -246,14 +243,12 @@ pub trait AsyncTelegramApi {
         params: &SendAudioParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendAudio";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.audio {
-            files.push(("audio", input_file.path.clone()));
-        }
+        files.push(params.audio.to_form("audio"));
 
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
+        if let Some(thumbnail) = &params.thumbnail {
+            files.push(thumbnail.to_form("thumbnail"));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -265,7 +260,7 @@ pub trait AsyncTelegramApi {
         params: &SendMediaGroupParams,
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
         let method_name = "sendMediaGroup";
-        let mut files: Vec<(String, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
         let mut new_medias: Vec<Media> = vec![];
         let mut file_idx = 0;
 
@@ -274,24 +269,22 @@ pub trait AsyncTelegramApi {
                 Media::Audio(audio) => {
                     let mut new_audio = audio.clone();
 
-                    if let FileUpload::InputFile(input_file) = &audio.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
+                    let name = format!("file{file_idx}");
+                    let attach_name = format!("attach://{name}");
+                    file_idx += 1;
 
-                        new_audio.media = FileUpload::String(attach_name);
+                    new_audio.media = FileUpload::String(attach_name);
 
-                        files.push((name, input_file.path.clone()));
-                    };
+                    files.push((name, audio.media.clone()));
 
-                    if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
+                    if let Some(thumbnail) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_audio.thumbnail = Some(FileUpload::String(attach_name));
 
-                        files.push((name, input_file.path.clone()));
+                        files.push(thumbnail.to_form(&name));
                     };
 
                     new_medias.push(Media::Audio(new_audio));
@@ -300,30 +293,26 @@ pub trait AsyncTelegramApi {
                 Media::Document(document) => {
                     let mut new_document = document.clone();
 
-                    if let FileUpload::InputFile(input_file) = &document.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
+                    let name = format!("file{file_idx}");
+                    let attach_name = format!("attach://{name}");
+                    file_idx += 1;
 
-                        new_document.media = FileUpload::String(attach_name);
+                    new_document.media = FileUpload::String(attach_name);
 
-                        files.push((name, input_file.path.clone()));
-                    };
+                    files.push((name, document.media.clone()));
 
                     new_medias.push(Media::Document(new_document));
                 }
                 Media::Photo(photo) => {
                     let mut new_photo = photo.clone();
 
-                    if let FileUpload::InputFile(input_file) = &photo.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
+                    let name = format!("file{file_idx}");
+                    let attach_name = format!("attach://{name}");
+                    file_idx += 1;
 
-                        new_photo.media = FileUpload::String(attach_name);
+                    new_photo.media = FileUpload::String(attach_name);
 
-                        files.push((name, input_file.path.clone()));
-                    };
+                    files.push((name, photo.media.clone()));
 
                     new_medias.push(Media::Photo(new_photo));
                 }
@@ -331,24 +320,22 @@ pub trait AsyncTelegramApi {
                 Media::Video(video) => {
                     let mut new_video = video.clone();
 
-                    if let FileUpload::InputFile(input_file) = &video.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
+                    let name = format!("file{file_idx}");
+                    let attach_name = format!("attach://{name}");
+                    file_idx += 1;
 
-                        new_video.media = FileUpload::String(attach_name);
+                    new_video.media = FileUpload::String(attach_name);
 
-                        files.push((name, input_file.path.clone()));
-                    };
+                    files.push((name, video.media.clone()));
 
-                    if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
+                    if let Some(thumbnail) = &video.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
                         file_idx += 1;
 
                         new_video.thumbnail = Some(FileUpload::String(attach_name));
 
-                        files.push((name, input_file.path.clone()));
+                        files.push(thumbnail.to_form(&name));
                     };
 
                     new_medias.push(Media::Video(new_video));
@@ -359,12 +346,7 @@ pub trait AsyncTelegramApi {
         let mut new_params = params.clone();
         new_params.media = new_medias;
 
-        let files_with_str_names: Vec<(&str, PathBuf)> = files
-            .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
-            .collect();
-
-        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+        self.request_with_possible_form_data(method_name, &new_params, files)
             .await
     }
 
@@ -373,14 +355,12 @@ pub trait AsyncTelegramApi {
         params: &SendDocumentParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendDocument";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.document {
-            files.push(("document", input_file.path.clone()));
-        }
+        files.push(params.document.to_form("document"));
 
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
+        if let Some(thumbnail) = &params.thumbnail {
+            files.push(thumbnail.to_form("thumbnail"));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -392,14 +372,12 @@ pub trait AsyncTelegramApi {
         params: &SendVideoParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendVideo";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.video {
-            files.push(("video", input_file.path.clone()));
-        }
+        files.push(params.video.to_form("video"));
 
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
+        if let Some(thumbnail) = &params.thumbnail {
+            files.push(thumbnail.to_form("thumbnail"));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -411,14 +389,12 @@ pub trait AsyncTelegramApi {
         params: &SendAnimationParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendAnimation";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.animation {
-            files.push(("animation", input_file.path.clone()));
-        }
+        files.push(params.animation.to_form("animation"));
 
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
+        if let Some(thumbnail) = &params.thumbnail {
+            files.push(thumbnail.to_form("thumbnail"));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -430,11 +406,9 @@ pub trait AsyncTelegramApi {
         params: &SendVoiceParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendVoice";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.voice {
-            files.push(("voice", input_file.path.clone()));
-        }
+        files.push(params.voice.to_form("voice"));
 
         self.request_with_possible_form_data(method_name, params, files)
             .await
@@ -445,14 +419,12 @@ pub trait AsyncTelegramApi {
         params: &SendVideoNoteParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendVideoNote";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.video_note {
-            files.push(("video_note", input_file.path.clone()));
-        }
+        files.push(params.video_note.to_form("video_note"));
 
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
+        if let Some(thumbnail) = &params.thumbnail {
+            files.push(thumbnail.to_form("thumbnail"));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -539,7 +511,7 @@ pub trait AsyncTelegramApi {
     async fn get_file(
         &self,
         params: &GetFileParams,
-    ) -> Result<MethodResponse<FileObject>, Self::Error> {
+    ) -> Result<MethodResponse<FileUpload>, Self::Error> {
         self.request("getFile", Some(params)).await
     }
 
@@ -646,9 +618,9 @@ pub trait AsyncTelegramApi {
         &self,
         params: &SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let photo = &params.photo;
+        let photo = FileUpload::from(&params.photo);
 
-        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
+        self.request_with_form_data("setChatPhoto", params, vec![photo.to_form("photo")])
             .await
     }
 
@@ -937,28 +909,26 @@ pub trait AsyncTelegramApi {
         params: &EditMessageMediaParams,
     ) -> Result<EditMessageResponse, Self::Error> {
         let method_name = "editMessageMedia";
-        let mut files: Vec<(String, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
         let new_media = match &params.media {
             InputMedia::Animation(animation) => {
                 let mut new_animation = animation.clone();
 
-                if let FileUpload::InputFile(input_file) = &animation.media {
-                    let name = "animation".to_string();
-                    let attach_name = format!("attach://{name}");
+                let name = "animation".to_string();
+                let attach_name = format!("attach://{name}");
 
-                    new_animation.media = FileUpload::String(attach_name);
+                new_animation.media = FileUpload::String(attach_name);
 
-                    files.push((name, input_file.path.clone()));
-                };
+                files.push((name, animation.media.clone()));
 
-                if let Some(FileUpload::InputFile(input_file)) = &animation.thumbnail {
+                if let Some(thumbnail) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
                     new_animation.thumbnail = Some(FileUpload::String(attach_name));
 
-                    files.push((name, input_file.path.clone()));
+                    files.push(thumbnail.to_form(&name));
                 };
 
                 InputMedia::Animation(new_animation)
@@ -966,22 +936,20 @@ pub trait AsyncTelegramApi {
             InputMedia::Document(document) => {
                 let mut new_document = document.clone();
 
-                if let FileUpload::InputFile(input_file) = &document.media {
-                    let name = "document".to_string();
-                    let attach_name = format!("attach://{name}");
+                let name = "document".to_string();
+                let attach_name = format!("attach://{name}");
 
-                    new_document.media = FileUpload::String(attach_name);
+                new_document.media = FileUpload::String(attach_name);
 
-                    files.push((name, input_file.path.clone()));
-                };
+                files.push((name, document.media.clone()));
 
-                if let Some(FileUpload::InputFile(input_file)) = &document.thumbnail {
+                if let Some(thumbnail) = &document.thumbnail {
                     let name = "document_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
                     new_document.thumbnail = Some(FileUpload::String(attach_name));
 
-                    files.push((name, input_file.path.clone()));
+                    files.push(thumbnail.to_form(&name));
                 };
 
                 InputMedia::Document(new_document)
@@ -989,22 +957,20 @@ pub trait AsyncTelegramApi {
             InputMedia::Audio(audio) => {
                 let mut new_audio = audio.clone();
 
-                if let FileUpload::InputFile(input_file) = &audio.media {
-                    let name = "audio".to_string();
-                    let attach_name = format!("attach://{name}");
+                let name = "audio".to_string();
+                let attach_name = format!("attach://{name}");
 
-                    new_audio.media = FileUpload::String(attach_name);
+                new_audio.media = FileUpload::String(attach_name);
 
-                    files.push((name, input_file.path.clone()));
-                };
+                files.push((name, audio.media.clone()));
 
-                if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
+                if let Some(thumbnail) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
                     new_audio.thumbnail = Some(FileUpload::String(attach_name));
 
-                    files.push((name, input_file.path.clone()));
+                    files.push(thumbnail.to_form(&name));
                 };
 
                 InputMedia::Audio(new_audio)
@@ -1012,36 +978,32 @@ pub trait AsyncTelegramApi {
             InputMedia::Photo(photo) => {
                 let mut new_photo = photo.clone();
 
-                if let FileUpload::InputFile(input_file) = &photo.media {
-                    let name = "photo".to_string();
-                    let attach_name = format!("attach://{name}");
+                let name = "photo".to_string();
+                let attach_name = format!("attach://{name}");
 
-                    new_photo.media = FileUpload::String(attach_name);
+                new_photo.media = FileUpload::String(attach_name);
 
-                    files.push((name, input_file.path.clone()));
-                };
+                files.push((name, photo.media.clone()));
 
                 InputMedia::Photo(new_photo)
             }
             InputMedia::Video(video) => {
                 let mut new_video = video.clone();
 
-                if let FileUpload::InputFile(input_file) = &video.media {
-                    let name = "video".to_string();
-                    let attach_name = format!("attach://{name}");
+                let name = "video".to_string();
+                let attach_name = format!("attach://{name}");
 
-                    new_video.media = FileUpload::String(attach_name);
+                new_video.media = FileUpload::String(attach_name);
 
-                    files.push((name, input_file.path.clone()));
-                };
+                files.push((name, video.media.clone()));
 
-                if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
+                if let Some(thumbnail) = &video.thumbnail {
                     let name = "video_thumb".to_string();
                     let attach_name = format!("attach://{name}");
 
                     new_video.thumbnail = Some(FileUpload::String(attach_name));
 
-                    files.push((name, input_file.path.clone()));
+                    files.push(thumbnail.to_form(&name));
                 };
 
                 InputMedia::Video(new_video)
@@ -1051,12 +1013,7 @@ pub trait AsyncTelegramApi {
         let mut new_params = params.clone();
         new_params.media = new_media;
 
-        let files_with_str_names: Vec<(&str, PathBuf)> = files
-            .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
-            .collect();
-
-        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+        self.request_with_possible_form_data(method_name, &new_params, files)
             .await
     }
 
@@ -1093,11 +1050,9 @@ pub trait AsyncTelegramApi {
         params: &SendStickerParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         let method_name = "sendSticker";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.sticker {
-            files.push(("sticker", input_file.path.clone()));
-        }
+        files.push(params.sticker.to_form("sticker"));
 
         self.request_with_possible_form_data(method_name, params, files)
             .await
@@ -1113,13 +1068,13 @@ pub trait AsyncTelegramApi {
     async fn upload_sticker_file(
         &self,
         params: &UploadStickerFileParams,
-    ) -> Result<MethodResponse<FileObject>, Self::Error> {
-        let sticker = &params.sticker;
+    ) -> Result<MethodResponse<FileUpload>, Self::Error> {
+        let sticker = FileUpload::from(&params.sticker);
 
         self.request_with_form_data(
             "uploadStickerFile",
             params,
-            vec![("sticker", sticker.path.clone())],
+            vec![sticker.to_form("sticker")],
         )
         .await
     }
@@ -1130,21 +1085,17 @@ pub trait AsyncTelegramApi {
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "createNewStickerSet";
         let mut new_stickers: Vec<InputSticker> = vec![];
-        let mut files: Vec<(String, PathBuf)> = vec![];
-        let mut file_idx = 0;
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        for sticker in &params.stickers {
+        for (file_idx, sticker) in params.stickers.iter().enumerate() {
             let mut new_sticker = sticker.clone();
 
-            if let FileUpload::InputFile(input_file) = &sticker.sticker {
-                let name = format!("file{file_idx}");
-                let attach_name = format!("attach://{name}");
-                file_idx += 1;
+            let name = format!("file{file_idx}");
+            let attach_name = format!("attach://{name}");
 
-                new_sticker.sticker = FileUpload::String(attach_name);
+            new_sticker.sticker = FileUpload::String(attach_name);
 
-                files.push((name, input_file.path.clone()));
-            };
+            files.push((name, sticker.sticker.clone()));
 
             new_stickers.push(new_sticker);
         }
@@ -1152,12 +1103,7 @@ pub trait AsyncTelegramApi {
         let mut new_params = params.clone();
         new_params.stickers = new_stickers;
 
-        let files_with_str_names: Vec<(&str, PathBuf)> = files
-            .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
-            .collect();
-
-        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+        self.request_with_possible_form_data(method_name, &new_params, files)
             .await
     }
 
@@ -1167,16 +1113,15 @@ pub trait AsyncTelegramApi {
     ) -> Result<MethodResponse<Vec<Sticker>>, Self::Error> {
         self.request("getCustomEmojiStickers", Some(params)).await
     }
+
     async fn add_sticker_to_set(
         &self,
         params: &AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "addStickerToSet";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let FileUpload::InputFile(input_file) = &params.sticker.sticker {
-            files.push(("sticker", input_file.path.clone()));
-        }
+        files.push(params.sticker.sticker.to_form("sticker"));
 
         self.request_with_possible_form_data(method_name, params, files)
             .await
@@ -1236,10 +1181,10 @@ pub trait AsyncTelegramApi {
         params: &SetStickerSetThumbnailParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "setStickerSetThumbnail";
-        let mut files: Vec<(&str, PathBuf)> = vec![];
+        let mut files: Vec<FileUploadForm> = vec![];
 
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
+        if let Some(thumbnail) = &params.thumbnail {
+            files.push(thumbnail.to_form("thumbnail"));
         }
 
         self.request_with_possible_form_data(method_name, params, files)
@@ -1394,7 +1339,7 @@ pub trait AsyncTelegramApi {
         &self,
         method_name: &str,
         params: T1,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<FileUploadForm>,
     ) -> Result<T2, Self::Error> {
         if files.is_empty() {
             self.request(method_name, Some(params)).await
@@ -1411,6 +1356,6 @@ pub trait AsyncTelegramApi {
         &self,
         method: &str,
         params: T1,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<FileUploadForm>,
     ) -> Result<T2, Self::Error>;
 }
