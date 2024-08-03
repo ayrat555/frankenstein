@@ -2,7 +2,7 @@
 
 ## 0.32.2 (2024-08-03)
 
-- fix parsing of PaidMediaInfo[#184] - (https://github.com/ayrat555/frankenstein/pull/184)
+- fix parsing of PaidMediaInfo - [#184](https://github.com/ayrat555/frankenstein/pull/184)
 
 ## 0.32.1 (2024-07-16)
 
