@@ -3528,7 +3528,7 @@ pub struct Invoice {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
 pub struct PaidMediaInfo {
-    pub start_count: u32,
+    pub star_count: u32,
 
     pub paid_media: Vec<PaidMedia>,
 }
