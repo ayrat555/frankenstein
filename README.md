@@ -6,7 +6,7 @@
 
 Telegram bot API client for Rust.
 
-It's a complete wrapper for Telegram bot API, and it's up-to-date with version 7.7 of the API.
+It's a complete wrapper for Telegram bot API, and it's up-to-date with version 7.8 of the API.
 
 Frankenstein's data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method parameters.
 
