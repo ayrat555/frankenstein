@@ -1617,6 +1617,10 @@ pub struct SetChatDescriptionParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PinChatMessageParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
@@ -1629,6 +1633,10 @@ pub struct PinChatMessageParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct UnpinChatMessageParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
