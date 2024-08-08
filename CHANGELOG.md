@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.32.3 (2024-08-08)
+
+- [Bot API 7.8](https://core.telegram.org/bots/api#july-31-2024) - [#186](https://github.com/ayrat555/frankenstein/pull/186)
+
 ## 0.32.2 (2024-08-03)
 
 - fix parsing of PaidMediaInfo - [#184](https://github.com/ayrat555/frankenstein/pull/184)
