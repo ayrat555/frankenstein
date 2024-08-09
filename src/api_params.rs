@@ -25,7 +25,20 @@ use typed_builder::TypedBuilder as Builder;
 #[serde(untagged)]
 pub enum FileUpload {
     InputFile(InputFile),
+    InputBuf(InputBuf),
     String(String),
+}
+
+pub type FileUploadForm = (String, FileUpload);
+
+impl FileUpload {
+    pub fn to_form_with_key(&self, key: &str) -> FileUploadForm {
+        (key.to_string(), self.clone())
+    }
+
+    pub fn is_input(&self) -> bool {
+        matches!(self, FileUpload::InputFile(_) | FileUpload::InputBuf(_))
+    }
 }
 
 impl From<PathBuf> for FileUpload {
@@ -36,9 +49,33 @@ impl From<PathBuf> for FileUpload {
     }
 }
 
+impl From<(String, Vec<u8>)> for FileUpload {
+    fn from((file_name, data): (String, Vec<u8>)) -> Self {
+        Self::InputBuf(InputBuf { file_name, data })
+    }
+}
+
 impl From<InputFile> for FileUpload {
     fn from(file: InputFile) -> Self {
         Self::InputFile(file)
+    }
+}
+
+impl From<&InputFile> for FileUpload {
+    fn from(file: &InputFile) -> Self {
+        Self::InputFile(file.clone())
+    }
+}
+
+impl From<InputBuf> for FileUpload {
+    fn from(input: InputBuf) -> Self {
+        Self::InputBuf(input)
+    }
+}
+
+impl From<&InputBuf> for FileUpload {
+    fn from(input: &InputBuf) -> Self {
+        Self::InputBuf(input.clone())
     }
 }
 
@@ -218,6 +255,12 @@ pub struct BotCommandScopeChatMember {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputFile {
     pub path: PathBuf,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct InputBuf {
+    pub file_name: String,
+    pub data: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

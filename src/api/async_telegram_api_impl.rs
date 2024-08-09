@@ -1,11 +1,12 @@
 use super::Error;
 use super::HttpError;
+use crate::api_params::FileUpload;
+use crate::api_params::FileUploadForm;
 use crate::api_traits::AsyncTelegramApi;
 use crate::api_traits::ErrorResponse;
 use async_trait::async_trait;
 use reqwest::multipart;
 use serde_json::Value;
-use std::path::PathBuf;
 use std::time::Duration;
 use tokio::fs::File;
 use typed_builder::TypedBuilder;
@@ -133,21 +134,11 @@ impl AsyncTelegramApi for AsyncApi {
         &self,
         method: &str,
         params: T1,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<FileUploadForm>,
     ) -> Result<T2, Self::Error> {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-        let files_with_paths: Vec<(String, &str, String)> = files
-            .iter()
-            .map(|(key, path)| {
-                (
-                    (*key).to_string(),
-                    path.to_str().unwrap(),
-                    path.file_name().unwrap().to_str().unwrap().to_string(),
-                )
-            })
-            .collect();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| key.as_str()).collect();
 
         let mut form = multipart::Form::new();
         for (key, val) in json_struct.as_object().unwrap() {
@@ -161,11 +152,25 @@ impl AsyncTelegramApi for AsyncApi {
             }
         }
 
-        for (parameter_name, file_path, file_name) in files_with_paths {
-            let file = File::open(file_path).await?;
+        for (parameter_name, file) in files {
+            match file {
+                FileUpload::InputFile(input_file) => {
+                    let file_path = input_file.path;
+                    let file = File::open(&file_path).await?;
+                    let file_name = file_path.file_name().unwrap().to_str().unwrap().to_string();
 
-            let part = multipart::Part::stream(file).file_name(file_name);
-            form = form.part(parameter_name, part);
+                    let part = multipart::Part::stream(file).file_name(file_name);
+                    form = form.part(parameter_name, part);
+                }
+                FileUpload::InputBuf(input_buf) => {
+                    let buf = input_buf.data.clone();
+                    let file_name = input_buf.file_name.clone();
+
+                    let part = multipart::Part::stream(buf).file_name(file_name);
+                    form = form.part(parameter_name, part);
+                }
+                FileUpload::String(_) => continue,
+            }
         }
 
         let url = format!("{}/{method}", self.api_url);
