@@ -493,7 +493,7 @@ pub struct User {
     pub has_main_web_app: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct Chat {
     pub id: i64,
 
@@ -1181,7 +1181,7 @@ pub struct ExternalReplyInfo {
     pub venue: Option<Venue>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum MessageOrigin {
     User(MessageOriginUser),
@@ -1203,7 +1203,7 @@ pub struct MessageOriginHiddenUser {
     pub sender_user_name: String,
 }
 
-#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MessageOriginChat {
     pub date: u64,
 
@@ -1214,7 +1214,7 @@ pub struct MessageOriginChat {
     pub author_signature: Option<String>,
 }
 
-#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Builder, Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MessageOriginChannel {
     pub date: u64,
 
@@ -1485,7 +1485,7 @@ pub struct InputPollOption {
     pub text_entities: Option<Vec<MessageEntity>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PollAnswer {
     #[builder(setter(into))]
     pub poll_id: String,
@@ -2129,7 +2129,7 @@ pub struct ChatInviteLink {
     pub pending_join_request_count: Option<u32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatMemberUpdated {
     pub chat: Chat,
 
@@ -2154,7 +2154,7 @@ pub struct ChatMemberUpdated {
     pub via_chat_folder_invite_link: Option<bool>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatJoinRequest {
     pub chat: Chat,
 
@@ -2266,14 +2266,14 @@ pub struct BusinessLocation {
     pub location: Option<Location>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BusinessOpeningHoursInterval {
     pub opening_minute: u16,
 
     pub closing_minute: u16,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BusinessOpeningHours {
     pub time_zone_name: String,
 
@@ -2316,7 +2316,7 @@ pub struct ReactionCount {
     pub total_count: i32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct MessageReactionUpdated {
     pub chat: Chat,
 
@@ -2337,7 +2337,7 @@ pub struct MessageReactionUpdated {
     pub new_reaction: Vec<ReactionType>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct MessageReactionCountUpdated {
     pub chat: Chat,
 
@@ -2449,7 +2449,7 @@ pub struct InputSticker {
     pub keywords: Option<Vec<String>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct Story {
     pub chat: Chat,
     pub id: u64,
@@ -3530,14 +3530,14 @@ pub struct Invoice {
     pub total_amount: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PaidMediaInfo {
     pub star_count: u32,
 
     pub paid_media: Vec<PaidMedia>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PaidMedia {
     Preview(PaidMediaPreview),
@@ -3545,7 +3545,7 @@ pub enum PaidMedia {
     Video(PaidMediaVideo),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PaidMediaPreview {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -3560,30 +3560,30 @@ pub struct PaidMediaPreview {
     pub duration: Option<u32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PaidMediaPhoto {
     pub photo: Vec<PhotoSize>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PaidMediaVideo {
     pub video: Video,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputPaidMedia {
     Photo(InputPaidMediaPhoto),
     Video(InputPaidMediaVideo),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputPaidMediaPhoto {
     #[builder(setter(into))]
     pub media: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InputPaidMediaVideo {
     #[builder(setter(into))]
     pub media: String,
@@ -3955,7 +3955,7 @@ pub struct GameHighScore {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GiveawayCreated {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct Giveaway {
     pub chats: Vec<Chat>,
 
@@ -3984,7 +3984,7 @@ pub struct Giveaway {
     pub premium_subscription_month_count: Option<u32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct GiveawayWinners {
     pub chat: Chat,
 
@@ -4145,14 +4145,14 @@ pub struct ChatBoost {
     pub source: ChatBoostSource,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatBoostUpdated {
     pub chat: Chat,
 
     pub boost: ChatBoost,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatBoostRemoved {
     pub chat: Chat,
 
@@ -4185,7 +4185,7 @@ pub struct BusinessConnection {
     pub is_enabled: bool,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct BusinessMessagesDeleted {
     #[builder(setter(into))]
     pub business_connection_id: String,
@@ -4202,7 +4202,7 @@ pub enum MaybeInaccessibleMessage {
     InaccessibleMessage(InaccessibleMessage),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct InaccessibleMessage {
     pub chat: Chat,
 
@@ -4233,7 +4233,7 @@ pub struct RevenueWithdrawalStateSucceeded {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum TransactionPartner {
     User(TransactionPartnerUser),
@@ -4242,7 +4242,7 @@ pub enum TransactionPartner {
     Other(TransactionPartnerOther),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct TransactionPartnerUser {
     pub user: User,
 
@@ -4251,20 +4251,20 @@ pub struct TransactionPartnerUser {
     pub invoice_payload: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct TransactionPartnerFragment {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub withdrawal_state: Option<RevenueWithdrawalState>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct TransactionPartnerTelegramAds {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct TransactionPartnerOther {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct StarTransaction {
     #[builder(setter(into))]
     pub id: String,
@@ -4282,7 +4282,7 @@ pub struct StarTransaction {
     pub receiver: Option<TransactionPartner>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
 }
