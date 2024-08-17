@@ -1,7 +1,6 @@
 // TODO: remove and fix (or allow explicitly on the specific problem)
 #![allow(
     clippy::missing_errors_doc,
-    clippy::must_use_candidate,
     clippy::single_match_else,
     clippy::struct_excessive_bools,
     clippy::unreadable_literal,

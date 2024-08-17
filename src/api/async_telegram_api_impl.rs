@@ -11,6 +11,7 @@ use tokio::fs::File;
 use typed_builder::TypedBuilder;
 
 #[derive(Debug, Clone, TypedBuilder)]
+#[must_use = "API needs to be used in order to be useful"]
 pub struct AsyncApi {
     #[builder(setter(into))]
     pub api_url: String,

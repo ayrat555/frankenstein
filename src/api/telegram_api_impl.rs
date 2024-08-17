@@ -9,6 +9,7 @@ use typed_builder::TypedBuilder;
 use ureq::Response;
 
 #[derive(Debug, Clone, TypedBuilder)]
+#[must_use = "API needs to be used in order to be useful"]
 pub struct Api {
     #[builder(setter(into))]
     pub api_url: String,
@@ -20,7 +21,6 @@ impl Api {
     /// Create a new `Api`. You can use `Api::builder()` for more options.
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{}{api_key}", super::BASE_API_URL);
-
         Self::builder().api_url(api_url).build()
     }
 

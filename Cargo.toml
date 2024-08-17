@@ -23,8 +23,9 @@ async-telegram-trait = ["async-trait"]
 [lints.rust]
 unsafe_code = "forbid"
 [lints.clippy]
-pedantic = "warn"
+pedantic = { level = "warn", priority = -1 }
 derive_partial_eq_without_eq = "warn"
+must_use_candidate = "warn"
 
 [[example]]
 name = "get_me"
