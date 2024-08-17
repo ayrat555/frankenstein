@@ -876,7 +876,7 @@ pub struct SendVideoNoteParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendPaidMediaParams {
     pub chat_id: ChatId,
 
