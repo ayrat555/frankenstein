@@ -1,18 +1,3 @@
-// TODO: remove and fix (or allow explicitly on the specific problem)
-#![allow(
-    clippy::missing_errors_doc,
-    clippy::must_use_candidate,
-    clippy::single_match_else,
-    clippy::struct_excessive_bools,
-    clippy::unreadable_literal,
-
-    // from clippy::nursery
-    // clippy::derive_partial_eq_without_eq,
-    // clippy::option_if_let_else,
-    // clippy::significant_drop_tightening,
-    // clippy::use_self,
-)]
-
 #[cfg(any(feature = "http-client", feature = "async-http-client"))]
 pub mod api;
 
