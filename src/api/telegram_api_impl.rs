@@ -1,6 +1,5 @@
 use super::Error;
 use super::HttpError;
-use crate::api_traits::ErrorResponse;
 use crate::api_traits::TelegramApi;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
@@ -61,29 +60,19 @@ impl From<ureq::Error> for Error {
     fn from(error: ureq::Error) -> Self {
         match error {
             ureq::Error::Status(code, response) => match response.into_string() {
-                Ok(message) => {
-                    let json_result: Result<ErrorResponse, serde_json::Error> =
-                        serde_json::from_str(&message);
-
-                    match json_result {
-                        Ok(result) => Self::Api(result),
-                        Err(_) => {
-                            let error = HttpError { code, message };
-                            Self::Http(error)
-                        }
-                    }
-                }
-                Err(_) => {
-                    let message = "Failed to decode response".to_string();
-                    let error = HttpError { code, message };
-                    Self::Http(error)
-                }
+                Ok(message) => match serde_json::from_str(&message) {
+                    Ok(json_result) => Self::Api(json_result),
+                    Err(_) => Self::Http(HttpError { code, message }),
+                },
+                Err(_) => Self::Http(HttpError {
+                    code,
+                    message: "Failed to decode response".to_string(),
+                }),
             },
-            ureq::Error::Transport(transport_error) => {
-                let message = format!("{transport_error:?}");
-                let error = HttpError { message, code: 500 };
-                Self::Http(error)
-            }
+            ureq::Error::Transport(transport_error) => Self::Http(HttpError {
+                message: format!("{transport_error:?}"),
+                code: 500,
+            }),
         }
     }
 }
@@ -106,7 +95,6 @@ impl TelegramApi for Api {
             None => prepared_request.call()?,
             Some(data) => {
                 let json = Self::encode_params(&data)?;
-
                 prepared_request.send_string(&json)?
             }
         };
@@ -245,6 +233,7 @@ mod tests {
     use crate::api_params::StopPollParams;
     use crate::api_params::UnbanChatMemberParams;
     use crate::api_params::UnpinChatMessageParams;
+    use crate::api_traits::ErrorResponse;
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
