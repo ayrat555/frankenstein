@@ -1576,7 +1576,7 @@ pub struct CreateChatSubscriptionInviteLinkParams {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct EditChatSubscriptionInviteLink {
+pub struct EditChatSubscriptionInviteLinkParams {
     #[builder(setter(into))]
     pub chat_id: ChatId,
 
