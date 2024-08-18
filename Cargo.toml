@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.32.3"
+version = "0.32.4"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2021"
@@ -24,8 +24,15 @@ async-telegram-trait = ["async-trait"]
 unsafe_code = "forbid"
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }
-derive_partial_eq_without_eq = "warn"
-must_use_candidate = "warn"
+nursery = { level = "warn", priority = -1 }
+struct_excessive_bools = "allow" # due to Telegram API
+
+# TODO: remove and fix (or allow explicitly on the specific problem)
+missing_errors_doc = "allow"
+option_if_let_else = "allow"
+significant_drop_tightening = "allow"
+single_match_else = "allow"
+unreadable_literal = "allow"
 
 [[example]]
 name = "get_me"
