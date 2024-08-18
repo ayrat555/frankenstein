@@ -14,6 +14,7 @@ use crate::api_params::CloseGeneralForumTopicParams;
 use crate::api_params::CopyMessageParams;
 use crate::api_params::CopyMessagesParams;
 use crate::api_params::CreateChatInviteLinkParams;
+use crate::api_params::CreateChatSubscriptionInviteLinkParams;
 use crate::api_params::CreateForumTopicParams;
 use crate::api_params::CreateInvoiceLinkParams;
 use crate::api_params::CreateNewStickerSetParams;
@@ -28,6 +29,7 @@ use crate::api_params::DeleteStickerFromSetParams;
 use crate::api_params::DeleteStickerSetParams;
 use crate::api_params::DeleteWebhookParams;
 use crate::api_params::EditChatInviteLinkParams;
+use crate::api_params::EditChatSubscriptionInviteLinkParams;
 use crate::api_params::EditForumTopicParams;
 use crate::api_params::EditGeneralForumTopicParams;
 use crate::api_params::EditMessageCaptionParams;
@@ -581,6 +583,20 @@ pub trait TelegramApi {
         params: &EditChatInviteLinkParams,
     ) -> Result<MethodResponse<ChatInviteLink>, Self::Error> {
         self.request("editChatInviteLink", Some(params))
+    }
+
+    fn create_chat_subscription_invite_link(
+        &self,
+        params: &CreateChatSubscriptionInviteLinkParams,
+    ) -> Result<MethodResponse<ChatInviteLink>, Self::Error> {
+        self.request("createChatSubscriptionInviteLink", Some(params))
+    }
+
+    fn edit_chat_subscription_invite_link(
+        &self,
+        params: &EditChatSubscriptionInviteLinkParams,
+    ) -> Result<MethodResponse<ChatInviteLink>, Self::Error> {
+        self.request("editChatSubscriptionInviteLink", Some(params))
     }
 
     fn revoke_chat_invite_link(

@@ -264,6 +264,10 @@ pub struct ChatMemberAdministrator {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ChatMemberMember {
     pub user: User,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub until_date: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -2293,6 +2297,7 @@ pub struct ChatLocation {
 pub enum ReactionType {
     Emoji(ReactionTypeEmoji),
     CustomEmoji(ReactionTypeCustomEmoji),
+    Paid(ReactionTypePaid),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
@@ -2306,6 +2311,9 @@ pub struct ReactionTypeCustomEmoji {
     #[builder(setter(into))]
     pub custom_emoji_id: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Builder, Eq)]
+pub struct ReactionTypePaid {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct ReactionCount {
@@ -4249,6 +4257,10 @@ pub struct TransactionPartnerUser {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub invoice_payload: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub paid_media: Option<Vec<PaidMedia>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]

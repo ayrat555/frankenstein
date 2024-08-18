@@ -878,6 +878,10 @@ pub struct SendVideoNoteParams {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendPaidMediaParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub business_connection_id: Option<String>,
+
     pub chat_id: ChatId,
 
     pub star_count: u32,
@@ -1555,6 +1559,33 @@ pub struct EditChatInviteLinkParams {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub creates_join_request: Option<bool>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct CreateChatSubscriptionInviteLinkParams {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub name: Option<String>,
+
+    pub subscription_period: u32,
+
+    pub subscription_price: u16,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct EditChatSubscriptionInviteLink {
+    #[builder(setter(into))]
+    pub chat_id: ChatId,
+
+    #[builder(setter(into))]
+    pub invite_link: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
