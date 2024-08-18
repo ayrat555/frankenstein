@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.32.4 (2024-08-18)
+
+- [Bot API 7.9](https://core.telegram.org/bots/api#august-14-2024) - [#192](https://github.com/ayrat555/frankenstein/pull/192)
+- feat: add Eq when possible on PartialEq - [#188](https://github.com/ayrat555/frankenstein/pull/188)
+- refactor: simplify From<ureq::Error> - [#189](https://github.com/ayrat555/frankenstein/pull/189)
+- build(cargo): enable nursery lints - [#190](https://github.com/ayrat555/frankenstein/pull/190)
+
 ## 0.32.3 (2024-08-08)
 
 - [Bot API 7.8](https://core.telegram.org/bots/api#july-31-2024) - [#186](https://github.com/ayrat555/frankenstein/pull/186)
