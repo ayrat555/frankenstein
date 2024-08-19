@@ -29,7 +29,6 @@ struct_excessive_bools = "allow" # due to Telegram API
 
 # TODO: remove and fix (or allow explicitly on the specific problem)
 missing_errors_doc = "allow"
-must_use_candidate = "allow"
 option_if_let_else = "allow"
 significant_drop_tightening = "allow"
 single_match_else = "allow"
