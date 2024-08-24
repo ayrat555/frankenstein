@@ -882,6 +882,7 @@ pub struct SendPaidMediaParams {
     #[builder(setter(into, strip_option), default)]
     pub business_connection_id: Option<String>,
 
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     pub star_count: u32,
@@ -2342,6 +2343,7 @@ pub struct InlineQueryResultsButton {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct SendInvoiceParams {
+    #[builder(setter(into))]
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
