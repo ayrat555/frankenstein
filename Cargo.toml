@@ -76,7 +76,7 @@ required-features = ["telegram-trait"]
 
 [dependencies]
 thiserror = "1"
-typed-builder = "0.19"
+typed-builder = "0.20"
 
 [dependencies.async-trait]
 version = "0.1"
