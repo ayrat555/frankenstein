@@ -1570,7 +1570,6 @@ pub struct Location {
     pub latitude: f64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2977,7 +2976,6 @@ pub struct InlineQueryResultLocation {
     pub title: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3416,7 +3414,6 @@ pub struct InputLocationMessageContent {
     pub longitude: f64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]

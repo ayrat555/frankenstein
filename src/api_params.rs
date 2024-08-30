@@ -970,7 +970,6 @@ pub struct SendLocationParams {
     pub longitude: f64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1029,7 +1028,6 @@ pub struct EditMessageLiveLocationParams {
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
