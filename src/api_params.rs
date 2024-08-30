@@ -263,7 +263,6 @@ pub struct SetWebhookParams {
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub drop_pending_updates: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -275,7 +274,6 @@ pub struct SetWebhookParams {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DeleteWebhookParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub drop_pending_updates: Option<bool>,
 }
 
@@ -308,11 +306,9 @@ pub struct SendMessageParams {
     pub link_preview_options: Option<LinkPreviewOptions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -341,11 +337,9 @@ pub struct ForwardMessageParams {
     pub from_chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     pub message_id: i32,
@@ -366,11 +360,9 @@ pub struct ForwardMessagesParams {
     pub message_ids: Vec<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 }
 
@@ -401,15 +393,12 @@ pub struct CopyMessageParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -436,15 +425,12 @@ pub struct CopyMessagesParams {
     pub message_ids: Vec<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub remove_caption: Option<bool>,
 }
 
@@ -477,19 +463,15 @@ pub struct SendPhotoParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -549,11 +531,9 @@ pub struct SendAudioParams {
     pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -602,15 +582,12 @@ pub struct SendDocumentParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_content_type_detection: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -668,23 +645,18 @@ pub struct SendVideoParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub supports_streaming: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -742,19 +714,15 @@ pub struct SendAnimationParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub has_spoiler: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -802,11 +770,9 @@ pub struct SendVoiceParams {
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -849,11 +815,9 @@ pub struct SendVideoNoteParams {
     pub thumbnail: Option<FileUpload>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -900,15 +864,12 @@ pub struct SendPaidMediaParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -936,7 +897,6 @@ pub struct SendMediaGroupParams {
     pub media: Vec<Media>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -944,7 +904,6 @@ pub struct SendMediaGroupParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -982,11 +941,9 @@ pub struct SendLocationParams {
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1104,11 +1061,9 @@ pub struct SendVenueParams {
     pub google_place_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1152,11 +1107,9 @@ pub struct SendContactParams {
     pub vcard: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1199,7 +1152,6 @@ pub struct SendPollParams {
     pub options: Vec<InputPollOption>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_anonymous: Option<bool>,
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1207,7 +1159,6 @@ pub struct SendPollParams {
     pub type_field: Option<PollType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub allows_multiple_answers: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1232,15 +1183,12 @@ pub struct SendPollParams {
     pub close_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_closed: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1274,11 +1222,9 @@ pub struct SendDiceParams {
     pub emoji: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1321,7 +1267,6 @@ pub struct SetMessageReactionParams {
     pub reaction: Vec<ReactionType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_big: Option<bool>,
 }
 
@@ -1356,7 +1301,6 @@ pub struct BanChatMemberParams {
     pub until_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub revoke_messages: Option<bool>,
 }
 
@@ -1369,7 +1313,6 @@ pub struct UnbanChatMemberParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub only_if_banned: Option<bool>,
 }
 
@@ -1384,7 +1327,6 @@ pub struct RestrictChatMemberParams {
     pub permissions: ChatPermissions,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub use_independent_chat_permissions: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1400,63 +1342,48 @@ pub struct PromoteChatMemberParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_anonymous: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_manage_chat: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_post_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_edit_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_delete_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_post_stories: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_edit_stories: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_delete_stories: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_manage_video_chats: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_restrict_members: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_promote_members: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_change_info: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_invite_users: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_pin_messages: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub can_manage_topics: Option<bool>,
 }
 
@@ -1499,7 +1426,6 @@ pub struct SetChatPermissionsParams {
     pub permissions: ChatPermissions,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub use_independent_chat_permissions: Option<bool>,
 }
 
@@ -1527,7 +1453,6 @@ pub struct CreateChatInviteLinkParams {
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub creates_join_request: Option<bool>,
 }
 
@@ -1551,7 +1476,6 @@ pub struct EditChatInviteLinkParams {
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub creates_join_request: Option<bool>,
 }
 
@@ -1662,7 +1586,6 @@ pub struct PinChatMessageParams {
     pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 }
 
@@ -1860,7 +1783,6 @@ pub struct AnswerCallbackQueryParams {
     pub text: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_alert: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2054,7 +1976,6 @@ pub struct EditMessageCaptionParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2167,11 +2088,9 @@ pub struct SendStickerParams {
     pub emoji: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2222,7 +2141,6 @@ pub struct CreateNewStickerSetParams {
     pub sticker_type: Option<StickerType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub needs_repainting: Option<bool>,
 }
 
@@ -2360,7 +2278,6 @@ pub struct AnswerInlineQueryParams {
     pub cache_time: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_personal: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2442,39 +2359,30 @@ pub struct SendInvoiceParams {
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_name: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_phone_number: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_email: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_shipping_address: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub send_phone_number_to_provider: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub send_email_to_provider: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_flexible: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2535,31 +2443,24 @@ pub struct CreateInvoiceLinkParams {
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_name: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_phone_number: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_email: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub need_shipping_address: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub send_phone_number_to_provider: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub send_email_to_provider: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub is_flexible: Option<bool>,
 }
 
@@ -2633,11 +2534,9 @@ pub struct SendGameParams {
     pub game_short_name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_notification: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2661,11 +2560,9 @@ pub struct SetGameScoreParams {
     pub score: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub force: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_edit_message: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2714,11 +2611,9 @@ pub struct InputMediaPhoto {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub has_spoiler: Option<bool>,
 }
 
@@ -2745,7 +2640,6 @@ pub struct InputMediaVideo {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2758,11 +2652,9 @@ pub struct InputMediaVideo {
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub supports_streaming: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub has_spoiler: Option<bool>,
 }
 
@@ -2789,7 +2681,6 @@ pub struct InputMediaAnimation {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2802,7 +2693,6 @@ pub struct InputMediaAnimation {
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub has_spoiler: Option<bool>,
 }
 
@@ -2863,7 +2753,6 @@ pub struct InputMediaDocument {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub disable_content_type_detection: Option<bool>,
 }
 
@@ -2873,7 +2762,6 @@ pub struct SetMyDefaultAdministratorRightsParams {
     pub rights: ChatAdministratorRights,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub for_channels: Option<bool>,
 }
 
@@ -2881,7 +2769,6 @@ pub struct SetMyDefaultAdministratorRightsParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GetMyDefaultAdministratorRightsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub for_channels: Option<bool>,
 }
 #[builder]
@@ -2928,7 +2815,6 @@ pub struct ReplyParameters {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub allow_sending_without_reply: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
