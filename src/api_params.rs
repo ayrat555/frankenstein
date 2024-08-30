@@ -232,11 +232,9 @@ pub struct GetUpdatesParams {
     pub offset: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub timeout: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -259,7 +257,6 @@ pub struct SetWebhookParams {
     pub ip_address: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_connections: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -545,7 +542,6 @@ pub struct SendAudioParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -657,15 +653,12 @@ pub struct SendVideoParams {
     pub video: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -735,15 +728,12 @@ pub struct SendAnimationParams {
     pub animation: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -821,7 +811,6 @@ pub struct SendVoiceParams {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -863,11 +852,9 @@ pub struct SendVideoNoteParams {
     pub video_note: FileUpload,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub length: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1002,7 +989,6 @@ pub struct SendLocationParams {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1010,7 +996,6 @@ pub struct SendLocationParams {
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1058,7 +1043,6 @@ pub struct EditMessageLiveLocationParams {
     pub longitude: f64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1070,7 +1054,6 @@ pub struct EditMessageLiveLocationParams {
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1268,7 +1251,6 @@ pub struct SendPollParams {
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub open_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1377,11 +1359,9 @@ pub struct GetUserProfilePhotosParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub offset: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub limit: Option<u32>,
 }
 
@@ -1575,7 +1555,6 @@ pub struct CreateChatInviteLinkParams {
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1601,7 +1580,6 @@ pub struct EditChatInviteLinkParams {
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1806,7 +1784,6 @@ pub struct CreateForumTopicParams {
     pub name: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub icon_color: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1929,7 +1906,6 @@ pub struct AnswerCallbackQueryParams {
     pub url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub cache_time: Option<u32>,
 }
 
@@ -2424,7 +2400,6 @@ pub struct AnswerInlineQueryParams {
     pub results: Vec<InlineQueryResult>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub cache_time: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2484,11 +2459,9 @@ pub struct SendInvoiceParams {
     pub prices: Vec<LabeledPrice>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_tip_amount: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub suggested_tip_amounts: Option<Vec<u32>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2504,15 +2477,12 @@ pub struct SendInvoiceParams {
     pub photo_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2586,11 +2556,9 @@ pub struct CreateInvoiceLinkParams {
     pub prices: Vec<LabeledPrice>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_tip_amount: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub suggested_tip_amounts: Option<Vec<u32>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2602,15 +2570,12 @@ pub struct CreateInvoiceLinkParams {
     pub photo_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2675,10 +2640,8 @@ pub struct AnswerPreCheckoutQueryParams {
 #[builder]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GetStarTransactionsParams {
-    #[builder(into)]
     offset: u32,
 
-    #[builder(into)]
     limit: u32,
 }
 
@@ -2835,15 +2798,12 @@ pub struct InputMediaVideo {
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2882,15 +2842,12 @@ pub struct InputMediaAnimation {
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2921,7 +2878,6 @@ pub struct InputMediaAudio {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3039,6 +2995,5 @@ pub struct ReplyParameters {
     pub quote_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub quote_position: Option<u32>,
 }

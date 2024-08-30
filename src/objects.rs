@@ -627,7 +627,6 @@ pub struct ChatFullInfo {
     pub emoji_status_custom_emoji_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub emoji_status_expiration_date: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -675,11 +674,9 @@ pub struct ChatFullInfo {
     pub slow_mode_delay: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub unrestrict_boost_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_auto_delete_time: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -737,7 +734,6 @@ pub struct Message {
     pub sender_chat: Option<Box<Chat>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub sender_boost_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1583,7 +1579,6 @@ pub struct Poll {
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub open_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1603,7 +1598,6 @@ pub struct Location {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1611,7 +1605,6 @@ pub struct Location {
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub proximity_alert_radius: Option<u32>,
 }
 
@@ -1954,7 +1947,6 @@ pub struct KeyboardButtonRequestUsers {
     pub user_is_premium: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_quantity: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2206,11 +2198,9 @@ pub struct ChatInviteLink {
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub member_limit: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub pending_join_request_count: Option<u32>,
 }
 
@@ -2656,11 +2646,9 @@ pub struct InlineQueryResultArticle {
     pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_height: Option<u32>,
 }
 
@@ -2677,11 +2665,9 @@ pub struct InlineQueryResultPhoto {
     pub thumbnail_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2727,15 +2713,12 @@ pub struct InlineQueryResultGif {
     pub gif_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub gif_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub gif_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub gif_duration: Option<u32>,
 
     #[builder(into)]
@@ -2784,15 +2767,12 @@ pub struct InlineQueryResultMpeg4Gif {
     pub mpeg4_url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub mpeg4_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub mpeg4_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub mpeg4_duration: Option<u32>,
 
     #[builder(into)]
@@ -2862,15 +2842,12 @@ pub struct InlineQueryResultVideo {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub video_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub video_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub video_duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2919,7 +2896,6 @@ pub struct InlineQueryResultAudio {
     pub performer: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub audio_duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2956,7 +2932,6 @@ pub struct InlineQueryResultVoice {
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub voice_duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3012,11 +2987,9 @@ pub struct InlineQueryResultDocument {
     pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_height: Option<u32>,
 }
 
@@ -3038,7 +3011,6 @@ pub struct InlineQueryResultLocation {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3046,7 +3018,6 @@ pub struct InlineQueryResultLocation {
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3062,11 +3033,9 @@ pub struct InlineQueryResultLocation {
     pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_height: Option<u32>,
 }
 
@@ -3115,11 +3084,9 @@ pub struct InlineQueryResultVenue {
     pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_height: Option<u32>,
 }
 
@@ -3156,11 +3123,9 @@ pub struct InlineQueryResultContact {
     pub thumbnail_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub thumbnail_height: Option<u32>,
 }
 
@@ -3486,7 +3451,6 @@ pub struct InputLocationMessageContent {
     pub horizontal_accuracy: Option<f64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3494,7 +3458,6 @@ pub struct InputLocationMessageContent {
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub proximity_alert_radius: Option<u32>,
 }
 
@@ -3520,11 +3483,9 @@ pub struct InputInvoiceMessageContent {
     pub prices: Vec<LabeledPrice>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_tip_amount: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub suggested_tip_amounts: Option<Vec<u32>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3536,15 +3497,12 @@ pub struct InputInvoiceMessageContent {
     pub photo_url: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_size: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo_height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3691,15 +3649,12 @@ pub enum PaidMedia {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct PaidMediaPreview {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 }
 
@@ -3737,15 +3692,12 @@ pub struct InputPaidMediaVideo {
     pub thumbnail: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub width: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub height: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub duration: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4181,7 +4133,6 @@ pub struct GiveawayWinners {
     pub winners: Vec<User>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub additional_chat_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4191,7 +4142,6 @@ pub struct GiveawayWinners {
     pub premium_subscription_month_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub unclaimed_prize_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4213,7 +4163,6 @@ pub struct GiveawayCompleted {
     pub winner_count: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub unclaimed_prize_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
