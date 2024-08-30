@@ -427,7 +427,6 @@ pub struct WebhookInfo {
     pub last_synchronization_error_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_connections: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -603,11 +602,9 @@ pub struct ChatFullInfo {
     pub available_reactions: Option<Vec<ReactionType>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub accent_color_id: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub max_reaction_count: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -615,7 +612,6 @@ pub struct ChatFullInfo {
     pub background_custom_emoji_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub profile_accent_color_id: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -670,7 +666,6 @@ pub struct ChatFullInfo {
     pub can_send_paid_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub slow_mode_delay: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1595,7 +1590,6 @@ pub struct Location {
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2468,7 +2462,6 @@ pub struct ResponseParameters {
     pub migrate_to_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub retry_after: Option<u16>,
 }
 
@@ -3007,7 +3000,6 @@ pub struct InlineQueryResultLocation {
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3447,7 +3439,6 @@ pub struct InputLocationMessageContent {
     pub live_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub heading: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
