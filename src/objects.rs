@@ -721,7 +721,6 @@ pub struct Message {
     pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1113,7 +1112,6 @@ pub struct ExternalReplyInfo {
     pub chat: Option<Chat>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]

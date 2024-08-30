@@ -290,7 +290,6 @@ pub struct SendMessageParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -336,7 +335,6 @@ pub struct ForwardMessageParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -360,7 +358,6 @@ pub struct ForwardMessagesParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -384,7 +381,6 @@ pub struct CopyMessageParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -432,7 +428,6 @@ pub struct CopyMessagesParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -464,7 +459,6 @@ pub struct SendPhotoParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -522,7 +516,6 @@ pub struct SendAudioParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -587,7 +580,6 @@ pub struct SendDocumentParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -645,7 +637,6 @@ pub struct SendVideoParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -720,7 +711,6 @@ pub struct SendAnimationParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -791,7 +781,6 @@ pub struct SendVoiceParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -844,7 +833,6 @@ pub struct SendVideoNoteParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -943,7 +931,6 @@ pub struct SendMediaGroupParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     pub media: Vec<Media>,
@@ -976,7 +963,6 @@ pub struct SendLocationParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     pub latitude: f64,
@@ -1030,7 +1016,6 @@ pub struct EditMessageLiveLocationParams {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1072,7 +1057,6 @@ pub struct StopMessageLiveLocationParams {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1095,7 +1079,6 @@ pub struct SendVenueParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     pub latitude: f64,
@@ -1156,7 +1139,6 @@ pub struct SendContactParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -1205,7 +1187,6 @@ pub struct SendPollParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -1292,7 +1273,6 @@ pub struct SendDiceParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1331,7 +1311,6 @@ pub struct SendChatActionParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     pub action: ChatAction,
@@ -1708,7 +1687,6 @@ pub struct UnpinChatMessageParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 }
 
@@ -1796,7 +1774,6 @@ pub struct EditForumTopicParams {
     #[builder(into)]
     pub chat_id: ChatId,
 
-    #[builder(into)]
     pub message_thread_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1814,7 +1791,6 @@ pub struct CloseForumTopicParams {
     #[builder(into)]
     pub chat_id: ChatId,
 
-    #[builder(into)]
     pub message_thread_id: i32,
 }
 
@@ -1824,7 +1800,6 @@ pub struct ReopenForumTopicParams {
     #[builder(into)]
     pub chat_id: ChatId,
 
-    #[builder(into)]
     pub message_thread_id: i32,
 }
 
@@ -1834,7 +1809,6 @@ pub struct DeleteForumTopicParams {
     #[builder(into)]
     pub chat_id: ChatId,
 
-    #[builder(into)]
     pub message_thread_id: i32,
 }
 
@@ -1844,7 +1818,6 @@ pub struct UnpinAllForumTopicMessagesParams {
     #[builder(into)]
     pub chat_id: ChatId,
 
-    #[builder(into)]
     pub message_thread_id: i32,
 }
 
@@ -2034,7 +2007,6 @@ pub struct EditMessageTextParams {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2073,7 +2045,6 @@ pub struct EditMessageCaptionParams {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2113,7 +2084,6 @@ pub struct EditMessageMediaParams {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2140,7 +2110,6 @@ pub struct EditMessageReplyMarkupParams {
     pub chat_id: Option<ChatId>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2198,7 +2167,6 @@ pub struct SendStickerParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -2436,7 +2404,6 @@ pub struct SendInvoiceParams {
     pub chat_id: ChatId,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -2670,7 +2637,6 @@ pub struct SendGameParams {
     pub chat_id: i64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_thread_id: Option<i32>,
 
     #[builder(into)]
@@ -2716,7 +2682,6 @@ pub struct SetGameScoreParams {
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2733,7 +2698,6 @@ pub struct GetGameHighScoresParams {
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub message_id: Option<i32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
