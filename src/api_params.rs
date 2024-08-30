@@ -228,7 +228,6 @@ pub struct InputFile {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GetUpdatesParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub offset: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2714,7 +2713,6 @@ pub struct SetGameScoreParams {
     pub disable_edit_message: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2732,7 +2730,6 @@ pub struct GetGameHighScoresParams {
     pub user_id: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2946,7 +2943,6 @@ pub struct AnswerWebAppQueryParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SetChatMenuButtonParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2958,7 +2954,6 @@ pub struct SetChatMenuButtonParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GetChatMenuButtonParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub chat_id: Option<i64>,
 }
 

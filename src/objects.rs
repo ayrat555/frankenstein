@@ -708,7 +708,6 @@ pub struct ChatFullInfo {
     pub custom_emoji_sticker_set_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub linked_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -934,11 +933,9 @@ pub struct Message {
     pub message_auto_delete_timer_changed: Option<Box<MessageAutoDeleteTimerChanged>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub migrate_to_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub migrate_from_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2471,7 +2468,6 @@ pub struct BotCommand {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ResponseParameters {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub migrate_to_chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
