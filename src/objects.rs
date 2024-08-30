@@ -270,7 +270,6 @@ pub struct ChatMemberMember {
     pub user: User,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub until_date: Option<u64>,
 }
 
@@ -415,7 +414,6 @@ pub struct WebhookInfo {
     pub ip_address: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub last_error_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -423,7 +421,6 @@ pub struct WebhookInfo {
     pub last_error_message: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub last_synchronization_error_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -775,7 +772,6 @@ pub struct Message {
     pub via_bot: Option<Box<User>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub edit_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1282,7 +1278,6 @@ pub struct PhotoSize {
     pub height: u32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
@@ -1314,7 +1309,6 @@ pub struct Animation {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
@@ -1346,7 +1340,6 @@ pub struct Audio {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1376,7 +1369,6 @@ pub struct Document {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
@@ -1408,7 +1400,6 @@ pub struct Video {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
@@ -1430,7 +1421,6 @@ pub struct VideoNote {
     pub thumbnail: Option<PhotoSize>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
@@ -1450,7 +1440,6 @@ pub struct Voice {
     pub mime_type: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
@@ -1468,7 +1457,6 @@ pub struct Contact {
     pub last_name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub user_id: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1571,7 +1559,6 @@ pub struct Poll {
     pub open_period: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub close_date: Option<u64>,
 }
 
@@ -1856,7 +1843,6 @@ pub struct File {
     pub file_unique_id: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2182,7 +2168,6 @@ pub struct ChatInviteLink {
     pub name: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub expire_date: Option<u64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2514,7 +2499,6 @@ pub struct Sticker {
     pub needs_repainting: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub file_size: Option<u64>,
 }
 
