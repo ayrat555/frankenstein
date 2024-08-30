@@ -1215,7 +1215,6 @@ pub struct SendPollParams {
     pub allows_multiple_answers: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub correct_option_id: Option<u8>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
