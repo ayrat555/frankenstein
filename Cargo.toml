@@ -76,7 +76,7 @@ required-features = ["telegram-trait"]
 
 [dependencies]
 thiserror = "1"
-bon = "2.1.0"
+bon = "2"
 
 [dependencies.async-trait]
 version = "0.1"
