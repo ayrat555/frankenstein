@@ -18,13 +18,12 @@ pub struct Api {
 }
 
 impl Api {
-    /// Create a new `Api`. You can use `Api::builder()` for more options.
+    /// Create a new `Api`. You can use [`Api::new_url`] or [`Api::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
-        let api_url = format!("{}{api_key}", super::BASE_API_URL);
-        Self::builder().api_url(api_url).build()
+        Self::new_url(format!("{}{api_key}", super::BASE_API_URL))
     }
 
-    /// Create a new `Api`. You can use `Api::builder()` for more options.
+    /// Create a new `Api`. You can use [`Api::builder`] for more options.
     pub fn new_url<T: Into<String>>(api_url: T) -> Self {
         Self::builder().api_url(api_url).build()
     }
