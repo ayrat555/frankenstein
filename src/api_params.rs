@@ -237,7 +237,6 @@ pub struct GetUpdatesParams {
     pub timeout: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
 }
 
@@ -259,7 +258,6 @@ pub struct SetWebhookParams {
     pub max_connections: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -298,7 +296,6 @@ pub struct SendMessageParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -389,7 +386,6 @@ pub struct CopyMessageParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -459,7 +455,6 @@ pub struct SendPhotoParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -512,7 +507,6 @@ pub struct SendAudioParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -578,7 +572,6 @@ pub struct SendDocumentParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -641,7 +634,6 @@ pub struct SendVideoParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -710,7 +702,6 @@ pub struct SendAnimationParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -763,7 +754,6 @@ pub struct SendVoiceParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -860,7 +850,6 @@ pub struct SendPaidMediaParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1146,7 +1135,6 @@ pub struct SendPollParams {
     pub question_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub question_entities: Option<Vec<MessageEntity>>,
 
     pub options: Vec<InputPollOption>,
@@ -1173,7 +1161,6 @@ pub struct SendPollParams {
     pub explanation_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1933,7 +1920,6 @@ pub struct EditMessageTextParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1972,7 +1958,6 @@ pub struct EditMessageCaptionParams {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2147,7 +2132,6 @@ pub struct CreateNewStickerSetParams {
 #[builder]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GetCustomEmojiStickersParams {
-    #[builder(into)]
     pub custom_emoji_ids: Vec<String>,
 }
 
@@ -2208,7 +2192,6 @@ pub struct SetStickerKeywordsParams {
     pub sticker: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub keywords: Option<Vec<String>>,
 }
 
@@ -2473,7 +2456,6 @@ pub struct AnswerShippingQueryParams {
     pub ok: bool,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub shipping_options: Option<Vec<ShippingOption>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2607,7 +2589,6 @@ pub struct InputMediaPhoto {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2636,7 +2617,6 @@ pub struct InputMediaVideo {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2677,7 +2657,6 @@ pub struct InputMediaAnimation {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2715,7 +2694,6 @@ pub struct InputMediaAudio {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2749,7 +2727,6 @@ pub struct InputMediaDocument {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2826,7 +2803,6 @@ pub struct ReplyParameters {
     pub quote_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub quote_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]

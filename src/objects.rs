@@ -420,7 +420,6 @@ pub struct WebhookInfo {
     pub max_connections: Option<u16>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
 }
 
@@ -555,7 +554,6 @@ pub struct ChatFullInfo {
     pub photo: Option<ChatPhoto>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub active_usernames: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -579,7 +577,6 @@ pub struct ChatFullInfo {
     pub personal_chat: Option<Box<Chat>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub available_reactions: Option<Vec<ReactionType>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -765,7 +762,6 @@ pub struct Message {
     pub text: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -793,7 +789,6 @@ pub struct Message {
     pub paid_media: Option<Box<PaidMediaInfo>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo: Option<Vec<PhotoSize>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -821,7 +816,6 @@ pub struct Message {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -855,7 +849,6 @@ pub struct Message {
     pub location: Option<Box<Location>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub new_chat_members: Option<Vec<User>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -867,7 +860,6 @@ pub struct Message {
     pub new_chat_title: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub new_chat_photo: Option<Vec<PhotoSize>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1045,7 +1037,6 @@ pub struct TextQuote {
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub entities: Option<Vec<MessageEntity>>,
 
     pub position: u32,
@@ -1089,7 +1080,6 @@ pub struct ExternalReplyInfo {
     pub paid_media: Option<PaidMediaInfo>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo: Option<Vec<PhotoSize>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1438,7 +1428,6 @@ pub struct PollOption {
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub text_entities: Option<Vec<MessageEntity>>,
 
     pub voter_count: u32,
@@ -1456,7 +1445,6 @@ pub struct InputPollOption {
     pub text_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub text_entities: Option<Vec<MessageEntity>>,
 }
 
@@ -1487,7 +1475,6 @@ pub struct Poll {
     pub question: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub question_entities: Option<Vec<MessageEntity>>,
 
     pub options: Vec<PollOption>,
@@ -1510,7 +1497,6 @@ pub struct Poll {
     pub explanation: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub explanation_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1716,7 +1702,6 @@ pub struct SharedUser {
     pub username: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo: Option<Vec<PhotoSize>>,
 }
 
@@ -1744,7 +1729,6 @@ pub struct ChatShared {
     pub username: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub photo: Option<Vec<PhotoSize>>,
 }
 
@@ -1772,7 +1756,6 @@ pub struct VideoChatEnded {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct VideoChatParticipantsInvited {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub users: Option<Vec<User>>,
 }
 
@@ -2422,7 +2405,6 @@ pub struct InputSticker {
     pub mask_position: Option<MaskPosition>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub keywords: Option<Vec<String>>,
 }
 
@@ -2564,7 +2546,6 @@ pub struct InlineQueryResultPhoto {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2617,7 +2598,6 @@ pub struct InlineQueryResultGif {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2670,7 +2650,6 @@ pub struct InlineQueryResultMpeg4Gif {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2712,7 +2691,6 @@ pub struct InlineQueryResultVideo {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2761,7 +2739,6 @@ pub struct InlineQueryResultAudio {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2801,7 +2778,6 @@ pub struct InlineQueryResultVoice {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2834,7 +2810,6 @@ pub struct InlineQueryResultDocument {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[builder(into)]
@@ -3040,7 +3015,6 @@ pub struct InlineQueryResultCachedPhoto {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3077,7 +3051,6 @@ pub struct InlineQueryResultCachedGif {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3114,7 +3087,6 @@ pub struct InlineQueryResultCachedMpeg4Gif {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3172,7 +3144,6 @@ pub struct InlineQueryResultCachedDocument {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3209,7 +3180,6 @@ pub struct InlineQueryResultCachedVideo {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3245,7 +3215,6 @@ pub struct InlineQueryResultCachedVoice {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3275,7 +3244,6 @@ pub struct InlineQueryResultCachedAudio {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub caption_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3298,7 +3266,6 @@ pub struct InputTextMessageContent {
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3749,7 +3716,6 @@ pub struct EncryptedPassportElement {
     pub email: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub files: Option<Vec<PassportFile>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3765,7 +3731,6 @@ pub struct EncryptedPassportElement {
     pub selfie: Option<PassportFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub translation: Option<Vec<PassportFile>>,
 
     #[builder(into)]
@@ -3919,7 +3884,6 @@ pub struct Game {
     pub text: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub text_entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -3964,7 +3928,6 @@ pub struct Giveaway {
     pub prize_description: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub country_codes: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -4256,7 +4219,6 @@ pub struct TransactionPartnerUser {
     pub invoice_payload: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub paid_media: Option<Vec<PaidMedia>>,
 }
 
