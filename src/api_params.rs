@@ -247,7 +247,6 @@ pub struct SetWebhookParams {
     pub url: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub certificate: Option<InputFile>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -292,14 +291,12 @@ pub struct SendMessageParams {
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub link_preview_options: Option<LinkPreviewOptions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -313,11 +310,9 @@ pub struct SendMessageParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -382,7 +377,6 @@ pub struct CopyMessageParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -398,11 +392,9 @@ pub struct CopyMessageParams {
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -451,7 +443,6 @@ pub struct SendPhotoParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -474,11 +465,9 @@ pub struct SendPhotoParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -503,7 +492,6 @@ pub struct SendAudioParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -535,11 +523,9 @@ pub struct SendAudioParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -568,7 +554,6 @@ pub struct SendDocumentParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -588,11 +573,9 @@ pub struct SendDocumentParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -630,7 +613,6 @@ pub struct SendVideoParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -656,11 +638,9 @@ pub struct SendVideoParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -698,7 +678,6 @@ pub struct SendAnimationParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -721,11 +700,9 @@ pub struct SendAnimationParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -750,7 +727,6 @@ pub struct SendVoiceParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -770,11 +746,9 @@ pub struct SendVoiceParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -815,11 +789,9 @@ pub struct SendVideoNoteParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -846,7 +818,6 @@ pub struct SendPaidMediaParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -862,11 +833,9 @@ pub struct SendPaidMediaParams {
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -896,7 +865,6 @@ pub struct SendMediaGroupParams {
     pub protect_content: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 }
 
@@ -940,11 +908,9 @@ pub struct SendLocationParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -983,7 +949,6 @@ pub struct EditMessageLiveLocationParams {
     pub proximity_alert_radius: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1006,7 +971,6 @@ pub struct StopMessageLiveLocationParams {
     pub inline_message_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1060,11 +1024,9 @@ pub struct SendVenueParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -1106,11 +1068,9 @@ pub struct SendContactParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -1131,7 +1091,6 @@ pub struct SendPollParams {
     pub question: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub question_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1143,7 +1102,6 @@ pub struct SendPollParams {
     pub is_anonymous: Option<bool>,
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub type_field: Option<PollType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1157,7 +1115,6 @@ pub struct SendPollParams {
     pub explanation: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub explanation_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1183,11 +1140,9 @@ pub struct SendPollParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -1219,11 +1174,9 @@ pub struct SendDiceParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -1802,7 +1755,6 @@ pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub scope: Option<BotCommandScope>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1874,7 +1826,6 @@ pub struct GetMyShortDescriptionParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GetMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub scope: Option<BotCommandScope>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1886,7 +1837,6 @@ pub struct GetMyCommandsParams {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DeleteMyCommandsParams {
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub scope: Option<BotCommandScope>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1916,18 +1866,15 @@ pub struct EditMessageTextParams {
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entities: Option<Vec<MessageEntity>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub link_preview_options: Option<LinkPreviewOptions>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1954,7 +1901,6 @@ pub struct EditMessageCaptionParams {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -1964,7 +1910,6 @@ pub struct EditMessageCaptionParams {
     pub show_caption_above_media: Option<bool>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1986,11 +1931,9 @@ pub struct EditMessageMediaParams {
     #[builder(into)]
     pub inline_message_id: Option<String>,
 
-    #[builder(into)]
     pub media: InputMedia,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -2013,7 +1956,6 @@ pub struct EditMessageReplyMarkupParams {
     pub inline_message_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -2030,7 +1972,6 @@ pub struct StopPollParams {
     pub message_id: i32,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -2083,11 +2024,9 @@ pub struct SendStickerParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<ReplyMarkup>,
 }
 
@@ -2122,7 +2061,6 @@ pub struct CreateNewStickerSetParams {
     pub stickers: Vec<InputSticker>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub sticker_type: Option<StickerType>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2202,7 +2140,6 @@ pub struct SetStickerMaskPositionParams {
     pub sticker: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub mask_position: Option<MaskPosition>,
 }
 
@@ -2268,7 +2205,6 @@ pub struct AnswerInlineQueryParams {
     pub next_offset: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub button: Option<InlineQueryResultsButton>,
 }
 
@@ -2279,7 +2215,6 @@ pub struct InlineQueryResultsButton {
     pub text: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub web_app: Option<WebAppInfo>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2373,11 +2308,9 @@ pub struct SendInvoiceParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -2526,11 +2459,9 @@ pub struct SendGameParams {
     pub message_effect_id: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_parameters: Option<ReplyParameters>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -2585,7 +2516,6 @@ pub struct InputMediaPhoto {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2613,7 +2543,6 @@ pub struct InputMediaVideo {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2653,7 +2582,6 @@ pub struct InputMediaAnimation {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2690,7 +2618,6 @@ pub struct InputMediaAudio {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2723,7 +2650,6 @@ pub struct InputMediaDocument {
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -2764,7 +2690,6 @@ pub struct SetChatMenuButtonParams {
     pub chat_id: Option<i64>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub menu_button: Option<MenuButton>,
 }
 
@@ -2799,7 +2724,6 @@ pub struct ReplyParameters {
     pub quote: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[builder(into)]
     pub quote_parse_mode: Option<ParseMode>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
