@@ -11,8 +11,7 @@ static TOKEN: &str = "API_TOKEN";
 async fn main() {
     let api = AsyncApi::new(TOKEN);
 
-    let update_params_builder = GetUpdatesParams::builder();
-    let mut update_params = update_params_builder.clone().build();
+    let mut update_params = GetUpdatesParams::builder().build();
 
     loop {
         let result = api.get_updates(&update_params).await;
@@ -29,10 +28,7 @@ async fn main() {
                             process_message(message, api_clone).await;
                         });
                     }
-                    update_params = update_params_builder
-                        .clone()
-                        .offset(update.update_id + 1)
-                        .build();
+                    update_params.offset = Some(i64::from(update.update_id) + 1);
                 }
             }
             Err(error) => {
