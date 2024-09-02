@@ -9,8 +9,7 @@ static TOKEN: &str = "API_TOKEN";
 fn main() {
     let api = Api::new(TOKEN);
 
-    let update_params_builder = GetUpdatesParams::builder();
-    let mut update_params = update_params_builder.clone().build();
+    let mut update_params = GetUpdatesParams::builder().build();
 
     loop {
         let result = api.get_updates(&update_params);
@@ -35,10 +34,7 @@ fn main() {
                             println!("Failed to send message: {err:?}");
                         }
                     }
-                    update_params = update_params_builder
-                        .clone()
-                        .offset(update.update_id + 1)
-                        .build();
+                    update_params.offset = Some(i64::from(update.update_id) + 1);
                 }
             }
             Err(error) => {
