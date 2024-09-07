@@ -384,6 +384,7 @@ pub enum UpdateContent {
     ChatJoinRequest(ChatJoinRequest),
     ChatBoost(ChatBoostUpdated),
     RemovedChatBoost(ChatBoostRemoved),
+    PurchasedPaidMedia(PaidMediaPurchased),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -3747,6 +3748,14 @@ pub struct PreCheckoutQuery {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
+pub struct PaidMediaPurchased {
+    pub from: User,
+
+    #[builder(setter(into))]
+    pub paid_media_payload: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct PassportData {
     pub data: Vec<EncryptedPassportElement>,
 
@@ -3961,7 +3970,10 @@ pub struct GameHighScore {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
-pub struct GiveawayCreated {}
+pub struct GiveawayCreated {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub prize_star_count: Option<u32>,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Builder)]
 pub struct Giveaway {
@@ -3988,6 +4000,9 @@ pub struct Giveaway {
     pub country_codes: Option<Vec<String>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub prize_star_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub premium_subscription_month_count: Option<u32>,
 }
@@ -4007,6 +4022,9 @@ pub struct GiveawayWinners {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub additional_chat_count: Option<u32>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub prize_star_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
@@ -4040,6 +4058,10 @@ pub struct GiveawayCompleted {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub giveaway_message: Option<Box<Message>>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
+    pub is_star_giveaway: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Builder)]
@@ -4135,6 +4157,9 @@ pub struct ChatBoostSourceGiveaway {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
     pub user: Option<User>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub prize_star_count: Option<u32>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
