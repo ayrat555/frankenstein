@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.32.5 (2024-09-07)
+
+- [Bot API 7.10](https://core.telegram.org/bots/api#september-6-2024) - [#200](https://github.com/ayrat555/frankenstein/pull/200)
+- docs(examples): simplify update offset logic - [#198](https://github.com/ayrat555/frankenstein/pull/198)
+- refactor(api): reuse new_url - [#199](https://github.com/ayrat555/frankenstein/pull/199)
+- fix: clippy::too_long_first_doc_paragraph - [#197](https://github.com/ayrat555/frankenstein/pull/197)
+- add into attributes for chat_id in SendInvoice and SendPaidMedia - [#194](https://github.com/ayrat555/frankenstein/pull/194)
+- refactor: clippy::must_use_candidate - [#191](https://github.com/ayrat555/frankenstein/pull/191)
+
 ## 0.32.4 (2024-08-18)
 
 - [Bot API 7.9](https://core.telegram.org/bots/api#august-14-2024) - [#192](https://github.com/ayrat555/frankenstein/pull/192)
