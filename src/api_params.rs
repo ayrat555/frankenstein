@@ -891,6 +891,10 @@ pub struct SendPaidMediaParams {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(setter(into, strip_option), default)]
+    pub payload: Option<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(setter(into, strip_option), default)]
     pub caption: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
