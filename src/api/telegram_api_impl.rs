@@ -1,15 +1,14 @@
 use super::Error;
 use super::HttpError;
 use crate::api_traits::TelegramApi;
-use bon::builder;
+use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
 use ureq::Response;
 
-#[builder]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct Api {
     #[builder(into)]

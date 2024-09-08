@@ -3,15 +3,14 @@ use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
 use crate::api_traits::ErrorResponse;
 use async_trait::async_trait;
-use bon::builder;
+use bon::Builder;
 use reqwest::multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
 use tokio::fs::File;
 
-#[builder]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct AsyncApi {
     #[builder(into)]
