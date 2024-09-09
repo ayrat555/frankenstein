@@ -1,7 +1,8 @@
-use frankenstein::ErrorResponse;
-use frankenstein::SendMessageParams;
+use frankenstein::parameters::SendMessageParams;
+use frankenstein::response::ErrorResponse;
 use frankenstein::TelegramApi;
-use isahc::{prelude::*, Request};
+use isahc::prelude::*;
+use isahc::Request;
 use std::path::PathBuf;
 
 static TOKEN: &str = "TOKEN";
@@ -14,14 +15,8 @@ pub struct Api {
 
 #[derive(Debug)]
 pub enum Error {
-    HttpError(HttpError),
+    HttpError { code: u16, message: String },
     ApiError(ErrorResponse),
-}
-
-#[derive(Debug)]
-pub struct HttpError {
-    pub code: u16,
-    pub message: String,
 }
 
 impl Api {
@@ -40,24 +35,14 @@ impl Api {
 impl From<isahc::http::Error> for Error {
     fn from(error: isahc::http::Error) -> Self {
         let message = format!("{error:?}");
-        let error = HttpError { code: 500, message };
-        Self::HttpError(error)
-    }
-}
-
-impl From<std::io::Error> for Error {
-    fn from(error: std::io::Error) -> Self {
-        let message = format!("{error:?}");
-        let error = HttpError { code: 500, message };
-        Self::HttpError(error)
+        Self::HttpError { code: 500, message }
     }
 }
 
 impl From<isahc::Error> for Error {
     fn from(error: isahc::Error) -> Self {
         let message = format!("{error:?}");
-        let error = HttpError { code: 500, message };
-        Self::HttpError(error)
+        Self::HttpError { code: 500, message }
     }
 }
 
@@ -81,21 +66,18 @@ impl TelegramApi for Api {
             }
         };
 
-        let text = response.text()?;
+        let text = response.text().map_err(|error| {
+            let message = error.to_string();
+            Error::HttpError { code: 500, message }
+        })?;
 
         let parsed_result: Result<T2, serde_json::Error> = serde_json::from_str(&text);
 
-        parsed_result.map_err(|_| {
-            let parsed_error: Result<ErrorResponse, serde_json::Error> =
-                serde_json::from_str(&text);
-
-            match parsed_error {
-                Ok(result) => Error::ApiError(result),
-                Err(error) => {
-                    let message = format!("{error:?}");
-                    let error = HttpError { code: 500, message };
-                    Error::HttpError(error)
-                }
+        parsed_result.map_err(|_| match serde_json::from_str::<ErrorResponse>(&text) {
+            Ok(result) => Error::ApiError(result),
+            Err(error) => {
+                let message = format!("{error:?}");
+                Error::HttpError { code: 500, message }
             }
         })
     }
@@ -108,12 +90,8 @@ impl TelegramApi for Api {
         _params: T1,
         _files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Error> {
-        let error = HttpError {
-            code: 500,
-            message: "isahc doesn't support form data requests".to_string(),
-        };
-
-        Err(Error::HttpError(error))
+        let message = "isahc doesn't support form data requests".to_string();
+        Err(Error::HttpError { code: 500, message })
     }
 }
 

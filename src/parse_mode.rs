@@ -1,10 +1,12 @@
 #![allow(deprecated)]
 
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 use std::str::FromStr;
 
-use serde::{Deserialize, Serialize};
-
+/// Text Formatting Options
+///
+/// See <https://core.telegram.org/bots/api#formatting-options>
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ParseMode {
     #[serde(rename = "HTML")]
@@ -18,6 +20,7 @@ pub enum ParseMode {
 
 impl FromStr for ParseMode {
     type Err = ();
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "HTML" | "Html" | "html" => Ok(Self::Html),

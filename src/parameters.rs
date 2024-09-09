@@ -1,23 +1,26 @@
-#![allow(deprecated)]
+//! Parameters to Telegram API methods.
+
+#![allow(clippy::module_name_repetitions)]
+
 use crate::objects::{
-    BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply, InlineKeyboardMarkup,
-    InlineQueryResultArticle, InlineQueryResultAudio, InlineQueryResultCachedAudio,
-    InlineQueryResultCachedDocument, InlineQueryResultCachedGif, InlineQueryResultCachedMpeg4Gif,
-    InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker, InlineQueryResultCachedVideo,
-    InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument,
-    InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation,
-    InlineQueryResultMpeg4Gif, InlineQueryResultPhoto, InlineQueryResultVenue,
-    InlineQueryResultVideo, InlineQueryResultVoice, InputPaidMedia, InputPollOption, InputSticker,
-    LabeledPrice, LinkPreviewOptions, MaskPosition, MenuButton, MessageEntity,
-    PassportElementErrorDataField, PassportElementErrorFile, PassportElementErrorFiles,
-    PassportElementErrorFrontSide, PassportElementErrorReverseSide, PassportElementErrorSelfie,
-    PassportElementErrorTranslationFile, PassportElementErrorTranslationFiles,
-    PassportElementErrorUnspecified, PollType, ReactionType, ReplyKeyboardMarkup,
-    ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType, WebAppInfo,
+    AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
+    InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
+    InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif,
+    InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker,
+    InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact,
+    InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif,
+    InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto,
+    InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice, InputPaidMedia,
+    InputPollOption, InputSticker, LabeledPrice, LinkPreviewOptions, MaskPosition, MenuButton,
+    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
+    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
+    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
+    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType, ReactionType,
+    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
+    WebAppInfo,
 };
-use crate::{AllowedUpdate, ParseMode};
-use serde::Deserialize;
-use serde::Serialize;
+use crate::parse_mode::ParseMode;
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use typed_builder::TypedBuilder as Builder;
 

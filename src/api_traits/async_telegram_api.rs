@@ -1,154 +1,50 @@
-use super::EditMessageResponse;
-use super::MethodResponse;
-use crate::api_params::AddStickerToSetParams;
-use crate::api_params::AnswerCallbackQueryParams;
-use crate::api_params::AnswerInlineQueryParams;
-use crate::api_params::AnswerPreCheckoutQueryParams;
-use crate::api_params::AnswerShippingQueryParams;
-use crate::api_params::AnswerWebAppQueryParams;
-use crate::api_params::ApproveChatJoinRequestParams;
-use crate::api_params::BanChatMemberParams;
-use crate::api_params::BanChatSenderChatParams;
-use crate::api_params::CloseForumTopicParams;
-use crate::api_params::CloseGeneralForumTopicParams;
-use crate::api_params::CopyMessageParams;
-use crate::api_params::CopyMessagesParams;
-use crate::api_params::CreateChatInviteLinkParams;
-use crate::api_params::CreateChatSubscriptionInviteLinkParams;
-use crate::api_params::CreateForumTopicParams;
-use crate::api_params::CreateInvoiceLinkParams;
-use crate::api_params::CreateNewStickerSetParams;
-use crate::api_params::DeclineChatJoinRequestParams;
-use crate::api_params::DeleteChatPhotoParams;
-use crate::api_params::DeleteChatStickerSetParams;
-use crate::api_params::DeleteForumTopicParams;
-use crate::api_params::DeleteMessageParams;
-use crate::api_params::DeleteMessagesParams;
-use crate::api_params::DeleteMyCommandsParams;
-use crate::api_params::DeleteStickerFromSetParams;
-use crate::api_params::DeleteStickerSetParams;
-use crate::api_params::DeleteWebhookParams;
-use crate::api_params::EditChatInviteLinkParams;
-use crate::api_params::EditChatSubscriptionInviteLinkParams;
-use crate::api_params::EditForumTopicParams;
-use crate::api_params::EditGeneralForumTopicParams;
-use crate::api_params::EditMessageCaptionParams;
-use crate::api_params::EditMessageLiveLocationParams;
-use crate::api_params::EditMessageMediaParams;
-use crate::api_params::EditMessageReplyMarkupParams;
-use crate::api_params::EditMessageTextParams;
-use crate::api_params::ExportChatInviteLinkParams;
-use crate::api_params::FileUpload;
-use crate::api_params::ForwardMessageParams;
-use crate::api_params::ForwardMessagesParams;
-use crate::api_params::GetBusinessConnectionParams;
-use crate::api_params::GetChatAdministratorsParams;
-use crate::api_params::GetChatMemberCountParams;
-use crate::api_params::GetChatMemberParams;
-use crate::api_params::GetChatMenuButtonParams;
-use crate::api_params::GetChatParams;
-use crate::api_params::GetCustomEmojiStickersParams;
-use crate::api_params::GetFileParams;
-use crate::api_params::GetGameHighScoresParams;
-use crate::api_params::GetMyCommandsParams;
-use crate::api_params::GetMyDefaultAdministratorRightsParams;
-use crate::api_params::GetMyDescriptionParams;
-use crate::api_params::GetMyNameParams;
-use crate::api_params::GetMyShortDescriptionParams;
-use crate::api_params::GetStarTransactionsParams;
-use crate::api_params::GetStickerSetParams;
-use crate::api_params::GetUpdatesParams;
-use crate::api_params::GetUserChatBoostsParams;
-use crate::api_params::GetUserProfilePhotosParams;
-use crate::api_params::HideGeneralForumTopicParams;
-use crate::api_params::InputMedia;
-use crate::api_params::LeaveChatParams;
-use crate::api_params::Media;
-use crate::api_params::PinChatMessageParams;
-use crate::api_params::PromoteChatMemberParams;
-use crate::api_params::RefundStarPaymentParams;
-use crate::api_params::ReopenForumTopicParams;
-use crate::api_params::ReopenGeneralForumTopicParams;
-use crate::api_params::ReplaceStickerInSetParams;
-use crate::api_params::RestrictChatMemberParams;
-use crate::api_params::RevokeChatInviteLinkParams;
-use crate::api_params::SendAnimationParams;
-use crate::api_params::SendAudioParams;
-use crate::api_params::SendChatActionParams;
-use crate::api_params::SendContactParams;
-use crate::api_params::SendDiceParams;
-use crate::api_params::SendDocumentParams;
-use crate::api_params::SendGameParams;
-use crate::api_params::SendInvoiceParams;
-use crate::api_params::SendLocationParams;
-use crate::api_params::SendMediaGroupParams;
-use crate::api_params::SendMessageParams;
-use crate::api_params::SendPaidMediaParams;
-use crate::api_params::SendPhotoParams;
-use crate::api_params::SendPollParams;
-use crate::api_params::SendStickerParams;
-use crate::api_params::SendVenueParams;
-use crate::api_params::SendVideoNoteParams;
-use crate::api_params::SendVideoParams;
-use crate::api_params::SendVoiceParams;
-use crate::api_params::SetChatAdministratorCustomTitleParams;
-use crate::api_params::SetChatDescriptionParams;
-use crate::api_params::SetChatMenuButtonParams;
-use crate::api_params::SetChatPermissionsParams;
-use crate::api_params::SetChatPhotoParams;
-use crate::api_params::SetChatStickerSetParams;
-use crate::api_params::SetChatTitleParams;
-use crate::api_params::SetCustomEmojiStickerSetThumbnailParams;
-use crate::api_params::SetGameScoreParams;
-use crate::api_params::SetMessageReactionParams;
-use crate::api_params::SetMyCommandsParams;
-use crate::api_params::SetMyDefaultAdministratorRightsParams;
-use crate::api_params::SetMyDescriptionParams;
-use crate::api_params::SetMyNameParams;
-use crate::api_params::SetMyShortDescriptionParams;
-use crate::api_params::SetStickerEmojiListParams;
-use crate::api_params::SetStickerKeywordsParams;
-use crate::api_params::SetStickerMaskPositionParams;
-use crate::api_params::SetStickerPositionInSetParams;
-use crate::api_params::SetStickerSetThumbnailParams;
-use crate::api_params::SetStickerSetTitleParams;
-use crate::api_params::SetWebhookParams;
-use crate::api_params::StopMessageLiveLocationParams;
-use crate::api_params::StopPollParams;
-use crate::api_params::UnbanChatMemberParams;
-use crate::api_params::UnbanChatSenderChatParams;
-use crate::api_params::UnhideGeneralForumTopicParams;
-use crate::api_params::UnpinAllChatMessagesParams;
-use crate::api_params::UnpinAllForumTopicMessagesParams;
-use crate::api_params::UnpinChatMessageParams;
-use crate::api_params::UploadStickerFileParams;
-use crate::objects::BotCommand;
-use crate::objects::BotDescription;
-use crate::objects::BotName;
-use crate::objects::BotShortDescription;
-use crate::objects::BusinessConnection;
-use crate::objects::ChatAdministratorRights;
-use crate::objects::ChatFullInfo;
-use crate::objects::ChatInviteLink;
-use crate::objects::ChatMember;
-use crate::objects::File as FileObject;
-use crate::objects::ForumTopic;
-use crate::objects::GameHighScore;
-use crate::objects::InputSticker;
-use crate::objects::MenuButton;
-use crate::objects::Message;
-use crate::objects::MessageId;
-use crate::objects::Poll;
-use crate::objects::SentWebAppMessage;
-use crate::objects::StarTransactions;
-use crate::objects::StickerSet;
-use crate::objects::Update;
-use crate::objects::User;
-use crate::objects::UserChatBoosts;
-use crate::objects::UserProfilePhotos;
-use crate::objects::WebhookInfo;
-use crate::Sticker;
-use crate::UnpinAllGeneralForumTopicMessagesParams;
+use crate::objects::{
+    BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
+    ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File as FileObject,
+    ForumTopic, GameHighScore, InputSticker, MenuButton, Message, MessageId, Poll,
+    SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User, UserChatBoosts,
+    UserProfilePhotos, WebhookInfo,
+};
+use crate::parameters::{
+    AddStickerToSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams,
+    AnswerPreCheckoutQueryParams, AnswerShippingQueryParams, AnswerWebAppQueryParams,
+    ApproveChatJoinRequestParams, BanChatMemberParams, BanChatSenderChatParams,
+    CloseForumTopicParams, CloseGeneralForumTopicParams, CopyMessageParams, CopyMessagesParams,
+    CreateChatInviteLinkParams, CreateChatSubscriptionInviteLinkParams, CreateForumTopicParams,
+    CreateInvoiceLinkParams, CreateNewStickerSetParams, DeclineChatJoinRequestParams,
+    DeleteChatPhotoParams, DeleteChatStickerSetParams, DeleteForumTopicParams, DeleteMessageParams,
+    DeleteMessagesParams, DeleteMyCommandsParams, DeleteStickerFromSetParams,
+    DeleteStickerSetParams, DeleteWebhookParams, EditChatInviteLinkParams,
+    EditChatSubscriptionInviteLinkParams, EditForumTopicParams, EditGeneralForumTopicParams,
+    EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
+    EditMessageReplyMarkupParams, EditMessageTextParams, ExportChatInviteLinkParams, FileUpload,
+    ForwardMessageParams, ForwardMessagesParams, GetBusinessConnectionParams,
+    GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams,
+    GetChatMenuButtonParams, GetChatParams, GetCustomEmojiStickersParams, GetFileParams,
+    GetGameHighScoresParams, GetMyCommandsParams, GetMyDefaultAdministratorRightsParams,
+    GetMyDescriptionParams, GetMyNameParams, GetMyShortDescriptionParams,
+    GetStarTransactionsParams, GetStickerSetParams, GetUpdatesParams, GetUserChatBoostsParams,
+    GetUserProfilePhotosParams, HideGeneralForumTopicParams, InputMedia, LeaveChatParams, Media,
+    PinChatMessageParams, PromoteChatMemberParams, RefundStarPaymentParams, ReopenForumTopicParams,
+    ReopenGeneralForumTopicParams, ReplaceStickerInSetParams, RestrictChatMemberParams,
+    RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams, SendChatActionParams,
+    SendContactParams, SendDiceParams, SendDocumentParams, SendGameParams, SendInvoiceParams,
+    SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPaidMediaParams,
+    SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams,
+    SendVideoParams, SendVoiceParams, SetChatAdministratorCustomTitleParams,
+    SetChatDescriptionParams, SetChatMenuButtonParams, SetChatPermissionsParams,
+    SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams,
+    SetCustomEmojiStickerSetThumbnailParams, SetGameScoreParams, SetMessageReactionParams,
+    SetMyCommandsParams, SetMyDefaultAdministratorRightsParams, SetMyDescriptionParams,
+    SetMyNameParams, SetMyShortDescriptionParams, SetStickerEmojiListParams,
+    SetStickerKeywordsParams, SetStickerMaskPositionParams, SetStickerPositionInSetParams,
+    SetStickerSetThumbnailParams, SetStickerSetTitleParams, SetWebhookParams,
+    StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
+    UnbanChatSenderChatParams, UnhideGeneralForumTopicParams, UnpinAllChatMessagesParams,
+    UnpinAllForumTopicMessagesParams, UnpinAllGeneralForumTopicMessagesParams,
+    UnpinChatMessageParams, UploadStickerFileParams,
+};
+use crate::response::{EditMessageResponse, MethodResponse};
 use async_trait::async_trait;
 use std::path::PathBuf;
 

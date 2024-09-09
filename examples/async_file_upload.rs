@@ -1,6 +1,5 @@
-use frankenstein::api_params::SendPhotoParams;
-use frankenstein::AsyncApi;
-use frankenstein::AsyncTelegramApi;
+use frankenstein::parameters::SendPhotoParams;
+use frankenstein::{AsyncApi, AsyncTelegramApi};
 
 static TOKEN: &str = "TOKEN";
 static CHAT_ID: i64 = 1;

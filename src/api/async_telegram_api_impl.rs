@@ -1,7 +1,5 @@
-use super::Error;
-use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
-use crate::api_traits::ErrorResponse;
+use crate::error::Error;
 use async_trait::async_trait;
 use reqwest::multipart;
 use serde_json::Value;
@@ -24,7 +22,7 @@ pub struct AsyncApi {
 impl AsyncApi {
     /// Create a new `AsyncApi`. You can use [`AsyncApi::new_url`] or [`AsyncApi::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
-        Self::new_url(format!("{}{api_key}", super::BASE_API_URL))
+        Self::new_url(format!("{}{api_key}", crate::BASE_API_URL))
     }
 
     /// Create a new `AsyncApi`. You can use [`AsyncApi::builder`] for more options.
@@ -45,51 +43,17 @@ impl AsyncApi {
         match response.text().await {
             Ok(message) => {
                 if status_code == 200 {
-                    let success_response: T = Self::parse_json(&message)?;
-                    return Ok(success_response);
+                    Ok(Self::parse_json(&message)?)
+                } else {
+                    Err(Error::Api(Self::parse_json(&message)?))
                 }
-
-                let error_response: ErrorResponse = Self::parse_json(&message)?;
-                Err(Error::Api(error_response))
             }
-            Err(e) => {
-                let err = Error::Decode(format!("Failed to decode response: {e:?}"));
-                Err(err)
-            }
+            Err(error) => Err(Error::Decode(error.to_string())),
         }
     }
 
     fn parse_json<T: serde::de::DeserializeOwned>(body: &str) -> Result<T, Error> {
-        let json_result: Result<T, serde_json::Error> = serde_json::from_str(body);
-
-        match json_result {
-            Ok(result) => Ok(result),
-
-            Err(e) => {
-                let err = Error::Decode(format!("{e:?} : {body:?}"));
-                Err(err)
-            }
-        }
-    }
-}
-
-impl From<reqwest::Error> for Error {
-    fn from(error: reqwest::Error) -> Self {
-        let message = error.to_string();
-        let code = error
-            .status()
-            .map_or(500, |status_code| status_code.as_u16());
-
-        let error = HttpError { code, message };
-        Self::Http(error)
-    }
-}
-
-impl From<std::io::Error> for Error {
-    fn from(error: std::io::Error) -> Self {
-        let message = error.to_string();
-
-        Self::Encode(message)
+        serde_json::from_str(body).map_err(|e| Error::Decode(format!("{e:?} : {body:?}")))
     }
 }
 
@@ -162,8 +126,9 @@ impl AsyncTelegramApi for AsyncApi {
         }
 
         for (parameter_name, file_path, file_name) in files_with_paths {
-            let file = File::open(file_path).await?;
-
+            let file = File::open(file_path)
+                .await
+                .map_err(|error| Error::Encode(error.to_string()))?;
             let part = multipart::Part::stream(file).file_name(file_name);
             form = form.part(parameter_name, part);
         }
@@ -179,10 +144,8 @@ impl AsyncTelegramApi for AsyncApi {
 
 #[cfg(test)]
 mod async_tests {
-    use super::AsyncApi;
-    use super::Error;
-    use crate::api_params::SendMessageParams;
-    use crate::api_traits::ErrorResponse;
+    use super::*;
+    use crate::parameters::SendMessageParams;
     use crate::AsyncTelegramApi;
 
     #[tokio::test]
@@ -224,16 +187,13 @@ mod async_tests {
             .await;
         let api = AsyncApi::new_url(server.url());
 
-        if let Err(Error::Api(ErrorResponse {
-            ok: false,
-            description,
-            error_code: 400,
-            parameters: None,
-        })) = api.send_message(&params).await
-        {
-            assert_eq!("Bad Request: chat not found".to_string(), description);
+        if let Err(Error::Api(error)) = dbg!(api.send_message(&params).await) {
+            assert_eq!(error.description, "Bad Request: chat not found");
+            assert_eq!(error.error_code, 400);
+            assert_eq!(error.parameters, None);
+            assert!(!error.ok);
         } else {
-            panic!("Error was expected but there is none");
+            panic!("API Error expected");
         }
     }
 }

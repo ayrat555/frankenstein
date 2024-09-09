@@ -1,6 +1,5 @@
-use super::Error;
-use super::HttpError;
 use crate::api_traits::TelegramApi;
+use crate::error::Error;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
@@ -20,7 +19,7 @@ pub struct Api {
 impl Api {
     /// Create a new `Api`. You can use [`Api::new_url`] or [`Api::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
-        Self::new_url(format!("{}{api_key}", super::BASE_API_URL))
+        Self::new_url(format!("{}{api_key}", crate::BASE_API_URL))
     }
 
     /// Create a new `Api`. You can use [`Api::builder`] for more options.
@@ -51,27 +50,6 @@ impl Api {
                 let err = Error::Decode(format!("Failed to decode response: {e:?}"));
                 Err(err)
             }
-        }
-    }
-}
-
-impl From<ureq::Error> for Error {
-    fn from(error: ureq::Error) -> Self {
-        match error {
-            ureq::Error::Status(code, response) => match response.into_string() {
-                Ok(message) => match serde_json::from_str(&message) {
-                    Ok(json_result) => Self::Api(json_result),
-                    Err(_) => Self::Http(HttpError { code, message }),
-                },
-                Err(_) => Self::Http(HttpError {
-                    code,
-                    message: "Failed to decode response".to_string(),
-                }),
-            },
-            ureq::Error::Transport(transport_error) => Self::Http(HttpError {
-                message: format!("{transport_error:?}"),
-                code: 500,
-            }),
         }
     }
 }
@@ -163,81 +141,29 @@ impl TelegramApi for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api_params::AnswerCallbackQueryParams;
-    use crate::api_params::AnswerInlineQueryParams;
-    use crate::api_params::BanChatMemberParams;
-    use crate::api_params::BotCommandScope;
-    use crate::api_params::BotCommandScopeChat;
-    use crate::api_params::ChatAction;
-    use crate::api_params::ChatId;
-    use crate::api_params::CopyMessageParams;
-    use crate::api_params::CreateChatInviteLinkParams;
-    use crate::api_params::DeleteChatPhotoParams;
-    use crate::api_params::DeleteChatStickerSetParams;
-    use crate::api_params::DeleteMessageParams;
-    use crate::api_params::DeleteMyCommandsParams;
-    use crate::api_params::DeleteWebhookParams;
-    use crate::api_params::EditChatInviteLinkParams;
-    use crate::api_params::EditMessageCaptionParams;
-    use crate::api_params::EditMessageLiveLocationParams;
-    use crate::api_params::EditMessageMediaParams;
-    use crate::api_params::EditMessageTextParams;
-    use crate::api_params::ExportChatInviteLinkParams;
-    use crate::api_params::FileUpload;
-    use crate::api_params::ForwardMessageParams;
-    use crate::api_params::GetChatAdministratorsParams;
-    use crate::api_params::GetChatMemberCountParams;
-    use crate::api_params::GetChatMemberParams;
-    use crate::api_params::GetChatParams;
-    use crate::api_params::GetFileParams;
-    use crate::api_params::GetMyCommandsParams;
-    use crate::api_params::GetStickerSetParams;
-    use crate::api_params::GetUpdatesParams;
-    use crate::api_params::GetUserProfilePhotosParams;
-    use crate::api_params::InlineQueryResult;
-    use crate::api_params::InputFile;
-    use crate::api_params::InputMedia;
-    use crate::api_params::InputMediaPhoto;
-    use crate::api_params::LeaveChatParams;
-    use crate::api_params::Media;
-    use crate::api_params::PinChatMessageParams;
-    use crate::api_params::PromoteChatMemberParams;
-    use crate::api_params::RestrictChatMemberParams;
-    use crate::api_params::RevokeChatInviteLinkParams;
-    use crate::api_params::SendAnimationParams;
-    use crate::api_params::SendAudioParams;
-    use crate::api_params::SendChatActionParams;
-    use crate::api_params::SendContactParams;
-    use crate::api_params::SendDiceParams;
-    use crate::api_params::SendDocumentParams;
-    use crate::api_params::SendLocationParams;
-    use crate::api_params::SendMediaGroupParams;
-    use crate::api_params::SendMessageParams;
-    use crate::api_params::SendPhotoParams;
-    use crate::api_params::SendPollParams;
-    use crate::api_params::SendStickerParams;
-    use crate::api_params::SendVenueParams;
-    use crate::api_params::SendVideoNoteParams;
-    use crate::api_params::SendVideoParams;
-    use crate::api_params::SendVoiceParams;
-    use crate::api_params::SetChatAdministratorCustomTitleParams;
-    use crate::api_params::SetChatDescriptionParams;
-    use crate::api_params::SetChatPermissionsParams;
-    use crate::api_params::SetChatPhotoParams;
-    use crate::api_params::SetChatStickerSetParams;
-    use crate::api_params::SetChatTitleParams;
-    use crate::api_params::SetMyCommandsParams;
-    use crate::api_params::SetWebhookParams;
-    use crate::api_params::StopMessageLiveLocationParams;
-    use crate::api_params::StopPollParams;
-    use crate::api_params::UnbanChatMemberParams;
-    use crate::api_params::UnpinChatMessageParams;
-    use crate::api_traits::ErrorResponse;
-    use crate::objects::BotCommand;
-    use crate::objects::ChatPermissions;
-    use crate::objects::InlineQueryResultVenue;
-    use crate::objects::InputPollOption;
-    use crate::AllowedUpdate;
+    use crate::objects::{
+        AllowedUpdate, BotCommand, ChatPermissions, InlineQueryResultVenue, InputPollOption,
+    };
+    use crate::parameters::{
+        AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, BotCommandScope,
+        BotCommandScopeChat, ChatAction, ChatId, CopyMessageParams, CreateChatInviteLinkParams,
+        DeleteChatPhotoParams, DeleteChatStickerSetParams, DeleteMessageParams,
+        DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
+        EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
+        EditMessageTextParams, ExportChatInviteLinkParams, FileUpload, ForwardMessageParams,
+        GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetChatParams,
+        GetFileParams, GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams,
+        GetUserProfilePhotosParams, InlineQueryResult, InputFile, InputMedia, InputMediaPhoto,
+        LeaveChatParams, Media, PinChatMessageParams, PromoteChatMemberParams,
+        RestrictChatMemberParams, RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams,
+        SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams,
+        SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams,
+        SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams,
+        SendVoiceParams, SetChatAdministratorCustomTitleParams, SetChatDescriptionParams,
+        SetChatPermissionsParams, SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams,
+        SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
+        UnbanChatMemberParams, UnpinChatMessageParams,
+    };
 
     #[test]
     fn new_sets_correct_url() {
@@ -310,16 +236,13 @@ mod tests {
             .create();
         let api = Api::new_url(server.url());
 
-        if let Err(Error::Api(ErrorResponse {
-            ok: false,
-            description,
-            error_code: 400,
-            parameters: None,
-        })) = api.send_message(&params)
-        {
-            assert_eq!("Bad Request: chat not found".to_string(), description);
+        if let Err(Error::Api(error)) = dbg!(api.send_message(&params)) {
+            assert_eq!(error.description, "Bad Request: chat not found");
+            assert_eq!(error.error_code, 400);
+            assert_eq!(error.parameters, None);
+            assert!(!error.ok);
         } else {
-            panic!("Error was expected but there is none");
+            panic!("API Error expected");
         }
     }
 

@@ -1,5 +1,4 @@
-use frankenstein::Api;
-use frankenstein::TelegramApi;
+use frankenstein::{Api, TelegramApi};
 use std::time::Duration;
 
 static TOKEN: &str = "API_TOKEN";
