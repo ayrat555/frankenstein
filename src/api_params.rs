@@ -16,10 +16,10 @@ use crate::objects::{
     ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType, WebAppInfo,
 };
 use crate::{AllowedUpdate, ParseMode};
+use bon::Builder;
 use serde::Deserialize;
 use serde::Serialize;
 use std::path::PathBuf;
-use bon::Builder;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
