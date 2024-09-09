@@ -1,7 +1,7 @@
 [package]
 name = "frankenstein"
 version = "0.32.5"
-authors = ["Ayrat Badykov <ayratin555@gmail.com>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
+authors = ["Ayrat Badykov <ayratin555@gmail.com>", "EdJoPaTo <frankenstein-rust@edjopato.de>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2021"
 license = "WTFPL"
