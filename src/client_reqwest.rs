@@ -26,19 +26,21 @@ impl AsyncApi {
     }
 
     /// Create a new `AsyncApi`. You can use [`AsyncApi::builder`] for more options.
-    pub fn new_url<T: Into<String>>(api_url: T) -> Self {
+    pub fn new_url<S: Into<String>>(api_url: S) -> Self {
         Self::builder().api_url(api_url).build()
     }
 
-    pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
-        params: &T,
-    ) -> Result<String, Error> {
+    pub fn encode_params<Params>(params: &Params) -> Result<String, Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+    {
         serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
     }
 
-    pub async fn decode_response<T: serde::de::DeserializeOwned>(
-        response: reqwest::Response,
-    ) -> Result<T, Error> {
+    pub async fn decode_response<Output>(response: reqwest::Response) -> Result<Output, Error>
+    where
+        Output: serde::de::DeserializeOwned,
+    {
         let status_code = response.status().as_u16();
         match response.text().await {
             Ok(message) => {
@@ -48,11 +50,11 @@ impl AsyncApi {
                     Err(Error::Api(Self::parse_json(&message)?))
                 }
             }
-            Err(error) => Err(Error::Decode(error.to_string())),
+            Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
     }
 
-    fn parse_json<T: serde::de::DeserializeOwned>(body: &str) -> Result<T, Error> {
+    fn parse_json<Output: serde::de::DeserializeOwned>(body: &str) -> Result<Output, Error> {
         serde_json::from_str(body).map_err(|e| Error::Decode(format!("{e:?} : {body:?}")))
     }
 }
@@ -61,44 +63,38 @@ impl AsyncApi {
 impl AsyncTelegramApi for AsyncApi {
     type Error = Error;
 
-    async fn request<
-        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
-        T2: serde::de::DeserializeOwned,
-    >(
+    async fn request<Params, Output>(
         &self,
         method: &str,
-        params: Option<T1>,
-    ) -> Result<T2, Self::Error> {
+        params: Option<Params>,
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
+        Output: serde::de::DeserializeOwned,
+    {
         let url = format!("{}/{method}", self.api_url);
-
         let mut prepared_request = self
             .client
             .post(url)
             .header("Content-Type", "application/json");
-
-        prepared_request = if let Some(data) = params {
-            let json_string = Self::encode_params(&data)?;
-
-            prepared_request.body(json_string)
-        } else {
-            prepared_request
+        if let Some(params) = params {
+            let json_string = Self::encode_params(&params)?;
+            prepared_request = prepared_request.body(json_string);
         };
-
         let response = prepared_request.send().await?;
-        let parsed_response: T2 = Self::decode_response(response).await?;
-
-        Ok(parsed_response)
+        Self::decode_response(response).await
     }
 
-    async fn request_with_form_data<
-        T1: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
-        T2: serde::de::DeserializeOwned,
-    >(
+    async fn request_with_form_data<Params, Output>(
         &self,
         method: &str,
-        params: T1,
+        params: Params,
         files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Self::Error> {
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
+        Output: serde::de::DeserializeOwned,
+    {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
@@ -136,9 +132,7 @@ impl AsyncTelegramApi for AsyncApi {
         let url = format!("{}/{method}", self.api_url);
 
         let response = self.client.post(url).multipart(form).send().await?;
-        let parsed_response: T2 = Self::decode_response(response).await?;
-
-        Ok(parsed_response)
+        Self::decode_response(response).await
     }
 }
 
