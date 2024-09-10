@@ -31,7 +31,7 @@ impl Api {
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
     {
-        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
+        serde_json::to_string(params).map_err(|err| Error::Encode(format!("{err:?} : {params:?}")))
     }
 
     pub fn decode_response<Output>(response: Response) -> Result<Output, Error>
@@ -41,7 +41,7 @@ impl Api {
         match response.into_string() {
             Ok(message) => serde_json::from_str(&message)
                 .map_err(|error| Error::Decode(format!("{error:?} : {message:?}"))),
-            Err(e) => Err(Error::Decode(format!("Failed to decode response: {e:?}"))),
+            Err(err) => Err(Error::Decode(format!("Failed to decode response: {err:?}"))),
         }
     }
 }

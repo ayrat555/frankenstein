@@ -34,7 +34,7 @@ impl AsyncApi {
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
     {
-        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
+        serde_json::to_string(params).map_err(|err| Error::Encode(format!("{err:?} : {params:?}")))
     }
 
     pub async fn decode_response<Output>(response: reqwest::Response) -> Result<Output, Error>
@@ -55,7 +55,7 @@ impl AsyncApi {
     }
 
     fn parse_json<Output: serde::de::DeserializeOwned>(body: &str) -> Result<Output, Error> {
-        serde_json::from_str(body).map_err(|e| Error::Decode(format!("{e:?} : {body:?}")))
+        serde_json::from_str(body).map_err(|error| Error::Decode(format!("{error:?} : {body:?}")))
     }
 }
 
