@@ -64,11 +64,15 @@ impl From<isahc::Error> for Error {
 impl TelegramApi for Api {
     type Error = Error;
 
-    fn request<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+    fn request<Params, Output>(
         &self,
         method: &str,
-        params: Option<T1>,
-    ) -> Result<T2, Error> {
+        params: Option<Params>,
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned,
+    {
         let url = format!("{}/{method}", self.api_url);
 
         let request_builder = Request::post(url).header("Content-Type", "application/json");
@@ -83,13 +87,8 @@ impl TelegramApi for Api {
 
         let text = response.text()?;
 
-        let parsed_result: Result<T2, serde_json::Error> = serde_json::from_str(&text);
-
-        parsed_result.map_err(|_| {
-            let parsed_error: Result<ErrorResponse, serde_json::Error> =
-                serde_json::from_str(&text);
-
-            match parsed_error {
+        serde_json::from_str(&text).map_err(|_| {
+            match serde_json::from_str::<ErrorResponse>(&text) {
                 Ok(result) => Error::ApiError(result),
                 Err(error) => {
                     let message = format!("{error:?}");
@@ -102,12 +101,16 @@ impl TelegramApi for Api {
 
     // isahc doesn't support multipart uploads
     // https://github.com/sagebind/isahc/issues/14
-    fn request_with_form_data<T1: serde::ser::Serialize, T2: serde::de::DeserializeOwned>(
+    fn request_with_form_data<Params, Output>(
         &self,
         _method: &str,
-        _params: T1,
+        _params: Params,
         _files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Error> {
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned,
+    {
         let error = HttpError {
             code: 500,
             message: "isahc doesn't support form data requests".to_string(),
