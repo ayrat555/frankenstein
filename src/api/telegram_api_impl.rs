@@ -32,8 +32,7 @@ impl Api {
         Output: serde::de::DeserializeOwned,
     {
         match response.into_string() {
-            Ok(message) => serde_json::from_str(&message)
-                .map_err(|error| Error::Decode(format!("{error:?} : {message:?}"))),
+            Ok(message) => crate::json::decode(&message),
             Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
     }
