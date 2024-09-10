@@ -1,5 +1,4 @@
 use super::Error;
-use super::HttpError;
 use crate::api_traits::TelegramApi;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
@@ -61,17 +60,17 @@ impl From<ureq::Error> for Error {
             ureq::Error::Status(code, response) => match response.into_string() {
                 Ok(message) => match serde_json::from_str(&message) {
                     Ok(json_result) => Self::Api(json_result),
-                    Err(_) => Self::Http(HttpError { code, message }),
+                    Err(_) => Self::Http { code, message },
                 },
-                Err(_) => Self::Http(HttpError {
+                Err(_) => Self::Http {
                     code,
                     message: "Failed to decode response".to_string(),
-                }),
+                },
             },
-            ureq::Error::Transport(transport_error) => Self::Http(HttpError {
+            ureq::Error::Transport(transport_error) => Self::Http {
                 message: format!("{transport_error:?}"),
                 code: 500,
-            }),
+            },
         }
     }
 }
