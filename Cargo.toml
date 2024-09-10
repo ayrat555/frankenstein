@@ -76,8 +76,6 @@ required-features = ["telegram-trait"]
 
 [dependencies]
 thiserror = "1"
-
-# `bon` added support for `derive(Builder)` syntax since 2.2.0
 bon = "2.2.0"
 
 [dependencies.async-trait]
