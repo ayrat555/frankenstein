@@ -348,7 +348,7 @@ pub trait TelegramApi {
         let mut new_params = params.clone();
         new_params.media = new_medias;
 
-        let files_with_str_names: Vec<(&str, PathBuf)> = files
+        let files_with_str_names = files
             .iter()
             .map(|(key, path)| (key.as_str(), path.clone()))
             .collect();
@@ -1019,7 +1019,7 @@ pub trait TelegramApi {
         let mut new_params = params.clone();
         new_params.media = new_media;
 
-        let files_with_str_names: Vec<(&str, PathBuf)> = files
+        let files_with_str_names = files
             .iter()
             .map(|(key, path)| (key.as_str(), path.clone()))
             .collect();
@@ -1114,7 +1114,7 @@ pub trait TelegramApi {
         let mut new_params = params.clone();
         new_params.stickers = new_stickers;
 
-        let files_with_str_names: Vec<(&str, PathBuf)> = files
+        let files_with_str_names = files
             .iter()
             .map(|(key, path)| (key.as_str(), path.clone()))
             .collect();
@@ -1322,24 +1322,24 @@ pub trait TelegramApi {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
     }
 
-    fn request_without_body<T: serde::de::DeserializeOwned>(
-        &self,
-        method: &str,
-    ) -> Result<T, Self::Error> {
+    fn request_without_body<Output>(&self, method: &str) -> Result<Output, Self::Error>
+    where
+        Output: serde::de::DeserializeOwned,
+    {
         let params: Option<()> = None;
-
         self.request(method, params)
     }
 
-    fn request_with_possible_form_data<
-        T1: serde::ser::Serialize + std::fmt::Debug,
-        T2: serde::de::DeserializeOwned,
-    >(
+    fn request_with_possible_form_data<Params, Output>(
         &self,
         method_name: &str,
-        params: &T1,
+        params: &Params,
         files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Self::Error> {
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned,
+    {
         if files.is_empty() {
             self.request(method_name, Some(params))
         } else {
@@ -1347,19 +1347,22 @@ pub trait TelegramApi {
         }
     }
 
-    fn request_with_form_data<
-        T1: serde::ser::Serialize + std::fmt::Debug,
-        T2: serde::de::DeserializeOwned,
-    >(
+    fn request_with_form_data<Params, Output>(
         &self,
         method: &str,
-        params: T1,
+        params: Params,
         files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Self::Error>;
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned;
 
-    fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
+    fn request<Params, Output>(
         &self,
         method: &str,
-        params: Option<T1>,
-    ) -> Result<T2, Self::Error>;
+        params: Option<Params>,
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned;
 }

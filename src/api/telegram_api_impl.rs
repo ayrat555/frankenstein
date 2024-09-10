@@ -23,33 +23,25 @@ impl Api {
     }
 
     /// Create a new `Api`. You can use [`Api::builder`] for more options.
-    pub fn new_url<T: Into<String>>(api_url: T) -> Self {
+    pub fn new_url<S: Into<String>>(api_url: S) -> Self {
         Self::builder().api_url(api_url).build()
     }
 
-    pub fn encode_params<T: serde::ser::Serialize + std::fmt::Debug>(
-        params: &T,
-    ) -> Result<String, Error> {
+    pub fn encode_params<Params>(params: &Params) -> Result<String, Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+    {
         serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
     }
 
-    pub fn decode_response<T: serde::de::DeserializeOwned>(response: Response) -> Result<T, Error> {
+    pub fn decode_response<Output>(response: Response) -> Result<Output, Error>
+    where
+        Output: serde::de::DeserializeOwned,
+    {
         match response.into_string() {
-            Ok(message) => {
-                let json_result: Result<T, serde_json::Error> = serde_json::from_str(&message);
-
-                match json_result {
-                    Ok(result) => Ok(result),
-                    Err(e) => {
-                        let err = Error::Decode(format!("{e:?} : {message:?}"));
-                        Err(err)
-                    }
-                }
-            }
-            Err(e) => {
-                let err = Error::Decode(format!("Failed to decode response: {e:?}"));
-                Err(err)
-            }
+            Ok(message) => serde_json::from_str(&message)
+                .map_err(|error| Error::Decode(format!("{error:?} : {message:?}"))),
+            Err(e) => Err(Error::Decode(format!("Failed to decode response: {e:?}"))),
         }
     }
 }
@@ -78,17 +70,16 @@ impl From<ureq::Error> for Error {
 impl TelegramApi for Api {
     type Error = Error;
 
-    fn request<T1: serde::ser::Serialize + std::fmt::Debug, T2: serde::de::DeserializeOwned>(
-        &self,
-        method: &str,
-        params: Option<T1>,
-    ) -> Result<T2, Error> {
+    fn request<Params, Output>(&self, method: &str, params: Option<Params>) -> Result<Output, Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned,
+    {
         let url = format!("{}/{method}", self.api_url);
         let prepared_request = self
             .request_agent
             .post(&url)
             .set("Content-Type", "application/json");
-
         let response = match params {
             None => prepared_request.call()?,
             Some(data) => {
@@ -96,21 +87,19 @@ impl TelegramApi for Api {
                 prepared_request.send_string(&json)?
             }
         };
-
-        let parsed_response: T2 = Self::decode_response(response)?;
-
-        Ok(parsed_response)
+        Self::decode_response(response)
     }
 
-    fn request_with_form_data<
-        T1: serde::ser::Serialize + std::fmt::Debug,
-        T2: serde::de::DeserializeOwned,
-    >(
+    fn request_with_form_data<Params, Output>(
         &self,
         method: &str,
-        params: T1,
+        params: Params,
         files: Vec<(&str, PathBuf)>,
-    ) -> Result<T2, Error> {
+    ) -> Result<Output, Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug,
+        Output: serde::de::DeserializeOwned,
+    {
         let json_string = Self::encode_params(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
@@ -152,10 +141,7 @@ impl TelegramApi for Api {
                 &format!("multipart/form-data; boundary={}", form_data.boundary()),
             )
             .send(form_data)?;
-
-        let parsed_response: T2 = Self::decode_response(response)?;
-
-        Ok(parsed_response)
+        Self::decode_response(response)
     }
 }
 
