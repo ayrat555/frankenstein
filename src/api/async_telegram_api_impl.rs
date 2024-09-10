@@ -34,7 +34,7 @@ impl AsyncApi {
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
     {
-        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
+        serde_json::to_string(params).map_err(|err| Error::Encode(format!("{err:?} : {params:?}")))
     }
 
     pub async fn decode_response<Output>(response: reqwest::Response) -> Result<Output, Error>
@@ -50,12 +50,12 @@ impl AsyncApi {
                     Err(Error::Api(Self::parse_json(&message)?))
                 }
             }
-            Err(e) => Err(Error::Decode(format!("Failed to decode response: {e:?}"))),
+            Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
     }
 
     fn parse_json<Output: serde::de::DeserializeOwned>(body: &str) -> Result<Output, Error> {
-        serde_json::from_str(body).map_err(|e| Error::Decode(format!("{e:?} : {body:?}")))
+        serde_json::from_str(body).map_err(|error| Error::Decode(format!("{error:?} : {body:?}")))
     }
 }
 
@@ -134,7 +134,7 @@ impl AsyncTelegramApi for AsyncApi {
         for (parameter_name, file_path, file_name) in files_with_paths {
             let file = File::open(file_path)
                 .await
-                .map_err(|err| Error::Encode(err.to_string()))?;
+                .map_err(|error| Error::Encode(error.to_string()))?;
             let part = multipart::Part::stream(file).file_name(file_name);
             form = form.part(parameter_name, part);
         }
