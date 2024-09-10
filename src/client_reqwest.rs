@@ -1,5 +1,5 @@
-use crate::api_traits::AsyncTelegramApi;
 use crate::error::Error;
+use crate::trait_async::AsyncTelegramApi;
 use async_trait::async_trait;
 use reqwest::multipart;
 use serde_json::Value;

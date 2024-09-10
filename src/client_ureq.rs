@@ -1,5 +1,5 @@
-use crate::api_traits::TelegramApi;
 use crate::error::Error;
+use crate::trait_sync::TelegramApi;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
