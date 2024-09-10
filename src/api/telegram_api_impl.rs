@@ -80,7 +80,6 @@ impl TelegramApi for Api {
             .request_agent
             .post(&url)
             .set("Content-Type", "application/json");
-
         let response = match params {
             None => prepared_request.call()?,
             Some(data) => {
@@ -88,7 +87,6 @@ impl TelegramApi for Api {
                 prepared_request.send_string(&json)?
             }
         };
-
         Self::decode_response(response)
     }
 
@@ -143,7 +141,6 @@ impl TelegramApi for Api {
                 &format!("multipart/form-data; boundary={}", form_data.boundary()),
             )
             .send(form_data)?;
-
         Self::decode_response(response)
     }
 }

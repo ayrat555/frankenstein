@@ -83,20 +83,14 @@ impl AsyncTelegramApi for AsyncApi {
         Output: serde::de::DeserializeOwned,
     {
         let url = format!("{}/{method}", self.api_url);
-
         let mut prepared_request = self
             .client
             .post(url)
             .header("Content-Type", "application/json");
-
-        prepared_request = if let Some(data) = params {
-            let json_string = Self::encode_params(&data)?;
-
-            prepared_request.body(json_string)
-        } else {
-            prepared_request
+        if let Some(params) = params {
+            let json_string = Self::encode_params(&params)?;
+            prepared_request = prepared_request.body(json_string);
         };
-
         let response = prepared_request.send().await?;
         Self::decode_response(response).await
     }
