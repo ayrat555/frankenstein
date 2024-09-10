@@ -9,6 +9,7 @@ pub use ureq;
 pub mod api;
 pub mod api_params;
 pub mod api_traits;
+#[cfg(feature = "serde_json")]
 mod json;
 pub mod objects;
 mod parse_mode;
