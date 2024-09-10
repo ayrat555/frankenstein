@@ -66,19 +66,19 @@ impl TelegramApi for Api {
             }
         };
 
-        let text = response.text().map_err(|error| {
-            let message = error.to_string();
-            Error::HttpError { code: 500, message }
+        let text = response.text().map_err(|error| Error::HttpError {
+            code: 500,
+            message: error.to_string(),
         })?;
 
         let parsed_result: Result<T2, serde_json::Error> = serde_json::from_str(&text);
 
         parsed_result.map_err(|_| match serde_json::from_str::<ErrorResponse>(&text) {
             Ok(result) => Error::ApiError(result),
-            Err(error) => {
-                let message = format!("{error:?}");
-                Error::HttpError { code: 500, message }
-            }
+            Err(error) => Error::HttpError {
+                code: 500,
+                message: format!("{error:?}"),
+            },
         })
     }
 
