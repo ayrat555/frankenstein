@@ -14,14 +14,8 @@ pub struct Api {
 
 #[derive(Debug)]
 pub enum Error {
-    HttpError(HttpError),
-    ApiError(ErrorResponse),
-}
-
-#[derive(Debug)]
-pub struct HttpError {
-    pub code: u16,
-    pub message: String,
+    Http { code: u16, message: String },
+    Api(ErrorResponse),
 }
 
 impl Api {
@@ -40,24 +34,14 @@ impl Api {
 impl From<isahc::http::Error> for Error {
     fn from(error: isahc::http::Error) -> Self {
         let message = format!("{error:?}");
-        let error = HttpError { code: 500, message };
-        Self::HttpError(error)
-    }
-}
-
-impl From<std::io::Error> for Error {
-    fn from(error: std::io::Error) -> Self {
-        let message = format!("{error:?}");
-        let error = HttpError { code: 500, message };
-        Self::HttpError(error)
+        Self::Http { code: 500, message }
     }
 }
 
 impl From<isahc::Error> for Error {
     fn from(error: isahc::Error) -> Self {
         let message = format!("{error:?}");
-        let error = HttpError { code: 500, message };
-        Self::HttpError(error)
+        Self::Http { code: 500, message }
     }
 }
 
@@ -85,16 +69,18 @@ impl TelegramApi for Api {
             }
         };
 
-        let text = response.text()?;
+        let text = response.text().map_err(|error| Error::Http {
+            code: 500,
+            message: format!("{error:?}"),
+        })?;
 
         serde_json::from_str(&text).map_err(|_| {
             match serde_json::from_str::<ErrorResponse>(&text) {
-                Ok(result) => Error::ApiError(result),
-                Err(error) => {
-                    let message = format!("{error:?}");
-                    let error = HttpError { code: 500, message };
-                    Error::HttpError(error)
-                }
+                Ok(result) => Error::Api(result),
+                Err(error) => Error::Http {
+                    code: 500,
+                    message: format!("{error:?}"),
+                },
             }
         })
     }
@@ -111,12 +97,8 @@ impl TelegramApi for Api {
         Params: serde::ser::Serialize + std::fmt::Debug,
         Output: serde::de::DeserializeOwned,
     {
-        let error = HttpError {
-            code: 500,
-            message: "isahc doesn't support form data requests".to_string(),
-        };
-
-        Err(Error::HttpError(error))
+        let message = "isahc doesn't support form data requests".to_string();
+        Err(Error::Http { code: 500, message })
     }
 }
 

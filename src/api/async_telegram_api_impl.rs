@@ -1,5 +1,4 @@
 use super::Error;
-use super::HttpError;
 use crate::api_traits::AsyncTelegramApi;
 use async_trait::async_trait;
 use reqwest::multipart;
@@ -66,17 +65,7 @@ impl From<reqwest::Error> for Error {
         let code = error
             .status()
             .map_or(500, |status_code| status_code.as_u16());
-
-        let error = HttpError { code, message };
-        Self::Http(error)
-    }
-}
-
-impl From<std::io::Error> for Error {
-    fn from(error: std::io::Error) -> Self {
-        let message = error.to_string();
-
-        Self::Encode(message)
+        Self::Http { code, message }
     }
 }
 
@@ -149,8 +138,9 @@ impl AsyncTelegramApi for AsyncApi {
         }
 
         for (parameter_name, file_path, file_name) in files_with_paths {
-            let file = File::open(file_path).await?;
-
+            let file = File::open(file_path)
+                .await
+                .map_err(|err| Error::Encode(err.to_string()))?;
             let part = multipart::Part::stream(file).file_name(file_name);
             form = form.part(parameter_name, part);
         }
