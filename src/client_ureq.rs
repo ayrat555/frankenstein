@@ -41,7 +41,7 @@ impl Api {
         match response.into_string() {
             Ok(message) => serde_json::from_str(&message)
                 .map_err(|error| Error::Decode(format!("{error:?} : {message:?}"))),
-            Err(err) => Err(Error::Decode(format!("Failed to decode response: {err:?}"))),
+            Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
     }
 }
