@@ -15,8 +15,8 @@ pub struct Api {
 
 #[derive(Debug)]
 pub enum Error {
-    HttpError { code: u16, message: String },
-    ApiError(ErrorResponse),
+    Http { code: u16, message: String },
+    Api(ErrorResponse),
 }
 
 impl Api {
@@ -35,14 +35,14 @@ impl Api {
 impl From<isahc::http::Error> for Error {
     fn from(error: isahc::http::Error) -> Self {
         let message = format!("{error:?}");
-        Self::HttpError { code: 500, message }
+        Self::Http { code: 500, message }
     }
 }
 
 impl From<isahc::Error> for Error {
     fn from(error: isahc::Error) -> Self {
         let message = format!("{error:?}");
-        Self::HttpError { code: 500, message }
+        Self::Http { code: 500, message }
     }
 }
 
@@ -66,7 +66,7 @@ impl TelegramApi for Api {
             }
         };
 
-        let text = response.text().map_err(|error| Error::HttpError {
+        let text = response.text().map_err(|error| Error::Http {
             code: 500,
             message: error.to_string(),
         })?;
@@ -74,8 +74,8 @@ impl TelegramApi for Api {
         let parsed_result: Result<T2, serde_json::Error> = serde_json::from_str(&text);
 
         parsed_result.map_err(|_| match serde_json::from_str::<ErrorResponse>(&text) {
-            Ok(result) => Error::ApiError(result),
-            Err(error) => Error::HttpError {
+            Ok(result) => Error::Api(result),
+            Err(error) => Error::Http {
                 code: 500,
                 message: format!("{error:?}"),
             },
@@ -91,7 +91,7 @@ impl TelegramApi for Api {
         _files: Vec<(&str, PathBuf)>,
     ) -> Result<T2, Error> {
         let message = "isahc doesn't support form data requests".to_string();
-        Err(Error::HttpError { code: 500, message })
+        Err(Error::Http { code: 500, message })
     }
 }
 
