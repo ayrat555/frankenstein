@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.33.0 (2024-09-11)
+
+- refactor!: merge Error and HttpError by @EdJoPaTo - [#204](https://github.com/ayrat555/frankenstein/pull/204)
+- refactor: improve generic argument naming by @EdJoPaTo - [#205](https://github.com/ayrat555/frankenstein/pull/205)
+- refactor(json)!: generalize encoding/decoding by @EdJoPaTo - [#206](https://github.com/ayrat555/frankenstein/pull/206)
+- Migrate from `typed-builder` to `bon` by @Veetaha - [#196](https://github.com/ayrat555/frankenstein/pull/196)
+
 ## 0.32.5 (2024-09-07)
 
 - [Bot API 7.10](https://core.telegram.org/bots/api#september-6-2024) - [#200](https://github.com/ayrat555/frankenstein/pull/200)
