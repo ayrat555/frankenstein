@@ -30,13 +30,6 @@ impl AsyncApi {
         Self::builder().api_url(api_url).build()
     }
 
-    pub fn encode_params<Params>(params: &Params) -> Result<String, Error>
-    where
-        Params: serde::ser::Serialize + std::fmt::Debug,
-    {
-        serde_json::to_string(params).map_err(|e| Error::Encode(format!("{e:?} : {params:?}")))
-    }
-
     pub async fn decode_response<Output>(response: reqwest::Response) -> Result<Output, Error>
     where
         Output: serde::de::DeserializeOwned,
@@ -45,17 +38,13 @@ impl AsyncApi {
         match response.text().await {
             Ok(message) => {
                 if status_code == 200 {
-                    Ok(Self::parse_json(&message)?)
+                    Ok(crate::json::decode(&message)?)
                 } else {
-                    Err(Error::Api(Self::parse_json(&message)?))
+                    Err(Error::Api(crate::json::decode(&message)?))
                 }
             }
-            Err(e) => Err(Error::Decode(format!("Failed to decode response: {e:?}"))),
+            Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
-    }
-
-    fn parse_json<Output: serde::de::DeserializeOwned>(body: &str) -> Result<Output, Error> {
-        serde_json::from_str(body).map_err(|e| Error::Decode(format!("{e:?} : {body:?}")))
     }
 }
 
@@ -88,7 +77,7 @@ impl AsyncTelegramApi for AsyncApi {
             .post(url)
             .header("Content-Type", "application/json");
         if let Some(params) = params {
-            let json_string = Self::encode_params(&params)?;
+            let json_string = crate::json::encode(&params)?;
             prepared_request = prepared_request.body(json_string);
         };
         let response = prepared_request.send().await?;
@@ -105,7 +94,7 @@ impl AsyncTelegramApi for AsyncApi {
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
         Output: serde::de::DeserializeOwned,
     {
-        let json_string = Self::encode_params(&params)?;
+        let json_string = crate::json::encode(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         let files_with_paths: Vec<(String, &str, String)> = files
@@ -134,7 +123,7 @@ impl AsyncTelegramApi for AsyncApi {
         for (parameter_name, file_path, file_name) in files_with_paths {
             let file = File::open(file_path)
                 .await
-                .map_err(|err| Error::Encode(err.to_string()))?;
+                .map_err(|error| Error::Encode(error.to_string()))?;
             let part = multipart::Part::stream(file).file_name(file_name);
             form = form.part(parameter_name, part);
         }

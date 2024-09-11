@@ -42,14 +42,12 @@ async fn process_message(message: Message, api: AsyncApi) {
     let reply_parameters = ReplyParameters::builder()
         .message_id(message.message_id)
         .build();
-
     let send_message_params = SendMessageParams::builder()
         .chat_id(message.chat.id)
         .text("hello")
         .reply_parameters(reply_parameters)
         .build();
-
-    if let Err(err) = api.send_message(&send_message_params).await {
-        println!("Failed to send message: {err:?}");
+    if let Err(error) = api.send_message(&send_message_params).await {
+        println!("Failed to send message: {error:?}");
     }
 }
