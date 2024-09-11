@@ -1,20 +1,25 @@
 use super::Error;
 use crate::api_traits::AsyncTelegramApi;
 use async_trait::async_trait;
+use bon::Builder;
 use reqwest::multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
 use tokio::fs::File;
-use typed_builder::TypedBuilder;
 
-#[derive(Debug, Clone, TypedBuilder)]
+#[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct AsyncApi {
-    #[builder(setter(into))]
+    #[builder(into)]
     pub api_url: String,
+
     #[builder(
-        default_code = "reqwest::ClientBuilder::new().connect_timeout(Duration::from_secs(10)).timeout(Duration::from_secs(500)).build().unwrap()"
+        default = reqwest::ClientBuilder::new()
+            .connect_timeout(Duration::from_secs(10))
+            .timeout(Duration::from_secs(500))
+            .build()
+            .unwrap()
     )]
     pub client: reqwest::Client,
 }

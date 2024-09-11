@@ -1,18 +1,19 @@
 use super::Error;
 use crate::api_traits::TelegramApi;
+use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
-use typed_builder::TypedBuilder;
 use ureq::Response;
 
-#[derive(Debug, Clone, TypedBuilder)]
+#[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct Api {
-    #[builder(setter(into))]
+    #[builder(into)]
     pub api_url: String,
-    #[builder(default_code = "ureq::builder().timeout(Duration::from_secs(500)).build()")]
+
+    #[builder(default = ureq::builder().timeout(Duration::from_secs(500)).build())]
     pub request_agent: ureq::Agent,
 }
 
