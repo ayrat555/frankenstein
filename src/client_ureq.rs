@@ -27,20 +27,12 @@ impl Api {
         Self::builder().api_url(api_url).build()
     }
 
-    pub fn encode_params<Params>(params: &Params) -> Result<String, Error>
-    where
-        Params: serde::ser::Serialize + std::fmt::Debug,
-    {
-        serde_json::to_string(params).map_err(|err| Error::Encode(format!("{err:?} : {params:?}")))
-    }
-
     pub fn decode_response<Output>(response: Response) -> Result<Output, Error>
     where
         Output: serde::de::DeserializeOwned,
     {
         match response.into_string() {
-            Ok(message) => serde_json::from_str(&message)
-                .map_err(|error| Error::Decode(format!("{error:?} : {message:?}"))),
+            Ok(message) => crate::json::decode(&message),
             Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
     }
@@ -62,7 +54,7 @@ impl TelegramApi for Api {
         let response = match params {
             None => prepared_request.call()?,
             Some(data) => {
-                let json = Self::encode_params(&data)?;
+                let json = crate::json::encode(&data)?;
                 prepared_request.send_string(&json)?
             }
         };
@@ -79,7 +71,7 @@ impl TelegramApi for Api {
         Params: serde::ser::Serialize + std::fmt::Debug,
         Output: serde::de::DeserializeOwned,
     {
-        let json_string = Self::encode_params(&params)?;
+        let json_string = crate::json::encode(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files

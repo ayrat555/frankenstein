@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]
+#[non_exhaustive]
 #[serde(untagged)]
 pub enum Error {
     #[error("Http Error {code}: {message}")]

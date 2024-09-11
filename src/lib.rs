@@ -8,6 +8,8 @@ mod client_reqwest;
 #[cfg(feature = "http-client")]
 mod client_ureq;
 mod error;
+#[cfg(feature = "serde_json")]
+mod json;
 pub mod objects;
 pub mod parameters;
 mod parse_mode;
