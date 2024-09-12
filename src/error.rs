@@ -1,17 +1,5 @@
-use crate::api_traits::ErrorResponse;
+use crate::response::ErrorResponse;
 use serde::{Deserialize, Serialize};
-
-#[cfg(feature = "async-http-client")]
-pub mod async_telegram_api_impl;
-#[cfg(feature = "async-http-client")]
-pub use async_telegram_api_impl::*;
-
-#[cfg(feature = "http-client")]
-pub mod telegram_api_impl;
-#[cfg(feature = "http-client")]
-pub use telegram_api_impl::*;
-
-pub static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]
 #[non_exhaustive]

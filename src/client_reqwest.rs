@@ -1,5 +1,5 @@
-use super::Error;
-use crate::api_traits::AsyncTelegramApi;
+use crate::trait_async::AsyncTelegramApi;
+use crate::Error;
 use async_trait::async_trait;
 use bon::Builder;
 use reqwest::multipart;
@@ -8,6 +8,7 @@ use std::path::PathBuf;
 use std::time::Duration;
 use tokio::fs::File;
 
+/// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
 #[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct AsyncApi {
@@ -27,7 +28,7 @@ pub struct AsyncApi {
 impl AsyncApi {
     /// Create a new `AsyncApi`. You can use [`AsyncApi::new_url`] or [`AsyncApi::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
-        Self::new_url(format!("{}{api_key}", super::BASE_API_URL))
+        Self::new_url(format!("{}{api_key}", crate::BASE_API_URL))
     }
 
     /// Create a new `AsyncApi`. You can use [`AsyncApi::builder`] for more options.
@@ -142,11 +143,9 @@ impl AsyncTelegramApi for AsyncApi {
 
 #[cfg(test)]
 mod async_tests {
-    use super::AsyncApi;
-    use super::Error;
+    use super::*;
     use crate::api_params::SendMessageParams;
-    use crate::api_traits::ErrorResponse;
-    use crate::AsyncTelegramApi;
+    use crate::response::ErrorResponse;
 
     #[tokio::test]
     async fn async_send_message_success() {

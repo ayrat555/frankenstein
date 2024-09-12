@@ -1,5 +1,5 @@
-use super::Error;
-use crate::api_traits::TelegramApi;
+use crate::trait_sync::TelegramApi;
+use crate::Error;
 use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
@@ -7,6 +7,7 @@ use std::path::PathBuf;
 use std::time::Duration;
 use ureq::Response;
 
+/// Synchronous [`TelegramApi`] client implementation with [`ureq`].
 #[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct Api {
@@ -20,7 +21,7 @@ pub struct Api {
 impl Api {
     /// Create a new `Api`. You can use [`Api::new_url`] or [`Api::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
-        Self::new_url(format!("{}{api_key}", super::BASE_API_URL))
+        Self::new_url(format!("{}{api_key}", crate::BASE_API_URL))
     }
 
     /// Create a new `Api`. You can use [`Api::builder`] for more options.
@@ -210,12 +211,12 @@ mod tests {
     use crate::api_params::StopPollParams;
     use crate::api_params::UnbanChatMemberParams;
     use crate::api_params::UnpinChatMessageParams;
-    use crate::api_traits::ErrorResponse;
+    use crate::objects::AllowedUpdate;
     use crate::objects::BotCommand;
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
     use crate::objects::InputPollOption;
-    use crate::AllowedUpdate;
+    use crate::response::ErrorResponse;
 
     #[test]
     fn new_sets_correct_url() {

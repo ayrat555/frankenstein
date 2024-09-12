@@ -1,17 +1,11 @@
+//! Raw response objects returned by the Telegram API.
+//!
+//! Mainly useful when implementing the `TelegramApi` trait.
+
+#![allow(clippy::module_name_repetitions)]
+
 use crate::objects::{Message, ResponseParameters};
 use serde::{Deserialize, Serialize};
-
-#[cfg(feature = "async-telegram-trait")]
-pub mod async_telegram_api;
-
-#[cfg(feature = "telegram-trait")]
-pub mod telegram_api;
-
-#[cfg(feature = "async-telegram-trait")]
-pub use async_telegram_api::*;
-
-#[cfg(feature = "telegram-trait")]
-pub use telegram_api::*;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MethodResponse<T> {
