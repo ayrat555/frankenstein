@@ -69,7 +69,8 @@ macro_rules! request_nb {
             fn [<$name:snake>] (
                 &self,
             ) -> Result<MethodResponse<$return>, Self::Error> {
-                self.request_without_body(stringify!($name))
+                let params: Option<()> = None;
+                self.request(stringify!($name), params)
             }
         }
     }
@@ -635,14 +636,6 @@ pub trait TelegramApi {
     request!(setChatMenuButton, bool);
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);
-
-    fn request_without_body<Output>(&self, method: &str) -> Result<Output, Self::Error>
-    where
-        Output: serde::de::DeserializeOwned,
-    {
-        let params: Option<()> = None;
-        self.request(method, params)
-    }
 
     fn request_with_possible_form_data<Params, Output>(
         &self,

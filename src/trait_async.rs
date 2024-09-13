@@ -72,7 +72,8 @@ macro_rules! request_nb {
             async fn [<$name:snake>] (
                 &self,
             ) -> Result<MethodResponse<$return>, Self::Error> {
-                self.request_without_body(stringify!($name)).await
+                let params: Option<()> = None;
+                self.request(stringify!($name), params).await
             }
         }
     }
@@ -668,14 +669,6 @@ where
     request!(setChatMenuButton, bool);
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);
-
-    async fn request_without_body<Output>(&self, method: &str) -> Result<Output, Self::Error>
-    where
-        Output: serde::de::DeserializeOwned,
-    {
-        let params: Option<()> = None;
-        self.request(method, params).await
-    }
 
     async fn request<Params, Output>(
         &self,
