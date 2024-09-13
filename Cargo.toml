@@ -75,8 +75,9 @@ name = "api_trait_implementation"
 required-features = ["telegram-trait"]
 
 [dependencies]
-thiserror = "1"
 bon = "2.2.0"
+paste = "1"
+thiserror = "1"
 
 [dependencies.async-trait]
 version = "0.1"
