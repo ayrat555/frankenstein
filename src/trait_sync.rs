@@ -437,7 +437,7 @@ pub trait TelegramApi {
 
     fn send_paid_media(
         &self,
-        params: SendPaidMediaParams,
+        params: &SendPaidMediaParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         self.request("sendPaidMedia", Some(params))
     }
@@ -1249,7 +1249,7 @@ pub trait TelegramApi {
 
     fn get_star_transactions(
         &self,
-        params: GetStarTransactionsParams,
+        params: &GetStarTransactionsParams,
     ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
         self.request("getStarTransactions", Some(params))
     }
@@ -1302,21 +1302,21 @@ pub trait TelegramApi {
 
     fn set_chat_menu_button(
         &self,
-        params: SetChatMenuButtonParams,
+        params: &SetChatMenuButtonParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("setChatMenuButton", Some(params))
     }
 
     fn get_chat_menu_button(
         &self,
-        params: GetChatMenuButtonParams,
+        params: &GetChatMenuButtonParams,
     ) -> Result<MethodResponse<MenuButton>, Self::Error> {
         self.request("getChatMenuButton", Some(params))
     }
 
     fn unpin_all_general_forum_topic_messages(
         &self,
-        params: UnpinAllGeneralForumTopicMessagesParams,
+        params: &UnpinAllGeneralForumTopicMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
     }
