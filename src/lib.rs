@@ -1,3 +1,5 @@
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+
 #[doc(hidden)]
 #[cfg(feature = "async-http-client")]
 pub use reqwest;
