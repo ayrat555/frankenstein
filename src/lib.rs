@@ -1,3 +1,5 @@
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+
 #[cfg(feature = "reqwest")]
 pub use reqwest;
 #[cfg(feature = "ureq")]
