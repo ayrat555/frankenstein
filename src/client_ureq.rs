@@ -1,18 +1,20 @@
-use crate::error::Error;
 use crate::trait_sync::TelegramApi;
+use crate::Error;
+use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
-use typed_builder::TypedBuilder;
 use ureq::Response;
 
-#[derive(Debug, Clone, TypedBuilder)]
+/// Synchronous [`TelegramApi`] client implementation with [`ureq`].
+#[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct Api {
-    #[builder(setter(into))]
+    #[builder(into)]
     pub api_url: String,
-    #[builder(default_code = "ureq::builder().timeout(Duration::from_secs(500)).build()")]
+
+    #[builder(default = ureq::builder().timeout(Duration::from_secs(500)).build())]
     pub request_agent: ureq::Agent,
 }
 
@@ -34,6 +36,27 @@ impl Api {
         match response.into_string() {
             Ok(message) => crate::json::decode(&message),
             Err(error) => Err(Error::Decode(format!("{error:?}"))),
+        }
+    }
+}
+
+impl From<ureq::Error> for Error {
+    fn from(error: ureq::Error) -> Self {
+        match error {
+            ureq::Error::Status(code, response) => match response.into_string() {
+                Ok(message) => match serde_json::from_str(&message) {
+                    Ok(json_result) => Self::Api(json_result),
+                    Err(_) => Self::Http { code, message },
+                },
+                Err(_) => Self::Http {
+                    code,
+                    message: "Failed to decode response".to_string(),
+                },
+            },
+            ureq::Error::Transport(transport_error) => Self::Http {
+                message: format!("{transport_error:?}"),
+                code: 500,
+            },
         }
     }
 }

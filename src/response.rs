@@ -1,4 +1,4 @@
-//! Raw reponse objects returned by the Telegram API.
+//! Raw response objects returned by the Telegram API.
 //!
 //! Mainly useful when implementing the `TelegramApi` trait.
 

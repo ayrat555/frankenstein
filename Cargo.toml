@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.32.5"
+version = "0.33.0"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>", "EdJoPaTo <frankenstein-rust@edjopato.de>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2021"
@@ -76,7 +76,7 @@ required-features = ["telegram-trait"]
 
 [dependencies]
 thiserror = "1"
-typed-builder = "0.19"
+bon = "2.2.0"
 
 [dependencies.async-trait]
 version = "0.1"

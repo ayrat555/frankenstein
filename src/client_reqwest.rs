@@ -1,20 +1,26 @@
-use crate::error::Error;
 use crate::trait_async::AsyncTelegramApi;
+use crate::Error;
 use async_trait::async_trait;
+use bon::Builder;
 use reqwest::multipart;
 use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Duration;
 use tokio::fs::File;
-use typed_builder::TypedBuilder;
 
-#[derive(Debug, Clone, TypedBuilder)]
+/// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
+#[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
 pub struct AsyncApi {
-    #[builder(setter(into))]
+    #[builder(into)]
     pub api_url: String,
+
     #[builder(
-        default_code = "reqwest::ClientBuilder::new().connect_timeout(Duration::from_secs(10)).timeout(Duration::from_secs(500)).build().unwrap()"
+        default = reqwest::ClientBuilder::new()
+            .connect_timeout(Duration::from_secs(10))
+            .timeout(Duration::from_secs(500))
+            .build()
+            .unwrap()
     )]
     pub client: reqwest::Client,
 }
@@ -45,6 +51,16 @@ impl AsyncApi {
             }
             Err(error) => Err(Error::Decode(format!("{error:?}"))),
         }
+    }
+}
+
+impl From<reqwest::Error> for Error {
+    fn from(error: reqwest::Error) -> Self {
+        let message = error.to_string();
+        let code = error
+            .status()
+            .map_or(500, |status_code| status_code.as_u16());
+        Self::Http { code, message }
     }
 }
 
@@ -129,7 +145,6 @@ impl AsyncTelegramApi for AsyncApi {
 mod async_tests {
     use super::*;
     use crate::parameters::SendMessageParams;
-    use crate::AsyncTelegramApi;
 
     #[tokio::test]
     async fn async_send_message_success() {
