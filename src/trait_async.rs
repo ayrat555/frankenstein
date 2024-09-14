@@ -147,7 +147,7 @@ use crate::objects::User;
 use crate::objects::UserChatBoosts;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
-use crate::response::{MethodResponse, MessageOrBool};
+use crate::response::{MessageOrBool, MethodResponse};
 use async_trait::async_trait;
 use std::path::PathBuf;
 
