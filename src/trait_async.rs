@@ -462,7 +462,7 @@ pub trait AsyncTelegramApi {
 
     async fn send_paid_media(
         &self,
-        params: SendPaidMediaParams,
+        params: &SendPaidMediaParams,
     ) -> Result<MethodResponse<Message>, Self::Error> {
         self.request("sendPaidMedia", Some(params)).await
     }
@@ -811,35 +811,35 @@ pub trait AsyncTelegramApi {
 
     async fn edit_general_forum_topic(
         &self,
-        params: EditGeneralForumTopicParams,
+        params: &EditGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("editGeneralForumTopic", Some(params)).await
     }
 
     async fn close_general_forum_topic(
         &self,
-        params: CloseGeneralForumTopicParams,
+        params: &CloseGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("closeGeneralForumTopic", Some(params)).await
     }
 
     async fn reopen_general_forum_topic(
         &self,
-        params: ReopenGeneralForumTopicParams,
+        params: &ReopenGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("reopenGeneralForumTopic", Some(params)).await
     }
 
     async fn hide_general_forum_topic(
         &self,
-        params: HideGeneralForumTopicParams,
+        params: &HideGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("hideGeneralForumTopic", Some(params)).await
     }
 
     async fn unhide_general_forum_topic(
         &self,
-        params: UnhideGeneralForumTopicParams,
+        params: &UnhideGeneralForumTopicParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unhideGeneralForumTopic", Some(params)).await
     }
@@ -1308,7 +1308,7 @@ pub trait AsyncTelegramApi {
 
     async fn get_star_transactions(
         &self,
-        params: GetStarTransactionsParams,
+        params: &GetStarTransactionsParams,
     ) -> Result<MethodResponse<StarTransactions>, Self::Error> {
         self.request("getStarTransactions", Some(params)).await
     }
@@ -1366,21 +1366,21 @@ pub trait AsyncTelegramApi {
 
     async fn set_chat_menu_button(
         &self,
-        params: SetChatMenuButtonParams,
+        params: &SetChatMenuButtonParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("setChatMenuButton", Some(params)).await
     }
 
     async fn get_chat_menu_button(
         &self,
-        params: GetChatMenuButtonParams,
+        params: &GetChatMenuButtonParams,
     ) -> Result<MethodResponse<MenuButton>, Self::Error> {
         self.request("getChatMenuButton", Some(params)).await
     }
 
     async fn unpin_all_general_forum_topic_messages(
         &self,
-        params: UnpinAllGeneralForumTopicMessagesParams,
+        params: &UnpinAllGeneralForumTopicMessagesParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         self.request("unpinAllGeneralForumTopicMessages", Some(params))
             .await
