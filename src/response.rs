@@ -36,7 +36,7 @@ pub struct ErrorResponse {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum EditMessageResponse {
-    Message(MethodResponse<Message>),
-    Bool(MethodResponse<bool>),
+pub enum MessageOrBool {
+    Message(Message),
+    Bool(bool),
 }

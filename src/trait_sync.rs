@@ -147,7 +147,7 @@ use crate::objects::User;
 use crate::objects::UserChatBoosts;
 use crate::objects::UserProfilePhotos;
 use crate::objects::WebhookInfo;
-use crate::response::{EditMessageResponse, MethodResponse};
+use crate::response::{MessageOrBool, MethodResponse};
 use std::path::PathBuf;
 
 pub trait TelegramApi {
@@ -452,14 +452,14 @@ pub trait TelegramApi {
     fn edit_message_live_location(
         &self,
         params: &EditMessageLiveLocationParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         self.request("editMessageLiveLocation", Some(params))
     }
 
     fn stop_message_live_location(
         &self,
         params: &StopMessageLiveLocationParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         self.request("stopMessageLiveLocation", Some(params))
     }
 
@@ -888,21 +888,21 @@ pub trait TelegramApi {
     fn edit_message_text(
         &self,
         params: &EditMessageTextParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         self.request("editMessageText", Some(params))
     }
 
     fn edit_message_caption(
         &self,
         params: &EditMessageCaptionParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         self.request("editMessageCaption", Some(params))
     }
 
     fn edit_message_media(
         &self,
         params: &EditMessageMediaParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         let method_name = "editMessageMedia";
         let mut files: Vec<(String, PathBuf)> = vec![];
 
@@ -1029,7 +1029,7 @@ pub trait TelegramApi {
     fn edit_message_reply_markup(
         &self,
         params: &EditMessageReplyMarkupParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         self.request("editMessageReplyMarkup", Some(params))
     }
 
@@ -1268,7 +1268,7 @@ pub trait TelegramApi {
     fn set_game_score(
         &self,
         params: &SetGameScoreParams,
-    ) -> Result<EditMessageResponse, Self::Error> {
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         self.request("setGameScore", Some(params))
     }
 
