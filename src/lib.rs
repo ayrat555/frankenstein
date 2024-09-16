@@ -37,3 +37,14 @@ mod trait_sync;
 
 /// Default Bot API URL
 pub const BASE_API_URL: &str = "https://api.telegram.org/bot";
+
+macro_rules_attribute::attribute_alias! {
+    #[apply(builder!)] =
+        #[derive(::bon::Builder)]
+        #[builder(
+            on(String, into),
+            on(ChatId, into),
+            on(FileUpload, into),
+            on(Box<_>, into),
+        )];
+}
