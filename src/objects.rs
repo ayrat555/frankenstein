@@ -2,10 +2,10 @@
 
 #![allow(deprecated)]
 use crate::api_params::FileUpload;
-use crate::ParseMode;
-use serde::{Deserialize, Serialize};
 use crate::builder;
+use crate::ParseMode;
 use macro_rules_attribute::apply;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
