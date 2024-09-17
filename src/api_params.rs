@@ -1,5 +1,10 @@
 //! Parameters to Telegram API methods.
 
+use std::path::PathBuf;
+
+use macro_rules_attribute::apply;
+use serde::{Deserialize, Serialize};
+
 use crate::macros::builder;
 use crate::objects::{
     AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
@@ -19,10 +24,6 @@ use crate::objects::{
     WebAppInfo,
 };
 use crate::ParseMode;
-use macro_rules_attribute::apply;
-use serde::Deserialize;
-use serde::Serialize;
-use std::path::PathBuf;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]

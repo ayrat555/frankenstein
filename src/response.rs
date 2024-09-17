@@ -4,8 +4,9 @@
 
 #![allow(clippy::module_name_repetitions)]
 
-use crate::objects::{Message, ResponseParameters};
 use serde::{Deserialize, Serialize};
+
+use crate::objects::{Message, ResponseParameters};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MethodResponse<T> {

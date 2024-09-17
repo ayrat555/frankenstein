@@ -1,9 +1,6 @@
-use frankenstein::Api;
-use frankenstein::InlineKeyboardButton;
-use frankenstein::InlineKeyboardMarkup;
-use frankenstein::ReplyMarkup;
-use frankenstein::SendMessageParams;
-use frankenstein::TelegramApi;
+use frankenstein::api_params::{ReplyMarkup, SendMessageParams};
+use frankenstein::objects::{InlineKeyboardButton, InlineKeyboardMarkup};
+use frankenstein::{Api, TelegramApi};
 
 // replace with your token
 static TOKEN: &str = "TOKEN";

@@ -1,49 +1,19 @@
-use crate::api_params::AddStickerToSetParams;
-use crate::api_params::CreateNewStickerSetParams;
-use crate::api_params::EditMessageMediaParams;
-use crate::api_params::FileUpload;
-use crate::api_params::InputMedia;
-use crate::api_params::Media;
-use crate::api_params::SendAnimationParams;
-use crate::api_params::SendAudioParams;
-use crate::api_params::SendDocumentParams;
-use crate::api_params::SendMediaGroupParams;
-use crate::api_params::SendPhotoParams;
-use crate::api_params::SendStickerParams;
-use crate::api_params::SendVideoNoteParams;
-use crate::api_params::SendVideoParams;
-use crate::api_params::SendVoiceParams;
-use crate::api_params::SetChatPhotoParams;
-use crate::api_params::SetStickerSetThumbnailParams;
-use crate::api_params::UploadStickerFileParams;
-use crate::objects::BotCommand;
-use crate::objects::BotDescription;
-use crate::objects::BotName;
-use crate::objects::BotShortDescription;
-use crate::objects::BusinessConnection;
-use crate::objects::ChatAdministratorRights;
-use crate::objects::ChatFullInfo;
-use crate::objects::ChatInviteLink;
-use crate::objects::ChatMember;
-use crate::objects::File as FileObject;
-use crate::objects::ForumTopic;
-use crate::objects::GameHighScore;
-use crate::objects::InputSticker;
-use crate::objects::MenuButton;
-use crate::objects::Message;
-use crate::objects::MessageId;
-use crate::objects::Poll;
-use crate::objects::SentWebAppMessage;
-use crate::objects::StarTransactions;
-use crate::objects::Sticker;
-use crate::objects::StickerSet;
-use crate::objects::Update;
-use crate::objects::User;
-use crate::objects::UserChatBoosts;
-use crate::objects::UserProfilePhotos;
-use crate::objects::WebhookInfo;
-use crate::response::{MessageOrBool, MethodResponse};
 use std::path::PathBuf;
+
+use crate::api_params::{
+    AddStickerToSetParams, CreateNewStickerSetParams, EditMessageMediaParams, FileUpload,
+    InputMedia, Media, SendAnimationParams, SendAudioParams, SendDocumentParams,
+    SendMediaGroupParams, SendPhotoParams, SendStickerParams, SendVideoNoteParams, SendVideoParams,
+    SendVoiceParams, SetChatPhotoParams, SetStickerSetThumbnailParams, UploadStickerFileParams,
+};
+use crate::objects::{
+    BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
+    ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File as FileObject,
+    ForumTopic, GameHighScore, InputSticker, MenuButton, Message, MessageId, Poll,
+    SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User, UserChatBoosts,
+    UserProfilePhotos, WebhookInfo,
+};
+use crate::response::{MessageOrBool, MethodResponse};
 
 macro_rules! request {
     ($name:ident, $return:ty) => {

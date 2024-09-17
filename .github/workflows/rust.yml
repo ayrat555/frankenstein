@@ -1,7 +1,8 @@
-name: Test and Build Rust
+name: Rust
 
 on:
   push:
+    branches-ignore: ["dependabot/**"]
   pull_request:
   workflow_dispatch:
   schedule:
@@ -12,16 +13,13 @@ jobs:
   rustfmt:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@nightly
         with:
-          toolchain: stable
           components: rustfmt
       - uses: actions/checkout@v4
       - run: cargo fmt --check --verbose
 
   clippy:
-    name: Clippy ${{ matrix.toolchain }}
     runs-on: ubuntu-latest
     continue-on-error: ${{ (matrix.toolchain == 'beta') || (matrix.toolchain == 'nightly') }}
     strategy:
@@ -34,9 +32,8 @@ jobs:
     env:
       RUSTFLAGS: --deny warnings
     steps:
-      - name: Setup Rust
+      - uses: dtolnay/rust-toolchain@master
         id: rust
-        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
           components: clippy
@@ -50,7 +47,6 @@ jobs:
       - run: cargo doc --offline --all-features --no-deps
 
   features:
-    name: Features ${{ matrix.toolchain }} ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -65,16 +61,11 @@ jobs:
     env:
       RUSTFLAGS: --allow unknown-lints --deny warnings
     steps:
-      - name: Setup Rust
+      - uses: dtolnay/rust-toolchain@master
         id: rust
-        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
-
-      - name: Install cargo-hack
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-hack
+      - uses: taiki-e/install-action@cargo-hack
 
       - uses: actions/checkout@v4
       - run: cargo fetch
@@ -90,7 +81,6 @@ jobs:
         run: cargo hack --keep-going --feature-powerset --no-dev-deps check --offline
 
   test:
-    name: Test ${{ matrix.toolchain }} ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.toolchain == 'nightly' }}
     strategy:
@@ -105,9 +95,8 @@ jobs:
           - macos-latest
           - windows-latest
     steps:
-      - name: Setup Rust
+      - uses: dtolnay/rust-toolchain@master
         id: rust
-        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
       - uses: actions/checkout@v4
@@ -149,11 +138,9 @@ jobs:
     env:
       RUSTFLAGS: --deny warnings
     steps:
-      - name: Setup Rust
+      - uses: dtolnay/rust-toolchain@stable
         id: rust
-        uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
           targets: ${{ matrix.triple }}
 
       - name: Install cargo tools
@@ -169,5 +156,4 @@ jobs:
           key: release-${{ matrix.triple }}-${{ steps.rust.outputs.cachekey }}-${{ hashFiles('**/Cargo.*') }}
           path: target/
 
-      - name: Build
-        run: ${{ runner.os == 'Linux' && 'cross' || 'cargo' }} build --release --offline --all-features --target ${{ matrix.triple }}
+      - run: ${{ runner.os == 'Linux' && 'cross' || 'cargo' }} build --release --offline --all-features --target ${{ matrix.triple }}

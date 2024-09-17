@@ -1,11 +1,13 @@
 //! Objects returned or used with the Telegram API.
 
 #![allow(deprecated)]
+
+use macro_rules_attribute::apply;
+use serde::{Deserialize, Serialize};
+
 use crate::api_params::FileUpload;
 use crate::macros::builder;
 use crate::ParseMode;
-use macro_rules_attribute::apply;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]

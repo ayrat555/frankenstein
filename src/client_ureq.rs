@@ -1,11 +1,13 @@
-use crate::trait_sync::TelegramApi;
-use crate::Error;
+use std::path::PathBuf;
+use std::time::Duration;
+
 use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
-use std::path::PathBuf;
-use std::time::Duration;
 use ureq::Response;
+
+use crate::trait_sync::TelegramApi;
+use crate::Error;
 
 /// Synchronous [`TelegramApi`] client implementation with [`ureq`].
 #[derive(Debug, Clone, Builder)]
@@ -142,80 +144,29 @@ impl TelegramApi for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api_params::AnswerCallbackQueryParams;
-    use crate::api_params::AnswerInlineQueryParams;
-    use crate::api_params::BanChatMemberParams;
-    use crate::api_params::BotCommandScope;
-    use crate::api_params::BotCommandScopeChat;
-    use crate::api_params::ChatAction;
-    use crate::api_params::ChatId;
-    use crate::api_params::CopyMessageParams;
-    use crate::api_params::CreateChatInviteLinkParams;
-    use crate::api_params::DeleteChatPhotoParams;
-    use crate::api_params::DeleteChatStickerSetParams;
-    use crate::api_params::DeleteMessageParams;
-    use crate::api_params::DeleteMyCommandsParams;
-    use crate::api_params::DeleteWebhookParams;
-    use crate::api_params::EditChatInviteLinkParams;
-    use crate::api_params::EditMessageCaptionParams;
-    use crate::api_params::EditMessageLiveLocationParams;
-    use crate::api_params::EditMessageMediaParams;
-    use crate::api_params::EditMessageTextParams;
-    use crate::api_params::ExportChatInviteLinkParams;
-    use crate::api_params::FileUpload;
-    use crate::api_params::ForwardMessageParams;
-    use crate::api_params::GetChatAdministratorsParams;
-    use crate::api_params::GetChatMemberCountParams;
-    use crate::api_params::GetChatMemberParams;
-    use crate::api_params::GetChatParams;
-    use crate::api_params::GetFileParams;
-    use crate::api_params::GetMyCommandsParams;
-    use crate::api_params::GetStickerSetParams;
-    use crate::api_params::GetUpdatesParams;
-    use crate::api_params::GetUserProfilePhotosParams;
-    use crate::api_params::InlineQueryResult;
-    use crate::api_params::InputFile;
-    use crate::api_params::InputMedia;
-    use crate::api_params::InputMediaPhoto;
-    use crate::api_params::LeaveChatParams;
-    use crate::api_params::Media;
-    use crate::api_params::PinChatMessageParams;
-    use crate::api_params::PromoteChatMemberParams;
-    use crate::api_params::RestrictChatMemberParams;
-    use crate::api_params::RevokeChatInviteLinkParams;
-    use crate::api_params::SendAnimationParams;
-    use crate::api_params::SendAudioParams;
-    use crate::api_params::SendChatActionParams;
-    use crate::api_params::SendContactParams;
-    use crate::api_params::SendDiceParams;
-    use crate::api_params::SendDocumentParams;
-    use crate::api_params::SendLocationParams;
-    use crate::api_params::SendMediaGroupParams;
-    use crate::api_params::SendMessageParams;
-    use crate::api_params::SendPhotoParams;
-    use crate::api_params::SendPollParams;
-    use crate::api_params::SendStickerParams;
-    use crate::api_params::SendVenueParams;
-    use crate::api_params::SendVideoNoteParams;
-    use crate::api_params::SendVideoParams;
-    use crate::api_params::SendVoiceParams;
-    use crate::api_params::SetChatAdministratorCustomTitleParams;
-    use crate::api_params::SetChatDescriptionParams;
-    use crate::api_params::SetChatPermissionsParams;
-    use crate::api_params::SetChatPhotoParams;
-    use crate::api_params::SetChatStickerSetParams;
-    use crate::api_params::SetChatTitleParams;
-    use crate::api_params::SetMyCommandsParams;
-    use crate::api_params::SetWebhookParams;
-    use crate::api_params::StopMessageLiveLocationParams;
-    use crate::api_params::StopPollParams;
-    use crate::api_params::UnbanChatMemberParams;
-    use crate::api_params::UnpinChatMessageParams;
-    use crate::objects::AllowedUpdate;
-    use crate::objects::BotCommand;
-    use crate::objects::ChatPermissions;
-    use crate::objects::InlineQueryResultVenue;
-    use crate::objects::InputPollOption;
+    use crate::api_params::{
+        AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, BotCommandScope,
+        BotCommandScopeChat, ChatAction, ChatId, CopyMessageParams, CreateChatInviteLinkParams,
+        DeleteChatPhotoParams, DeleteChatStickerSetParams, DeleteMessageParams,
+        DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
+        EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
+        EditMessageTextParams, ExportChatInviteLinkParams, FileUpload, ForwardMessageParams,
+        GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetChatParams,
+        GetFileParams, GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams,
+        GetUserProfilePhotosParams, InlineQueryResult, InputFile, InputMedia, InputMediaPhoto,
+        LeaveChatParams, Media, PinChatMessageParams, PromoteChatMemberParams,
+        RestrictChatMemberParams, RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams,
+        SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams,
+        SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams,
+        SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams,
+        SendVoiceParams, SetChatAdministratorCustomTitleParams, SetChatDescriptionParams,
+        SetChatPermissionsParams, SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams,
+        SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
+        UnbanChatMemberParams, UnpinChatMessageParams,
+    };
+    use crate::objects::{
+        AllowedUpdate, BotCommand, ChatPermissions, InlineQueryResultVenue, InputPollOption,
+    };
 
     #[test]
     fn new_sets_correct_url() {
