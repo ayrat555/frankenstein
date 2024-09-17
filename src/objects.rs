@@ -405,7 +405,6 @@ pub struct User {
 #[derive(Eq)]
 pub struct Chat {
     pub id: i64,
-
     #[serde(rename = "type")]
     pub type_field: ChatType,
     pub title: Option<String>,
@@ -418,7 +417,6 @@ pub struct Chat {
 #[apply(apistruct!)]
 pub struct ChatFullInfo {
     pub id: i64,
-
     #[serde(rename = "type")]
     pub type_field: ChatType,
     pub title: Option<String>,
@@ -796,7 +794,6 @@ pub struct Poll {
     pub total_voter_count: u32,
     pub is_closed: bool,
     pub is_anonymous: bool,
-
     #[serde(rename = "type")]
     pub type_field: PollType,
     pub allows_multiple_answers: bool,
@@ -1306,7 +1303,6 @@ pub struct ResponseParameters {
 pub struct Sticker {
     pub file_id: String,
     pub file_unique_id: String,
-
     #[serde(rename = "type")]
     pub sticker_type: StickerType,
     pub width: u32,
@@ -1343,10 +1339,8 @@ pub struct Story {
 pub struct StickerSet {
     pub name: String,
     pub title: String,
-
     #[serde(rename = "sticker_type")]
     pub sticker_type: StickerType,
-
     #[doc(hidden)]
     #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
     pub contains_masks: bool,

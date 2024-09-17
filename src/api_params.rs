@@ -582,7 +582,6 @@ pub struct SendPollParams {
     pub question_entities: Option<Vec<MessageEntity>>,
     pub options: Vec<InputPollOption>,
     pub is_anonymous: Option<bool>,
-
     #[serde(rename = "type")]
     pub type_field: Option<PollType>,
     pub allows_multiple_answers: Option<bool>,
