@@ -180,7 +180,7 @@ pub enum ChatAction {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type", rename_all = "lowercase")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum Media {
     Audio(InputMediaAudio),
     Document(InputMediaDocument),

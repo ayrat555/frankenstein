@@ -18,7 +18,7 @@ pub enum StickerType {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum StickerFormat {
     Static,
     Animated,
@@ -36,7 +36,7 @@ pub enum InputMessageContent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "status", rename_all = "lowercase")]
+#[serde(tag = "status", rename_all = "snake_case")]
 pub enum ChatMember {
     Creator(ChatMemberOwner),
     Administrator(ChatMemberAdministrator),
@@ -47,7 +47,7 @@ pub enum ChatMember {
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum ChatType {
     Private,
     Group,
@@ -82,7 +82,7 @@ pub enum MessageEntityType {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum PollType {
     Regular,
     Quiz,
