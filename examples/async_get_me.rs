@@ -1,5 +1,4 @@
-use frankenstein::AsyncApi;
-use frankenstein::AsyncTelegramApi;
+use frankenstein::{AsyncApi, AsyncTelegramApi};
 
 static TOKEN: &str = "API_TOKEN";
 

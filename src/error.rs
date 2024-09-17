@@ -1,5 +1,6 @@
-use crate::response::ErrorResponse;
 use serde::{Deserialize, Serialize};
+
+use crate::response::ErrorResponse;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]
 #[non_exhaustive]

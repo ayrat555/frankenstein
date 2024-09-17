@@ -1,5 +1,10 @@
 //! Parameters to Telegram API methods.
 
+use std::path::PathBuf;
+
+use bon::Builder;
+use serde::{Deserialize, Serialize};
+
 use crate::objects::{
     AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
     InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
@@ -18,10 +23,6 @@ use crate::objects::{
     WebAppInfo,
 };
 use crate::ParseMode;
-use bon::Builder;
-use serde::Deserialize;
-use serde::Serialize;
-use std::path::PathBuf;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]

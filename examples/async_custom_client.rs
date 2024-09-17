@@ -1,6 +1,6 @@
-use frankenstein::AsyncApi;
-use frankenstein::AsyncTelegramApi;
 use std::time::Duration;
+
+use frankenstein::{AsyncApi, AsyncTelegramApi};
 
 static TOKEN: &str = "API_TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";

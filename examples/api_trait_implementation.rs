@@ -1,8 +1,10 @@
-use frankenstein::ErrorResponse;
-use frankenstein::SendMessageParams;
-use frankenstein::TelegramApi;
-use isahc::{prelude::*, Request};
 use std::path::PathBuf;
+
+use frankenstein::api_params::SendMessageParams;
+use frankenstein::response::ErrorResponse;
+use frankenstein::TelegramApi;
+use isahc::prelude::*;
+use isahc::Request;
 
 static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";

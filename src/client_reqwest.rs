@@ -1,12 +1,14 @@
-use crate::trait_async::AsyncTelegramApi;
-use crate::Error;
+use std::path::PathBuf;
+use std::time::Duration;
+
 use async_trait::async_trait;
 use bon::Builder;
 use reqwest::multipart;
 use serde_json::Value;
-use std::path::PathBuf;
-use std::time::Duration;
 use tokio::fs::File;
+
+use crate::trait_async::AsyncTelegramApi;
+use crate::Error;
 
 /// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
 #[derive(Debug, Clone, Builder)]
