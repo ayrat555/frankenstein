@@ -1,7 +1,5 @@
 use std::path::PathBuf;
 
-use async_trait::async_trait;
-
 use crate::api_params::{
     AddStickerToSetParams, CreateNewStickerSetParams, EditMessageMediaParams, FileUpload,
     InputMedia, Media, SendAnimationParams, SendAudioParams, SendDocumentParams,
@@ -50,7 +48,7 @@ macro_rules! request_nb {
     }
 }
 
-#[async_trait]
+#[async_trait::async_trait]
 pub trait AsyncTelegramApi
 where
     Self: Sync,
