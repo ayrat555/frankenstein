@@ -15,10 +15,10 @@ all-features = true
 
 [features]
 default = ["http-client"]
-http-client = ["ureq", "multipart", "mime_guess", "telegram-trait", "serde_json"]
+http-client = ["telegram-trait", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
 telegram-trait = []
-async-http-client = ["reqwest", "tokio", "async-telegram-trait", "serde_json"]
-async-telegram-trait = ["async-trait"]
+async-http-client = ["async-telegram-trait", "dep:reqwest", "dep:tokio", "dep:serde_json"]
+async-telegram-trait = ["dep:async-trait"]
 
 [lints.rust]
 unsafe_code = "forbid"
@@ -75,8 +75,9 @@ name = "api_trait_implementation"
 required-features = ["telegram-trait"]
 
 [dependencies]
-thiserror = "1"
 bon = "2.2.0"
+macro_rules_attribute = "0.2"
+thiserror = "1"
 
 [dependencies.async-trait]
 version = "0.1"
