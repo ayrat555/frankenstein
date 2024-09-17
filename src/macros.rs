@@ -1,10 +1,9 @@
 macro_rules_attribute::attribute_alias! {
-    // Shared configuration for all builder derives. Make sure to add them to
-    // all API types.
-    //
-    // We enable `into` for specific types to reduce boilerplate for the callers.
-    #[apply(builder!)] =
-        #[derive(::bon::Builder)]
+    // Enable [`bon::builder`] `into` for specific types to reduce boilerplate for the callers.
+    // Keep [`PartialEq`] and [`Clone`] out of it as [`Copy`] / [`Eq`] might also exist.
+    #[apply(serdebuilder!)] =
+        #[::serde_with::skip_serializing_none]
+        #[derive(::bon::Builder, ::serde::Serialize, ::serde::Deserialize)]
         #[builder(
             on(String, into),
             on(ChatId, into),
