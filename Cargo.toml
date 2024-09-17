@@ -76,7 +76,8 @@ required-features = ["telegram-trait"]
 
 [dependencies]
 bon = "2.2.0"
-macro_rules_attribute = "0.2"
+macro_rules_attribute = "0.2.0"
+paste = "1.0.2"
 thiserror = "1"
 
 [dependencies.async-trait]
