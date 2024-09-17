@@ -192,14 +192,14 @@ pub enum BackgroundFill {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MenuButtonWebApp {
     pub text: String,
     pub web_app: WebAppInfo,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberOwner {
     pub user: User,
     pub custom_title: Option<String>,
@@ -207,7 +207,7 @@ pub struct ChatMemberOwner {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberAdministrator {
     pub user: User,
     pub can_be_edited: bool,
@@ -230,14 +230,14 @@ pub struct ChatMemberAdministrator {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberMember {
     pub user: User,
     pub until_date: Option<u64>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberRestricted {
     pub user: User,
     pub is_member: bool,
@@ -259,46 +259,46 @@ pub struct ChatMemberRestricted {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberLeft {
     pub user: User,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberBanned {
     pub user: User,
     pub until_date: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct VideoChatStarted {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct VideoChatScheduled {
     pub start_date: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct CallbackGame {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotDescription {
     pub description: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotName {
     pub name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotShortDescription {
     pub short_description: String,
 }
@@ -306,7 +306,6 @@ pub struct BotShortDescription {
 /// Represents an incoming update from telegram.
 /// [Official documentation.](https://core.telegram.org/bots/api#update)
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct Update {
     pub update_id: u32,
 
@@ -345,7 +344,7 @@ pub enum UpdateContent {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct WebhookInfo {
     pub url: String,
     pub has_custom_certificate: bool,
@@ -386,7 +385,7 @@ pub enum AllowedUpdate {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct User {
     pub id: u64,
     pub is_bot: bool,
@@ -404,7 +403,7 @@ pub struct User {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Chat {
     pub id: i64,
 
@@ -418,7 +417,6 @@ pub struct Chat {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct ChatFullInfo {
     pub id: i64,
 
@@ -469,7 +467,6 @@ pub struct ChatFullInfo {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct Message {
     pub message_id: i32,
     pub message_thread_id: Option<i32>,
@@ -559,13 +556,13 @@ pub struct Message {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct MessageId {
     pub message_id: i32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageEntity {
     #[serde(rename = "type")]
     pub type_field: MessageEntityType,
@@ -578,7 +575,7 @@ pub struct MessageEntity {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct TextQuote {
     pub text: String,
     pub entities: Option<Vec<MessageEntity>>,
@@ -587,7 +584,6 @@ pub struct TextQuote {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq)]
 pub struct ExternalReplyInfo {
     pub origin: Option<MessageOrigin>,
     pub chat: Option<Chat>,
@@ -625,21 +621,21 @@ pub enum MessageOrigin {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageOriginUser {
     pub date: u64,
     pub sender_user: User,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageOriginHiddenUser {
     pub date: u64,
     pub sender_user_name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageOriginChat {
     pub date: u64,
     pub sender_chat: Chat,
@@ -647,7 +643,7 @@ pub struct MessageOriginChat {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageOriginChannel {
     pub date: u64,
     pub chat: Chat,
@@ -656,7 +652,7 @@ pub struct MessageOriginChannel {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct LinkPreviewOptions {
     pub is_disabled: Option<bool>,
     pub url: Option<String>,
@@ -666,7 +662,7 @@ pub struct LinkPreviewOptions {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PhotoSize {
     pub file_id: String,
     pub file_unique_id: String,
@@ -676,7 +672,7 @@ pub struct PhotoSize {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Animation {
     pub file_id: String,
     pub file_unique_id: String,
@@ -690,7 +686,7 @@ pub struct Animation {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Audio {
     pub file_id: String,
     pub file_unique_id: String,
@@ -704,7 +700,7 @@ pub struct Audio {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Document {
     pub file_id: String,
     pub file_unique_id: String,
@@ -715,7 +711,7 @@ pub struct Document {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Video {
     pub file_id: String,
     pub file_unique_id: String,
@@ -729,7 +725,7 @@ pub struct Video {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct VideoNote {
     pub file_id: String,
     pub file_unique_id: String,
@@ -740,7 +736,7 @@ pub struct VideoNote {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Voice {
     pub file_id: String,
     pub file_unique_id: String,
@@ -750,7 +746,7 @@ pub struct Voice {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Contact {
     pub phone_number: String,
     pub first_name: String,
@@ -760,14 +756,14 @@ pub struct Contact {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Dice {
     pub emoji: String,
     pub value: u8,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PollOption {
     pub text: String,
     pub text_entities: Option<Vec<MessageEntity>>,
@@ -775,7 +771,7 @@ pub struct PollOption {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputPollOption {
     pub text: Option<String>,
     pub text_parse_mode: Option<ParseMode>,
@@ -783,7 +779,7 @@ pub struct InputPollOption {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PollAnswer {
     pub poll_id: String,
     pub voter_chat: Option<Chat>,
@@ -792,7 +788,7 @@ pub struct PollAnswer {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Poll {
     pub id: String,
     pub question: String,
@@ -813,7 +809,7 @@ pub struct Poll {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Copy)]
 pub struct Location {
     pub longitude: f64,
     pub latitude: f64,
@@ -824,7 +820,6 @@ pub struct Location {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct Venue {
     pub location: Location,
     pub title: String,
@@ -836,7 +831,7 @@ pub struct Venue {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ProximityAlertTriggered {
     pub traveler: User,
     pub watcher: User,
@@ -844,25 +839,25 @@ pub struct ProximityAlertTriggered {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct MessageAutoDeleteTimerChanged {
     pub message_auto_delete_time: u32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct ChatBoostAdded {
     pub boost_count: u32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct BackgroundFillSolid {
     pub color: u32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct BackgroundFillGradient {
     pub top_color: u32,
     pub bottom_color: u32,
@@ -870,20 +865,20 @@ pub struct BackgroundFillGradient {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BackgroundFillFreeformGradient {
     pub colors: Vec<u32>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BackgroundTypeFill {
     pub fill: BackgroundFill,
     pub dark_theme_dimming: u8,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BackgroundTypeWallpaper {
     pub document: Document,
     pub dark_theme_dimming: u8,
@@ -892,7 +887,7 @@ pub struct BackgroundTypeWallpaper {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BackgroundTypePattern {
     pub document: Document,
     pub fill: BackgroundFill,
@@ -902,13 +897,13 @@ pub struct BackgroundTypePattern {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BackgroundTypeChatTheme {
     pub theme_name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForumTopicCreated {
     pub name: String,
     pub icon_color: u32,
@@ -916,30 +911,30 @@ pub struct ForumTopicCreated {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForumTopicClosed {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForumTopicEdited {
     pub name: Option<String>,
     pub icon_custom_emoji_id: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForumTopicReopened {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GeneralForumTopicHidden {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GeneralForumTopicUnhidden {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SharedUser {
     pub user_id: u64,
     pub first_name: Option<String>,
@@ -949,14 +944,14 @@ pub struct SharedUser {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UsersShared {
     pub request_id: i32,
     pub users: Vec<SharedUser>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatShared {
     pub request_id: i32,
     pub chat_id: i64,
@@ -966,7 +961,7 @@ pub struct ChatShared {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct WriteAccessAllowed {
     pub from_request: Option<bool>,
     pub web_app_name: Option<String>,
@@ -974,26 +969,26 @@ pub struct WriteAccessAllowed {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct VideoChatEnded {
     pub duration: u32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct VideoChatParticipantsInvited {
     pub users: Option<Vec<User>>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UserProfilePhotos {
     pub total_count: u32,
     pub photos: Vec<Vec<PhotoSize>>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct File {
     pub file_id: String,
     pub file_unique_id: String,
@@ -1002,7 +997,7 @@ pub struct File {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReplyKeyboardMarkup {
     pub keyboard: Vec<Vec<KeyboardButton>>,
     pub is_persistent: Option<bool>,
@@ -1013,7 +1008,7 @@ pub struct ReplyKeyboardMarkup {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct KeyboardButton {
     pub text: String,
     pub request_users: Option<KeyboardButtonRequestUsers>,
@@ -1025,7 +1020,7 @@ pub struct KeyboardButton {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct KeyboardButtonRequestUsers {
     pub request_id: i32,
     pub user_is_bot: Option<bool>,
@@ -1037,7 +1032,7 @@ pub struct KeyboardButtonRequestUsers {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct KeyboardButtonRequestChat {
     pub request_id: i32,
     pub chat_is_channel: bool,
@@ -1053,27 +1048,27 @@ pub struct KeyboardButtonRequestChat {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct KeyboardButtonPollType {
     #[serde(rename = "type")]
     pub type_field: Option<PollType>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct ReplyKeyboardRemove {
     pub remove_keyboard: bool,
     pub selective: Option<bool>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InlineKeyboardMarkup {
     pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InlineKeyboardButton {
     pub text: String,
     pub url: Option<String>,
@@ -1088,7 +1083,7 @@ pub struct InlineKeyboardButton {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct LoginUrl {
     pub url: String,
     pub forward_text: Option<String>,
@@ -1097,7 +1092,7 @@ pub struct LoginUrl {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SwitchInlineQueryChosenChat {
     pub query: Option<String>,
     pub allow_user_chats: Option<bool>,
@@ -1107,7 +1102,6 @@ pub struct SwitchInlineQueryChosenChat {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct CallbackQuery {
     pub id: String,
     pub from: User,
@@ -1119,7 +1113,7 @@ pub struct CallbackQuery {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForceReply {
     pub force_reply: bool,
     pub input_field_placeholder: Option<String>,
@@ -1127,7 +1121,7 @@ pub struct ForceReply {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatPhoto {
     pub small_file_id: String,
     pub small_file_unique_id: String,
@@ -1136,7 +1130,7 @@ pub struct ChatPhoto {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatInviteLink {
     pub invite_link: String,
     pub creator: User,
@@ -1150,7 +1144,7 @@ pub struct ChatInviteLink {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatMemberUpdated {
     pub chat: Chat,
     pub from: User,
@@ -1163,7 +1157,7 @@ pub struct ChatMemberUpdated {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatJoinRequest {
     pub chat: Chat,
     pub from: User,
@@ -1174,7 +1168,7 @@ pub struct ChatJoinRequest {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct ChatPermissions {
     pub can_send_messages: Option<bool>,
     pub can_send_audios: Option<bool>,
@@ -1193,7 +1187,7 @@ pub struct ChatPermissions {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Birthdate {
     pub day: u8,
     pub month: u8,
@@ -1201,7 +1195,6 @@ pub struct Birthdate {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct BusinessIntro {
     pub title: Option<String>,
     pub message: Option<String>,
@@ -1209,28 +1202,26 @@ pub struct BusinessIntro {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct BusinessLocation {
     pub address: String,
     pub location: Option<Location>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BusinessOpeningHoursInterval {
     pub opening_minute: u16,
     pub closing_minute: u16,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BusinessOpeningHours {
     pub time_zone_name: String,
     pub opening_hours: Vec<BusinessOpeningHoursInterval>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct ChatLocation {
     pub location: Location,
     pub address: String,
@@ -1245,23 +1236,23 @@ pub enum ReactionType {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReactionTypeEmoji {
     pub emoji: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReactionTypeCustomEmoji {
     pub custom_emoji_id: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReactionTypePaid {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReactionCount {
     #[serde(rename = "type")]
     pub type_field: ReactionType,
@@ -1269,7 +1260,7 @@ pub struct ReactionCount {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageReactionUpdated {
     pub chat: Chat,
     pub message_id: i32,
@@ -1281,7 +1272,7 @@ pub struct MessageReactionUpdated {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct MessageReactionCountUpdated {
     pub chat: Chat,
     pub message_id: i32,
@@ -1290,7 +1281,7 @@ pub struct MessageReactionCountUpdated {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Eq)]
 pub struct ForumTopic {
     pub message_thread_id: i32,
     pub name: String,
@@ -1299,21 +1290,20 @@ pub struct ForumTopic {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotCommand {
     pub command: String,
     pub description: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct ResponseParameters {
     pub migrate_to_chat_id: Option<i64>,
     pub retry_after: Option<u16>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct Sticker {
     pub file_id: String,
     pub file_unique_id: String,
@@ -1335,7 +1325,6 @@ pub struct Sticker {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InputSticker {
     pub sticker: FileUpload,
     pub format: StickerFormat,
@@ -1345,14 +1334,13 @@ pub struct InputSticker {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Story {
     pub chat: Chat,
     pub id: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct StickerSet {
     pub name: String,
     pub title: String,
@@ -1368,7 +1356,6 @@ pub struct StickerSet {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct MaskPosition {
     pub point: String,
     pub x_shift: f64,
@@ -1377,7 +1364,6 @@ pub struct MaskPosition {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQuery {
     pub id: String,
     pub from: User,
@@ -1388,7 +1374,6 @@ pub struct InlineQuery {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultArticle {
     pub id: String,
     pub title: String,
@@ -1403,7 +1388,6 @@ pub struct InlineQueryResultArticle {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultPhoto {
     pub id: String,
     pub photo_url: String,
@@ -1421,7 +1405,6 @@ pub struct InlineQueryResultPhoto {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultGif {
     pub id: String,
     pub gif_url: String,
@@ -1440,7 +1423,6 @@ pub struct InlineQueryResultGif {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultMpeg4Gif {
     pub id: String,
     pub mpeg4_url: String,
@@ -1459,7 +1441,6 @@ pub struct InlineQueryResultMpeg4Gif {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultVideo {
     pub id: String,
     pub video_url: String,
@@ -1479,7 +1460,6 @@ pub struct InlineQueryResultVideo {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultAudio {
     pub id: String,
     pub audio_url: String,
@@ -1494,7 +1474,6 @@ pub struct InlineQueryResultAudio {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultVoice {
     pub id: String,
     pub voice_url: String,
@@ -1508,7 +1487,6 @@ pub struct InlineQueryResultVoice {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultDocument {
     pub id: String,
     pub title: String,
@@ -1526,7 +1504,6 @@ pub struct InlineQueryResultDocument {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultLocation {
     pub id: String,
     pub latitude: f64,
@@ -1544,7 +1521,6 @@ pub struct InlineQueryResultLocation {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultVenue {
     pub id: String,
     pub latitude: f64,
@@ -1563,7 +1539,6 @@ pub struct InlineQueryResultVenue {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultContact {
     pub id: String,
     pub phone_number: String,
@@ -1578,7 +1553,7 @@ pub struct InlineQueryResultContact {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InlineQueryResultGame {
     pub id: String,
     pub game_short_name: String,
@@ -1586,7 +1561,6 @@ pub struct InlineQueryResultGame {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedPhoto {
     pub id: String,
     pub photo_file_id: String,
@@ -1601,7 +1575,6 @@ pub struct InlineQueryResultCachedPhoto {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedGif {
     pub id: String,
     pub gif_file_id: String,
@@ -1615,7 +1588,6 @@ pub struct InlineQueryResultCachedGif {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedMpeg4Gif {
     pub id: String,
     pub mpeg4_file_id: String,
@@ -1629,7 +1601,6 @@ pub struct InlineQueryResultCachedMpeg4Gif {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedSticker {
     pub id: String,
     pub sticker_file_id: String,
@@ -1638,7 +1609,6 @@ pub struct InlineQueryResultCachedSticker {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedDocument {
     pub id: String,
     pub title: String,
@@ -1652,7 +1622,6 @@ pub struct InlineQueryResultCachedDocument {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedVideo {
     pub id: String,
     pub video_file_id: String,
@@ -1667,7 +1636,6 @@ pub struct InlineQueryResultCachedVideo {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedVoice {
     pub id: String,
     pub voice_file_id: String,
@@ -1680,7 +1648,6 @@ pub struct InlineQueryResultCachedVoice {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InlineQueryResultCachedAudio {
     pub id: String,
     pub audio_file_id: String,
@@ -1692,7 +1659,7 @@ pub struct InlineQueryResultCachedAudio {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputTextMessageContent {
     pub message_text: String,
     pub parse_mode: Option<ParseMode>,
@@ -1701,7 +1668,7 @@ pub struct InputTextMessageContent {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Copy)]
 pub struct InputLocationMessageContent {
     pub latitude: f64,
     pub longitude: f64,
@@ -1712,7 +1679,7 @@ pub struct InputLocationMessageContent {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputInvoiceMessageContent {
     pub title: String,
     pub description: String,
@@ -1737,7 +1704,6 @@ pub struct InputInvoiceMessageContent {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct InputVenueMessageContent {
     pub latitude: f64,
     pub longitude: f64,
@@ -1750,7 +1716,7 @@ pub struct InputVenueMessageContent {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputContactMessageContent {
     pub phone_number: String,
     pub first_name: String,
@@ -1759,7 +1725,6 @@ pub struct InputContactMessageContent {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct ChosenInlineResult {
     pub result_id: String,
     pub from: User,
@@ -1769,14 +1734,14 @@ pub struct ChosenInlineResult {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct LabeledPrice {
     pub label: String,
     pub amount: u32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Invoice {
     pub title: String,
     pub description: String,
@@ -1786,7 +1751,7 @@ pub struct Invoice {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PaidMediaInfo {
     pub star_count: u32,
     pub paid_media: Vec<PaidMedia>,
@@ -1801,7 +1766,7 @@ pub enum PaidMedia {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PaidMediaPreview {
     pub width: Option<u32>,
     pub height: Option<u32>,
@@ -1809,13 +1774,13 @@ pub struct PaidMediaPreview {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PaidMediaPhoto {
     pub photo: Vec<PhotoSize>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PaidMediaVideo {
     pub video: Video,
 }
@@ -1828,13 +1793,13 @@ pub enum InputPaidMedia {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputPaidMediaPhoto {
     pub media: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputPaidMediaVideo {
     pub media: String,
     pub thumbnail: String,
@@ -1845,7 +1810,7 @@ pub struct InputPaidMediaVideo {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ShippingAddress {
     pub country_code: String,
     pub state: String,
@@ -1856,7 +1821,7 @@ pub struct ShippingAddress {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct OrderInfo {
     pub name: Option<String>,
     pub phone_number: Option<String>,
@@ -1865,7 +1830,7 @@ pub struct OrderInfo {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ShippingOption {
     pub id: String,
     pub title: String,
@@ -1873,7 +1838,7 @@ pub struct ShippingOption {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SuccessfulPayment {
     pub currency: String,
     pub total_amount: u32,
@@ -1885,7 +1850,7 @@ pub struct SuccessfulPayment {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RefundedPayment {
     pub currency: String,
     pub total_amount: u32,
@@ -1895,7 +1860,7 @@ pub struct RefundedPayment {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ShippingQuery {
     pub id: String,
     pub from: User,
@@ -1904,7 +1869,7 @@ pub struct ShippingQuery {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PreCheckoutQuery {
     pub id: String,
     pub from: User,
@@ -1916,21 +1881,21 @@ pub struct PreCheckoutQuery {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PaidMediaPurchased {
     pub from: User,
     pub paid_media_payload: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportData {
     pub data: Vec<EncryptedPassportElement>,
     pub credentials: EncryptedCredentials,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportFile {
     pub file_id: String,
     pub file_unique_id: String,
@@ -1939,7 +1904,7 @@ pub struct PassportFile {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EncryptedPassportElement {
     #[serde(rename = "type")]
     pub type_field: EncryptedPassportElementType,
@@ -1955,7 +1920,7 @@ pub struct EncryptedPassportElement {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EncryptedCredentials {
     pub data: String,
     pub hash: String,
@@ -1963,7 +1928,7 @@ pub struct EncryptedCredentials {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorDataField {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorDataFieldType,
@@ -1973,7 +1938,7 @@ pub struct PassportElementErrorDataField {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorFrontSide {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorFrontSideType,
@@ -1982,7 +1947,7 @@ pub struct PassportElementErrorFrontSide {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorReverseSide {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorReverseSideType,
@@ -1991,7 +1956,7 @@ pub struct PassportElementErrorReverseSide {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorSelfie {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorSelfieType,
@@ -2000,7 +1965,7 @@ pub struct PassportElementErrorSelfie {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorFile {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorFileType,
@@ -2009,7 +1974,7 @@ pub struct PassportElementErrorFile {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorFiles {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorFileType,
@@ -2018,7 +1983,7 @@ pub struct PassportElementErrorFiles {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorTranslationFile {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorTranslationFileType,
@@ -2027,7 +1992,7 @@ pub struct PassportElementErrorTranslationFile {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorTranslationFiles {
     #[serde(rename = "type")]
     pub type_field: PassportElementErrorTranslationFileType,
@@ -2036,7 +2001,7 @@ pub struct PassportElementErrorTranslationFiles {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PassportElementErrorUnspecified {
     #[serde(rename = "type")]
     pub type_field: EncryptedPassportElementType,
@@ -2045,7 +2010,7 @@ pub struct PassportElementErrorUnspecified {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Game {
     pub title: String,
     pub description: String,
@@ -2056,7 +2021,7 @@ pub struct Game {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GameHighScore {
     pub position: u32,
     pub user: User,
@@ -2064,13 +2029,13 @@ pub struct GameHighScore {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GiveawayCreated {
     pub prize_star_count: Option<u32>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct Giveaway {
     pub chats: Vec<Chat>,
     pub winners_selection_date: u64,
@@ -2084,7 +2049,7 @@ pub struct Giveaway {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GiveawayWinners {
     pub chat: Chat,
     pub giveaway_message_id: i32,
@@ -2101,7 +2066,6 @@ pub struct GiveawayWinners {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct GiveawayCompleted {
     pub winner_count: u32,
     pub unclaimed_prize_count: Option<u32>,
@@ -2110,7 +2074,7 @@ pub struct GiveawayCompleted {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct ChatAdministratorRights {
     pub is_anonymous: bool,
     pub can_manage_chat: bool,
@@ -2130,19 +2094,19 @@ pub struct ChatAdministratorRights {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct WebAppInfo {
     pub url: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SentWebAppMessage {
     pub inline_message_id: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct WebAppData {
     pub data: String,
     pub button_text: String,
@@ -2157,19 +2121,19 @@ pub enum ChatBoostSource {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatBoostSourcePremium {
     pub user: User,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatBoostSourceGiftCode {
     pub user: User,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatBoostSourceGiveaway {
     pub giveaway_message_id: i32,
     pub user: Option<User>,
@@ -2178,7 +2142,7 @@ pub struct ChatBoostSourceGiveaway {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatBoost {
     pub boost_id: String,
     pub add_date: u64,
@@ -2187,14 +2151,14 @@ pub struct ChatBoost {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatBoostUpdated {
     pub chat: Chat,
     pub boost: ChatBoost,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ChatBoostRemoved {
     pub chat: Chat,
     pub boost_id: String,
@@ -2203,13 +2167,13 @@ pub struct ChatBoostRemoved {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UserChatBoosts {
     pub boosts: Vec<ChatBoost>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BusinessConnection {
     pub id: String,
     pub user: User,
@@ -2220,7 +2184,7 @@ pub struct BusinessConnection {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BusinessMessagesDeleted {
     pub business_connection_id: String,
     pub chat: Chat,
@@ -2235,7 +2199,7 @@ pub enum MaybeInaccessibleMessage {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InaccessibleMessage {
     pub chat: Chat,
     pub message_id: i32,
@@ -2251,18 +2215,18 @@ pub enum RevenueWithdrawalState {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RevenueWithdrawalStatePending {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RevenueWithdrawalStateSucceeded {
     pub date: u64,
     pub url: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -2275,7 +2239,7 @@ pub enum TransactionPartner {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct TransactionPartnerUser {
     pub user: User,
     pub invoice_payload: Option<String>,
@@ -2283,21 +2247,21 @@ pub struct TransactionPartnerUser {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct TransactionPartnerFragment {
     pub withdrawal_state: Option<RevenueWithdrawalState>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct TransactionPartnerTelegramAds {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct TransactionPartnerOther {}
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct StarTransaction {
     pub id: String,
     pub amount: u32,
@@ -2307,7 +2271,7 @@ pub struct StarTransaction {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
 }

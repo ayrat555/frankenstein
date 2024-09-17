@@ -201,32 +201,32 @@ pub enum BotCommandScope {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotCommandScopeChat {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotCommandScopeChatAdministrators {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BotCommandScopeChatMember {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputFile {
     pub path: PathBuf,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetUpdatesParams {
     pub offset: Option<i64>,
     pub limit: Option<u32>,
@@ -235,7 +235,7 @@ pub struct GetUpdatesParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetWebhookParams {
     pub url: String,
     pub certificate: Option<InputFile>,
@@ -247,13 +247,13 @@ pub struct SetWebhookParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct DeleteWebhookParams {
     pub drop_pending_updates: Option<bool>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendMessageParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -270,7 +270,7 @@ pub struct SendMessageParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForwardMessageParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -281,7 +281,7 @@ pub struct ForwardMessageParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ForwardMessagesParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -292,7 +292,7 @@ pub struct ForwardMessagesParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CopyMessageParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -309,7 +309,7 @@ pub struct CopyMessageParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CopyMessagesParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -321,7 +321,7 @@ pub struct CopyMessagesParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendPhotoParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -340,7 +340,7 @@ pub struct SendPhotoParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendAudioParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -361,7 +361,7 @@ pub struct SendAudioParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendDocumentParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -380,7 +380,7 @@ pub struct SendDocumentParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendVideoParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -404,7 +404,7 @@ pub struct SendVideoParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendAnimationParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -427,7 +427,7 @@ pub struct SendAnimationParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendVoiceParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -445,7 +445,7 @@ pub struct SendVoiceParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendVideoNoteParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -462,7 +462,7 @@ pub struct SendVideoNoteParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendPaidMediaParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -480,7 +480,7 @@ pub struct SendPaidMediaParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendMediaGroupParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -493,7 +493,6 @@ pub struct SendMediaGroupParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct SendLocationParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -512,7 +511,6 @@ pub struct SendLocationParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct EditMessageLiveLocationParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -528,7 +526,7 @@ pub struct EditMessageLiveLocationParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct StopMessageLiveLocationParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -538,7 +536,6 @@ pub struct StopMessageLiveLocationParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct SendVenueParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -559,7 +556,7 @@ pub struct SendVenueParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendContactParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -576,7 +573,7 @@ pub struct SendContactParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendPollParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -605,7 +602,7 @@ pub struct SendPollParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendDiceParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -619,7 +616,7 @@ pub struct SendDiceParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendChatActionParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -628,7 +625,7 @@ pub struct SendChatActionParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetMessageReactionParams {
     pub chat_id: ChatId,
     pub message_id: i32,
@@ -637,7 +634,7 @@ pub struct SetMessageReactionParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Copy, Eq)]
 pub struct GetUserProfilePhotosParams {
     pub user_id: u64,
     pub offset: Option<u32>,
@@ -645,13 +642,13 @@ pub struct GetUserProfilePhotosParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetFileParams {
     pub file_id: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BanChatMemberParams {
     pub chat_id: ChatId,
     pub user_id: u64,
@@ -660,7 +657,7 @@ pub struct BanChatMemberParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnbanChatMemberParams {
     pub chat_id: ChatId,
     pub user_id: u64,
@@ -668,7 +665,7 @@ pub struct UnbanChatMemberParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RestrictChatMemberParams {
     pub chat_id: ChatId,
     pub user_id: u64,
@@ -678,7 +675,7 @@ pub struct RestrictChatMemberParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PromoteChatMemberParams {
     pub chat_id: ChatId,
     pub user_id: u64,
@@ -700,7 +697,7 @@ pub struct PromoteChatMemberParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatAdministratorCustomTitleParams {
     pub chat_id: ChatId,
     pub user_id: u64,
@@ -708,21 +705,21 @@ pub struct SetChatAdministratorCustomTitleParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct BanChatSenderChatParams {
     pub chat_id: ChatId,
     pub sender_chat_id: i64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnbanChatSenderChatParams {
     pub chat_id: ChatId,
     pub sender_chat_id: i64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatPermissionsParams {
     pub chat_id: ChatId,
     pub permissions: ChatPermissions,
@@ -730,13 +727,13 @@ pub struct SetChatPermissionsParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ExportChatInviteLinkParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CreateChatInviteLinkParams {
     pub chat_id: ChatId,
     pub name: Option<String>,
@@ -746,7 +743,7 @@ pub struct CreateChatInviteLinkParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditChatInviteLinkParams {
     pub chat_id: ChatId,
     pub invite_link: String,
@@ -757,7 +754,7 @@ pub struct EditChatInviteLinkParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CreateChatSubscriptionInviteLinkParams {
     pub chat_id: ChatId,
     pub name: Option<String>,
@@ -766,7 +763,7 @@ pub struct CreateChatSubscriptionInviteLinkParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditChatSubscriptionInviteLinkParams {
     pub chat_id: ChatId,
     pub invite_link: String,
@@ -774,55 +771,55 @@ pub struct EditChatSubscriptionInviteLinkParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RevokeChatInviteLinkParams {
     pub chat_id: ChatId,
     pub invite_link: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ApproveChatJoinRequestParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeclineChatJoinRequestParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatPhotoParams {
     pub chat_id: ChatId,
     pub photo: InputFile,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteChatPhotoParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatTitleParams {
     pub chat_id: ChatId,
     pub title: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatDescriptionParams {
     pub chat_id: ChatId,
     pub description: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct PinChatMessageParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -831,7 +828,7 @@ pub struct PinChatMessageParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnpinChatMessageParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -839,57 +836,57 @@ pub struct UnpinChatMessageParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnpinAllChatMessagesParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct LeaveChatParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetChatParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetChatAdministratorsParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetChatMemberCountParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetChatMemberParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatStickerSetParams {
     pub chat_id: ChatId,
     pub sticker_set_name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteChatStickerSetParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CreateForumTopicParams {
     pub chat_id: ChatId,
     pub name: String,
@@ -898,7 +895,7 @@ pub struct CreateForumTopicParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
@@ -907,66 +904,66 @@ pub struct EditForumTopicParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CloseForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReopenForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnpinAllForumTopicMessagesParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditGeneralForumTopicParams {
     pub chat_id: ChatId,
     pub name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CloseGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReopenGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct HideGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnhideGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct AnswerCallbackQueryParams {
     pub callback_query_id: String,
     pub text: Option<String>,
@@ -976,20 +973,20 @@ pub struct AnswerCallbackQueryParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetUserChatBoostsParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetBusinessConnectionParams {
     pub business_connection_id: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
     pub scope: Option<BotCommandScope>,
@@ -997,60 +994,60 @@ pub struct SetMyCommandsParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetMyNameParams {
     pub name: Option<String>,
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetMyNameParams {
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetMyDescriptionParams {
     pub description: Option<String>,
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetMyDescriptionParams {
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetMyShortDescriptionParams {
     pub short_description: Option<String>,
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetMyShortDescriptionParams {
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetMyCommandsParams {
     pub scope: Option<BotCommandScope>,
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteMyCommandsParams {
     pub scope: Option<BotCommandScope>,
     pub language_code: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditMessageTextParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -1064,7 +1061,7 @@ pub struct EditMessageTextParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditMessageCaptionParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -1078,7 +1075,7 @@ pub struct EditMessageCaptionParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditMessageMediaParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -1089,7 +1086,7 @@ pub struct EditMessageMediaParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct EditMessageReplyMarkupParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -1099,7 +1096,7 @@ pub struct EditMessageReplyMarkupParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct StopPollParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -1108,21 +1105,21 @@ pub struct StopPollParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteMessageParams {
     pub chat_id: ChatId,
     pub message_id: i32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteMessagesParams {
     pub chat_id: ChatId,
     pub message_ids: Vec<i32>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendStickerParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -1137,13 +1134,13 @@ pub struct SendStickerParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetStickerSetParams {
     pub name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UploadStickerFileParams {
     pub user_id: u64,
     pub sticker: InputFile,
@@ -1151,7 +1148,6 @@ pub struct UploadStickerFileParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct CreateNewStickerSetParams {
     pub user_id: u64,
     pub name: String,
@@ -1162,13 +1158,12 @@ pub struct CreateNewStickerSetParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetCustomEmojiStickersParams {
     pub custom_emoji_ids: Vec<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct AddStickerToSetParams {
     pub user_id: u64,
     pub name: String,
@@ -1176,20 +1171,19 @@ pub struct AddStickerToSetParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetStickerPositionInSetParams {
     pub sticker: String,
     pub position: u32,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteStickerFromSetParams {
     pub sticker: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct ReplaceStickerInSetParams {
     pub user_id: u64,
     pub name: String,
@@ -1198,35 +1192,34 @@ pub struct ReplaceStickerInSetParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetStickerEmojiListParams {
     pub sticker: String,
     pub emoji_list: Vec<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetStickerKeywordsParams {
     pub sticker: String,
     pub keywords: Option<Vec<String>>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct SetStickerMaskPositionParams {
     pub sticker: String,
     pub mask_position: Option<MaskPosition>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetStickerSetTitleParams {
     pub name: String,
     pub title: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetStickerSetThumbnailParams {
     pub name: String,
     pub user_id: u64,
@@ -1235,20 +1228,19 @@ pub struct SetStickerSetThumbnailParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetCustomEmojiStickerSetThumbnailParams {
     pub name: String,
     pub custom_emoji_id: Option<String>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct DeleteStickerSetParams {
     pub name: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct AnswerInlineQueryParams {
     pub inline_query_id: String,
     pub results: Vec<InlineQueryResult>,
@@ -1259,7 +1251,7 @@ pub struct AnswerInlineQueryParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InlineQueryResultsButton {
     pub text: String,
     pub web_app: Option<WebAppInfo>,
@@ -1267,7 +1259,7 @@ pub struct InlineQueryResultsButton {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendInvoiceParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -1300,7 +1292,7 @@ pub struct SendInvoiceParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct CreateInvoiceLinkParams {
     pub title: String,
     pub description: String,
@@ -1325,7 +1317,7 @@ pub struct CreateInvoiceLinkParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct AnswerShippingQueryParams {
     pub shipping_query_id: String,
     pub ok: bool,
@@ -1334,7 +1326,7 @@ pub struct AnswerShippingQueryParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct AnswerPreCheckoutQueryParams {
     pub pre_checkout_query_id: String,
     pub ok: bool,
@@ -1342,7 +1334,7 @@ pub struct AnswerPreCheckoutQueryParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetStarTransactionsParams {
     offset: u32,
 
@@ -1350,21 +1342,21 @@ pub struct GetStarTransactionsParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct RefundStarPaymentParams {
     pub user_id: u64,
     pub telegram_payment_charge_id: String,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetPassportDataErrorsParams {
     pub user_id: u64,
     pub errors: Vec<PassportElementError>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SendGameParams {
     pub business_connection_id: Option<String>,
     pub chat_id: i64,
@@ -1378,7 +1370,7 @@ pub struct SendGameParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetGameScoreParams {
     pub user_id: u64,
     pub score: i32,
@@ -1390,7 +1382,7 @@ pub struct SetGameScoreParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetGameHighScoresParams {
     pub user_id: u64,
     pub chat_id: Option<i64>,
@@ -1399,7 +1391,7 @@ pub struct GetGameHighScoresParams {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputMediaPhoto {
     pub media: FileUpload,
     pub caption: Option<String>,
@@ -1410,7 +1402,7 @@ pub struct InputMediaPhoto {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputMediaVideo {
     pub media: FileUpload,
     pub thumbnail: Option<FileUpload>,
@@ -1426,7 +1418,7 @@ pub struct InputMediaVideo {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputMediaAnimation {
     pub media: FileUpload,
     pub thumbnail: Option<FileUpload>,
@@ -1441,7 +1433,7 @@ pub struct InputMediaAnimation {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputMediaAudio {
     pub media: FileUpload,
     pub thumbnail: Option<FileUpload>,
@@ -1454,7 +1446,7 @@ pub struct InputMediaAudio {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct InputMediaDocument {
     pub media: FileUpload,
     pub thumbnail: Option<FileUpload>,
@@ -1465,46 +1457,45 @@ pub struct InputMediaDocument {
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetMyDefaultAdministratorRightsParams {
     pub rights: ChatAdministratorRights,
     pub for_channels: Option<bool>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetMyDefaultAdministratorRightsParams {
     pub for_channels: Option<bool>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq)]
 pub struct AnswerWebAppQueryParams {
     pub web_app_query_id: String,
     pub result: InlineQueryResult,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct SetChatMenuButtonParams {
     pub chat_id: Option<i64>,
     pub menu_button: Option<MenuButton>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct GetChatMenuButtonParams {
     pub chat_id: Option<i64>,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct UnpinAllGeneralForumTopicMessagesParams {
     pub chat_id: ChatId,
 }
 
 #[apply(serdebuilder!)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Eq)]
 pub struct ReplyParameters {
     pub message_id: i32,
     pub chat_id: Option<ChatId>,
