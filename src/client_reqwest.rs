@@ -145,7 +145,6 @@ impl AsyncTelegramApi for AsyncApi {
 mod async_tests {
     use super::*;
     use crate::api_params::SendMessageParams;
-    use crate::response::ErrorResponse;
 
     #[tokio::test]
     async fn async_send_message_success() {
@@ -186,16 +185,13 @@ mod async_tests {
             .await;
         let api = AsyncApi::new_url(server.url());
 
-        if let Err(Error::Api(ErrorResponse {
-            ok: false,
-            description,
-            error_code: 400,
-            parameters: None,
-        })) = api.send_message(&params).await
-        {
-            assert_eq!("Bad Request: chat not found".to_string(), description);
+        if let Err(Error::Api(error)) = dbg!(api.send_message(&params).await) {
+            assert_eq!(error.description, "Bad Request: chat not found");
+            assert_eq!(error.error_code, 400);
+            assert_eq!(error.parameters, None);
+            assert!(!error.ok);
         } else {
-            panic!("Error was expected but there is none");
+            panic!("API Error expected");
         }
     }
 }

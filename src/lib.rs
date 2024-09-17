@@ -1,8 +1,8 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
 
-#[cfg(feature = "reqwest")]
+#[cfg(feature = "async-http-client")]
 pub use reqwest;
-#[cfg(feature = "ureq")]
+#[cfg(feature = "http-client")]
 pub use ureq;
 
 pub use self::api_params::*;
@@ -25,7 +25,7 @@ mod client_reqwest;
 #[cfg(feature = "http-client")]
 mod client_ureq;
 mod error;
-#[cfg(feature = "serde_json")]
+#[cfg(any(feature = "http-client", feature = "async-http-client"))]
 mod json;
 pub mod objects;
 mod parse_mode;
@@ -34,6 +34,8 @@ pub mod response;
 mod trait_async;
 #[cfg(feature = "telegram-trait")]
 mod trait_sync;
+
+mod macros;
 
 /// Default Bot API URL
 pub const BASE_API_URL: &str = "https://api.telegram.org/bot";

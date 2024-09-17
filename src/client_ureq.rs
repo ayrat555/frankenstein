@@ -216,7 +216,6 @@ mod tests {
     use crate::objects::ChatPermissions;
     use crate::objects::InlineQueryResultVenue;
     use crate::objects::InputPollOption;
-    use crate::response::ErrorResponse;
 
     #[test]
     fn new_sets_correct_url() {
@@ -289,16 +288,13 @@ mod tests {
             .create();
         let api = Api::new_url(server.url());
 
-        if let Err(Error::Api(ErrorResponse {
-            ok: false,
-            description,
-            error_code: 400,
-            parameters: None,
-        })) = api.send_message(&params)
-        {
-            assert_eq!("Bad Request: chat not found".to_string(), description);
+        if let Err(Error::Api(error)) = dbg!(api.send_message(&params)) {
+            assert_eq!(error.description, "Bad Request: chat not found");
+            assert_eq!(error.error_code, 400);
+            assert_eq!(error.parameters, None);
+            assert!(!error.ok);
         } else {
-            panic!("Error was expected but there is none");
+            panic!("API Error expected");
         }
     }
 
