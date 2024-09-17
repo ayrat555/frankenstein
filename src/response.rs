@@ -8,12 +8,12 @@ use serde::{Deserialize, Serialize};
 
 use crate::objects::{Message, ResponseParameters};
 
+#[serde_with::skip_serializing_none]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MethodResponse<T> {
     /// Always true
     pub ok: bool,
     pub result: T,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 }
 
@@ -24,6 +24,7 @@ pub struct MethodResponse<T> {
 /// Some errors may also have an optional field `parameters` of the type `ResponseParameters`, which can help to automatically handle the error.
 ///
 /// See <https://core.telegram.org/bots/api#making-requests>
+#[serde_with::skip_serializing_none]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ErrorResponse {
     /// Always false
@@ -31,7 +32,6 @@ pub struct ErrorResponse {
     pub description: String,
     /// Contents are subject to change in the future
     pub error_code: u64,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub parameters: Option<ResponseParameters>,
 }
 
