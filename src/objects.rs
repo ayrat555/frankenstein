@@ -2,7 +2,7 @@
 
 #![allow(deprecated)]
 use crate::api_params::FileUpload;
-use crate::builder;
+use crate::macros::builder;
 use crate::ParseMode;
 use macro_rules_attribute::apply;
 use serde::{Deserialize, Serialize};

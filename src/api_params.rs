@@ -1,6 +1,6 @@
 //! Parameters to Telegram API methods.
 
-use crate::builder;
+use crate::macros::builder;
 use crate::objects::{
     AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
     InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
