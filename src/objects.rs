@@ -9,7 +9,7 @@ use crate::api_params::FileUpload;
 use crate::macros::serdebuilder;
 use crate::ParseMode;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum StickerType {
     Regular,
@@ -25,7 +25,7 @@ pub enum StickerFormat {
     Video,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum InputMessageContent {
     Text(InputTextMessageContent),
@@ -35,7 +35,7 @@ pub enum InputMessageContent {
     Invoice(InputInvoiceMessageContent),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "status", rename_all = "snake_case")]
 pub enum ChatMember {
     Creator(ChatMemberOwner),
@@ -46,7 +46,7 @@ pub enum ChatMember {
     Kicked(ChatMemberBanned),
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum ChatType {
     Private,
@@ -166,7 +166,7 @@ pub enum PassportElementErrorTranslationFileType {
     TemporaryRegistration,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum MenuButton {
     Commands,
@@ -174,7 +174,7 @@ pub enum MenuButton {
     Default,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum ChatBackground {
     Fill(BackgroundTypeFill),
@@ -183,7 +183,7 @@ pub enum ChatBackground {
     ChatTheme(BackgroundTypeChatTheme),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum BackgroundFill {
     Solid(BackgroundFillSolid),
@@ -315,7 +315,7 @@ pub struct Update {
     pub content: UpdateContent,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum UpdateContent {
     Message(Message),
@@ -360,7 +360,7 @@ pub struct WebhookInfo {
 /// Control which updates to receive.
 /// Specify an empty list to receive all update types except `ChatMember`.
 /// [Official documentation](https://core.telegram.org/bots/api#getupdates).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "snake_case")]
 #[non_exhaustive]
 pub enum AllowedUpdate {
@@ -1227,7 +1227,7 @@ pub struct ChatLocation {
     pub address: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum ReactionType {
     Emoji(ReactionTypeEmoji),
@@ -1757,7 +1757,7 @@ pub struct PaidMediaInfo {
     pub paid_media: Vec<PaidMedia>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PaidMedia {
     Preview(PaidMediaPreview),
@@ -1785,7 +1785,7 @@ pub struct PaidMediaVideo {
     pub video: Video,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputPaidMedia {
     Photo(InputPaidMediaPhoto),
@@ -2112,7 +2112,7 @@ pub struct WebAppData {
     pub button_text: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "source", rename_all = "snake_case")]
 pub enum ChatBoostSource {
     Premium(ChatBoostSourcePremium),
@@ -2191,7 +2191,7 @@ pub struct BusinessMessagesDeleted {
     pub message_ids: Vec<i32>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum MaybeInaccessibleMessage {
     Message(Message),
@@ -2206,7 +2206,7 @@ pub struct InaccessibleMessage {
     pub date: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum RevenueWithdrawalState {
     Pending(RevenueWithdrawalStatePending),
@@ -2229,7 +2229,7 @@ pub struct RevenueWithdrawalStateSucceeded {
 #[derive(Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum TransactionPartner {
     User(TransactionPartnerUser),
