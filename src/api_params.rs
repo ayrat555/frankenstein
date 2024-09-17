@@ -97,40 +97,27 @@ pub enum InlineQueryResult {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputMedia {
-    #[serde(rename = "animation")]
     Animation(InputMediaAnimation),
-    #[serde(rename = "document")]
     Document(InputMediaDocument),
-    #[serde(rename = "audio")]
     Audio(InputMediaAudio),
-    #[serde(rename = "photo")]
     Photo(InputMediaPhoto),
-    #[serde(rename = "video")]
     Video(InputMediaVideo),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "source")]
+#[serde(tag = "source", rename_all = "snake_case")]
 pub enum PassportElementError {
     #[serde(rename = "data")]
     DataField(PassportElementErrorDataField),
-    #[serde(rename = "front_side")]
     FrontSide(PassportElementErrorFrontSide),
-    #[serde(rename = "reverse_side")]
     ReverseSide(PassportElementErrorReverseSide),
-    #[serde(rename = "selfie")]
     Selfie(PassportElementErrorSelfie),
-    #[serde(rename = "file")]
     File(PassportElementErrorFile),
-    #[serde(rename = "files")]
     Files(PassportElementErrorFiles),
-    #[serde(rename = "translation_file")]
     TranslationFile(PassportElementErrorTranslationFile),
-    #[serde(rename = "translation_files")]
     TranslationFiles(PassportElementErrorTranslationFiles),
-    #[serde(rename = "unspecified")]
     Unspecified(PassportElementErrorUnspecified),
 }
 

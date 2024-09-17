@@ -1339,7 +1339,6 @@ pub struct Story {
 pub struct StickerSet {
     pub name: String,
     pub title: String,
-    #[serde(rename = "sticker_type")]
     pub sticker_type: StickerType,
     #[doc(hidden)]
     #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
