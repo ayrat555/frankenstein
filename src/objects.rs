@@ -6,7 +6,7 @@ use macro_rules_attribute::apply;
 use serde::{Deserialize, Serialize};
 
 use crate::api_params::FileUpload;
-use crate::macros::serdebuilder;
+use crate::macros::apistruct;
 use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -191,14 +191,14 @@ pub enum BackgroundFill {
     FreeformGradient(BackgroundFillFreeformGradient),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MenuButtonWebApp {
     pub text: String,
     pub web_app: WebAppInfo,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberOwner {
     pub user: User,
@@ -206,7 +206,7 @@ pub struct ChatMemberOwner {
     pub is_anonymous: bool,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberAdministrator {
     pub user: User,
@@ -229,14 +229,14 @@ pub struct ChatMemberAdministrator {
     pub custom_title: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberMember {
     pub user: User,
     pub until_date: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberRestricted {
     pub user: User,
@@ -258,46 +258,46 @@ pub struct ChatMemberRestricted {
     pub until_date: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberLeft {
     pub user: User,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberBanned {
     pub user: User,
     pub until_date: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct VideoChatStarted {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct VideoChatScheduled {
     pub start_date: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct CallbackGame {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotDescription {
     pub description: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotName {
     pub name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotShortDescription {
     pub short_description: String,
@@ -305,7 +305,7 @@ pub struct BotShortDescription {
 
 /// Represents an incoming update from telegram.
 /// [Official documentation.](https://core.telegram.org/bots/api#update)
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct Update {
     pub update_id: u32,
 
@@ -343,7 +343,7 @@ pub enum UpdateContent {
     PurchasedPaidMedia(PaidMediaPurchased),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct WebhookInfo {
     pub url: String,
@@ -384,7 +384,7 @@ pub enum AllowedUpdate {
     RemovedChatBoost,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct User {
     pub id: u64,
@@ -402,7 +402,7 @@ pub struct User {
     pub has_main_web_app: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Chat {
     pub id: i64,
@@ -416,7 +416,7 @@ pub struct Chat {
     pub is_forum: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct ChatFullInfo {
     pub id: i64,
 
@@ -466,7 +466,7 @@ pub struct ChatFullInfo {
     pub location: Option<ChatLocation>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct Message {
     pub message_id: i32,
     pub message_thread_id: Option<i32>,
@@ -555,13 +555,13 @@ pub struct Message {
     pub reply_markup: Option<Box<InlineKeyboardMarkup>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct MessageId {
     pub message_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageEntity {
     #[serde(rename = "type")]
@@ -574,7 +574,7 @@ pub struct MessageEntity {
     pub custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct TextQuote {
     pub text: String,
@@ -583,7 +583,7 @@ pub struct TextQuote {
     pub is_manual: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct ExternalReplyInfo {
     pub origin: Option<MessageOrigin>,
     pub chat: Option<Chat>,
@@ -620,21 +620,21 @@ pub enum MessageOrigin {
     Channel(MessageOriginChannel),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageOriginUser {
     pub date: u64,
     pub sender_user: User,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageOriginHiddenUser {
     pub date: u64,
     pub sender_user_name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageOriginChat {
     pub date: u64,
@@ -642,7 +642,7 @@ pub struct MessageOriginChat {
     pub author_signature: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageOriginChannel {
     pub date: u64,
@@ -651,7 +651,7 @@ pub struct MessageOriginChannel {
     pub author_signature: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct LinkPreviewOptions {
     pub is_disabled: Option<bool>,
@@ -661,7 +661,7 @@ pub struct LinkPreviewOptions {
     pub show_above_text: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PhotoSize {
     pub file_id: String,
@@ -671,7 +671,7 @@ pub struct PhotoSize {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Animation {
     pub file_id: String,
@@ -685,7 +685,7 @@ pub struct Animation {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Audio {
     pub file_id: String,
@@ -699,7 +699,7 @@ pub struct Audio {
     pub thumbnail: Option<PhotoSize>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Document {
     pub file_id: String,
@@ -710,7 +710,7 @@ pub struct Document {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Video {
     pub file_id: String,
@@ -724,7 +724,7 @@ pub struct Video {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct VideoNote {
     pub file_id: String,
@@ -735,7 +735,7 @@ pub struct VideoNote {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Voice {
     pub file_id: String,
@@ -745,7 +745,7 @@ pub struct Voice {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Contact {
     pub phone_number: String,
@@ -755,14 +755,14 @@ pub struct Contact {
     pub vcard: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Dice {
     pub emoji: String,
     pub value: u8,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PollOption {
     pub text: String,
@@ -770,7 +770,7 @@ pub struct PollOption {
     pub voter_count: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputPollOption {
     pub text: Option<String>,
@@ -778,7 +778,7 @@ pub struct InputPollOption {
     pub text_entities: Option<Vec<MessageEntity>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PollAnswer {
     pub poll_id: String,
@@ -787,7 +787,7 @@ pub struct PollAnswer {
     pub option_ids: Vec<u8>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Poll {
     pub id: String,
@@ -808,7 +808,7 @@ pub struct Poll {
     pub close_date: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy)]
 pub struct Location {
     pub longitude: f64,
@@ -819,7 +819,7 @@ pub struct Location {
     pub proximity_alert_radius: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct Venue {
     pub location: Location,
     pub title: String,
@@ -830,7 +830,7 @@ pub struct Venue {
     pub google_place_type: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ProximityAlertTriggered {
     pub traveler: User,
@@ -838,25 +838,25 @@ pub struct ProximityAlertTriggered {
     pub distance: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct MessageAutoDeleteTimerChanged {
     pub message_auto_delete_time: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct ChatBoostAdded {
     pub boost_count: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct BackgroundFillSolid {
     pub color: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct BackgroundFillGradient {
     pub top_color: u32,
@@ -864,20 +864,20 @@ pub struct BackgroundFillGradient {
     pub rotation_angle: u16,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BackgroundFillFreeformGradient {
     pub colors: Vec<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BackgroundTypeFill {
     pub fill: BackgroundFill,
     pub dark_theme_dimming: u8,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BackgroundTypeWallpaper {
     pub document: Document,
@@ -886,7 +886,7 @@ pub struct BackgroundTypeWallpaper {
     pub is_moving: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BackgroundTypePattern {
     pub document: Document,
@@ -896,13 +896,13 @@ pub struct BackgroundTypePattern {
     pub is_moving: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BackgroundTypeChatTheme {
     pub theme_name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForumTopicCreated {
     pub name: String,
@@ -910,30 +910,30 @@ pub struct ForumTopicCreated {
     pub icon_custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForumTopicClosed {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForumTopicEdited {
     pub name: Option<String>,
     pub icon_custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForumTopicReopened {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GeneralForumTopicHidden {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GeneralForumTopicUnhidden {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SharedUser {
     pub user_id: u64,
@@ -943,14 +943,14 @@ pub struct SharedUser {
     pub photo: Option<Vec<PhotoSize>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UsersShared {
     pub request_id: i32,
     pub users: Vec<SharedUser>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatShared {
     pub request_id: i32,
@@ -960,7 +960,7 @@ pub struct ChatShared {
     pub photo: Option<Vec<PhotoSize>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct WriteAccessAllowed {
     pub from_request: Option<bool>,
@@ -968,26 +968,26 @@ pub struct WriteAccessAllowed {
     pub from_attachment_menu: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct VideoChatEnded {
     pub duration: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct VideoChatParticipantsInvited {
     pub users: Option<Vec<User>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UserProfilePhotos {
     pub total_count: u32,
     pub photos: Vec<Vec<PhotoSize>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct File {
     pub file_id: String,
@@ -996,7 +996,7 @@ pub struct File {
     pub file_path: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReplyKeyboardMarkup {
     pub keyboard: Vec<Vec<KeyboardButton>>,
@@ -1007,7 +1007,7 @@ pub struct ReplyKeyboardMarkup {
     pub selective: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct KeyboardButton {
     pub text: String,
@@ -1019,7 +1019,7 @@ pub struct KeyboardButton {
     pub web_app: Option<WebAppInfo>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct KeyboardButtonRequestUsers {
     pub request_id: i32,
@@ -1031,7 +1031,7 @@ pub struct KeyboardButtonRequestUsers {
     pub request_photo: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct KeyboardButtonRequestChat {
     pub request_id: i32,
@@ -1047,27 +1047,27 @@ pub struct KeyboardButtonRequestChat {
     pub request_photo: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct KeyboardButtonPollType {
     #[serde(rename = "type")]
     pub type_field: Option<PollType>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct ReplyKeyboardRemove {
     pub remove_keyboard: bool,
     pub selective: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InlineKeyboardMarkup {
     pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InlineKeyboardButton {
     pub text: String,
@@ -1082,7 +1082,7 @@ pub struct InlineKeyboardButton {
     pub pay: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct LoginUrl {
     pub url: String,
@@ -1091,7 +1091,7 @@ pub struct LoginUrl {
     pub request_write_access: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SwitchInlineQueryChosenChat {
     pub query: Option<String>,
@@ -1101,7 +1101,7 @@ pub struct SwitchInlineQueryChosenChat {
     pub allow_channel_chats: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct CallbackQuery {
     pub id: String,
     pub from: User,
@@ -1112,7 +1112,7 @@ pub struct CallbackQuery {
     pub game_short_name: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForceReply {
     pub force_reply: bool,
@@ -1120,7 +1120,7 @@ pub struct ForceReply {
     pub selective: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatPhoto {
     pub small_file_id: String,
@@ -1129,7 +1129,7 @@ pub struct ChatPhoto {
     pub big_file_unique_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatInviteLink {
     pub invite_link: String,
@@ -1143,7 +1143,7 @@ pub struct ChatInviteLink {
     pub pending_join_request_count: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberUpdated {
     pub chat: Chat,
@@ -1156,7 +1156,7 @@ pub struct ChatMemberUpdated {
     pub via_chat_folder_invite_link: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatJoinRequest {
     pub chat: Chat,
@@ -1167,7 +1167,7 @@ pub struct ChatJoinRequest {
     pub invite_link: Option<ChatInviteLink>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct ChatPermissions {
     pub can_send_messages: Option<bool>,
@@ -1186,7 +1186,7 @@ pub struct ChatPermissions {
     pub can_manage_topics: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Birthdate {
     pub day: u8,
@@ -1194,34 +1194,34 @@ pub struct Birthdate {
     pub year: u16,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct BusinessIntro {
     pub title: Option<String>,
     pub message: Option<String>,
     pub sticker: Option<Sticker>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct BusinessLocation {
     pub address: String,
     pub location: Option<Location>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BusinessOpeningHoursInterval {
     pub opening_minute: u16,
     pub closing_minute: u16,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BusinessOpeningHours {
     pub time_zone_name: String,
     pub opening_hours: Vec<BusinessOpeningHoursInterval>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct ChatLocation {
     pub location: Location,
     pub address: String,
@@ -1235,23 +1235,23 @@ pub enum ReactionType {
     Paid(ReactionTypePaid),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReactionTypeEmoji {
     pub emoji: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReactionTypeCustomEmoji {
     pub custom_emoji_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReactionTypePaid {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReactionCount {
     #[serde(rename = "type")]
@@ -1259,7 +1259,7 @@ pub struct ReactionCount {
     pub total_count: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageReactionUpdated {
     pub chat: Chat,
@@ -1271,7 +1271,7 @@ pub struct MessageReactionUpdated {
     pub new_reaction: Vec<ReactionType>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct MessageReactionCountUpdated {
     pub chat: Chat,
@@ -1280,7 +1280,7 @@ pub struct MessageReactionCountUpdated {
     pub reactions: Vec<ReactionCount>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForumTopic {
     pub message_thread_id: i32,
@@ -1289,21 +1289,21 @@ pub struct ForumTopic {
     pub icon_custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotCommand {
     pub command: String,
     pub description: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct ResponseParameters {
     pub migrate_to_chat_id: Option<i64>,
     pub retry_after: Option<u16>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct Sticker {
     pub file_id: String,
     pub file_unique_id: String,
@@ -1324,7 +1324,7 @@ pub struct Sticker {
     pub file_size: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InputSticker {
     pub sticker: FileUpload,
     pub format: StickerFormat,
@@ -1333,14 +1333,14 @@ pub struct InputSticker {
     pub keywords: Option<Vec<String>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Story {
     pub chat: Chat,
     pub id: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct StickerSet {
     pub name: String,
     pub title: String,
@@ -1355,7 +1355,7 @@ pub struct StickerSet {
     pub thumbnail: Option<PhotoSize>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct MaskPosition {
     pub point: String,
     pub x_shift: f64,
@@ -1363,7 +1363,7 @@ pub struct MaskPosition {
     pub scale: f64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQuery {
     pub id: String,
     pub from: User,
@@ -1373,7 +1373,7 @@ pub struct InlineQuery {
     pub offset: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultArticle {
     pub id: String,
     pub title: String,
@@ -1387,7 +1387,7 @@ pub struct InlineQueryResultArticle {
     pub thumbnail_height: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultPhoto {
     pub id: String,
     pub photo_url: String,
@@ -1404,7 +1404,7 @@ pub struct InlineQueryResultPhoto {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultGif {
     pub id: String,
     pub gif_url: String,
@@ -1422,7 +1422,7 @@ pub struct InlineQueryResultGif {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultMpeg4Gif {
     pub id: String,
     pub mpeg4_url: String,
@@ -1440,7 +1440,7 @@ pub struct InlineQueryResultMpeg4Gif {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultVideo {
     pub id: String,
     pub video_url: String,
@@ -1459,7 +1459,7 @@ pub struct InlineQueryResultVideo {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultAudio {
     pub id: String,
     pub audio_url: String,
@@ -1473,7 +1473,7 @@ pub struct InlineQueryResultAudio {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultVoice {
     pub id: String,
     pub voice_url: String,
@@ -1486,7 +1486,7 @@ pub struct InlineQueryResultVoice {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultDocument {
     pub id: String,
     pub title: String,
@@ -1503,7 +1503,7 @@ pub struct InlineQueryResultDocument {
     pub thumbnail_height: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultLocation {
     pub id: String,
     pub latitude: f64,
@@ -1520,7 +1520,7 @@ pub struct InlineQueryResultLocation {
     pub thumbnail_height: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultVenue {
     pub id: String,
     pub latitude: f64,
@@ -1538,7 +1538,7 @@ pub struct InlineQueryResultVenue {
     pub thumbnail_height: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultContact {
     pub id: String,
     pub phone_number: String,
@@ -1552,7 +1552,7 @@ pub struct InlineQueryResultContact {
     pub thumbnail_height: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InlineQueryResultGame {
     pub id: String,
@@ -1560,7 +1560,7 @@ pub struct InlineQueryResultGame {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedPhoto {
     pub id: String,
     pub photo_file_id: String,
@@ -1574,7 +1574,7 @@ pub struct InlineQueryResultCachedPhoto {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedGif {
     pub id: String,
     pub gif_file_id: String,
@@ -1587,7 +1587,7 @@ pub struct InlineQueryResultCachedGif {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedMpeg4Gif {
     pub id: String,
     pub mpeg4_file_id: String,
@@ -1600,7 +1600,7 @@ pub struct InlineQueryResultCachedMpeg4Gif {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedSticker {
     pub id: String,
     pub sticker_file_id: String,
@@ -1608,7 +1608,7 @@ pub struct InlineQueryResultCachedSticker {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedDocument {
     pub id: String,
     pub title: String,
@@ -1621,7 +1621,7 @@ pub struct InlineQueryResultCachedDocument {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedVideo {
     pub id: String,
     pub video_file_id: String,
@@ -1635,7 +1635,7 @@ pub struct InlineQueryResultCachedVideo {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedVoice {
     pub id: String,
     pub voice_file_id: String,
@@ -1647,7 +1647,7 @@ pub struct InlineQueryResultCachedVoice {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InlineQueryResultCachedAudio {
     pub id: String,
     pub audio_file_id: String,
@@ -1658,7 +1658,7 @@ pub struct InlineQueryResultCachedAudio {
     pub input_message_content: Option<InputMessageContent>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputTextMessageContent {
     pub message_text: String,
@@ -1667,7 +1667,7 @@ pub struct InputTextMessageContent {
     pub link_preview_options: Option<LinkPreviewOptions>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy)]
 pub struct InputLocationMessageContent {
     pub latitude: f64,
@@ -1678,7 +1678,7 @@ pub struct InputLocationMessageContent {
     pub proximity_alert_radius: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputInvoiceMessageContent {
     pub title: String,
@@ -1703,7 +1703,7 @@ pub struct InputInvoiceMessageContent {
     pub is_flexible: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct InputVenueMessageContent {
     pub latitude: f64,
     pub longitude: f64,
@@ -1715,7 +1715,7 @@ pub struct InputVenueMessageContent {
     pub google_place_type: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputContactMessageContent {
     pub phone_number: String,
@@ -1724,7 +1724,7 @@ pub struct InputContactMessageContent {
     pub vcard: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct ChosenInlineResult {
     pub result_id: String,
     pub from: User,
@@ -1733,14 +1733,14 @@ pub struct ChosenInlineResult {
     pub query: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct LabeledPrice {
     pub label: String,
     pub amount: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Invoice {
     pub title: String,
@@ -1750,7 +1750,7 @@ pub struct Invoice {
     pub total_amount: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PaidMediaInfo {
     pub star_count: u32,
@@ -1765,7 +1765,7 @@ pub enum PaidMedia {
     Video(PaidMediaVideo),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PaidMediaPreview {
     pub width: Option<u32>,
@@ -1773,13 +1773,13 @@ pub struct PaidMediaPreview {
     pub duration: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PaidMediaPhoto {
     pub photo: Vec<PhotoSize>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PaidMediaVideo {
     pub video: Video,
@@ -1792,13 +1792,13 @@ pub enum InputPaidMedia {
     Video(InputPaidMediaVideo),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputPaidMediaPhoto {
     pub media: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputPaidMediaVideo {
     pub media: String,
@@ -1809,7 +1809,7 @@ pub struct InputPaidMediaVideo {
     pub supports_streaming: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ShippingAddress {
     pub country_code: String,
@@ -1820,7 +1820,7 @@ pub struct ShippingAddress {
     pub post_code: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct OrderInfo {
     pub name: Option<String>,
@@ -1829,7 +1829,7 @@ pub struct OrderInfo {
     pub shipping_address: Option<ShippingAddress>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ShippingOption {
     pub id: String,
@@ -1837,7 +1837,7 @@ pub struct ShippingOption {
     pub prices: Vec<LabeledPrice>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SuccessfulPayment {
     pub currency: String,
@@ -1849,7 +1849,7 @@ pub struct SuccessfulPayment {
     pub provider_payment_charge_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RefundedPayment {
     pub currency: String,
@@ -1859,7 +1859,7 @@ pub struct RefundedPayment {
     pub provider_payment_charge_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ShippingQuery {
     pub id: String,
@@ -1868,7 +1868,7 @@ pub struct ShippingQuery {
     pub shipping_address: ShippingAddress,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PreCheckoutQuery {
     pub id: String,
@@ -1880,21 +1880,21 @@ pub struct PreCheckoutQuery {
     pub order_info: Option<OrderInfo>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PaidMediaPurchased {
     pub from: User,
     pub paid_media_payload: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportData {
     pub data: Vec<EncryptedPassportElement>,
     pub credentials: EncryptedCredentials,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportFile {
     pub file_id: String,
@@ -1903,7 +1903,7 @@ pub struct PassportFile {
     pub file_date: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EncryptedPassportElement {
     #[serde(rename = "type")]
@@ -1919,7 +1919,7 @@ pub struct EncryptedPassportElement {
     pub hash: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EncryptedCredentials {
     pub data: String,
@@ -1927,7 +1927,7 @@ pub struct EncryptedCredentials {
     pub secret: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorDataField {
     #[serde(rename = "type")]
@@ -1937,7 +1937,7 @@ pub struct PassportElementErrorDataField {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorFrontSide {
     #[serde(rename = "type")]
@@ -1946,7 +1946,7 @@ pub struct PassportElementErrorFrontSide {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorReverseSide {
     #[serde(rename = "type")]
@@ -1955,7 +1955,7 @@ pub struct PassportElementErrorReverseSide {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorSelfie {
     #[serde(rename = "type")]
@@ -1964,7 +1964,7 @@ pub struct PassportElementErrorSelfie {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorFile {
     #[serde(rename = "type")]
@@ -1973,7 +1973,7 @@ pub struct PassportElementErrorFile {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorFiles {
     #[serde(rename = "type")]
@@ -1982,7 +1982,7 @@ pub struct PassportElementErrorFiles {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorTranslationFile {
     #[serde(rename = "type")]
@@ -1991,7 +1991,7 @@ pub struct PassportElementErrorTranslationFile {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorTranslationFiles {
     #[serde(rename = "type")]
@@ -2000,7 +2000,7 @@ pub struct PassportElementErrorTranslationFiles {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PassportElementErrorUnspecified {
     #[serde(rename = "type")]
@@ -2009,7 +2009,7 @@ pub struct PassportElementErrorUnspecified {
     pub message: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Game {
     pub title: String,
@@ -2020,7 +2020,7 @@ pub struct Game {
     pub animation: Option<Animation>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GameHighScore {
     pub position: u32,
@@ -2028,13 +2028,13 @@ pub struct GameHighScore {
     pub score: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GiveawayCreated {
     pub prize_star_count: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Giveaway {
     pub chats: Vec<Chat>,
@@ -2048,7 +2048,7 @@ pub struct Giveaway {
     pub premium_subscription_month_count: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GiveawayWinners {
     pub chat: Chat,
@@ -2065,7 +2065,7 @@ pub struct GiveawayWinners {
     pub prize_description: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct GiveawayCompleted {
     pub winner_count: u32,
     pub unclaimed_prize_count: Option<u32>,
@@ -2073,7 +2073,7 @@ pub struct GiveawayCompleted {
     pub is_star_giveaway: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct ChatAdministratorRights {
     pub is_anonymous: bool,
@@ -2093,19 +2093,19 @@ pub struct ChatAdministratorRights {
     pub can_manage_topics: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct WebAppInfo {
     pub url: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SentWebAppMessage {
     pub inline_message_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct WebAppData {
     pub data: String,
@@ -2120,19 +2120,19 @@ pub enum ChatBoostSource {
     Giveaway(ChatBoostSourceGiveaway),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatBoostSourcePremium {
     pub user: User,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatBoostSourceGiftCode {
     pub user: User,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatBoostSourceGiveaway {
     pub giveaway_message_id: i32,
@@ -2141,7 +2141,7 @@ pub struct ChatBoostSourceGiveaway {
     pub is_unclaimed: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatBoost {
     pub boost_id: String,
@@ -2150,14 +2150,14 @@ pub struct ChatBoost {
     pub source: ChatBoostSource,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatBoostUpdated {
     pub chat: Chat,
     pub boost: ChatBoost,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatBoostRemoved {
     pub chat: Chat,
@@ -2166,13 +2166,13 @@ pub struct ChatBoostRemoved {
     pub source: ChatBoostSource,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UserChatBoosts {
     pub boosts: Vec<ChatBoost>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BusinessConnection {
     pub id: String,
@@ -2183,7 +2183,7 @@ pub struct BusinessConnection {
     pub is_enabled: bool,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BusinessMessagesDeleted {
     pub business_connection_id: String,
@@ -2198,7 +2198,7 @@ pub enum MaybeInaccessibleMessage {
     InaccessibleMessage(InaccessibleMessage),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InaccessibleMessage {
     pub chat: Chat,
@@ -2214,18 +2214,18 @@ pub enum RevenueWithdrawalState {
     Failed(RevenueWithdrawalStateFailed),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RevenueWithdrawalStatePending {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RevenueWithdrawalStateSucceeded {
     pub date: u64,
     pub url: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
@@ -2238,7 +2238,7 @@ pub enum TransactionPartner {
     Other(TransactionPartnerOther),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct TransactionPartnerUser {
     pub user: User,
@@ -2246,21 +2246,21 @@ pub struct TransactionPartnerUser {
     pub paid_media: Option<Vec<PaidMedia>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct TransactionPartnerFragment {
     pub withdrawal_state: Option<RevenueWithdrawalState>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct TransactionPartnerTelegramAds {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct TransactionPartnerOther {}
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct StarTransaction {
     pub id: String,
@@ -2270,7 +2270,7 @@ pub struct StarTransaction {
     pub receiver: Option<TransactionPartner>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,

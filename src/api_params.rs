@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use macro_rules_attribute::apply;
 use serde::{Deserialize, Serialize};
 
-use crate::macros::serdebuilder;
+use crate::macros::apistruct;
 use crate::objects::{
     AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
     InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
@@ -200,32 +200,32 @@ pub enum BotCommandScope {
     ChatMember(BotCommandScopeChatMember),
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotCommandScopeChat {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotCommandScopeChatAdministrators {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotCommandScopeChatMember {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputFile {
     pub path: PathBuf,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetUpdatesParams {
     pub offset: Option<i64>,
@@ -234,7 +234,7 @@ pub struct GetUpdatesParams {
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetWebhookParams {
     pub url: String,
@@ -246,13 +246,13 @@ pub struct SetWebhookParams {
     pub secret_token: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct DeleteWebhookParams {
     pub drop_pending_updates: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendMessageParams {
     pub business_connection_id: Option<String>,
@@ -269,7 +269,7 @@ pub struct SendMessageParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForwardMessageParams {
     pub chat_id: ChatId,
@@ -280,7 +280,7 @@ pub struct ForwardMessageParams {
     pub message_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ForwardMessagesParams {
     pub chat_id: ChatId,
@@ -291,7 +291,7 @@ pub struct ForwardMessagesParams {
     pub protect_content: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CopyMessageParams {
     pub chat_id: ChatId,
@@ -308,7 +308,7 @@ pub struct CopyMessageParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CopyMessagesParams {
     pub chat_id: ChatId,
@@ -320,7 +320,7 @@ pub struct CopyMessagesParams {
     pub remove_caption: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendPhotoParams {
     pub business_connection_id: Option<String>,
@@ -339,7 +339,7 @@ pub struct SendPhotoParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendAudioParams {
     pub business_connection_id: Option<String>,
@@ -360,7 +360,7 @@ pub struct SendAudioParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendDocumentParams {
     pub business_connection_id: Option<String>,
@@ -379,7 +379,7 @@ pub struct SendDocumentParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendVideoParams {
     pub business_connection_id: Option<String>,
@@ -403,7 +403,7 @@ pub struct SendVideoParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendAnimationParams {
     pub business_connection_id: Option<String>,
@@ -426,7 +426,7 @@ pub struct SendAnimationParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendVoiceParams {
     pub business_connection_id: Option<String>,
@@ -444,7 +444,7 @@ pub struct SendVoiceParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendVideoNoteParams {
     pub business_connection_id: Option<String>,
@@ -461,7 +461,7 @@ pub struct SendVideoNoteParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendPaidMediaParams {
     pub business_connection_id: Option<String>,
@@ -479,7 +479,7 @@ pub struct SendPaidMediaParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendMediaGroupParams {
     pub business_connection_id: Option<String>,
@@ -492,7 +492,7 @@ pub struct SendMediaGroupParams {
     pub reply_parameters: Option<ReplyParameters>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct SendLocationParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -510,7 +510,7 @@ pub struct SendLocationParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct EditMessageLiveLocationParams {
     pub business_connection_id: Option<String>,
     pub chat_id: Option<ChatId>,
@@ -525,7 +525,7 @@ pub struct EditMessageLiveLocationParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct StopMessageLiveLocationParams {
     pub business_connection_id: Option<String>,
@@ -535,7 +535,7 @@ pub struct StopMessageLiveLocationParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct SendVenueParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -555,7 +555,7 @@ pub struct SendVenueParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendContactParams {
     pub business_connection_id: Option<String>,
@@ -572,7 +572,7 @@ pub struct SendContactParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendPollParams {
     pub business_connection_id: Option<String>,
@@ -601,7 +601,7 @@ pub struct SendPollParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendDiceParams {
     pub business_connection_id: Option<String>,
@@ -615,7 +615,7 @@ pub struct SendDiceParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendChatActionParams {
     pub business_connection_id: Option<String>,
@@ -624,7 +624,7 @@ pub struct SendChatActionParams {
     pub action: ChatAction,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetMessageReactionParams {
     pub chat_id: ChatId,
@@ -633,7 +633,7 @@ pub struct SetMessageReactionParams {
     pub is_big: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct GetUserProfilePhotosParams {
     pub user_id: u64,
@@ -641,13 +641,13 @@ pub struct GetUserProfilePhotosParams {
     pub limit: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetFileParams {
     pub file_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BanChatMemberParams {
     pub chat_id: ChatId,
@@ -656,7 +656,7 @@ pub struct BanChatMemberParams {
     pub revoke_messages: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnbanChatMemberParams {
     pub chat_id: ChatId,
@@ -664,7 +664,7 @@ pub struct UnbanChatMemberParams {
     pub only_if_banned: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RestrictChatMemberParams {
     pub chat_id: ChatId,
@@ -674,7 +674,7 @@ pub struct RestrictChatMemberParams {
     pub until_date: Option<u64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PromoteChatMemberParams {
     pub chat_id: ChatId,
@@ -696,7 +696,7 @@ pub struct PromoteChatMemberParams {
     pub can_manage_topics: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatAdministratorCustomTitleParams {
     pub chat_id: ChatId,
@@ -704,21 +704,21 @@ pub struct SetChatAdministratorCustomTitleParams {
     pub custom_title: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BanChatSenderChatParams {
     pub chat_id: ChatId,
     pub sender_chat_id: i64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnbanChatSenderChatParams {
     pub chat_id: ChatId,
     pub sender_chat_id: i64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatPermissionsParams {
     pub chat_id: ChatId,
@@ -726,13 +726,13 @@ pub struct SetChatPermissionsParams {
     pub use_independent_chat_permissions: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ExportChatInviteLinkParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CreateChatInviteLinkParams {
     pub chat_id: ChatId,
@@ -742,7 +742,7 @@ pub struct CreateChatInviteLinkParams {
     pub creates_join_request: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditChatInviteLinkParams {
     pub chat_id: ChatId,
@@ -753,7 +753,7 @@ pub struct EditChatInviteLinkParams {
     pub creates_join_request: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CreateChatSubscriptionInviteLinkParams {
     pub chat_id: ChatId,
@@ -762,7 +762,7 @@ pub struct CreateChatSubscriptionInviteLinkParams {
     pub subscription_price: u16,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditChatSubscriptionInviteLinkParams {
     pub chat_id: ChatId,
@@ -770,55 +770,55 @@ pub struct EditChatSubscriptionInviteLinkParams {
     pub name: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RevokeChatInviteLinkParams {
     pub chat_id: ChatId,
     pub invite_link: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ApproveChatJoinRequestParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeclineChatJoinRequestParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatPhotoParams {
     pub chat_id: ChatId,
     pub photo: InputFile,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteChatPhotoParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatTitleParams {
     pub chat_id: ChatId,
     pub title: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatDescriptionParams {
     pub chat_id: ChatId,
     pub description: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PinChatMessageParams {
     pub business_connection_id: Option<String>,
@@ -827,7 +827,7 @@ pub struct PinChatMessageParams {
     pub disable_notification: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnpinChatMessageParams {
     pub business_connection_id: Option<String>,
@@ -835,57 +835,57 @@ pub struct UnpinChatMessageParams {
     pub message_id: Option<i32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnpinAllChatMessagesParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct LeaveChatParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetChatParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetChatAdministratorsParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetChatMemberCountParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetChatMemberParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatStickerSetParams {
     pub chat_id: ChatId,
     pub sticker_set_name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteChatStickerSetParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CreateForumTopicParams {
     pub chat_id: ChatId,
@@ -894,7 +894,7 @@ pub struct CreateForumTopicParams {
     pub icon_custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditForumTopicParams {
     pub chat_id: ChatId,
@@ -903,66 +903,66 @@ pub struct EditForumTopicParams {
     pub icon_custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CloseForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReopenForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteForumTopicParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnpinAllForumTopicMessagesParams {
     pub chat_id: ChatId,
     pub message_thread_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditGeneralForumTopicParams {
     pub chat_id: ChatId,
     pub name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CloseGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReopenGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct HideGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnhideGeneralForumTopicParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct AnswerCallbackQueryParams {
     pub callback_query_id: String,
@@ -972,20 +972,20 @@ pub struct AnswerCallbackQueryParams {
     pub cache_time: Option<u32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetUserChatBoostsParams {
     pub chat_id: ChatId,
     pub user_id: u64,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetBusinessConnectionParams {
     pub business_connection_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
@@ -993,60 +993,60 @@ pub struct SetMyCommandsParams {
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetMyNameParams {
     pub name: Option<String>,
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetMyNameParams {
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetMyDescriptionParams {
     pub description: Option<String>,
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetMyDescriptionParams {
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetMyShortDescriptionParams {
     pub short_description: Option<String>,
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetMyShortDescriptionParams {
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetMyCommandsParams {
     pub scope: Option<BotCommandScope>,
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteMyCommandsParams {
     pub scope: Option<BotCommandScope>,
     pub language_code: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditMessageTextParams {
     pub business_connection_id: Option<String>,
@@ -1060,7 +1060,7 @@ pub struct EditMessageTextParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditMessageCaptionParams {
     pub business_connection_id: Option<String>,
@@ -1074,7 +1074,7 @@ pub struct EditMessageCaptionParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditMessageMediaParams {
     pub business_connection_id: Option<String>,
@@ -1085,7 +1085,7 @@ pub struct EditMessageMediaParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EditMessageReplyMarkupParams {
     pub business_connection_id: Option<String>,
@@ -1095,7 +1095,7 @@ pub struct EditMessageReplyMarkupParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct StopPollParams {
     pub business_connection_id: Option<String>,
@@ -1104,21 +1104,21 @@ pub struct StopPollParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteMessageParams {
     pub chat_id: ChatId,
     pub message_id: i32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteMessagesParams {
     pub chat_id: ChatId,
     pub message_ids: Vec<i32>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendStickerParams {
     pub business_connection_id: Option<String>,
@@ -1133,13 +1133,13 @@ pub struct SendStickerParams {
     pub reply_markup: Option<ReplyMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetStickerSetParams {
     pub name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UploadStickerFileParams {
     pub user_id: u64,
@@ -1147,7 +1147,7 @@ pub struct UploadStickerFileParams {
     pub sticker_format: StickerFormat,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct CreateNewStickerSetParams {
     pub user_id: u64,
     pub name: String,
@@ -1157,33 +1157,33 @@ pub struct CreateNewStickerSetParams {
     pub needs_repainting: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetCustomEmojiStickersParams {
     pub custom_emoji_ids: Vec<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct AddStickerToSetParams {
     pub user_id: u64,
     pub name: String,
     pub sticker: InputSticker,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetStickerPositionInSetParams {
     pub sticker: String,
     pub position: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteStickerFromSetParams {
     pub sticker: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct ReplaceStickerInSetParams {
     pub user_id: u64,
     pub name: String,
@@ -1191,34 +1191,34 @@ pub struct ReplaceStickerInSetParams {
     pub sticker: InputSticker,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetStickerEmojiListParams {
     pub sticker: String,
     pub emoji_list: Vec<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetStickerKeywordsParams {
     pub sticker: String,
     pub keywords: Option<Vec<String>>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct SetStickerMaskPositionParams {
     pub sticker: String,
     pub mask_position: Option<MaskPosition>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetStickerSetTitleParams {
     pub name: String,
     pub title: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetStickerSetThumbnailParams {
     pub name: String,
@@ -1227,20 +1227,20 @@ pub struct SetStickerSetThumbnailParams {
     pub format: StickerFormat,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetCustomEmojiStickerSetThumbnailParams {
     pub name: String,
     pub custom_emoji_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct DeleteStickerSetParams {
     pub name: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct AnswerInlineQueryParams {
     pub inline_query_id: String,
     pub results: Vec<InlineQueryResult>,
@@ -1250,7 +1250,7 @@ pub struct AnswerInlineQueryParams {
     pub button: Option<InlineQueryResultsButton>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InlineQueryResultsButton {
     pub text: String,
@@ -1258,7 +1258,7 @@ pub struct InlineQueryResultsButton {
     pub start_parameter: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendInvoiceParams {
     pub chat_id: ChatId,
@@ -1291,7 +1291,7 @@ pub struct SendInvoiceParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CreateInvoiceLinkParams {
     pub title: String,
@@ -1316,7 +1316,7 @@ pub struct CreateInvoiceLinkParams {
     pub is_flexible: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct AnswerShippingQueryParams {
     pub shipping_query_id: String,
@@ -1325,7 +1325,7 @@ pub struct AnswerShippingQueryParams {
     pub error_message: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct AnswerPreCheckoutQueryParams {
     pub pre_checkout_query_id: String,
@@ -1333,7 +1333,7 @@ pub struct AnswerPreCheckoutQueryParams {
     pub error_message: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetStarTransactionsParams {
     offset: u32,
@@ -1341,21 +1341,21 @@ pub struct GetStarTransactionsParams {
     limit: u32,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RefundStarPaymentParams {
     pub user_id: u64,
     pub telegram_payment_charge_id: String,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetPassportDataErrorsParams {
     pub user_id: u64,
     pub errors: Vec<PassportElementError>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendGameParams {
     pub business_connection_id: Option<String>,
@@ -1369,7 +1369,7 @@ pub struct SendGameParams {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetGameScoreParams {
     pub user_id: u64,
@@ -1381,7 +1381,7 @@ pub struct SetGameScoreParams {
     pub inline_message_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetGameHighScoresParams {
     pub user_id: u64,
@@ -1390,7 +1390,7 @@ pub struct GetGameHighScoresParams {
     pub inline_message_id: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputMediaPhoto {
     pub media: FileUpload,
@@ -1401,7 +1401,7 @@ pub struct InputMediaPhoto {
     pub has_spoiler: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputMediaVideo {
     pub media: FileUpload,
@@ -1417,7 +1417,7 @@ pub struct InputMediaVideo {
     pub has_spoiler: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputMediaAnimation {
     pub media: FileUpload,
@@ -1432,7 +1432,7 @@ pub struct InputMediaAnimation {
     pub has_spoiler: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputMediaAudio {
     pub media: FileUpload,
@@ -1445,7 +1445,7 @@ pub struct InputMediaAudio {
     pub title: Option<String>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputMediaDocument {
     pub media: FileUpload,
@@ -1456,45 +1456,45 @@ pub struct InputMediaDocument {
     pub disable_content_type_detection: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetMyDefaultAdministratorRightsParams {
     pub rights: ChatAdministratorRights,
     pub for_channels: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetMyDefaultAdministratorRightsParams {
     pub for_channels: Option<bool>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 pub struct AnswerWebAppQueryParams {
     pub web_app_query_id: String,
     pub result: InlineQueryResult,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatMenuButtonParams {
     pub chat_id: Option<i64>,
     pub menu_button: Option<MenuButton>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GetChatMenuButtonParams {
     pub chat_id: Option<i64>,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct UnpinAllGeneralForumTopicMessagesParams {
     pub chat_id: ChatId,
 }
 
-#[apply(serdebuilder!)]
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReplyParameters {
     pub message_id: i32,
