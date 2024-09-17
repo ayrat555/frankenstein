@@ -2,11 +2,10 @@
 
 #![allow(deprecated)]
 
-use macro_rules_attribute::apply;
 use serde::{Deserialize, Serialize};
 
 use crate::api_params::FileUpload;
-use crate::macros::apistruct;
+use crate::macros::{apistruct, apply};
 use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]

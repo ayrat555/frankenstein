@@ -27,6 +27,7 @@ mod client_ureq;
 mod error;
 #[cfg(any(feature = "http-client", feature = "async-http-client"))]
 mod json;
+mod macros;
 pub mod objects;
 mod parse_mode;
 pub mod response;
@@ -34,8 +35,6 @@ pub mod response;
 mod trait_async;
 #[cfg(feature = "telegram-trait")]
 mod trait_sync;
-
-mod macros;
 
 /// Default Bot API URL
 pub const BASE_API_URL: &str = "https://api.telegram.org/bot";

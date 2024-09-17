@@ -2,10 +2,9 @@
 
 use std::path::PathBuf;
 
-use macro_rules_attribute::apply;
 use serde::{Deserialize, Serialize};
 
-use crate::macros::apistruct;
+use crate::macros::{apistruct, apply};
 use crate::objects::{
     AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
     InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,

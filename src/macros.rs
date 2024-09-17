@@ -1,3 +1,5 @@
+pub use macro_rules_attribute::apply;
+
 macro_rules_attribute::attribute_alias! {
     // Enable [`bon::builder`] `into` for specific types to reduce boilerplate for the callers.
     #[apply(apistruct!)] =
