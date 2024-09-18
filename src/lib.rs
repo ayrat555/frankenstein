@@ -25,7 +25,7 @@ mod client_reqwest;
 #[cfg(feature = "http-client")]
 mod client_ureq;
 mod error;
-#[cfg(any(feature = "http-client", feature = "async-http-client"))]
+#[cfg(any(test, feature = "http-client", feature = "async-http-client"))]
 mod json;
 mod macros;
 pub mod objects;
