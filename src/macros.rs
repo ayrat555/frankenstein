@@ -1,10 +1,10 @@
+pub use macro_rules_attribute::apply;
+
 macro_rules_attribute::attribute_alias! {
-    // Shared configuration for all builder derives. Make sure to add them to
-    // all API types.
-    //
-    // We enable `into` for specific types to reduce boilerplate for the callers.
-    #[apply(builder!)] =
-        #[derive(::bon::Builder)]
+    // Enable [`bon::builder`] `into` for specific types to reduce boilerplate for the callers.
+    #[apply(apistruct!)] =
+        #[::serde_with::skip_serializing_none]
+        #[derive(Clone, Debug, PartialEq, ::bon::Builder, ::serde::Serialize, ::serde::Deserialize)]
         #[builder(
             on(String, into),
             on(ChatId, into),
