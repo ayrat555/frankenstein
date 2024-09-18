@@ -15,3 +15,14 @@ pub enum Error {
     #[error("Encode Error {0}")]
     Encode(String),
 }
+
+impl Error {
+    #[cfg(test)]
+    pub(crate) fn unwrap_api(self) -> ErrorResponse {
+        if let Self::Api(api) = self {
+            api
+        } else {
+            panic!("API Error expected: {self}");
+        }
+    }
+}
