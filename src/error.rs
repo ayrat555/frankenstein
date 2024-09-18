@@ -17,7 +17,6 @@ pub enum Error {
 }
 
 impl Error {
-    #[allow(dead_code)]
     #[cfg(test)]
     #[track_caller]
     pub(crate) fn unwrap_api(self) -> ErrorResponse {
