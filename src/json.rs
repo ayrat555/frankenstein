@@ -1,8 +1,3 @@
-#![cfg_attr(
-    not(any(feature = "http-client", feature = "async-http-client")),
-    allow(dead_code)
-)]
-
 use crate::Error;
 
 /// Shortcut for [`serde_json::from_str`] with [`crate::Error`].
