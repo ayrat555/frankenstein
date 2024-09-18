@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.34.0 (2024-09-18)
+
+- docs: show the required feature on docs.rs - [#209](https://github.com/ayrat555/frankenstein/pull/209)
+- refactor!: flatten the module structure - [#208](https://github.com/ayrat555/frankenstein/pull/208)
+- perf!: always take params reference - [#211](https://github.com/ayrat555/frankenstein/pull/211)
+- refactor!: use MessageOrBool over EditMessageResponse - [#212](https://github.com/ayrat555/frankenstein/pull/212)
+- build!: remove implicit features - [#214](https://github.com/ayrat555/frankenstein/pull/214)
+- Use consistent builder derive configs across API types - [#213](https://github.com/ayrat555/frankenstein/pull/213)
+- test: improve testing for api error response - [#216](https://github.com/ayrat555/frankenstein/pull/216)
+- refactor!: simplify traits with macros - [#210](https://github.com/ayrat555/frankenstein/pull/210)
+- style: group imports - [#217](https://github.com/ayrat555/frankenstein/pull/217)
+- refactor: generalize serde logic into macro - [#218](https://github.com/ayrat555/frankenstein/pull/218)
+
 ## 0.33.0 (2024-09-11)
 
 - refactor!: merge Error and HttpError by @EdJoPaTo - [#204](https://github.com/ayrat555/frankenstein/pull/204)
