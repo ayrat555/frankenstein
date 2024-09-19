@@ -164,6 +164,7 @@ mod tests {
         SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
         UnbanChatMemberParams, UnpinChatMessageParams,
     };
+    use crate::json;
     use crate::objects::{
         AllowedUpdate, BotCommand, ChatPermissions, InlineQueryResultVenue, InputPollOption,
     };
@@ -191,14 +192,10 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_updates(&params).unwrap();
+        json::assert_str(&response, response_string);
 
-        let json = serde_json::to_string(&response).unwrap();
-
-        assert_eq!(response_string, json);
         assert_eq!(1, response.result.len());
-
         let update = &response.result[0];
-
         assert_eq!(379656753, update.update_id);
     }
 
@@ -218,9 +215,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -259,9 +254,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_webhook(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -278,9 +271,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.delete_webhook(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -295,9 +286,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_webhook_info().unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -312,9 +301,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_me().unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -329,9 +316,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.log_out().unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -346,10 +331,8 @@ mod tests {
             .create();
         let api = Api::new_url(server.url());
 
-        let response = api.close().unwrap_err();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        let response = api.close().err();
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -364,9 +347,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.close().unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -387,9 +368,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.forward_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -410,9 +389,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.copy_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -433,9 +410,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_location(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -457,9 +432,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.edit_message_live_location(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -479,9 +452,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.stop_message_live_location(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -504,9 +475,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_venue(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -527,9 +496,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_contact(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -553,9 +520,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_poll(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -572,9 +537,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_dice(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -594,9 +557,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_chat_action(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -615,9 +576,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_user_profile_photos(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -636,9 +595,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_file(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -658,9 +615,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.ban_chat_member(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -680,9 +635,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.unban_chat_member(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -707,9 +660,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.restrict_chat_member(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -730,9 +681,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.promote_chat_member(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -753,9 +702,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_chat_administrator_custom_title(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -779,9 +726,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_chat_permissions(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -801,9 +746,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.export_chat_invite_link(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -823,9 +766,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.create_chat_invite_link(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -846,9 +787,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.edit_chat_invite_link(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -869,9 +808,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.revoke_chat_invite_link(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -890,9 +827,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.delete_chat_photo(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -913,9 +848,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_photo(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -935,9 +868,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_audio(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -959,9 +890,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_audio(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -984,9 +913,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_audio(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1008,9 +935,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_document(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1032,9 +957,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_video(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1056,9 +979,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_animation(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1078,9 +999,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_voice(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1100,9 +1019,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_video_note(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1125,9 +1042,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_chat_photo(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1147,9 +1062,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_chat_title(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1169,9 +1082,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_chat_description(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1191,9 +1102,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.pin_chat_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1210,9 +1119,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.unpin_chat_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1229,9 +1136,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.leave_chat(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1248,9 +1153,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_chat(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1269,9 +1172,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_chat_administrators(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1290,9 +1191,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_chat_member_count(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1312,9 +1211,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_chat_member(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1334,9 +1231,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_chat_sticker_set(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1355,9 +1250,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.delete_chat_sticker_set(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1377,9 +1270,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.answer_callback_query(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1407,9 +1298,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_my_commands(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1438,9 +1327,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.set_my_commands(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1463,9 +1350,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.delete_my_commands(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1482,9 +1367,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_my_commands(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1505,9 +1388,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.get_my_commands(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1539,9 +1420,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.answer_inline_query(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1563,9 +1442,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.edit_message_text(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1587,9 +1464,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.edit_message_caption(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1610,9 +1485,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.stop_poll(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1633,9 +1506,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.delete_message(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1657,9 +1528,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_sticker(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1675,9 +1544,7 @@ mod tests {
             .create();
         let api = Api::new_url(server.url());
         let response = api.get_sticker_set(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1703,9 +1570,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.send_media_group(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]
@@ -1731,9 +1596,7 @@ mod tests {
         let api = Api::new_url(server.url());
 
         let response = api.edit_message_media(&params).unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[test]

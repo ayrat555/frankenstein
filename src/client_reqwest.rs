@@ -147,6 +147,7 @@ impl AsyncTelegramApi for AsyncApi {
 mod async_tests {
     use super::*;
     use crate::api_params::SendMessageParams;
+    use crate::json;
 
     #[tokio::test]
     async fn async_send_message_success() {
@@ -165,9 +166,7 @@ mod async_tests {
         let api = AsyncApi::new_url(server.url());
 
         let response = api.send_message(&params).await.unwrap();
-
-        let json = serde_json::to_string(&response).unwrap();
-        assert_eq!(response_string, json);
+        json::assert_str(&response, response_string);
     }
 
     #[tokio::test]
