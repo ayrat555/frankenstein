@@ -1,4 +1,5 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(test, allow(dead_code))]
 
 #[cfg(feature = "async-http-client")]
 pub use reqwest;
@@ -25,7 +26,7 @@ mod client_reqwest;
 #[cfg(feature = "http-client")]
 mod client_ureq;
 mod error;
-#[cfg(any(feature = "http-client", feature = "async-http-client"))]
+#[cfg(any(test, feature = "http-client", feature = "async-http-client"))]
 mod json;
 mod macros;
 pub mod objects;

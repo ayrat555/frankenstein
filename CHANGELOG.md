@@ -54,15 +54,15 @@
 - [Bot API 7.5](https://core.telegram.org/bots/api#june-18-2024) - [#174](https://github.com/ayrat555/frankenstein/pull/174)
 - [Bot API 7.6](https://core.telegram.org/bots/api#july-1-2024) - [#175](https://github.com/ayrat555/frankenstein/pull/175)
 - [Bot API 7.7](https://core.telegram.org/bots/api#july-7-2024) - [#177](https://github.com/ayrat555/frankenstein/pull/177)
-- fix: ChatBoostUpdated in UpdateContent  - [#176](https://github.com/ayrat555/frankenstein/pull/176)
+- fix: ChatBoostUpdated in UpdateContent - [#176](https://github.com/ayrat555/frankenstein/pull/176)
 
 ## 0.31.0 (2024-05-20)
 
--  [Bot API 7.3](https://core.telegram.org/bots/api#may-6-2024) - [#169](https://github.com/ayrat555/frankenstein/pull/169)
+- [Bot API 7.3](https://core.telegram.org/bots/api#may-6-2024) - [#169](https://github.com/ayrat555/frankenstein/pull/169)
 
 ## 0.30.8 (2024-04-26)
 
-- fix: remove "status" from ChatMemberRestricted  - [#165](https://github.com/ayrat555/frankenstein/pull/165)
+- fix: remove "status" from ChatMemberRestricted - [#165](https://github.com/ayrat555/frankenstein/pull/165)
 - fix: message_id is optional in ExternalReplyInfo - [#166](https://github.com/ayrat555/frankenstein/pull/166)
 
 ## 0.30.7 (2024-04-20)
@@ -75,9 +75,9 @@
 
 ## 0.30.5 (2024-03-26)
 
--  Fix the winners_count field in the Giveaway struct - [#150](https://github.com/ayrat555/frankenstein/pull/150)
--  Improve ci - [#152](https://github.com/ayrat555/frankenstein/pull/152)
--  Fix lints - [#151](https://github.com/ayrat555/frankenstein/pull/151)
+- Fix the winners_count field in the Giveaway struct - [#150](https://github.com/ayrat555/frankenstein/pull/150)
+- Improve ci - [#152](https://github.com/ayrat555/frankenstein/pull/152)
+- Fix lints - [#151](https://github.com/ayrat555/frankenstein/pull/151)
 
 ## 0.30.4 (2024-02-17)
 
