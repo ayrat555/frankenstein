@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.34.0 (2024-09-19)
+
+- docs: show the required feature on docs.rs by - [#209](https://github.com/ayrat555/frankenstein/pull/209)
+- refactor!: flatten the module structure by - [#208](https://github.com/ayrat555/frankenstein/pull/208)
+- perf!: always take params reference by - [#211](https://github.com/ayrat555/frankenstein/pull/211)
+- refactor!: use MessageOrBool over EditMessageResponse by - [#212](https://github.com/ayrat555/frankenstein/pull/212)
+- build!: remove implicit features by - [#214](https://github.com/ayrat555/frankenstein/pull/214)
+- Use consistent builder derive configs across API types by - [#213](https://github.com/ayrat555/frankenstein/pull/213)
+- test: improve testing for api error response by - [#216](https://github.com/ayrat555/frankenstein/pull/216)
+- refactor!: simplify traits with macros by - [#210](https://github.com/ayrat555/frankenstein/pull/210)
+- style: group imports by - [#217](https://github.com/ayrat555/frankenstein/pull/217)
+- refactor: generalize serde logic into macro by - [#218](https://github.com/ayrat555/frankenstein/pull/218)
+- test(error): expect api error by - [#222](https://github.com/ayrat555/frankenstein/pull/222)
+- docs: deduplicate spaces by - [#220](https://github.com/ayrat555/frankenstein/pull/220)
+- test(json): assert_str by - [#221](https://github.com/ayrat555/frankenstein/pull/221)
+
 ## 0.33.0 (2024-09-11)
 
 - refactor!: merge Error and HttpError by @EdJoPaTo - [#204](https://github.com/ayrat555/frankenstein/pull/204)
