@@ -157,7 +157,7 @@ mod async_tests {
             .text("Hello!")
             .build();
         let mut server = mockito::Server::new_async().await;
-        let _m = server
+        let mock = server
             .mock("POST", "/sendMessage")
             .with_status(200)
             .with_body(response_string)
@@ -166,6 +166,9 @@ mod async_tests {
         let api = AsyncApi::new_url(server.url());
 
         let response = api.send_message(&params).await.unwrap();
+        mock.assert();
+        drop(server);
+
         json::assert_str(&response, response_string);
     }
 
@@ -178,14 +181,18 @@ mod async_tests {
             .text("Hello!")
             .build();
         let mut server = mockito::Server::new_async().await;
-        let _m = server
+        let mock = server
             .mock("POST", "/sendMessage")
             .with_status(400)
             .with_body(response_string)
             .create_async()
             .await;
         let api = AsyncApi::new_url(server.url());
+
         let error = api.send_message(&params).await.unwrap_err().unwrap_api();
+        mock.assert();
+        drop(server);
+
         assert_eq!(error.description, "Bad Request: chat not found");
         assert_eq!(error.error_code, 400);
         assert_eq!(error.parameters, None);

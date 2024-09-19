@@ -169,10 +169,27 @@ mod tests {
         AllowedUpdate, BotCommand, ChatPermissions, InlineQueryResultVenue, InputPollOption,
     };
 
+    macro_rules! case {
+        ($method:ident, $status:literal, $body:ident $(, $params:ident )? ) => {{
+            paste::paste! {
+                let mut server = mockito::Server::new();
+                let mock = server
+                    .mock("POST", concat!("/", stringify!($method)))
+                    .with_status($status)
+                    .with_body($body)
+                    .create();
+                let api = Api::new_url(server.url());
+                let response = dbg!(api.[<$method:snake>]($(& $params )?));
+                mock.assert();
+                drop(server);
+                response
+            }
+        }};
+    }
+
     #[test]
     fn new_sets_correct_url() {
         let api = Api::new("hey");
-
         assert_eq!("https://api.telegram.org/bothey", api.api_url);
     }
 
@@ -182,16 +199,7 @@ mod tests {
         let params = GetUpdatesParams::builder()
             .allowed_updates(vec![AllowedUpdate::Message])
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getUpdates")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_updates(&params).unwrap();
+        let response = case!(getUpdates, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
 
         assert_eq!(1, response.result.len());
@@ -206,15 +214,7 @@ mod tests {
             .chat_id(275808073)
             .text("Hello!")
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendMessage")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_message(&params).unwrap();
+        let response = case!(sendMessage, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -226,14 +226,9 @@ mod tests {
             .chat_id(1)
             .text("Hello!")
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendMessage")
-            .with_status(400)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-        let error = api.send_message(&params).unwrap_err().unwrap_api();
+        let error = case!(sendMessage, 400, response_string, params)
+            .unwrap_err()
+            .unwrap_api();
         assert_eq!(error.description, "Bad Request: chat not found");
         assert_eq!(error.error_code, 400);
         assert_eq!(error.parameters, None);
@@ -245,15 +240,7 @@ mod tests {
         let response_string =
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
         let params = SetWebhookParams::builder().url("").build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setWebhook")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_webhook(&params).unwrap();
+        let response = case!(setWebhook, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -262,91 +249,42 @@ mod tests {
         let response_string =
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
         let params = DeleteWebhookParams::builder().build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/deleteWebhook")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.delete_webhook(&params).unwrap();
+        let response = case!(deleteWebhook, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn get_webhook_info_success() {
         let response_string = "{\"ok\":true,\"result\":{\"url\":\"\",\"has_custom_certificate\":false,\"pending_update_count\":0,\"allowed_updates\":[\"message\"]}}";
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getWebhookInfo")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_webhook_info().unwrap();
+        let response = case!(getWebhookInfo, 200, response_string).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn get_me_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_inline_queries\":false}}";
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getMe")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_me().unwrap();
+        let response = case!(getMe, 200, response_string).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn log_out_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/logOut")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.log_out().unwrap();
+        let response = case!(logOut, 200, response_string).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn close_failure() {
         let response_string = "{\"ok\":false,\"description\":\"Unauthorized\",\"error_code\":401}";
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/close")
-            .with_status(400)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.close().err();
+        let response = case!(close, 400, response_string).unwrap_err();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn close_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/close")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.close().unwrap();
+        let response = case!(close, 200, response_string).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -358,16 +296,7 @@ mod tests {
             .from_chat_id(275808073)
             .message_id(2747)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/forwardMessage")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.forward_message(&params).unwrap();
+        let response = case!(forwardMessage, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -379,16 +308,7 @@ mod tests {
             .from_chat_id(275808073)
             .message_id(2747)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/copyMessage")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.copy_message(&params).unwrap();
+        let response = case!(copyMessage, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -400,16 +320,7 @@ mod tests {
             .latitude(49.7)
             .longitude(6.95)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendLocation")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_location(&params).unwrap();
+        let response = case!(sendLocation, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -422,16 +333,7 @@ mod tests {
             .latitude(49.7)
             .longitude(6.95)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/editMessageLiveLocation")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.edit_message_live_location(&params).unwrap();
+        let response = case!(editMessageLiveLocation, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -442,16 +344,7 @@ mod tests {
             .chat_id(275808073)
             .message_id(2752)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/stopMessageLiveLocation")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.stop_message_live_location(&params).unwrap();
+        let response = case!(stopMessageLiveLocation, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -465,16 +358,7 @@ mod tests {
             .title("Meow")
             .address("Hoof")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendVenue")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_venue(&params).unwrap();
+        let response = case!(sendVenue, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -486,16 +370,7 @@ mod tests {
             .phone_number("49")
             .first_name("Meow")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendContact")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_contact(&params).unwrap();
+        let response = case!(sendContact, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -510,16 +385,7 @@ mod tests {
                 InputPollOption::builder().text("2").build(),
             ])
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendPoll")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_poll(&params).unwrap();
+        let response = case!(sendPoll, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -527,16 +393,7 @@ mod tests {
     fn send_dice_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2757,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"dice\":{\"emoji\":\"🎲\",\"value\":5}}}";
         let params = SendDiceParams::builder().chat_id(275808073).build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendDice")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_dice(&params).unwrap();
+        let response = case!(sendDice, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -547,16 +404,7 @@ mod tests {
             .chat_id(275808073)
             .action(ChatAction::Typing)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendChatAction")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_chat_action(&params).unwrap();
+        let response = case!(sendChatAction, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -566,16 +414,7 @@ mod tests {
         let params = GetUserProfilePhotosParams::builder()
             .user_id(275808073_u64)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getUserProfilePhotos")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_user_profile_photos(&params).unwrap();
+        let response = case!(getUserProfilePhotos, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -585,16 +424,7 @@ mod tests {
         let params = GetFileParams::builder()
             .file_id("AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getFile")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_file(&params).unwrap();
+        let response = case!(getFile, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -605,16 +435,7 @@ mod tests {
             .chat_id(-1001368460856)
             .user_id(275808073_u64)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/banChatMember")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.ban_chat_member(&params).unwrap();
+        let response = case!(banChatMember, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -625,16 +446,7 @@ mod tests {
             .chat_id(-1001368460856)
             .user_id(275808072_u64)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/unbanChatMember")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.unban_chat_member(&params).unwrap();
+        let response = case!(unbanChatMember, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -644,22 +456,12 @@ mod tests {
         let perm = ChatPermissions::builder()
             .can_add_web_page_previews(true)
             .build();
-
         let params = RestrictChatMemberParams::builder()
             .chat_id(-1001368460856)
             .user_id(275808073_u64)
             .permissions(perm)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/restrictChatMember")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.restrict_chat_member(&params).unwrap();
+        let response = case!(restrictChatMember, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -671,16 +473,7 @@ mod tests {
             .user_id(275808073_u64)
             .can_change_info(true)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/promoteChatMember")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.promote_chat_member(&params).unwrap();
+        let response = case!(promoteChatMember, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -692,16 +485,13 @@ mod tests {
             .user_id(275808073_u64)
             .custom_title("King")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setChatAdministratorCustomTitle")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_chat_administrator_custom_title(&params).unwrap();
+        let response = case!(
+            setChatAdministratorCustomTitle,
+            200,
+            response_string,
+            params
+        )
+        .unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -711,103 +501,53 @@ mod tests {
         let perm = ChatPermissions::builder()
             .can_add_web_page_previews(true)
             .build();
-
         let params = SetChatPermissionsParams::builder()
             .chat_id(-1001368460856)
             .permissions(perm)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setChatPermissions")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_chat_permissions(&params).unwrap();
+        let response = case!(setChatPermissions, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn export_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":\"https://t.me/joinchat/txIUDwjfk7M2ODEy\"}";
-
         let params = ExportChatInviteLinkParams::builder()
             .chat_id(-1001368460856)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/exportChatInviteLink")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.export_chat_invite_link(&params).unwrap();
+        let response = case!(exportChatInviteLink, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn create_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/yFEnSaeiQm83ZTNi\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"creates_join_request\":false,\"is_primary\":false,\"is_revoked\":false}}";
-
         let params = CreateChatInviteLinkParams::builder()
             .chat_id(-1001368460856)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/createChatInviteLink")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.create_chat_invite_link(&params).unwrap();
+        let response = case!(createChatInviteLink, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn edit_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/O458bA8hQ0MzNmQy\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"creates_join_request\":false,\"is_primary\":false,\"is_revoked\":false}}";
-
         let params = EditChatInviteLinkParams::builder()
             .chat_id(-1001368460856)
             .invite_link("https://t.me/joinchat/O458bA8hQ0MzNmQy")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/editChatInviteLink")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.edit_chat_invite_link(&params).unwrap();
+        let response = case!(editChatInviteLink, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn revoke_chat_invite_link_success() {
         let response_string = "{\"ok\":true,\"result\":{\"invite_link\":\"https://t.me/joinchat/O458bA8hQ0MzNmQy\",\"creator\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"creates_join_request\":false,\"is_primary\":false,\"is_revoked\":true}}";
-
         let params = RevokeChatInviteLinkParams::builder()
             .chat_id(-1001368460856)
             .invite_link("https://t.me/joinchat/O458bA8hQ0MzNmQy")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/revokeChatInviteLink")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.revoke_chat_invite_link(&params).unwrap();
+        let response = case!(revokeChatInviteLink, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -817,16 +557,7 @@ mod tests {
         let params = DeleteChatPhotoParams::builder()
             .chat_id(-1001368460856)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/deleteChatPhoto")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.delete_chat_photo(&params).unwrap();
+        let response = case!(deleteChatPhoto, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -838,16 +569,7 @@ mod tests {
             .chat_id(275808073)
             .photo(file)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendPhoto")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_photo(&params).unwrap();
+        let response = case!(sendPhoto, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -859,37 +581,20 @@ mod tests {
             .chat_id(275808073)
             .audio(file)
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendAudio")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_audio(&params).unwrap();
+        let response = case!(sendAudio, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn send_audio_file_with_thumb_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAudioParams::builder()
             .chat_id(275808073)
             .audio(file.clone())
             .thumbnail(file)
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendAudio")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_audio(&params).unwrap();
+        let response = case!(sendAudio, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -903,82 +608,43 @@ mod tests {
             .chat_id(275808073)
             .audio(file)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendAudio")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_audio(&params).unwrap();
+        let response = case!(sendAudio, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn send_document_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendDocumentParams::builder()
             .chat_id(275808073)
             .document(file)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendDocument")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_document(&params).unwrap();
+        let response = case!(sendDocument, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn send_video_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVideoParams::builder()
             .chat_id(275808073)
             .video(file)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendVideo")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_video(&params).unwrap();
+        let response = case!(sendVideo, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn send_animation_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAnimationParams::builder()
             .chat_id(275808073)
             .animation(file)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendAnimation")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_animation(&params).unwrap();
+        let response = case!(sendAnimation, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -990,15 +656,7 @@ mod tests {
             .chat_id(275808073)
             .voice(file)
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendVoice")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_voice(&params).unwrap();
+        let response = case!(sendVoice, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1010,22 +668,13 @@ mod tests {
             .chat_id(275808073)
             .video_note(file)
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendVideoNote")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_video_note(&params).unwrap();
+        let response = case!(sendVideoNote, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn set_chat_photo_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-
         let file = InputFile {
             path: std::path::PathBuf::from("./frankenstein_logo.png"),
         };
@@ -1033,15 +682,7 @@ mod tests {
             .chat_id(275808073)
             .photo(file)
             .build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setChatPhoto")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_chat_photo(&params).unwrap();
+        let response = case!(setChatPhoto, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1052,16 +693,7 @@ mod tests {
             .chat_id(-1001368460856)
             .title("Frankenstein")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setChatTitle")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_chat_title(&params).unwrap();
+        let response = case!(setChatTitle, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1072,16 +704,7 @@ mod tests {
             .chat_id(-1001368460856)
             .description("Frankenstein group")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setChatDescription")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_chat_description(&params).unwrap();
+        let response = case!(setChatDescription, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1092,16 +715,7 @@ mod tests {
             .chat_id(275808073)
             .message_id(2766)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/pinChatMessage")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.pin_chat_message(&params).unwrap();
+        let response = case!(pinChatMessage, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1109,16 +723,7 @@ mod tests {
     fn unpin_chat_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = UnpinChatMessageParams::builder().chat_id(275808073).build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/unpinChatMessage")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.unpin_chat_message(&params).unwrap();
+        let response = case!(unpinChatMessage, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1126,16 +731,7 @@ mod tests {
     fn leave_chat_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = LeaveChatParams::builder().chat_id(-1001368460856).build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/leaveChat")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.leave_chat(&params).unwrap();
+        let response = case!(leaveChat, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1143,16 +739,7 @@ mod tests {
     fn get_chat_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\",\"photo\":{\"small_file_id\":\"AQADAgAT-kgrmy4AAwIAA8jhydkW____s1Cm6Dc_w8Ge7QUAAR8E\",\"small_file_unique_id\":\"AQAD-kgrmy4AA57tBQAB\",\"big_file_id\":\"AQADAgAT-kgrmy4AAwMAA8jhydkW____s1Cm6Dc_w8Gg7QUAAR8E\",\"big_file_unique_id\":\"AQAD-kgrmy4AA6DtBQAB\"},\"description\":\"Frankenstein group\",\"invite_link\":\"https://t.me/joinchat/smSXMzNKTwA0ZjFi\",\"permissions\":{\"can_send_messages\":true,\"can_send_polls\":true,\"can_send_other_messages\":true,\"can_add_web_page_previews\":true,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true}}}";
         let params = GetChatParams::builder().chat_id(-1001368460856).build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getChat")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_chat(&params).unwrap();
+        let response = case!(getChat, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1162,16 +749,7 @@ mod tests {
         let params = GetChatAdministratorsParams::builder()
             .chat_id(-1001368460856)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getChatAdministrators")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_chat_administrators(&params).unwrap();
+        let response = case!(getChatAdministrators, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1181,16 +759,7 @@ mod tests {
         let params = GetChatMemberCountParams::builder()
             .chat_id(-1001368460856)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getChatMemberCount")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_chat_member_count(&params).unwrap();
+        let response = case!(getChatMemberCount, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1201,16 +770,7 @@ mod tests {
             .chat_id(-1001368460856)
             .user_id(275808073_u64)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getChatMember")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_chat_member(&params).unwrap();
+        let response = case!(getChatMember, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1221,16 +781,7 @@ mod tests {
             .chat_id(-1001368460856)
             .sticker_set_name("GBTDPack")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setChatStickerSet")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_chat_sticker_set(&params).unwrap();
+        let response = case!(setChatStickerSet, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1240,16 +791,7 @@ mod tests {
         let params = DeleteChatStickerSetParams::builder()
             .chat_id(-1001368460856)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/deleteChatStickerSet")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.delete_chat_sticker_set(&params).unwrap();
+        let response = case!(deleteChatStickerSet, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1260,16 +802,7 @@ mod tests {
             .callback_query_id("id")
             .text("text")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/answerCallbackQuery")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.answer_callback_query(&params).unwrap();
+        let response = case!(answerCallbackQuery, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1288,16 +821,7 @@ mod tests {
                     .build(),
             ])
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setMyCommands")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_my_commands(&params).unwrap();
+        let response = case!(setMyCommands, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1317,16 +841,7 @@ mod tests {
             ])
             .scope(BotCommandScope::Default)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/setMyCommands")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.set_my_commands(&params).unwrap();
+        let response = case!(setMyCommands, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1340,61 +855,32 @@ mod tests {
             .scope(scope)
             .language_code("es")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/deleteMyCommands")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.delete_my_commands(&params).unwrap();
+        let response = case!(deleteMyCommands, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn get_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"command\":\"meow\",\"description\":\"mewo\"},{\"command\":\"meow1\",\"description\":\"mewo1\"}]}";
-
         let params = GetMyCommandsParams::builder().build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getMyCommands")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_my_commands(&params).unwrap();
+        let response = case!(getMyCommands, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn get_my_commands_scope_success() {
         let response_string = "{\"ok\":true,\"result\":[]}";
-
         let scope = BotCommandScope::Chat(BotCommandScopeChat {
             chat_id: ChatId::Integer(275808073),
         });
         let params = GetMyCommandsParams::builder().scope(scope).build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getMyCommands")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_my_commands(&params).unwrap();
+        let response = case!(getMyCommands, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn answer_inline_query_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-
         let venue_result = InlineQueryResult::Venue(
             InlineQueryResultVenue::builder()
                 .id("hey9sdfasdflasdfadsfasd")
@@ -1404,181 +890,98 @@ mod tests {
                 .address("address")
                 .build(),
         );
-
         let params = AnswerInlineQueryParams::builder()
             .inline_query_id("inline_query.id()")
             .results(vec![venue_result])
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/answerInlineQuery")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-
-        let api = Api::new_url(server.url());
-
-        let response = api.answer_inline_query(&params).unwrap();
+        let response = case!(answerInlineQuery, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn edit_message_text_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619158446,\"text\":\"Hi!!\"}}";
-
         let params = EditMessageTextParams::builder()
             .text("Hi!!")
             .chat_id(275808073)
             .message_id(2782)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/editMessageText")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.edit_message_text(&params).unwrap();
+        let response = case!(editMessageText, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn edit_message_caption_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2784,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619159414,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619159461,\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA20AA1hCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3gAA1lCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3kAA1pCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}],\"caption\":\"Caption\"}}";
-
         let params = EditMessageCaptionParams::builder()
             .chat_id(275808073)
             .message_id(2784)
             .caption("Caption")
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/editMessageCaption")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.edit_message_caption(&params).unwrap();
+        let response = case!(editMessageCaption, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn stop_poll_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":\"5195109123171024927\",\"question\":\"are you?\",\"options\":[{\"text\":\"1\",\"voter_count\":1},{\"text\":\"2\",\"voter_count\":0}],\"total_voter_count\":1,\"is_closed\":true,\"is_anonymous\":true,\"type\":\"regular\",\"allows_multiple_answers\":false}}";
-
         let params = StopPollParams::builder()
             .chat_id(-1001368460856)
             .message_id(495)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/stopPoll")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.stop_poll(&params).unwrap();
+        let response = case!(stopPoll, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn delete_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-
         let params = DeleteMessageParams::builder()
             .chat_id(275808073)
             .message_id(2784)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/deleteMessage")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.delete_message(&params).unwrap();
+        let response = case!(deleteMessage, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn send_sticker_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"type\":\"regular\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumbnail\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendStickerParams::builder()
             .chat_id(275808073)
             .sticker(file)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendSticker")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_sticker(&params).unwrap();
+        let response = case!(sendSticker, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn get_sticker_set_success() {
         let response_string = "{\"ok\":true,\"result\":{\"name\":\"unocards\",\"title\":\"UNO Bot\",\"sticker_type\":\"regular\",\"contains_masks\":false,\"stickers\":[{\"file_id\":\"CAACAgQAAxUAAWCDxAQVJ6X7FGiBD5NyjN5DDvgfAALZAQACX1eZAAEqnpNt3SpG_x8E\",\"file_unique_id\":\"AgAD2QEAAl9XmQAB\",\"type\":\"regular\",\"width\":342,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumbnail\":{\"file_id\":\"AAMCBAADFQABYIPEBBUnpfsUaIEPk3KM3kMO-B8AAtkBAAJfV5kAASqek23dKkb_P75BGQAEAQAHbQADBBEAAh8E\",\"file_unique_id\":\"AQADP75BGQAEBBEAAg\",\"width\":85,\"height\":128,\"file_size\":2452},\"emoji\":\"dd\",\"set_name\":\"unocards\",\"file_size\":8898}]}}";
-
         let params = GetStickerSetParams::builder().name("unocards").build();
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getStickerSet")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-        let response = api.get_sticker_set(&params).unwrap();
+        let response = case!(getStickerSet, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn send_media_group_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"message_id\":510,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]},{\"message_id\":511,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}]}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
-
         let photo = InputMediaPhoto::builder().media(file).build();
         let medias = vec![Media::Photo(photo.clone()), Media::Photo(photo)];
-
         let params = SendMediaGroupParams::builder()
             .chat_id(-1001368460856)
             .media(medias)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/sendMediaGroup")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.send_media_group(&params).unwrap();
+        let response = case!(sendMediaGroup, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
     #[test]
     fn edit_message_media_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":513,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"edit_date\":1619336788,\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}}";
-
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
-
         let params = EditMessageMediaParams::builder()
             .media(InputMedia::Photo(
                 InputMediaPhoto::builder().media(file).build(),
@@ -1586,16 +989,7 @@ mod tests {
             .chat_id(-1001368460856)
             .message_id(513)
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/editMessageMedia")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.edit_message_media(&params).unwrap();
+        let response = case!(editMessageMedia, 200, response_string, params).unwrap();
         json::assert_str(&response, response_string);
     }
 
@@ -1605,17 +999,7 @@ mod tests {
         let params = GetUpdatesParams::builder()
             .allowed_updates(vec![AllowedUpdate::Message])
             .build();
-
-        let mut server = mockito::Server::new();
-        let _m = server
-            .mock("POST", "/getUpdates")
-            .with_status(200)
-            .with_body(response_string)
-            .create();
-        let api = Api::new_url(server.url());
-
-        let response = api.get_updates(&params);
-
+        let response = case!(getUpdates, 200, response_string, params);
         assert_eq!(
             Err(Error::Decode("Error(\"key must be a string\", line: 1, column: 2) : \"{hey this json is invalid}\"".to_string())),
             response
