@@ -233,15 +233,11 @@ mod tests {
             .with_body(response_string)
             .create();
         let api = Api::new_url(server.url());
-
-        if let Err(Error::Api(error)) = dbg!(api.send_message(&params)) {
-            assert_eq!(error.description, "Bad Request: chat not found");
-            assert_eq!(error.error_code, 400);
-            assert_eq!(error.parameters, None);
-            assert!(!error.ok);
-        } else {
-            panic!("API Error expected");
-        }
+        let error = api.send_message(&params).unwrap_err().unwrap_api();
+        assert_eq!(error.description, "Bad Request: chat not found");
+        assert_eq!(error.error_code, 400);
+        assert_eq!(error.parameters, None);
+        assert!(!error.ok);
     }
 
     #[test]

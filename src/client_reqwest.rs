@@ -185,14 +185,10 @@ mod async_tests {
             .create_async()
             .await;
         let api = AsyncApi::new_url(server.url());
-
-        if let Err(Error::Api(error)) = dbg!(api.send_message(&params).await) {
-            assert_eq!(error.description, "Bad Request: chat not found");
-            assert_eq!(error.error_code, 400);
-            assert_eq!(error.parameters, None);
-            assert!(!error.ok);
-        } else {
-            panic!("API Error expected");
-        }
+        let error = api.send_message(&params).await.unwrap_err().unwrap_api();
+        assert_eq!(error.description, "Bad Request: chat not found");
+        assert_eq!(error.error_code, 400);
+        assert_eq!(error.parameters, None);
+        assert!(!error.ok);
     }
 }
