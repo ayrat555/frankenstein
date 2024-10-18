@@ -19,6 +19,7 @@ http-client = ["telegram-trait", "dep:ureq", "dep:multipart", "dep:mime_guess", 
 telegram-trait = []
 async-http-client = ["async-telegram-trait", "dep:reqwest", "dep:tokio", "dep:serde_json"]
 async-telegram-trait = ["dep:async-trait"]
+wasm = ["dep:serde_json","dep:reqwest","dep:async-trait"]
 
 [lints.rust]
 unsafe_code = "forbid"
@@ -95,11 +96,7 @@ default-features = false
 features = ["client"]
 optional = true
 
-[dependencies.reqwest]
-version = "0.12"
-default-features = false
-features = ["multipart", "stream", "rustls-tls"]
-optional = true
+
 
 [dependencies.tokio]
 version = "1"
@@ -110,8 +107,25 @@ optional = true
 version = "2"
 optional = true
 
+[target.'cfg(target_arch = "wasm32")'.dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = ["multipart", "stream"]
+optional = true
+
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = ["multipart", "stream", "rustls-tls"]
+optional = true
+
+
 [dev-dependencies]
 isahc = "1"
 mockito = "1.0"
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }
+
+
+
