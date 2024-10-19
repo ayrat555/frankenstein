@@ -11,25 +11,6 @@ use tokio::fs::File;
 
 use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
-
-/// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
-#[derive(Debug, Clone, Builder)]
-#[must_use = "API needs to be used in order to be useful"]
-#[cfg(not(feature = "wasm"))]
-pub struct AsyncApi {
-    #[builder(into)]
-    pub api_url: String,
-
-    #[builder(
-        default = reqwest::ClientBuilder::new()
-            .connect_timeout(Duration::from_secs(10))
-            .timeout(Duration::from_secs(500))
-            .build()
-            .unwrap()
-    )]
-    pub client: reqwest::Client,
-}
-
 /// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
 #[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
@@ -40,6 +21,17 @@ pub struct AsyncApi {
 
     #[builder(
         default = reqwest::ClientBuilder::new()
+            .build()
+            .unwrap()
+    )]
+    #[cfg(feature = "wasm")]
+    pub client: reqwest::Client,
+
+    #[cfg(not(feature = "wasm"))]
+    #[builder(
+        default = reqwest::ClientBuilder::new()
+            .connect_timeout(Duration::from_secs(10))
+            .timeout(Duration::from_secs(500))
             .build()
             .unwrap()
     )]
@@ -128,7 +120,9 @@ impl AsyncTelegramApi for AsyncApi {
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
         if !files.is_empty() {
-            return Err(Error::Encode("wasm not support file upload yet".to_string()))
+            return Err(Error::Encode(
+                "wasm not support file upload yet".to_string(),
+            ));
         }
         // let files_with_paths: Vec<(String, &str, String)> = files
         //     .iter()
@@ -160,7 +154,6 @@ impl AsyncTelegramApi for AsyncApi {
                 form = form.text(key.clone(), val);
             }
         }
-
 
         let url = format!("{}/{method}", self.api_url);
 
