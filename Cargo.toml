@@ -101,7 +101,7 @@ default-features = false
 features = ["multipart", "stream", "rustls-tls"]
 optional = true
 
-[dependencies.tokio]
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
 version = "1"
 features = ["fs"]
 optional = true
