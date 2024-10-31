@@ -8,7 +8,6 @@ use crate::Error;
 /// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
 #[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
-
 pub struct AsyncApi {
     #[builder(into)]
     pub api_url: String,
