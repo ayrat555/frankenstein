@@ -15,7 +15,7 @@ pub use self::error::Error;
 pub use self::objects::*;
 pub use self::parse_mode::ParseMode;
 pub use self::response::*;
-#[cfg(feature = "async-http-client")]
+#[cfg(feature = "async-telegram-trait")]
 pub use self::trait_async::AsyncTelegramApi;
 #[cfg(feature = "telegram-trait")]
 pub use self::trait_sync::TelegramApi;
@@ -26,13 +26,13 @@ mod client_reqwest;
 #[cfg(feature = "http-client")]
 mod client_ureq;
 mod error;
-#[cfg(any(test, feature = "http-client", feature = "async-http-client",))]
+#[cfg(any(test, feature = "http-client", feature = "async-http-client"))]
 mod json;
 mod macros;
 pub mod objects;
 mod parse_mode;
 pub mod response;
-#[cfg(feature = "async-http-client")]
+#[cfg(feature = "async-telegram-trait")]
 mod trait_async;
 #[cfg(feature = "telegram-trait")]
 mod trait_sync;
