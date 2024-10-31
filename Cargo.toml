@@ -17,8 +17,7 @@ all-features = true
 default = ["http-client"]
 http-client = ["telegram-trait", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
 telegram-trait = []
-async-http-client = ["async-http-client-wasm", "dep:tokio"]
-async-http-client-wasm =["async-telegram-trait", "dep:reqwest", "dep:serde_json"]
+async-http-client = ["dep:tokio", "async-telegram-trait", "dep:reqwest", "dep:serde_json"]
 async-telegram-trait = ["dep:async-trait"]
 
 
@@ -56,18 +55,18 @@ default-features = false
 features = ["client"]
 optional = true
 
-[[example]]
-name = "reply_keyboard"
-required-features = ["http-client"]
+[dependencies.ureq]
+version = "2"
+optional = true
 
-[dependencies.tokio]
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
 version = "1"
 features = ["fs"]
 optional = true
 
-[dependencies.ureq]
-version = "2"
-optional = true
+[[example]]
+name = "reply_keyboard"
+required-features = ["http-client"]
 
 [[example]]
 name = "inline_keyboard"
@@ -123,6 +122,3 @@ isahc = "1"
 mockito = "1.0"
 serde_json = "1"
 tokio = { version = "1", features = ["full"] }
-
-
-

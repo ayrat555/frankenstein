@@ -13,7 +13,7 @@ pub struct AsyncApi {
     #[builder(into)]
     pub api_url: String,
 
-    #[cfg(feature = "async-http-client-wasm")]
+    #[cfg(target_arch = "wasm32")]
     #[builder(
         default = reqwest::ClientBuilder::new()
             .build()
@@ -21,7 +21,7 @@ pub struct AsyncApi {
     )]
     pub client: reqwest::Client,
 
-    #[cfg(not(feature = "async-http-client-wasm"))]
+    #[cfg(not(target_arch = "wasm32"))]
     #[builder(
         default = reqwest::ClientBuilder::new()
             .connect_timeout(std::time::Duration::from_secs(10))
@@ -72,8 +72,8 @@ impl From<reqwest::Error> for Error {
 }
 
 // Wasm target need not be `Send` because it is single-threaded
-#[cfg_attr(feature = "async-http-client-wasm", async_trait(?Send))]
-#[cfg_attr(not(feature = "async-http-client-wasm"), async_trait)]
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
 impl AsyncTelegramApi for AsyncApi {
     type Error = Error;
 
@@ -109,14 +109,13 @@ impl AsyncTelegramApi for AsyncApi {
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
         Output: serde::de::DeserializeOwned,
     {
-        #[cfg(feature = "async-http-client")]
+        #[cfg(not(target_arch = "wasm32"))]
         {
             use reqwest::multipart;
             use serde_json::Value;
             let json_string = crate::json::encode(&params)?;
             let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
-            use tokio::fs::File;
             let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
             let files_with_paths: Vec<(String, &str, String)> = files
                 .iter()
@@ -142,7 +141,7 @@ impl AsyncTelegramApi for AsyncApi {
             }
 
             for (parameter_name, file_path, file_name) in files_with_paths {
-                let file = File::open(file_path)
+                let file = tokio::fs::File::open(file_path)
                     .await
                     .map_err(|error| Error::Encode(error.to_string()))?;
                 let part = multipart::Part::stream(file).file_name(file_name);
@@ -154,12 +153,12 @@ impl AsyncTelegramApi for AsyncApi {
             let response = self.client.post(url).multipart(form).send().await?;
             Self::decode_response(response).await
         }
-        #[cfg(not(feature = "async-http-client"))]
+
+        #[cfg(target_arch = "wasm32")]
         {
             // fot this function need api about fs, so we this function need find replacement,maybe another function input encoded file?
             Err(Error::Encode(format!(
-                "calling wasm unsupported {:?} with param{:?} attachment{:?}",
-                method, params, files
+                "calling {method:?} with files is unsupported in WASM due to missing form_data / attachment support. Was called with params {params:?} and files {files:?}",
             )))
         }
     }
