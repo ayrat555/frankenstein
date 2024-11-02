@@ -1074,6 +1074,7 @@ pub struct InlineKeyboardButton {
     pub switch_inline_query: Option<String>,
     pub switch_inline_query_current_chat: Option<String>,
     pub switch_inline_query_chosen_chat: Option<SwitchInlineQueryChosenChat>,
+    pub copy_text: Option<CopyTextButton>,
     pub callback_game: Option<CallbackGame>,
     pub pay: Option<bool>,
 }
@@ -1095,6 +1096,12 @@ pub struct SwitchInlineQueryChosenChat {
     pub allow_bot_chats: Option<bool>,
     pub allow_group_chats: Option<bool>,
     pub allow_channel_chats: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct CopyTextButton {
+    pub text: String,
 }
 
 #[apply(apistruct!)]
@@ -2227,6 +2234,7 @@ pub enum TransactionPartner {
     User(TransactionPartnerUser),
     Fragment(TransactionPartnerFragment),
     TelegramAds(TransactionPartnerTelegramAds),
+    TelegramApi(TransactionPartnerTelegramApi),
     Other(TransactionPartnerOther),
 }
 
@@ -2247,6 +2255,12 @@ pub struct TransactionPartnerFragment {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct TransactionPartnerTelegramAds {}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct TransactionPartnerTelegramApi {
+    pub request_count: u64,
+}
 
 #[apply(apistruct!)]
 #[derive(Eq)]
