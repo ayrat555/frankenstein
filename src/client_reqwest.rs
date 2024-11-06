@@ -5,6 +5,7 @@ use bon::Builder;
 
 use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
+
 /// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
 #[derive(Debug, Clone, Builder)]
 #[must_use = "API needs to be used in order to be useful"]
@@ -112,6 +113,7 @@ impl AsyncTelegramApi for AsyncApi {
         {
             use reqwest::multipart;
             use serde_json::Value;
+
             let json_string = crate::json::encode(&params)?;
             let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
@@ -155,7 +157,7 @@ impl AsyncTelegramApi for AsyncApi {
 
         #[cfg(target_arch = "wasm32")]
         {
-            // fot this function need api about fs, so we this function need find replacement,maybe another function input encoded file?
+            // for this function need api about fs, so we this function need find replacement,maybe another function input encoded file? welcome to PR.
             Err(Error::Encode(format!(
                 "calling {method:?} with files is unsupported in WASM due to missing form_data / attachment support. Was called with params {params:?} and files {files:?}",
             )))
