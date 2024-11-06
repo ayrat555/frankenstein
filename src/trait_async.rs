@@ -48,7 +48,9 @@ macro_rules! request_nb {
     }
 }
 
-#[async_trait::async_trait]
+// Wasm target need not be `Send` because it is single-threaded
+#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait AsyncTelegramApi
 where
     Self: Sync,

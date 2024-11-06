@@ -116,24 +116,36 @@ jobs:
       matrix:
         include:
           - triple: x86_64-unknown-linux-gnu
+            features: --all-features
             os: ubuntu-latest
           - triple: aarch64-unknown-linux-gnu
+            features: --all-features
             os: ubuntu-latest
           - triple: armv7-unknown-linux-gnueabihf
+            features: --all-features
             os: ubuntu-latest
           - triple: arm-unknown-linux-gnueabihf
+            features: --all-features
             os: ubuntu-latest
           - triple: riscv64gc-unknown-linux-gnu
+            features: --all-features
+            os: ubuntu-latest
+          - triple: wasm32-unknown-unknown
+            features: --no-default-features --features=async-http-client
             os: ubuntu-latest
 
           - triple: x86_64-apple-darwin
+            features: --all-features
             os: macos-latest
           - triple: aarch64-apple-darwin
+            features: --all-features
             os: macos-latest
 
           - triple: x86_64-pc-windows-msvc
+            features: --all-features
             os: windows-latest
           - triple: aarch64-pc-windows-msvc
+            features: --all-features
             os: windows-latest
     env:
       RUSTFLAGS: --deny warnings
@@ -156,4 +168,4 @@ jobs:
           key: release-${{ matrix.triple }}-${{ steps.rust.outputs.cachekey }}-${{ hashFiles('**/Cargo.*') }}
           path: target/
 
-      - run: ${{ runner.os == 'Linux' && 'cross' || 'cargo' }} build --release --offline --all-features --target ${{ matrix.triple }}
+      - run: ${{ runner.os == 'Linux' && 'cross' || 'cargo' }} build --release --offline ${{ matrix.features }} --target ${{ matrix.triple }}
