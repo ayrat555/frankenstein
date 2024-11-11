@@ -79,7 +79,7 @@ paste = "1.0.2"
 serde = { version = "1.0.157", features = ["derive"] }
 serde_json = { version = "1.0.45", optional = true }
 serde_with = "3.0.0"
-thiserror = "1"
+thiserror = "2"
 
 [dependencies.async-trait]
 version = "0.1"
