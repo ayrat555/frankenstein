@@ -13,25 +13,19 @@ pub struct AsyncApi {
     #[builder(into)]
     pub api_url: String,
 
-    #[cfg(target_arch = "wasm32")]
-    #[builder(
-        default = reqwest::ClientBuilder::new()
-            .build()
-            .unwrap()
-    )]
-    pub client: reqwest::Client,
-
-    #[cfg(not(target_arch = "wasm32"))]
-    #[builder(
-        default = reqwest::ClientBuilder::new()
-            .connect_timeout(std::time::Duration::from_secs(10))
-            .timeout(std::time::Duration::from_secs(500))
-            .build()
-            .unwrap()
-    )]
+    #[builder(default = default_client())]
     pub client: reqwest::Client,
 }
+fn default_client() -> reqwest::Client {
+    let client_builder = reqwest::ClientBuilder::new();
 
+    #[cfg(not(target_arch = "wasm32"))]
+    let client_builder = client_builder
+        .connect_timeout(std::time::Duration::from_secs(10))
+        .timeout(std::time::Duration::from_secs(500));
+
+    client_builder.build().unwrap()
+}
 impl AsyncApi {
     /// Create a new `AsyncApi`. You can use [`AsyncApi::new_url`] or [`AsyncApi::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
