@@ -16,6 +16,7 @@ pub struct AsyncApi {
     #[builder(default = default_client())]
     pub client: reqwest::Client,
 }
+
 fn default_client() -> reqwest::Client {
     let client_builder = reqwest::ClientBuilder::new();
 
@@ -26,6 +27,7 @@ fn default_client() -> reqwest::Client {
 
     client_builder.build().unwrap()
 }
+
 impl AsyncApi {
     /// Create a new `AsyncApi`. You can use [`AsyncApi::new_url`] or [`AsyncApi::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
