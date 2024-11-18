@@ -73,7 +73,7 @@ name = "api_trait_implementation"
 required-features = ["telegram-trait"]
 
 [dependencies]
-bon = "2.2.0"
+bon = "3.0.1"
 macro_rules_attribute = "0.2.0"
 paste = "1.0.2"
 serde = { version = "1.0.157", features = ["derive"] }
