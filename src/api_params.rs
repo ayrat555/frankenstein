@@ -82,7 +82,7 @@ pub enum InlineQueryResult {
     Venue(InlineQueryResultVenue),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum Either<T1, T2> {
     Variant1(T1),
