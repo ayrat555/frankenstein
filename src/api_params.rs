@@ -55,21 +55,21 @@ impl From<String> for FileUpload {
 #[serde(tag = "type")]
 pub enum InlineQueryResult {
     #[serde(rename = "audio")]
-    Audio(AudioOrCachedAudio),
+    Audio(Either<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
     #[serde(rename = "document")]
-    Document(DocumentOrCachedDocument),
+    Document(Either<InlineQueryResultCachedDocument, InlineQueryResultDocument>),
     #[serde(rename = "gif")]
-    Gif(GifOrCachedGif),
+    Gif(Either<InlineQueryResultCachedGif, InlineQueryResultGif>),
     #[serde(rename = "mpeg4_gif")]
-    Mpeg4Gif(Mpeg4GifOrCachedMpeg4Gif),
+    Mpeg4Gif(Either<InlineQueryResultCachedMpeg4Gif, InlineQueryResultMpeg4Gif>),
     #[serde(rename = "photo")]
-    Photo(PhotoOrCachedPhoto),
+    Photo(Either<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
     #[serde(rename = "sticker")]
     CachedSticker(InlineQueryResultCachedSticker),
     #[serde(rename = "video")]
-    Video(VideoOrCachedVideo),
+    Video(Either<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
     #[serde(rename = "voice")]
-    Voice(VoiceOrCachedVoice),
+    Voice(Either<InlineQueryResultCachedVoice, InlineQueryResultVoice>),
     #[serde(rename = "article")]
     Article(InlineQueryResultArticle),
     #[serde(rename = "contract")]
@@ -84,51 +84,9 @@ pub enum InlineQueryResult {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum AudioOrCachedAudio {
-    CachedAudio(InlineQueryResultCachedAudio),
-    Audio(InlineQueryResultAudio),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum DocumentOrCachedDocument {
-    CachedDocument(InlineQueryResultCachedDocument),
-    Document(InlineQueryResultDocument),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum GifOrCachedGif {
-    CachedGif(InlineQueryResultCachedGif),
-    Gif(InlineQueryResultGif),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum Mpeg4GifOrCachedMpeg4Gif {
-    CachedMpeg4Gif(InlineQueryResultCachedMpeg4Gif),
-    Mpeg4Gif(InlineQueryResultMpeg4Gif),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum PhotoOrCachedPhoto {
-    CachedPhoto(InlineQueryResultCachedPhoto),
-    Photo(InlineQueryResultPhoto),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum VideoOrCachedVideo {
-    CachedVideo(InlineQueryResultCachedVideo),
-    Video(InlineQueryResultVideo),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum VoiceOrCachedVoice {
-    CachedVoice(InlineQueryResultCachedVoice),
-    Voice(InlineQueryResultVoice),
+pub enum Either<T1, T2> {
+    Variant1(T1),
+    Variant2(T2),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
