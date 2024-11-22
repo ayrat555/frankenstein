@@ -55,21 +55,21 @@ impl From<String> for FileUpload {
 #[serde(tag = "type")]
 pub enum InlineQueryResult {
     #[serde(rename = "audio")]
-    AudioOrCachedAudio(InlineQueryResultAudioOrCachedAudio),
+    Audio(InlineQueryResultAudioOrCachedAudio),
     #[serde(rename = "document")]
-    DocumentOrCachedDocument(InlineQueryResultDocumentOrCachedDocument),
+    Document(InlineQueryResultDocumentOrCachedDocument),
     #[serde(rename = "gif")]
-    GifOrCachedGif(InlineQueryResultGifOrCachedGif),
+    Gif(InlineQueryResultGifOrCachedGif),
     #[serde(rename = "mpeg4_gif")]
-    Mpeg4GifOrCachedMpeg4Gif(InlineQueryResultMpeg4GifOrCachedMpeg4Gif),
+    Mpeg4Gif(InlineQueryResultMpeg4GifOrCachedMpeg4Gif),
     #[serde(rename = "photo")]
-    PhotoOrCachedPhoto(InlineQueryResultPhotoOrCachedPhoto),
+    Photo(InlineQueryResultPhotoOrCachedPhoto),
     #[serde(rename = "sticker")]
     CachedSticker(InlineQueryResultCachedSticker),
     #[serde(rename = "video")]
-    VideoOrCachedVideo(InlineQueryResultVideoOrCachedVideo),
+    Video(InlineQueryResultVideoOrCachedVideo),
     #[serde(rename = "voice")]
-    VoiceOrCachedVoice(InlineQueryResultVoiceOrCachedVoice),
+    Voice(InlineQueryResultVoiceOrCachedVoice),
     #[serde(rename = "article")]
     Article(InlineQueryResultArticle),
     #[serde(rename = "contract")]
