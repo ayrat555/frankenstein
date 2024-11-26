@@ -52,48 +52,28 @@ impl From<String> for FileUpload {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum InlineQueryResult {
-    #[serde(rename = "audio")]
-    CachedAudio(InlineQueryResultCachedAudio),
-    #[serde(rename = "document")]
-    CachedDocument(InlineQueryResultCachedDocument),
-    #[serde(rename = "gif")]
-    CachedGif(InlineQueryResultCachedGif),
-    #[serde(rename = "mpeg4_gif")]
-    CachedMpeg4Gif(InlineQueryResultCachedMpeg4Gif),
-    #[serde(rename = "photo")]
-    CachedPhoto(InlineQueryResultCachedPhoto),
-    #[serde(rename = "sticker")]
-    CachedSticker(InlineQueryResultCachedSticker),
-    #[serde(rename = "video")]
-    CachedVideo(InlineQueryResultCachedVideo),
-    #[serde(rename = "voice")]
-    CachedVoice(InlineQueryResultCachedVoice),
-    #[serde(rename = "article")]
+    Audio(MaybeCached<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
+    Document(MaybeCached<InlineQueryResultCachedDocument, InlineQueryResultDocument>),
+    Gif(MaybeCached<InlineQueryResultCachedGif, InlineQueryResultGif>),
+    Mpeg4Gif(MaybeCached<InlineQueryResultCachedMpeg4Gif, InlineQueryResultMpeg4Gif>),
+    Photo(MaybeCached<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
+    Sticker(InlineQueryResultCachedSticker),
+    Video(MaybeCached<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
+    Voice(MaybeCached<InlineQueryResultCachedVoice, InlineQueryResultVoice>),
     Article(InlineQueryResultArticle),
-    #[serde(rename = "audio")]
-    Audio(InlineQueryResultAudio),
-    #[serde(rename = "contract")]
     Contact(InlineQueryResultContact),
-    #[serde(rename = "game")]
     Game(InlineQueryResultGame),
-    #[serde(rename = "document")]
-    Document(InlineQueryResultDocument),
-    #[serde(rename = "gif")]
-    Gif(InlineQueryResultGif),
-    #[serde(rename = "location")]
     Location(InlineQueryResultLocation),
-    #[serde(rename = "mpeg4_gif")]
-    Mpeg4Gif(InlineQueryResultMpeg4Gif),
-    #[serde(rename = "photo")]
-    Photo(InlineQueryResultPhoto),
-    #[serde(rename = "venue")]
     Venue(InlineQueryResultVenue),
-    #[serde(rename = "video")]
-    Video(InlineQueryResultVideo),
-    #[serde(rename = "voice")]
-    Voice(InlineQueryResultVoice),
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum MaybeCached<T1, T2> {
+    Cached(T1),
+    NotCached(T2),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
