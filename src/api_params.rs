@@ -55,21 +55,21 @@ impl From<String> for FileUpload {
 #[serde(tag = "type")]
 pub enum InlineQueryResult {
     #[serde(rename = "audio")]
-    Audio(Either<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
+    Audio(MaybeCached<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
     #[serde(rename = "document")]
-    Document(Either<InlineQueryResultCachedDocument, InlineQueryResultDocument>),
+    Document(MaybeCached<InlineQueryResultCachedDocument, InlineQueryResultDocument>),
     #[serde(rename = "gif")]
-    Gif(Either<InlineQueryResultCachedGif, InlineQueryResultGif>),
+    Gif(MaybeCached<InlineQueryResultCachedGif, InlineQueryResultGif>),
     #[serde(rename = "mpeg4_gif")]
-    Mpeg4Gif(Either<InlineQueryResultCachedMpeg4Gif, InlineQueryResultMpeg4Gif>),
+    Mpeg4Gif(MaybeCached<InlineQueryResultCachedMpeg4Gif, InlineQueryResultMpeg4Gif>),
     #[serde(rename = "photo")]
-    Photo(Either<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
+    Photo(MaybeCached<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
     #[serde(rename = "sticker")]
     CachedSticker(InlineQueryResultCachedSticker),
     #[serde(rename = "video")]
-    Video(Either<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
+    Video(MaybeCached<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
     #[serde(rename = "voice")]
-    Voice(Either<InlineQueryResultCachedVoice, InlineQueryResultVoice>),
+    Voice(MaybeCached<InlineQueryResultCachedVoice, InlineQueryResultVoice>),
     #[serde(rename = "article")]
     Article(InlineQueryResultArticle),
     #[serde(rename = "contract")]
@@ -84,9 +84,9 @@ pub enum InlineQueryResult {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
-pub enum Either<T1, T2> {
-    Variant1(T1),
-    Variant2(T2),
+pub enum MaybeCached<T1, T2> {
+    Cached(T1),
+    NotCached(T2),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
