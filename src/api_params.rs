@@ -52,7 +52,7 @@ impl From<String> for FileUpload {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum InlineQueryResult {
     #[serde(rename = "audio")]
     Audio(MaybeCached<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
