@@ -65,7 +65,7 @@ pub enum InlineQueryResult {
     #[serde(rename = "photo")]
     Photo(MaybeCached<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
     #[serde(rename = "sticker")]
-    CachedSticker(InlineQueryResultCachedSticker),
+    Sticker(InlineQueryResultCachedSticker),
     #[serde(rename = "video")]
     Video(MaybeCached<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
     #[serde(rename = "voice")]
