@@ -1,11 +1,7 @@
 use std::path::PathBuf;
-use std::time::Duration;
 
 use async_trait::async_trait;
 use bon::Builder;
-use reqwest::multipart;
-use serde_json::Value;
-use tokio::fs::File;
 
 use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
@@ -17,14 +13,19 @@ pub struct AsyncApi {
     #[builder(into)]
     pub api_url: String,
 
-    #[builder(
-        default = reqwest::ClientBuilder::new()
-            .connect_timeout(Duration::from_secs(10))
-            .timeout(Duration::from_secs(500))
-            .build()
-            .unwrap()
-    )]
+    #[builder(default = default_client())]
     pub client: reqwest::Client,
+}
+
+fn default_client() -> reqwest::Client {
+    let client_builder = reqwest::ClientBuilder::new();
+
+    #[cfg(not(target_arch = "wasm32"))]
+    let client_builder = client_builder
+        .connect_timeout(std::time::Duration::from_secs(10))
+        .timeout(std::time::Duration::from_secs(500));
+
+    client_builder.build().unwrap()
 }
 
 impl AsyncApi {
@@ -66,7 +67,9 @@ impl From<reqwest::Error> for Error {
     }
 }
 
-#[async_trait]
+// Wasm target need not be `Send` because it is single-threaded
+#[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
+#[cfg_attr(not(target_arch = "wasm32"), async_trait)]
 impl AsyncTelegramApi for AsyncApi {
     type Error = Error;
 
@@ -102,44 +105,58 @@ impl AsyncTelegramApi for AsyncApi {
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
         Output: serde::de::DeserializeOwned,
     {
-        let json_string = crate::json::encode(&params)?;
-        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-        let files_with_paths: Vec<(String, &str, String)> = files
-            .iter()
-            .map(|(key, path)| {
-                (
-                    (*key).to_string(),
-                    path.to_str().unwrap(),
-                    path.file_name().unwrap().to_str().unwrap().to_string(),
-                )
-            })
-            .collect();
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            use reqwest::multipart;
+            use serde_json::Value;
 
-        let mut form = multipart::Form::new();
-        for (key, val) in json_struct.as_object().unwrap() {
-            if !file_keys.contains(&key.as_str()) {
-                let val = match val {
-                    Value::String(val) => val.to_string(),
-                    other => other.to_string(),
-                };
+            let json_string = crate::json::encode(&params)?;
+            let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
-                form = form.text(key.clone(), val);
+            let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+            let files_with_paths: Vec<(String, &str, String)> = files
+                .iter()
+                .map(|(key, path)| {
+                    (
+                        (*key).to_string(),
+                        path.to_str().unwrap(),
+                        path.file_name().unwrap().to_str().unwrap().to_string(),
+                    )
+                })
+                .collect();
+
+            let mut form = multipart::Form::new();
+            for (key, val) in json_struct.as_object().unwrap() {
+                if !file_keys.contains(&key.as_str()) {
+                    let val = match val {
+                        Value::String(val) => val.to_string(),
+                        other => other.to_string(),
+                    };
+
+                    form = form.text(key.clone(), val);
+                }
             }
+
+            for (parameter_name, file_path, file_name) in files_with_paths {
+                let file = tokio::fs::File::open(file_path)
+                    .await
+                    .map_err(|error| Error::Encode(error.to_string()))?;
+                let part = multipart::Part::stream(file).file_name(file_name);
+                form = form.part(parameter_name, part);
+            }
+
+            let url = format!("{}/{method}", self.api_url);
+
+            let response = self.client.post(url).multipart(form).send().await?;
+            Self::decode_response(response).await
         }
 
-        for (parameter_name, file_path, file_name) in files_with_paths {
-            let file = File::open(file_path)
-                .await
-                .map_err(|error| Error::Encode(error.to_string()))?;
-            let part = multipart::Part::stream(file).file_name(file_name);
-            form = form.part(parameter_name, part);
+        #[cfg(target_arch = "wasm32")]
+        {
+            Err(Error::Encode(format!(
+                "calling {method:?} with files is currently unsupported in WASM due to missing form_data / attachment support. Was called with params {params:?} and files {files:?}",
+            )))
         }
-
-        let url = format!("{}/{method}", self.api_url);
-
-        let response = self.client.post(url).multipart(form).send().await?;
-        Self::decode_response(response).await
     }
 }
 
