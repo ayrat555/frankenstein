@@ -54,31 +54,18 @@ impl From<String> for FileUpload {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum InlineQueryResult {
-    #[serde(rename = "audio")]
     Audio(MaybeCached<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
-    #[serde(rename = "document")]
     Document(MaybeCached<InlineQueryResultCachedDocument, InlineQueryResultDocument>),
-    #[serde(rename = "gif")]
     Gif(MaybeCached<InlineQueryResultCachedGif, InlineQueryResultGif>),
-    #[serde(rename = "mpeg4_gif")]
     Mpeg4Gif(MaybeCached<InlineQueryResultCachedMpeg4Gif, InlineQueryResultMpeg4Gif>),
-    #[serde(rename = "photo")]
     Photo(MaybeCached<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
-    #[serde(rename = "sticker")]
     Sticker(InlineQueryResultCachedSticker),
-    #[serde(rename = "video")]
     Video(MaybeCached<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
-    #[serde(rename = "voice")]
     Voice(MaybeCached<InlineQueryResultCachedVoice, InlineQueryResultVoice>),
-    #[serde(rename = "article")]
     Article(InlineQueryResultArticle),
-    #[serde(rename = "contract")]
     Contact(InlineQueryResultContact),
-    #[serde(rename = "game")]
     Game(InlineQueryResultGame),
-    #[serde(rename = "location")]
     Location(InlineQueryResultLocation),
-    #[serde(rename = "venue")]
     Venue(InlineQueryResultVenue),
 }
 
