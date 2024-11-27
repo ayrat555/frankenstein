@@ -1,9 +1,9 @@
 # Changelog
 
-## 0.35.0 (2024-11-26)
+## 0.35.0 (2024-11-27)
 
-* try fit wasm partially - [#225](https://github.com/ayrat555/frankenstein/pull/225)
-* fix: fix serialization of InlineQueryResult - [#230](https://github.com/ayrat555/frankenstein/pull/230)
+* feat: try fit wasm partially - [#225](https://github.com/ayrat555/frankenstein/pull/225)
+* fix!: fix serialization of InlineQueryResult - [#230](https://github.com/ayrat555/frankenstein/pull/230)
 * build(cargo): update bon requirement from 2.2.0 to 3.0.0 - [#232](https://github.com/ayrat555/frankenstein/pull/232)
 * build(cargo): update thiserror requirement from 1 to 2 - [#228](https://github.com/ayrat555/frankenstein/pull/228)
 
