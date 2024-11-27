@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.34.1"
+version = "0.35.0"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>", "EdJoPaTo <frankenstein-rust@edjopato.de>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2021"
@@ -22,7 +22,6 @@ async-telegram-trait = ["dep:async-trait"]
 
 [lints.rust]
 unsafe_code = "forbid"
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rust_analyzer)'] }
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }
 nursery = { level = "warn", priority = -1 }
