@@ -1277,12 +1277,14 @@ pub struct SendInvoiceParams {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct CreateInvoiceLinkParams {
+    pub business_connection_id: Option<String>,
     pub title: String,
     pub description: String,
     pub payload: String,
     pub provider_token: Option<String>,
     pub currency: String,
     pub prices: Vec<LabeledPrice>,
+    pub subscription_period: Option<u32>,
     pub max_tip_amount: Option<u32>,
     pub suggested_tip_amounts: Option<Vec<u32>>,
     pub provider_data: Option<String>,

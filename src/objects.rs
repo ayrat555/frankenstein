@@ -1842,6 +1842,9 @@ pub struct SuccessfulPayment {
     pub currency: String,
     pub total_amount: u32,
     pub invoice_payload: String,
+    pub subscription_expiration_date: Option<u64>,
+    pub is_recurring: Option<bool>,
+    pub is_first_recurring: Option<bool>,
     pub shipping_option_id: Option<String>,
     pub order_info: Option<OrderInfo>,
     pub telegram_payment_charge_id: String,
@@ -2243,6 +2246,7 @@ pub enum TransactionPartner {
 pub struct TransactionPartnerUser {
     pub user: User,
     pub invoice_payload: Option<String>,
+    pub subscription_period: Option<u32>,
     pub paid_media: Option<Vec<PaidMedia>>,
 }
 
