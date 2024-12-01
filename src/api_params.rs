@@ -624,6 +624,14 @@ pub struct GetUserProfilePhotosParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct SetUserEmojiStatusParams {
+    pub user_id: u64,
+    pub emoji_status_custom_emoji_id: Option<String>,
+    pub emoji_status_expiration_date: Option<u64>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct GetFileParams {
     pub file_id: String,
 }

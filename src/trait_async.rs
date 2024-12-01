@@ -314,6 +314,7 @@ where
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
     request!(getUserProfilePhotos, UserProfilePhotos);
+    request!(setUserEmojiStatus, bool);
     request!(getFile, FileObject);
     request!(banChatMember, bool);
     request!(unbanChatMember, bool);
