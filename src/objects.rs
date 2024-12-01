@@ -1733,6 +1733,12 @@ pub struct ChosenInlineResult {
 }
 
 #[apply(apistruct!)]
+pub struct PreparedInlineMessage {
+    pub id: String,
+    pub expiration_date: u64,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct LabeledPrice {
     pub label: String,

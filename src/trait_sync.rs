@@ -10,8 +10,8 @@ use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File as FileObject,
     ForumTopic, GameHighScore, InputSticker, MenuButton, Message, MessageId, Poll,
-    SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User, UserChatBoosts,
-    UserProfilePhotos, WebhookInfo,
+    PreparedInlineMessage, SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User,
+    UserChatBoosts, UserProfilePhotos, WebhookInfo,
 };
 use crate::response::{MessageOrBool, MethodResponse};
 
@@ -605,6 +605,7 @@ pub trait TelegramApi {
     request!(setMyDefaultAdministratorRights, bool);
     request!(getMyDefaultAdministratorRights, ChatAdministratorRights);
     request!(answerWebAppQuery, SentWebAppMessage);
+    request!(savePreparedInlineMessage, PreparedInlineMessage);
     request!(setChatMenuButton, bool);
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);

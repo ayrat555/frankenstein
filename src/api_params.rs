@@ -1478,6 +1478,16 @@ pub struct AnswerWebAppQueryParams {
 }
 
 #[apply(apistruct!)]
+pub struct SavePreparedInlineMessage {
+    pub user_id: u64,
+    pub result: InlineQueryResult,
+    pub allow_user_chats: Option<bool>,
+    pub allow_bot_chats: Option<bool>,
+    pub allow_group_chats: Option<bool>,
+    pub allow_channel_chats: Option<bool>,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetChatMenuButtonParams {
     pub chat_id: Option<i64>,
