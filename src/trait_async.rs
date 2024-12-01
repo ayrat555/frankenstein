@@ -631,6 +631,7 @@ where
     request!(answerPreCheckoutQuery, bool);
     request!(getStarTransactions, StarTransactions);
     request!(refundStarPayment, bool);
+    request!(editUserStarSubscription, bool);
     request!(sendGame, Message);
     request!(setGameScore, MessageOrBool);
     request!(getGameHighScores, Vec<GameHighScore>);

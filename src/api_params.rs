@@ -1335,6 +1335,14 @@ pub struct RefundStarPaymentParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct EditUserStarSubscriptionParams {
+    pub user_id: u64,
+    pub telegram_payment_charge_id: String,
+    pub is_canceled: bool,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct SetPassportDataErrorsParams {
     pub user_id: u64,
     pub errors: Vec<PassportElementError>,
