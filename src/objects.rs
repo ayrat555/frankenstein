@@ -2255,7 +2255,7 @@ pub struct RevenueWithdrawalStateFailed {}
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum TransactionPartner {
-    User(TransactionPartnerUser),
+    User(Box<TransactionPartnerUser>),
     Fragment(TransactionPartnerFragment),
     TelegramAds(TransactionPartnerTelegramAds),
     TelegramApi(TransactionPartnerTelegramApi),
