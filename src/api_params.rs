@@ -1478,7 +1478,7 @@ pub struct AnswerWebAppQueryParams {
 }
 
 #[apply(apistruct!)]
-pub struct SavePreparedInlineMessage {
+pub struct SavePreparedInlineMessageParams {
     pub user_id: u64,
     pub result: InlineQueryResult,
     pub allow_user_chats: Option<bool>,
