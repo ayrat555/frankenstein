@@ -1231,6 +1231,16 @@ pub struct DeleteStickerSetParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendGiftParams {
+    pub user_id: u64,
+    pub gift_id: String,
+    pub text: Option<String>,
+    pub text_parse_mode: Option<ParseMode>,
+    pub text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
 pub struct AnswerInlineQueryParams {
     pub inline_query_id: String,
     pub results: Vec<InlineQueryResult>,
@@ -1475,6 +1485,16 @@ pub struct GetMyDefaultAdministratorRightsParams {
 pub struct AnswerWebAppQueryParams {
     pub web_app_query_id: String,
     pub result: InlineQueryResult,
+}
+
+#[apply(apistruct!)]
+pub struct SavePreparedInlineMessageParams {
+    pub user_id: u64,
+    pub result: InlineQueryResult,
+    pub allow_user_chats: Option<bool>,
+    pub allow_bot_chats: Option<bool>,
+    pub allow_group_chats: Option<bool>,
+    pub allow_channel_chats: Option<bool>,
 }
 
 #[apply(apistruct!)]
