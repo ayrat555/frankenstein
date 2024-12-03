@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.35.0 (2024-12-03)
+
+* Bot API 8.0 - [#234](https://github.com/ayrat555/frankenstein/pull/234)
+
 ## 0.35.0 (2024-11-27)
 
 * feat: try fit wasm partially - [#225](https://github.com/ayrat555/frankenstein/pull/225)
