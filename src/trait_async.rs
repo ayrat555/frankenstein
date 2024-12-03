@@ -9,9 +9,9 @@ use crate::api_params::{
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File as FileObject,
-    ForumTopic, GameHighScore, InputSticker, MenuButton, Message, MessageId, Poll,
-    SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User, UserChatBoosts,
-    UserProfilePhotos, WebhookInfo,
+    ForumTopic, GameHighScore, Gifts, InputSticker, MenuButton, Message, MessageId, Poll,
+    PreparedInlineMessage, SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User,
+    UserChatBoosts, UserProfilePhotos, WebhookInfo,
 };
 use crate::response::{MessageOrBool, MethodResponse};
 
@@ -314,6 +314,7 @@ where
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
     request!(getUserProfilePhotos, UserProfilePhotos);
+    request!(setUserEmojiStatus, bool);
     request!(getFile, FileObject);
     request!(banChatMember, bool);
     request!(unbanChatMember, bool);
@@ -625,18 +626,22 @@ where
 
     request!(setCustomEmojiStickerSetThumbnail, bool);
     request!(deleteStickerSet, bool);
+    request_nb!(getAvailableGifts, Gifts);
+    request!(sendGift, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);
     request!(answerPreCheckoutQuery, bool);
     request!(getStarTransactions, StarTransactions);
     request!(refundStarPayment, bool);
+    request!(editUserStarSubscription, bool);
     request!(sendGame, Message);
     request!(setGameScore, MessageOrBool);
     request!(getGameHighScores, Vec<GameHighScore>);
     request!(setMyDefaultAdministratorRights, bool);
     request!(getMyDefaultAdministratorRights, ChatAdministratorRights);
     request!(answerWebAppQuery, SentWebAppMessage);
+    request!(savePreparedInlineMessage, PreparedInlineMessage);
     request!(setChatMenuButton, bool);
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);

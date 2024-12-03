@@ -1336,6 +1336,20 @@ pub struct InputSticker {
 }
 
 #[apply(apistruct!)]
+pub struct Gift {
+    pub id: String,
+    pub stricker: Sticker,
+    pub star_count: u32,
+    pub total_count: Option<u32>,
+    pub remaining_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
+pub struct Gifts {
+    pub gifts: Vec<Gift>,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Story {
     pub chat: Chat,
@@ -1734,6 +1748,13 @@ pub struct ChosenInlineResult {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct PreparedInlineMessage {
+    pub id: String,
+    pub expiration_date: u64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct LabeledPrice {
     pub label: String,
     pub amount: u32,
@@ -1842,6 +1863,9 @@ pub struct SuccessfulPayment {
     pub currency: String,
     pub total_amount: u32,
     pub invoice_payload: String,
+    pub subscription_expiration_date: Option<u64>,
+    pub is_recurring: Option<bool>,
+    pub is_first_recurring: Option<bool>,
     pub shipping_option_id: Option<String>,
     pub order_info: Option<OrderInfo>,
     pub telegram_payment_charge_id: String,
@@ -2228,10 +2252,10 @@ pub struct RevenueWithdrawalStateSucceeded {
 #[derive(Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum TransactionPartner {
-    User(TransactionPartnerUser),
+    User(Box<TransactionPartnerUser>),
     Fragment(TransactionPartnerFragment),
     TelegramAds(TransactionPartnerTelegramAds),
     TelegramApi(TransactionPartnerTelegramApi),
@@ -2239,11 +2263,13 @@ pub enum TransactionPartner {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct TransactionPartnerUser {
     pub user: User,
     pub invoice_payload: Option<String>,
+    pub subscription_period: Option<u32>,
     pub paid_media: Option<Vec<PaidMedia>>,
+    pub paid_media_payload: Option<String>,
+    pub gift: Option<Gift>,
 }
 
 #[apply(apistruct!)]
@@ -2267,7 +2293,6 @@ pub struct TransactionPartnerTelegramApi {
 pub struct TransactionPartnerOther {}
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct StarTransaction {
     pub id: String,
     pub amount: u32,
@@ -2277,7 +2302,6 @@ pub struct StarTransaction {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
 }
