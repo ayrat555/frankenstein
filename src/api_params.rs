@@ -1231,6 +1231,16 @@ pub struct DeleteStickerSetParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendGiftParams {
+    pub user_id: u64,
+    pub gift_id: String,
+    pub text: Option<String>,
+    pub text_parse_mode: Option<ParseMode>,
+    pub text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
 pub struct AnswerInlineQueryParams {
     pub inline_query_id: String,
     pub results: Vec<InlineQueryResult>,

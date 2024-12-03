@@ -9,7 +9,7 @@ use crate::api_params::{
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File as FileObject,
-    ForumTopic, GameHighScore, InputSticker, MenuButton, Message, MessageId, Poll,
+    ForumTopic, GameHighScore, Gifts, InputSticker, MenuButton, Message, MessageId, Poll,
     PreparedInlineMessage, SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User,
     UserChatBoosts, UserProfilePhotos, WebhookInfo,
 };
@@ -626,6 +626,8 @@ where
 
     request!(setCustomEmojiStickerSetThumbnail, bool);
     request!(deleteStickerSet, bool);
+    request_nb!(getAvailableGifts, Gifts);
+    request!(sendGift, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);
