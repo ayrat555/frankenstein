@@ -2253,6 +2253,7 @@ pub struct RevenueWithdrawalStateSucceeded {
 pub struct RevenueWithdrawalStateFailed {}
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct AffiliateInfo {
     pub affiliate_user: Option<User>,
     pub affiliate_chat: Option<Chat>,
@@ -2284,6 +2285,7 @@ pub struct TransactionPartnerUser {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct TransactionPartnerAffiliateProgram {
     pub sponsor_user: User,
     pub commission_per_mille: u32,
