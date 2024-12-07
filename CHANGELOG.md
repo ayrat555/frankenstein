@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.35.0 (2024-12-03)
+## 0.37.0 (2024-12-07)
+
+* Bot API 8.1 - [#239](https://github.com/ayrat555/frankenstein/pull/239)
+
+## 0.36.0 (2024-12-03)
 
 * Bot API 8.0 - [#234](https://github.com/ayrat555/frankenstein/pull/234)
 
