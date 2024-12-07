@@ -2252,10 +2252,22 @@ pub struct RevenueWithdrawalStateSucceeded {
 #[derive(Eq)]
 pub struct RevenueWithdrawalStateFailed {}
 
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct AffiliateInfo {
+    pub affiliate_user: Option<User>,
+    pub affiliate_chat: Option<Chat>,
+    pub commission_per_mille: u32,
+    pub amount: u32,
+    pub nanostar_amount: Option<u32>,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
+#[non_exhaustive]
 pub enum TransactionPartner {
     User(Box<TransactionPartnerUser>),
+    AffiliateProgram(TransactionPartnerAffiliateProgram),
     Fragment(TransactionPartnerFragment),
     TelegramAds(TransactionPartnerTelegramAds),
     TelegramApi(TransactionPartnerTelegramApi),
@@ -2265,11 +2277,19 @@ pub enum TransactionPartner {
 #[apply(apistruct!)]
 pub struct TransactionPartnerUser {
     pub user: User,
+    pub affiliate: Option<AffiliateInfo>,
     pub invoice_payload: Option<String>,
     pub subscription_period: Option<u32>,
     pub paid_media: Option<Vec<PaidMedia>>,
     pub paid_media_payload: Option<String>,
     pub gift: Option<Gift>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct TransactionPartnerAffiliateProgram {
+    pub sponsor_user: User,
+    pub commission_per_mille: u32,
 }
 
 #[apply(apistruct!)]
@@ -2296,6 +2316,7 @@ pub struct TransactionPartnerOther {}
 pub struct StarTransaction {
     pub id: String,
     pub amount: u32,
+    pub nanostar_amount: u32,
     pub date: u64,
     pub source: Option<TransactionPartner>,
     pub receiver: Option<TransactionPartner>,
