@@ -329,6 +329,7 @@ pub enum UpdateContent {
     MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
     ChosenInlineResult(ChosenInlineResult),
+    SuccessfulPayment(Message),
     CallbackQuery(CallbackQuery),
     ShippingQuery(ShippingQuery),
     PreCheckoutQuery(PreCheckoutQuery),
