@@ -2,9 +2,11 @@ use std::path::PathBuf;
 
 use crate::api_params::{
     AddStickerToSetParams, CreateNewStickerSetParams, EditMessageMediaParams, FileUpload,
-    InputMedia, Media, SendAnimationParams, SendAudioParams, SendDocumentParams,
-    SendMediaGroupParams, SendPhotoParams, SendStickerParams, SendVideoNoteParams, SendVideoParams,
-    SendVoiceParams, SetChatPhotoParams, SetStickerSetThumbnailParams, UploadStickerFileParams,
+    InputMedia, Media, RemoveChatVerificationParams, RemoveUserVerificationParams,
+    SendAnimationParams, SendAudioParams, SendDocumentParams, SendMediaGroupParams,
+    SendPhotoParams, SendStickerParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams,
+    SetChatPhotoParams, SetStickerSetThumbnailParams, UploadStickerFileParams, VerifyChatParams,
+    VerifyUserParams,
 };
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
@@ -594,6 +596,10 @@ pub trait TelegramApi {
     request!(deleteStickerSet, bool);
     request_nb!(getAvailableGifts, Gifts);
     request!(sendGift, bool);
+    request!(verifyUser, bool);
+    request!(verifyChat, bool);
+    request!(removeUserVerification, bool);
+    request!(removeChatVerification, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);

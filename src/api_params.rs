@@ -1235,9 +1235,36 @@ pub struct DeleteStickerSetParams {
 pub struct SendGiftParams {
     pub user_id: u64,
     pub gift_id: String,
+    pub pay_for_upgrade: Option<bool>,
     pub text: Option<String>,
     pub text_parse_mode: Option<ParseMode>,
     pub text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct VerifyUserParams {
+    pub user_id: u64,
+    pub custom_description: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct VerifyChatParams {
+    pub chat_id: ChatId,
+    pub custom_description: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct RemoveUserVerificationParams {
+    pub user_id: u64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct RemoveChatVerificationParams {
+    pub chat_id: ChatId,
 }
 
 #[apply(apistruct!)]
