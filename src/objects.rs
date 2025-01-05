@@ -1345,6 +1345,7 @@ pub struct Gift {
     pub id: String,
     pub stricker: Sticker,
     pub star_count: u32,
+    pub upgrade_star_count: Option<u32>,
     pub total_count: Option<u32>,
     pub remaining_count: Option<u32>,
 }
@@ -1398,6 +1399,11 @@ pub struct InlineQueryResultArticle {
     pub input_message_content: InputMessageContent,
     pub reply_markup: Option<InlineKeyboardMarkup>,
     pub url: Option<String>,
+    #[doc(hidden)]
+    #[deprecated(
+        since = "0.38.0",
+        note = "Please pass an empty string as `url` instead"
+    )]
     pub hide_url: Option<bool>,
     pub description: Option<String>,
     pub thumbnail_url: Option<String>,
