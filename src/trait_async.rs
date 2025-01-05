@@ -2,11 +2,9 @@ use std::path::PathBuf;
 
 use crate::api_params::{
     AddStickerToSetParams, CreateNewStickerSetParams, EditMessageMediaParams, FileUpload,
-    InputMedia, Media, RemoveChatVerificationParams, RemoveUserVerificationParams,
-    SendAnimationParams, SendAudioParams, SendDocumentParams, SendMediaGroupParams,
-    SendPhotoParams, SendStickerParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams,
-    SetChatPhotoParams, SetStickerSetThumbnailParams, UploadStickerFileParams, VerifyChatParams,
-    VerifyUserParams,
+    InputMedia, Media, SendAnimationParams, SendAudioParams, SendDocumentParams,
+    SendMediaGroupParams, SendPhotoParams, SendStickerParams, SendVideoNoteParams, SendVideoParams,
+    SendVoiceParams, SetChatPhotoParams, SetStickerSetThumbnailParams, UploadStickerFileParams,
 };
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
