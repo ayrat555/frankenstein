@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.38.0 (2025-01-05)
+
+* New update types - [241](https://github.com/ayrat555/frankenstein/pull/241)
+* Bot API 8.2 - [243](https://github.com/ayrat555/frankenstein/pull/243)
+
 ## 0.37.0 (2024-12-07)
 
 * Bot API 8.1 - [#239](https://github.com/ayrat555/frankenstein/pull/239)
