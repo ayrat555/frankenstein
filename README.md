@@ -198,6 +198,7 @@ You can check out real-world bots created using this library:
 - [subvt-telegram-bot](https://github.com/helikon-labs/subvt-backend/tree/main/subvt-telegram-bot) - A Telegram bot for the validators of the [Polkadot](https://polkadot.network/) and [Kusama](https://kusama.network/).
 - [wdr-maus-downloader](https://github.com/EdJoPaTo/wdr-maus-downloader) - checks for a new episode of the WDR Maus and downloads it.
 - [weather_bot_rust](https://github.com/pxp9/weather_bot_rust) - A Telegram bot that provides weather info around the world.
+- [Anonymous messaging bot](https://github.com/Albassel/anonBot) - An anonymous messaging telegram bot.
 
 ## Replacing the default HTTP client
 
