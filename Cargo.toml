@@ -113,7 +113,7 @@ features = ["fs"]
 optional = true
 
 [dependencies.ureq]
-version = "2"
+version = "3"
 optional = true
 
 [dev-dependencies]
