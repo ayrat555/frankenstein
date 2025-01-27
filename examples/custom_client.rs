@@ -24,9 +24,10 @@ fn main() {
 }
 
 fn custom_client() -> Api {
-    let request_agent = frankenstein::ureq::builder()
-        .timeout(Duration::from_secs(100))
+    let config = frankenstein::ureq::Agent::config_builder()
+        .timeout_global(Some(Duration::from_secs(100)))
         .build();
+    let request_agent = frankenstein::ureq::Agent::new_with_config(config);
     let api_url = format!("{BASE_API_URL}{TOKEN}");
 
     Api::builder()

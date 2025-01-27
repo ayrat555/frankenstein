@@ -4,7 +4,6 @@ use std::time::Duration;
 use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
-use ureq::Response;
 
 use crate::trait_sync::TelegramApi;
 use crate::Error;
@@ -16,8 +15,17 @@ pub struct Api {
     #[builder(into)]
     pub api_url: String,
 
-    #[builder(default = ureq::builder().timeout(Duration::from_secs(500)).build())]
+    #[builder(default = default_agent())]
     pub request_agent: ureq::Agent,
+}
+
+fn default_agent() -> ureq::Agent {
+    ureq::Agent::new_with_config(
+        ureq::config::Config::builder()
+            .http_status_as_error(false)
+            .timeout_global(Some(Duration::from_secs(500)))
+            .build(),
+    )
 }
 
 impl Api {
@@ -30,33 +38,19 @@ impl Api {
     pub fn new_url<S: Into<String>>(api_url: S) -> Self {
         Self::builder().api_url(api_url).build()
     }
-
-    pub fn decode_response<Output>(response: Response) -> Result<Output, Error>
-    where
-        Output: serde::de::DeserializeOwned,
-    {
-        match response.into_string() {
-            Ok(message) => crate::json::decode(&message),
-            Err(error) => Err(Error::Decode(format!("{error:?}"))),
-        }
-    }
 }
 
 impl From<ureq::Error> for Error {
     fn from(error: ureq::Error) -> Self {
         match error {
-            ureq::Error::Status(code, response) => match response.into_string() {
-                Ok(message) => match serde_json::from_str(&message) {
-                    Ok(json_result) => Self::Api(json_result),
-                    Err(_) => Self::Http { code, message },
-                },
-                Err(_) => Self::Http {
-                    code,
-                    message: "Failed to decode response".to_string(),
-                },
+            // Disabled for the `default_agent`
+            ureq::Error::StatusCode(code) => Self::Http {
+                code,
+                message: String::new(),
             },
-            ureq::Error::Transport(transport_error) => Self::Http {
-                message: format!("{transport_error:?}"),
+            ureq::Error::Json(error) => Self::Decode(format!("{error}")),
+            _ => Self::Http {
+                message: format!("{error}"),
                 code: 500,
             },
         }
@@ -72,18 +66,19 @@ impl TelegramApi for Api {
         Output: serde::de::DeserializeOwned,
     {
         let url = format!("{}/{method}", self.api_url);
-        let prepared_request = self
-            .request_agent
-            .post(&url)
-            .set("Content-Type", "application/json");
+        let request = self.request_agent.post(&url);
         let response = match params {
-            None => prepared_request.call()?,
-            Some(data) => {
-                let json = crate::json::encode(&data)?;
-                prepared_request.send_string(&json)?
-            }
+            None => request.send_empty()?,
+            Some(data) => request.send_json(&data)?,
         };
-        Self::decode_response(response)
+        let success = response.status().is_success();
+        let body = response.into_body().read_to_string()?;
+        if success {
+            crate::json::decode(&body)
+        } else {
+            let api_error = crate::json::decode(&body)?;
+            Err(Error::Api(api_error))
+        }
     }
 
     fn request_with_form_data<Params, Output>(
@@ -128,16 +123,23 @@ impl TelegramApi for Api {
         }
 
         let url = format!("{}/{method}", self.api_url);
-        let form_data = form.prepare().unwrap();
+        let mut form_data = form.prepare().unwrap();
         let response = self
             .request_agent
             .post(&url)
-            .set(
-                "Content-Type",
-                &format!("multipart/form-data; boundary={}", form_data.boundary()),
+            .header(
+                ureq::http::header::CONTENT_TYPE,
+                format!("multipart/form-data; boundary={}", form_data.boundary()),
             )
-            .send(form_data)?;
-        Self::decode_response(response)
+            .send(ureq::SendBody::from_reader(&mut form_data))?;
+        let success = response.status().is_success();
+        let body = response.into_body().read_to_string()?;
+        if success {
+            crate::json::decode(&body)
+        } else {
+            let api_error = crate::json::decode(&body)?;
+            Err(Error::Api(api_error))
+        }
     }
 }
 
