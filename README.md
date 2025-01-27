@@ -16,33 +16,26 @@ Run `cargo add frankenstein` or add the following to your `Cargo.toml`.
 
 ```toml
 [dependencies]
-frankenstein = "0.38"
+frankenstein = { version = "0.39", features = [] }
 ```
+
+You likely want to use either a blocking or an async client. Enable it via the [Features](#features).
 
 ## Features
 
-### Default features
+Without enabling any additional features this crate will only ship with Telegram types.
 
-- `http-client` - a blocking HTTP client (uses `ureq`), it's the only default feature
-- `telegram-trait` - a blocking API trait, it's included in the `http-client` feature. It may be useful for people who want to create a custom blocking client (for example, replacing an HTTP client)
+- blocking (synchronous)
+  - `client-ureq` - a blocking HTTP API client based on `ureq`
+  - `trait-sync` - a blocking API trait, it's included in the `client-ureq` feature. It may be useful for people who want to create a custom blocking client (for example, replacing an HTTP client)
+- async
+  - `client-reqwest` - an async HTTP API client based on `reqwest`. This client partially supports wasm32, but file uploads are currently not supported there.
+  - `trait-async` - an async API trait, it's used in the `client-reqwest`. It may be useful for people who want to create a custom async client
 
-### Optional features
-
-- `async-http-client` - an async HTTP client, it uses `reqwest`, and it's disabled by default
-- `async-telegram-trait` - an async API trait, it's used in the `async-http-client`. It may be useful for people who want to create a custom async client
-
-To use the async client add the following line to your `Cargo.toml` file:
-
-```toml
-frankenstein = { version = "0.37", default-features = false, features = ["async-http-client"] }
-```
-
-The async client partially supports wasm32 target, file uploads in the wasm32 target are not supported.
-
-You can also disable all features. In this case the crate will ship only with Telegram types.
+For example for the async client add the following line to your `Cargo.toml` file:
 
 ```toml
-frankenstein = { version = "0.37", default-features = false }
+frankenstein = { version = "0.39", features = ["client-reqwest"] }
 ```
 
 ## Usage
@@ -202,11 +195,10 @@ You can check out real-world bots created using this library:
 ## Replacing the default HTTP client
 
 The library uses `ureq` HTTP client by default, but it can be easily replaced with any HTTP client of your choice.
-
-`ureq` comes with a default feature (`impl`). So the feature should be disabled.
+This is described here for the `trait-sync` and can be done similarly with `trait-async` based on your needs.
 
 ```toml
-frankenstein = { version = "0.37", default-features = false, features = ["telegram-trait"] }
+frankenstein = { version = "0.39", features = ["trait-sync"] }
 ```
 
 Then implement the `TelegramApi` trait for your HTTP client which requires two functions:
@@ -217,8 +209,6 @@ Then implement the `TelegramApi` trait for your HTTP client which requires two f
 You can check [the default `TelegramApi` trait implementation](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/src/api_impl.rs) for `ureq`.
 
 Also, you can take a look at the [implementation for `isahc` HTTP client](https://github.com/ayrat555/frankenstein/blob/master/examples/api_trait_implementation.rs) in the `examples` directory.
-
-Without the default `ureq` implementation, `frankenstein` has only one dependency - `serde`.
 
 ## Contributing
 

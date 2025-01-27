@@ -131,7 +131,7 @@ jobs:
             features: --all-features
             os: ubuntu-latest
           - triple: wasm32-unknown-unknown
-            features: --no-default-features --features=async-http-client
+            features: --features=client-reqwest
             os: ubuntu-latest
 
           - triple: x86_64-apple-darwin

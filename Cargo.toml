@@ -14,11 +14,10 @@ categories = ["web-programming::http-client"]
 all-features = true
 
 [features]
-default = ["http-client"]
-http-client = ["telegram-trait", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
-telegram-trait = []
-async-http-client = ["async-telegram-trait", "dep:reqwest", "dep:tokio", "dep:serde_json"]
-async-telegram-trait = ["dep:async-trait"]
+client-reqwest = ["trait-async", "dep:reqwest", "dep:tokio", "dep:serde_json"]
+client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
+trait-async = ["dep:async-trait"]
+trait-sync = []
 
 [lints.rust]
 unsafe_code = "forbid"
@@ -34,43 +33,43 @@ unreadable_literal = "allow"
 
 [[example]]
 name = "get_me"
-required-features = ["http-client"]
+required-features = ["client-ureq"]
 
 [[example]]
 name = "reply_to_message_updates"
-required-features = ["http-client"]
+required-features = ["client-ureq"]
 
 [[example]]
 name = "reply_keyboard"
-required-features = ["http-client"]
+required-features = ["client-ureq"]
 
 [[example]]
 name = "inline_keyboard"
-required-features = ["http-client"]
+required-features = ["client-ureq"]
 
 [[example]]
 name = "custom_client"
-required-features = ["http-client"]
+required-features = ["client-ureq"]
 
 [[example]]
 name = "async_get_me"
-required-features = ["async-http-client"]
+required-features = ["client-reqwest"]
 
 [[example]]
 name = "async_reply_to_message_updates"
-required-features = ["async-http-client"]
+required-features = ["client-reqwest"]
 
 [[example]]
 name = "async_file_upload"
-required-features = ["async-http-client"]
+required-features = ["client-reqwest"]
 
 [[example]]
 name = "async_custom_client"
-required-features = ["async-http-client"]
+required-features = ["client-reqwest"]
 
 [[example]]
 name = "api_trait_implementation"
-required-features = ["telegram-trait"]
+required-features = ["trait-sync"]
 
 [dependencies]
 bon = "3.0.0"
