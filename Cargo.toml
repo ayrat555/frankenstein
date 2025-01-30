@@ -4,6 +4,7 @@ version = "0.38.0"
 authors = ["Ayrat Badykov <ayratin555@gmail.com>", "EdJoPaTo <frankenstein-rust@edjopato.de>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
 description = "Telegram bot API client for Rust"
 edition = "2021"
+rust-version = "1.75.0"
 license = "WTFPL"
 repository = "https://github.com/ayrat555/frankenstein"
 readme = "README.md"

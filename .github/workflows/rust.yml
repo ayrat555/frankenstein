@@ -2,12 +2,8 @@ name: Rust
 
 on:
   push:
-    branches-ignore: ["dependabot/**"]
   pull_request:
   workflow_dispatch:
-  schedule:
-    # Check if it works with current dependencies
-    - cron: "32 2 * * 3" # weekly on Wednesday 2:32 UTC
 
 jobs:
   rustfmt:
@@ -54,6 +50,7 @@ jobs:
         toolchain:
           - stable
           - beta
+          - "1.75"
         os:
           - ubuntu-latest
           - macos-latest
@@ -90,6 +87,7 @@ jobs:
           - stable
           - beta
           - nightly
+          - "1.75"
         os:
           - ubuntu-latest
           - macos-latest
@@ -162,7 +160,7 @@ jobs:
           tool: cross
 
       - uses: actions/checkout@v4
-      - run: cargo fetch
+      - run: cargo fetch --locked
       - uses: actions/cache@v4
         with:
           key: release-${{ matrix.triple }}-${{ steps.rust.outputs.cachekey }}-${{ hashFiles('**/Cargo.*') }}
