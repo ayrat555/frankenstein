@@ -90,7 +90,7 @@ impl AsyncTelegramApi for AsyncApi {
         if let Some(params) = params {
             let json_string = crate::json::encode(&params)?;
             prepared_request = prepared_request.body(json_string);
-        };
+        }
         let response = prepared_request.send().await?;
         Self::decode_response(response).await
     }

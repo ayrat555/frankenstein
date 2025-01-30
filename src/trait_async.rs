@@ -126,7 +126,7 @@ where
                         new_audio.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
@@ -136,7 +136,7 @@ where
                         new_audio.thumbnail = Some(FileUpload::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Audio(new_audio));
                 }
@@ -152,7 +152,7 @@ where
                         new_document.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Document(new_document));
                 }
@@ -167,7 +167,7 @@ where
                         new_photo.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Photo(new_photo));
                 }
@@ -183,7 +183,7 @@ where
                         new_video.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
                         let name = format!("file{file_idx}");
@@ -193,11 +193,11 @@ where
                         new_video.thumbnail = Some(FileUpload::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Video(new_video));
                 }
-            };
+            }
         }
 
         let mut new_params = params.clone();
@@ -402,7 +402,7 @@ where
                     new_animation.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
@@ -411,7 +411,7 @@ where
                     new_animation.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Animation(new_animation)
             }
@@ -425,7 +425,7 @@ where
                     new_document.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &document.thumbnail {
                     let name = "document_thumb".to_string();
@@ -434,7 +434,7 @@ where
                     new_document.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Document(new_document)
             }
@@ -448,7 +448,7 @@ where
                     new_audio.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
@@ -457,7 +457,7 @@ where
                     new_audio.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Audio(new_audio)
             }
@@ -471,7 +471,7 @@ where
                     new_photo.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Photo(new_photo)
             }
@@ -485,7 +485,7 @@ where
                     new_video.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
                     let name = "video_thumb".to_string();
@@ -494,7 +494,7 @@ where
                     new_video.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Video(new_video)
             }
@@ -568,7 +568,7 @@ where
                 new_sticker.sticker = FileUpload::String(attach_name);
 
                 files.push((name, input_file.path.clone()));
-            };
+            }
 
             new_stickers.push(new_sticker);
         }

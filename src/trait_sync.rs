@@ -110,7 +110,7 @@ pub trait TelegramApi {
                         new_audio.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
                         let name = format!("file{file_idx}");
@@ -120,7 +120,7 @@ pub trait TelegramApi {
                         new_audio.thumbnail = Some(FileUpload::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Audio(new_audio));
                 }
@@ -136,7 +136,7 @@ pub trait TelegramApi {
                         new_document.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Document(new_document));
                 }
@@ -151,7 +151,7 @@ pub trait TelegramApi {
                         new_photo.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Photo(new_photo));
                 }
@@ -167,7 +167,7 @@ pub trait TelegramApi {
                         new_video.media = FileUpload::String(attach_name);
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
                         let name = format!("file{file_idx}");
@@ -177,11 +177,11 @@ pub trait TelegramApi {
                         new_video.thumbnail = Some(FileUpload::String(attach_name));
 
                         files.push((name, input_file.path.clone()));
-                    };
+                    }
 
                     new_medias.push(Media::Video(new_video));
                 }
-            };
+            }
         }
 
         let mut new_params = params.clone();
@@ -373,7 +373,7 @@ pub trait TelegramApi {
                     new_animation.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &animation.thumbnail {
                     let name = "animation_thumb".to_string();
@@ -382,7 +382,7 @@ pub trait TelegramApi {
                     new_animation.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Animation(new_animation)
             }
@@ -396,7 +396,7 @@ pub trait TelegramApi {
                     new_document.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &document.thumbnail {
                     let name = "document_thumb".to_string();
@@ -405,7 +405,7 @@ pub trait TelegramApi {
                     new_document.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Document(new_document)
             }
@@ -419,7 +419,7 @@ pub trait TelegramApi {
                     new_audio.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
                     let name = "audio_thumb".to_string();
@@ -428,7 +428,7 @@ pub trait TelegramApi {
                     new_audio.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Audio(new_audio)
             }
@@ -442,7 +442,7 @@ pub trait TelegramApi {
                     new_photo.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Photo(new_photo)
             }
@@ -456,7 +456,7 @@ pub trait TelegramApi {
                     new_video.media = FileUpload::String(attach_name);
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
                     let name = "video_thumb".to_string();
@@ -465,7 +465,7 @@ pub trait TelegramApi {
                     new_video.thumbnail = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
-                };
+                }
 
                 InputMedia::Video(new_video)
             }
@@ -536,7 +536,7 @@ pub trait TelegramApi {
                 new_sticker.sticker = FileUpload::String(attach_name);
 
                 files.push((name, input_file.path.clone()));
-            };
+            }
 
             new_stickers.push(new_sticker);
         }
