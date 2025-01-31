@@ -116,7 +116,7 @@ optional = true
 [dependencies.ureq]
 version = "3.0.0"
 default-features = false
-features = ["rustls", "json"]
+features = ["rustls"]
 optional = true
 
 [dev-dependencies]

@@ -70,7 +70,12 @@ impl TelegramApi for Api {
             None => request.send_empty()?,
             Some(data) => {
                 let json = crate::json::encode(&data)?;
-                request.send(&json)?
+                request
+                    .header(
+                        ureq::http::header::CONTENT_TYPE,
+                        ureq::http::HeaderValue::from_static("application/json; charset=utf-8"),
+                    )
+                    .send(&json)?
             }
         };
         Self::decode_response(response)

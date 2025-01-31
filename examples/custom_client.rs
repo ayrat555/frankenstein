@@ -25,6 +25,7 @@ fn main() {
 
 fn custom_client() -> Api {
     let config = frankenstein::ureq::Agent::config_builder()
+        .http_status_as_error(false)
         .timeout_global(Some(Duration::from_secs(100)))
         .build();
     let request_agent = frankenstein::ureq::Agent::new_with_config(config);
