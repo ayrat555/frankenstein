@@ -51,10 +51,10 @@ impl Display for ParseMode {
 
 #[test]
 fn serde_markdown_works() {
-    crate::json::assert_str(&ParseMode::MarkdownV2, r#""MarkdownV2""#);
+    crate::test_json::assert_json_str(&ParseMode::MarkdownV2, r#""MarkdownV2""#);
 }
 
 #[test]
 fn serde_html_works() {
-    crate::json::assert_str(&ParseMode::Html, r#""HTML""#);
+    crate::test_json::assert_json_str(&ParseMode::Html, r#""HTML""#);
 }

@@ -38,21 +38,20 @@ impl Api {
     pub fn new_url<S: Into<String>>(api_url: S) -> Self {
         Self::builder().api_url(api_url).build()
     }
-}
 
-impl From<ureq::Error> for Error {
-    fn from(error: ureq::Error) -> Self {
-        match error {
-            // Disabled for the `default_agent`
-            ureq::Error::StatusCode(code) => Self::Http {
-                code,
-                message: String::new(),
-            },
-            ureq::Error::Json(error) => Self::Decode(format!("{error}")),
-            _ => Self::Http {
-                message: format!("{error}"),
-                code: 500,
-            },
+    fn decode_response<Output>(
+        response: ureq::http::response::Response<ureq::Body>,
+    ) -> Result<Output, Error>
+    where
+        Output: serde::de::DeserializeOwned,
+    {
+        let success = response.status().is_success();
+        let body = response.into_body().read_to_string()?;
+        if success {
+            crate::json::decode(&body)
+        } else {
+            let api_error = crate::json::decode(&body)?;
+            Err(Error::Api(api_error))
         }
     }
 }
@@ -69,16 +68,12 @@ impl TelegramApi for Api {
         let request = self.request_agent.post(&url);
         let response = match params {
             None => request.send_empty()?,
-            Some(data) => request.send_json(&data)?,
+            Some(data) => {
+                let json = crate::json::encode(&data)?;
+                request.send(&json)?
+            }
         };
-        let success = response.status().is_success();
-        let body = response.into_body().read_to_string()?;
-        if success {
-            crate::json::decode(&body)
-        } else {
-            let api_error = crate::json::decode(&body)?;
-            Err(Error::Api(api_error))
-        }
+        Self::decode_response(response)
     }
 
     fn request_with_form_data<Params, Output>(
@@ -112,7 +107,7 @@ impl TelegramApi for Api {
         }
 
         for (parameter_name, file_name, file_path) in files_with_names {
-            let file = std::fs::File::open(&file_path).unwrap();
+            let file = std::fs::File::open(&file_path).map_err(Error::ReadFile)?;
             let file_extension = file_path
                 .extension()
                 .and_then(std::ffi::OsStr::to_str)
@@ -132,14 +127,7 @@ impl TelegramApi for Api {
                 format!("multipart/form-data; boundary={}", form_data.boundary()),
             )
             .send(ureq::SendBody::from_reader(&mut form_data))?;
-        let success = response.status().is_success();
-        let body = response.into_body().read_to_string()?;
-        if success {
-            crate::json::decode(&body)
-        } else {
-            let api_error = crate::json::decode(&body)?;
-            Err(Error::Api(api_error))
-        }
+        Self::decode_response(response)
     }
 }
 
@@ -166,10 +154,10 @@ mod tests {
         SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
         UnbanChatMemberParams, UnpinChatMessageParams,
     };
-    use crate::json;
     use crate::objects::{
         AllowedUpdate, BotCommand, ChatPermissions, InlineQueryResultVenue, InputPollOption,
     };
+    use crate::test_json::assert_json_str;
 
     macro_rules! case {
         ($method:ident, $status:literal, $body:ident $(, $params:ident )? ) => {{
@@ -202,7 +190,7 @@ mod tests {
             .allowed_updates(vec![AllowedUpdate::Message])
             .build();
         let response = case!(getUpdates, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
 
         assert_eq!(1, response.result.len());
         let update = &response.result[0];
@@ -217,7 +205,7 @@ mod tests {
             .text("Hello!")
             .build();
         let response = case!(sendMessage, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -243,7 +231,7 @@ mod tests {
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
         let params = SetWebhookParams::builder().url("").build();
         let response = case!(setWebhook, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -252,42 +240,42 @@ mod tests {
             "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
         let params = DeleteWebhookParams::builder().build();
         let response = case!(deleteWebhook, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
     fn get_webhook_info_success() {
         let response_string = "{\"ok\":true,\"result\":{\"url\":\"\",\"has_custom_certificate\":false,\"pending_update_count\":0,\"allowed_updates\":[\"message\"]}}";
         let response = case!(getWebhookInfo, 200, response_string).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
     fn get_me_success() {
         let response_string = "{\"ok\":true,\"result\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_inline_queries\":false}}";
         let response = case!(getMe, 200, response_string).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
     fn log_out_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let response = case!(logOut, 200, response_string).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
     fn close_failure() {
         let response_string = "{\"ok\":false,\"description\":\"Unauthorized\",\"error_code\":401}";
-        let response = case!(close, 400, response_string).unwrap_err();
-        json::assert_str(&response, response_string);
+        let response = case!(close, 400, response_string).unwrap_err().unwrap_api();
+        assert_json_str(&response, response_string);
     }
 
     #[test]
     fn close_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let response = case!(close, 200, response_string).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -299,7 +287,7 @@ mod tests {
             .message_id(2747)
             .build();
         let response = case!(forwardMessage, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -311,7 +299,7 @@ mod tests {
             .message_id(2747)
             .build();
         let response = case!(copyMessage, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -323,7 +311,7 @@ mod tests {
             .longitude(6.95)
             .build();
         let response = case!(sendLocation, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -336,7 +324,7 @@ mod tests {
             .longitude(6.95)
             .build();
         let response = case!(editMessageLiveLocation, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -347,7 +335,7 @@ mod tests {
             .message_id(2752)
             .build();
         let response = case!(stopMessageLiveLocation, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -361,7 +349,7 @@ mod tests {
             .address("Hoof")
             .build();
         let response = case!(sendVenue, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -373,7 +361,7 @@ mod tests {
             .first_name("Meow")
             .build();
         let response = case!(sendContact, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -388,7 +376,7 @@ mod tests {
             ])
             .build();
         let response = case!(sendPoll, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -396,7 +384,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2757,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"dice\":{\"emoji\":\"🎲\",\"value\":5}}}";
         let params = SendDiceParams::builder().chat_id(275808073).build();
         let response = case!(sendDice, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -407,7 +395,7 @@ mod tests {
             .action(ChatAction::Typing)
             .build();
         let response = case!(sendChatAction, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -417,7 +405,7 @@ mod tests {
             .user_id(275808073_u64)
             .build();
         let response = case!(getUserProfilePhotos, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -427,7 +415,7 @@ mod tests {
             .file_id("AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA")
             .build();
         let response = case!(getFile, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -438,7 +426,7 @@ mod tests {
             .user_id(275808073_u64)
             .build();
         let response = case!(banChatMember, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -449,7 +437,7 @@ mod tests {
             .user_id(275808072_u64)
             .build();
         let response = case!(unbanChatMember, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -464,7 +452,7 @@ mod tests {
             .permissions(perm)
             .build();
         let response = case!(restrictChatMember, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -476,7 +464,7 @@ mod tests {
             .can_change_info(true)
             .build();
         let response = case!(promoteChatMember, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -494,7 +482,7 @@ mod tests {
             params
         )
         .unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -508,7 +496,7 @@ mod tests {
             .permissions(perm)
             .build();
         let response = case!(setChatPermissions, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -518,7 +506,7 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(exportChatInviteLink, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -528,7 +516,7 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(createChatInviteLink, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -539,7 +527,7 @@ mod tests {
             .invite_link("https://t.me/joinchat/O458bA8hQ0MzNmQy")
             .build();
         let response = case!(editChatInviteLink, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -550,7 +538,7 @@ mod tests {
             .invite_link("https://t.me/joinchat/O458bA8hQ0MzNmQy")
             .build();
         let response = case!(revokeChatInviteLink, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -560,7 +548,7 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(deleteChatPhoto, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -572,7 +560,7 @@ mod tests {
             .photo(file)
             .build();
         let response = case!(sendPhoto, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -584,7 +572,7 @@ mod tests {
             .audio(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -597,7 +585,7 @@ mod tests {
             .thumbnail(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -611,7 +599,7 @@ mod tests {
             .audio(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -623,7 +611,7 @@ mod tests {
             .document(file)
             .build();
         let response = case!(sendDocument, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -635,7 +623,7 @@ mod tests {
             .video(file)
             .build();
         let response = case!(sendVideo, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -647,7 +635,7 @@ mod tests {
             .animation(file)
             .build();
         let response = case!(sendAnimation, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -659,7 +647,7 @@ mod tests {
             .voice(file)
             .build();
         let response = case!(sendVoice, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -671,7 +659,7 @@ mod tests {
             .video_note(file)
             .build();
         let response = case!(sendVideoNote, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -685,7 +673,7 @@ mod tests {
             .photo(file)
             .build();
         let response = case!(setChatPhoto, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -696,7 +684,7 @@ mod tests {
             .title("Frankenstein")
             .build();
         let response = case!(setChatTitle, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -707,7 +695,7 @@ mod tests {
             .description("Frankenstein group")
             .build();
         let response = case!(setChatDescription, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -718,7 +706,7 @@ mod tests {
             .message_id(2766)
             .build();
         let response = case!(pinChatMessage, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -726,7 +714,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = UnpinChatMessageParams::builder().chat_id(275808073).build();
         let response = case!(unpinChatMessage, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -734,7 +722,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = LeaveChatParams::builder().chat_id(-1001368460856).build();
         let response = case!(leaveChat, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -742,7 +730,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\",\"photo\":{\"small_file_id\":\"AQADAgAT-kgrmy4AAwIAA8jhydkW____s1Cm6Dc_w8Ge7QUAAR8E\",\"small_file_unique_id\":\"AQAD-kgrmy4AA57tBQAB\",\"big_file_id\":\"AQADAgAT-kgrmy4AAwMAA8jhydkW____s1Cm6Dc_w8Gg7QUAAR8E\",\"big_file_unique_id\":\"AQAD-kgrmy4AA6DtBQAB\"},\"description\":\"Frankenstein group\",\"invite_link\":\"https://t.me/joinchat/smSXMzNKTwA0ZjFi\",\"permissions\":{\"can_send_messages\":true,\"can_send_polls\":true,\"can_send_other_messages\":true,\"can_add_web_page_previews\":true,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true}}}";
         let params = GetChatParams::builder().chat_id(-1001368460856).build();
         let response = case!(getChat, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -752,7 +740,7 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(getChatAdministrators, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -762,7 +750,7 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(getChatMemberCount, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -773,7 +761,7 @@ mod tests {
             .user_id(275808073_u64)
             .build();
         let response = case!(getChatMember, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -784,7 +772,7 @@ mod tests {
             .sticker_set_name("GBTDPack")
             .build();
         let response = case!(setChatStickerSet, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -794,7 +782,7 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(deleteChatStickerSet, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -805,7 +793,7 @@ mod tests {
             .text("text")
             .build();
         let response = case!(answerCallbackQuery, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -824,7 +812,7 @@ mod tests {
             ])
             .build();
         let response = case!(setMyCommands, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -844,7 +832,7 @@ mod tests {
             .scope(BotCommandScope::Default)
             .build();
         let response = case!(setMyCommands, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -858,7 +846,7 @@ mod tests {
             .language_code("es")
             .build();
         let response = case!(deleteMyCommands, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -866,7 +854,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":[{\"command\":\"meow\",\"description\":\"mewo\"},{\"command\":\"meow1\",\"description\":\"mewo1\"}]}";
         let params = GetMyCommandsParams::builder().build();
         let response = case!(getMyCommands, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -877,7 +865,7 @@ mod tests {
         });
         let params = GetMyCommandsParams::builder().scope(scope).build();
         let response = case!(getMyCommands, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -897,7 +885,7 @@ mod tests {
             .results(vec![venue_result])
             .build();
         let response = case!(answerInlineQuery, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -909,7 +897,7 @@ mod tests {
             .message_id(2782)
             .build();
         let response = case!(editMessageText, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -921,7 +909,7 @@ mod tests {
             .caption("Caption")
             .build();
         let response = case!(editMessageCaption, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -932,7 +920,7 @@ mod tests {
             .message_id(495)
             .build();
         let response = case!(stopPoll, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -943,7 +931,7 @@ mod tests {
             .message_id(2784)
             .build();
         let response = case!(deleteMessage, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -955,7 +943,7 @@ mod tests {
             .sticker(file)
             .build();
         let response = case!(sendSticker, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -963,7 +951,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"name\":\"unocards\",\"title\":\"UNO Bot\",\"sticker_type\":\"regular\",\"contains_masks\":false,\"stickers\":[{\"file_id\":\"CAACAgQAAxUAAWCDxAQVJ6X7FGiBD5NyjN5DDvgfAALZAQACX1eZAAEqnpNt3SpG_x8E\",\"file_unique_id\":\"AgAD2QEAAl9XmQAB\",\"type\":\"regular\",\"width\":342,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumbnail\":{\"file_id\":\"AAMCBAADFQABYIPEBBUnpfsUaIEPk3KM3kMO-B8AAtkBAAJfV5kAASqek23dKkb_P75BGQAEAQAHbQADBBEAAh8E\",\"file_unique_id\":\"AQADP75BGQAEBBEAAg\",\"width\":85,\"height\":128,\"file_size\":2452},\"emoji\":\"dd\",\"set_name\":\"unocards\",\"file_size\":8898}]}}";
         let params = GetStickerSetParams::builder().name("unocards").build();
         let response = case!(getStickerSet, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -977,7 +965,7 @@ mod tests {
             .media(medias)
             .build();
         let response = case!(sendMediaGroup, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -992,7 +980,7 @@ mod tests {
             .message_id(513)
             .build();
         let response = case!(editMessageMedia, 200, response_string, params).unwrap();
-        json::assert_str(&response, response_string);
+        assert_json_str(&response, response_string);
     }
 
     #[test]
@@ -1002,9 +990,11 @@ mod tests {
             .allowed_updates(vec![AllowedUpdate::Message])
             .build();
         let response = case!(getUpdates, 200, response_string, params);
+        let err = response.unwrap_err();
+        assert!(matches!(err, Error::JsonDecode { .. }));
         assert_eq!(
-            Err(Error::Decode("Error(\"key must be a string\", line: 1, column: 2) : \"{hey this json is invalid}\"".to_string())),
-            response
+            "JSON Decode Error: key must be a string at line 1 column 2 on {hey this json is invalid}",
+            err.to_string()
         );
     }
 }
