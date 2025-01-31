@@ -23,6 +23,10 @@ pub enum Error {
     #[error("Read File Error: {0}")]
     ReadFile(#[source] std::io::Error),
 
+    #[cfg(all(feature = "client-reqwest", target_arch = "wasm32"))]
+    #[error("Handling files is not yet supported in Wasm due to missing form_data / attachment support. Pull Request welcome!")]
+    WasmHasNoFileSupportYet,
+
     #[cfg(feature = "client-reqwest")]
     #[error("HTTP error: {0}")]
     HttpReqwest(#[source] reqwest::Error),

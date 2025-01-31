@@ -145,11 +145,7 @@ impl AsyncTelegramApi for AsyncApi {
         }
 
         #[cfg(target_arch = "wasm32")]
-        {
-            Err(Error::Encode(format!(
-                "calling {method:?} with files is currently unsupported in WASM due to missing form_data / attachment support. Was called with params {params:?} and files {files:?}",
-            )))
-        }
+        Err(Error::WasmHasNoFileSupportYet)
     }
 }
 
