@@ -88,6 +88,7 @@ impl AsyncTelegramApi for AsyncApi {
         Self::decode_response(response).await
     }
 
+    #[cfg_attr(target_arch = "wasm32", allow(unused_variables))]
     async fn request_with_form_data<Params, Output>(
         &self,
         method: &str,
