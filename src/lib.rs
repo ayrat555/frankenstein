@@ -26,12 +26,14 @@ mod client_reqwest;
 #[cfg(feature = "client-ureq")]
 mod client_ureq;
 mod error;
-#[cfg(any(test, feature = "client-ureq", feature = "client-reqwest"))]
+#[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
 mod json;
 mod macros;
 pub mod objects;
 mod parse_mode;
 pub mod response;
+#[cfg(test)]
+mod test_json;
 #[cfg(feature = "trait-async")]
 mod trait_async;
 #[cfg(feature = "trait-sync")]

@@ -39,31 +39,24 @@ impl AsyncApi {
         Self::builder().api_url(api_url).build()
     }
 
-    pub async fn decode_response<Output>(response: reqwest::Response) -> Result<Output, Error>
+    async fn decode_response<Output>(response: reqwest::Response) -> Result<Output, Error>
     where
         Output: serde::de::DeserializeOwned,
     {
-        let status_code = response.status().as_u16();
-        match response.text().await {
-            Ok(message) => {
-                if status_code == 200 {
-                    Ok(crate::json::decode(&message)?)
-                } else {
-                    Err(Error::Api(crate::json::decode(&message)?))
-                }
-            }
-            Err(error) => Err(Error::Decode(format!("{error:?}"))),
+        let success = response.status().is_success();
+        let message = response.text().await?;
+        if success {
+            Ok(crate::json::decode(&message)?)
+        } else {
+            Err(Error::Api(crate::json::decode(&message)?))
         }
     }
 }
 
 impl From<reqwest::Error> for Error {
     fn from(error: reqwest::Error) -> Self {
-        let message = error.to_string();
-        let code = error
-            .status()
-            .map_or(500, |status_code| status_code.as_u16());
-        Self::Http { code, message }
+        // Prevent leakage of the bot token as its within the path
+        Self::HttpReqwest(error.without_url())
     }
 }
 
@@ -95,6 +88,7 @@ impl AsyncTelegramApi for AsyncApi {
         Self::decode_response(response).await
     }
 
+    #[cfg_attr(target_arch = "wasm32", allow(unused_variables))]
     async fn request_with_form_data<Params, Output>(
         &self,
         method: &str,
@@ -140,7 +134,7 @@ impl AsyncTelegramApi for AsyncApi {
             for (parameter_name, file_path, file_name) in files_with_paths {
                 let file = tokio::fs::File::open(file_path)
                     .await
-                    .map_err(|error| Error::Encode(error.to_string()))?;
+                    .map_err(Error::ReadFile)?;
                 let part = multipart::Part::stream(file).file_name(file_name);
                 form = form.part(parameter_name, part);
             }
@@ -152,19 +146,14 @@ impl AsyncTelegramApi for AsyncApi {
         }
 
         #[cfg(target_arch = "wasm32")]
-        {
-            Err(Error::Encode(format!(
-                "calling {method:?} with files is currently unsupported in WASM due to missing form_data / attachment support. Was called with params {params:?} and files {files:?}",
-            )))
-        }
+        Err(Error::WasmHasNoFileSupportYet)
     }
 }
 
 #[cfg(test)]
-mod async_tests {
+mod tests {
     use super::*;
     use crate::api_params::SendMessageParams;
-    use crate::json;
 
     #[tokio::test]
     async fn async_send_message_success() {
@@ -186,7 +175,7 @@ mod async_tests {
         mock.assert();
         drop(server);
 
-        json::assert_str(&response, response_string);
+        crate::test_json::assert_json_str(&response, response_string);
     }
 
     #[tokio::test]

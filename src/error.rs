@@ -1,19 +1,42 @@
-use serde::{Deserialize, Serialize};
-
 use crate::response::ErrorResponse;
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, thiserror::Error)]
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug, thiserror::Error)]
 #[non_exhaustive]
-#[serde(untagged)]
 pub enum Error {
-    #[error("Http Error {code}: {message}")]
-    Http { code: u16, message: String },
     #[error("Api Error {0:?}")]
     Api(ErrorResponse),
-    #[error("Decode Error {0}")]
-    Decode(String),
-    #[error("Encode Error {0}")]
-    Encode(String),
+
+    #[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
+    #[error("JSON Decode Error: {source} on {input}")]
+    JsonDecode {
+        source: serde_json::Error,
+        input: String,
+    },
+    #[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
+    #[error("JSON Encode Error: {source} on {input}")]
+    JsonEncode {
+        source: serde_json::Error,
+        input: String,
+    },
+
+    #[error("Read File Error: {0}")]
+    ReadFile(#[source] std::io::Error),
+
+    #[cfg(all(feature = "client-reqwest", target_arch = "wasm32"))]
+    #[error("Handling files is not yet supported in Wasm due to missing form_data / attachment support. Pull Request welcome!")]
+    WasmHasNoFileSupportYet,
+
+    #[cfg(feature = "client-reqwest")]
+    #[error("HTTP error: {0}")]
+    HttpReqwest(#[source] reqwest::Error),
+
+    #[cfg(feature = "client-ureq")]
+    #[error("HTTP error: {0}")]
+    HttpUreq(#[source] ureq::Transport),
+    #[cfg(feature = "client-ureq")]
+    #[error("Decode Body Error: {0}")]
+    DecodeUreqBody(#[source] std::io::Error),
 }
 
 impl Error {
