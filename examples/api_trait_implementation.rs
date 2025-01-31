@@ -10,7 +10,7 @@ static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 static CHAT_ID: i64 = 1;
 
-pub struct Api {
+pub struct MyApiClient {
     pub api_url: String,
 }
 
@@ -20,7 +20,7 @@ pub enum Error {
     Api(ErrorResponse),
 }
 
-impl Api {
+impl MyApiClient {
     #[must_use]
     pub fn new(api_key: &str) -> Self {
         let api_url = format!("{BASE_API_URL}{api_key}");
@@ -47,7 +47,7 @@ impl From<isahc::Error> for Error {
     }
 }
 
-impl TelegramApi for Api {
+impl TelegramApi for MyApiClient {
     type Error = Error;
 
     fn request<Params, Output>(
@@ -105,14 +105,14 @@ impl TelegramApi for Api {
 }
 
 fn main() {
-    let api = Api::new(TOKEN);
+    let bot = MyApiClient::new(TOKEN);
 
     let params = SendMessageParams::builder()
         .chat_id(CHAT_ID)
         .text("Hello!")
         .build();
 
-    let result = api.send_message(&params);
+    let result = bot.send_message(&params);
 
     eprintln!("{result:?}");
 }
