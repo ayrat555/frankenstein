@@ -25,9 +25,11 @@ fn main() {
 }
 
 fn custom_client() -> Bot {
-    let request_agent = frankenstein::ureq::builder()
-        .timeout(Duration::from_secs(100))
+    let config = frankenstein::ureq::Agent::config_builder()
+        .http_status_as_error(false)
+        .timeout_global(Some(Duration::from_secs(100)))
         .build();
+    let request_agent = frankenstein::ureq::Agent::new_with_config(config);
     let api_url = format!("{BASE_API_URL}{TOKEN}");
 
     Bot::builder()

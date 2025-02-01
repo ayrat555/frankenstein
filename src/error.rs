@@ -33,10 +33,7 @@ pub enum Error {
 
     #[cfg(feature = "client-ureq")]
     #[error("HTTP error: {0}")]
-    HttpUreq(#[source] ureq::Transport),
-    #[cfg(feature = "client-ureq")]
-    #[error("Decode Body Error: {0}")]
-    DecodeUreqBody(#[source] std::io::Error),
+    HttpUreq(#[from] ureq::Error),
 }
 
 impl Error {

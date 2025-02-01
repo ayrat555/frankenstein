@@ -114,7 +114,9 @@ features = ["fs"]
 optional = true
 
 [dependencies.ureq]
-version = "2"
+version = "3.0.0"
+default-features = false
+features = ["rustls"]
 optional = true
 
 [dev-dependencies]
