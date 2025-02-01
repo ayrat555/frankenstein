@@ -1,5 +1,6 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
 #![cfg_attr(test, allow(dead_code))]
+#![doc = include_str!("../README.md")]
 
 #[cfg(feature = "client-reqwest")]
 pub use reqwest;
@@ -7,10 +8,6 @@ pub use reqwest;
 pub use ureq;
 
 pub use self::api_params::*;
-#[cfg(feature = "client-reqwest")]
-pub use self::client_reqwest::*;
-#[cfg(feature = "client-ureq")]
-pub use self::client_ureq::*;
 pub use self::error::Error;
 pub use self::objects::*;
 pub use self::parse_mode::ParseMode;
@@ -22,9 +19,9 @@ pub use self::trait_sync::TelegramApi;
 
 pub mod api_params;
 #[cfg(feature = "client-reqwest")]
-mod client_reqwest;
+pub mod client_reqwest;
 #[cfg(feature = "client-ureq")]
-mod client_ureq;
+pub mod client_ureq;
 mod error;
 #[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
 mod json;
@@ -41,3 +38,16 @@ mod trait_sync;
 
 /// Default Bot API URL
 pub const BASE_API_URL: &str = "https://api.telegram.org/bot";
+
+#[deprecated(
+    since = "0.39.0",
+    note = "enable the client-reqwest feature and use frankenstein::client_reqwest::Bot instead"
+)]
+#[doc(hidden)]
+pub struct AsyncApi;
+#[deprecated(
+    since = "0.39.0",
+    note = "enable the client-ureq feature and use frankenstein::client_ureq::Bot instead"
+)]
+#[doc(hidden)]
+pub struct Api;

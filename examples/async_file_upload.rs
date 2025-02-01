@@ -1,12 +1,13 @@
 use frankenstein::api_params::SendPhotoParams;
-use frankenstein::{AsyncApi, AsyncTelegramApi};
+use frankenstein::client_reqwest::Bot;
+use frankenstein::AsyncTelegramApi;
 
 static TOKEN: &str = "TOKEN";
 static CHAT_ID: i64 = 1;
 
 #[tokio::main]
 async fn main() {
-    let api = AsyncApi::new(TOKEN);
+    let bot = Bot::new(TOKEN);
 
     let file = std::path::PathBuf::from("./frankenstein_logo.png");
 
@@ -15,7 +16,7 @@ async fn main() {
         .photo(file)
         .build();
 
-    match api.send_photo(&params).await {
+    match bot.send_photo(&params).await {
         Ok(response) => {
             println!("Photo was uploaded {response:?}");
         }

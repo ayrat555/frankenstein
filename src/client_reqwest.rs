@@ -6,10 +6,10 @@ use bon::Builder;
 use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
 
-/// Asynchronous [`AsyncTelegramApi`] client implementation with [`reqwest`].
+/// Asynchronous [`AsyncTelegramApi`] implementation with [`reqwest`]
 #[derive(Debug, Clone, Builder)]
-#[must_use = "API needs to be used in order to be useful"]
-pub struct AsyncApi {
+#[must_use = "Bot needs to be used in order to be useful"]
+pub struct Bot {
     #[builder(into)]
     pub api_url: String,
 
@@ -28,13 +28,13 @@ fn default_client() -> reqwest::Client {
     client_builder.build().unwrap()
 }
 
-impl AsyncApi {
-    /// Create a new `AsyncApi`. You can use [`AsyncApi::new_url`] or [`AsyncApi::builder`] for more options.
+impl Bot {
+    /// Create a new `Bot`. You can use [`Bot::new_url`] or [`Bot::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
         Self::new_url(format!("{}{api_key}", crate::BASE_API_URL))
     }
 
-    /// Create a new `AsyncApi`. You can use [`AsyncApi::builder`] for more options.
+    /// Create a new `Bot`. You can use [`Bot::builder`] for more options.
     pub fn new_url<S: Into<String>>(api_url: S) -> Self {
         Self::builder().api_url(api_url).build()
     }
@@ -63,7 +63,7 @@ impl From<reqwest::Error> for Error {
 // Wasm target need not be `Send` because it is single-threaded
 #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
 #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
-impl AsyncTelegramApi for AsyncApi {
+impl AsyncTelegramApi for Bot {
     type Error = Error;
 
     async fn request<Params, Output>(
@@ -169,7 +169,7 @@ mod tests {
             .with_body(response_string)
             .create_async()
             .await;
-        let api = AsyncApi::new_url(server.url());
+        let api = Bot::new_url(server.url());
 
         let response = api.send_message(&params).await.unwrap();
         mock.assert();
@@ -193,7 +193,7 @@ mod tests {
             .with_body(response_string)
             .create_async()
             .await;
-        let api = AsyncApi::new_url(server.url());
+        let api = Bot::new_url(server.url());
 
         let error = api.send_message(&params).await.unwrap_err().unwrap_api();
         mock.assert();

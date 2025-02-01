@@ -8,10 +8,10 @@ use serde_json::Value;
 use crate::trait_sync::TelegramApi;
 use crate::Error;
 
-/// Synchronous [`TelegramApi`] client implementation with [`ureq`].
+/// Synchronous [`TelegramApi`] implementation with [`ureq`].
 #[derive(Debug, Clone, Builder)]
-#[must_use = "API needs to be used in order to be useful"]
-pub struct Api {
+#[must_use = "Bot needs to be used in order to be useful"]
+pub struct Bot {
     #[builder(into)]
     pub api_url: String,
 
@@ -28,13 +28,13 @@ fn default_agent() -> ureq::Agent {
     )
 }
 
-impl Api {
-    /// Create a new `Api`. You can use [`Api::new_url`] or [`Api::builder`] for more options.
+impl Bot {
+    /// Create a new `Bot`. You can use [`Bot::new_url`] or [`Bot::builder`] for more options.
     pub fn new(api_key: &str) -> Self {
         Self::new_url(format!("{}{api_key}", crate::BASE_API_URL))
     }
 
-    /// Create a new `Api`. You can use [`Api::builder`] for more options.
+    /// Create a new `Bot`. You can use [`Bot::builder`] for more options.
     pub fn new_url<S: Into<String>>(api_url: S) -> Self {
         Self::builder().api_url(api_url).build()
     }
@@ -56,7 +56,7 @@ impl Api {
     }
 }
 
-impl TelegramApi for Api {
+impl TelegramApi for Bot {
     type Error = Error;
 
     fn request<Params, Output>(&self, method: &str, params: Option<Params>) -> Result<Output, Error>
@@ -173,7 +173,7 @@ mod tests {
                     .with_status($status)
                     .with_body($body)
                     .create();
-                let api = Api::new_url(server.url());
+                let api = Bot::new_url(server.url());
                 let response = dbg!(api.[<$method:snake>]($(& $params )?));
                 mock.assert();
                 drop(server);
@@ -184,7 +184,7 @@ mod tests {
 
     #[test]
     fn new_sets_correct_url() {
-        let api = Api::new("hey");
+        let api = Bot::new("hey");
         assert_eq!("https://api.telegram.org/bothey", api.api_url);
     }
 

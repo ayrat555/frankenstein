@@ -1,6 +1,7 @@
 use frankenstein::api_params::{ReplyMarkup, SendMessageParams};
+use frankenstein::client_ureq::Bot;
 use frankenstein::objects::{KeyboardButton, ReplyKeyboardMarkup};
-use frankenstein::{Api, TelegramApi};
+use frankenstein::TelegramApi;
 
 // replace with your token
 static TOKEN: &str = "TOKEN";
@@ -8,7 +9,7 @@ static TOKEN: &str = "TOKEN";
 static CHAT_ID: i64 = 275_808_073;
 
 fn main() {
-    let api = Api::new(TOKEN);
+    let bot = Bot::new(TOKEN);
 
     let mut keyboard: Vec<Vec<KeyboardButton>> = Vec::new();
 
@@ -33,5 +34,5 @@ fn main() {
         .reply_markup(ReplyMarkup::ReplyKeyboardMarkup(keyboard_markup))
         .build();
 
-    api.send_message(&send_message_params).unwrap();
+    bot.send_message(&send_message_params).unwrap();
 }

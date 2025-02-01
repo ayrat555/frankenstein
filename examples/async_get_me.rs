@@ -1,12 +1,13 @@
-use frankenstein::{AsyncApi, AsyncTelegramApi};
+use frankenstein::client_reqwest::Bot;
+use frankenstein::AsyncTelegramApi;
 
 static TOKEN: &str = "API_TOKEN";
 
 #[tokio::main]
 async fn main() {
-    let api = AsyncApi::new(TOKEN);
+    let bot = Bot::new(TOKEN);
 
-    match api.get_me().await {
+    match bot.get_me().await {
         Ok(response) => {
             let user = response.result;
             println!(
