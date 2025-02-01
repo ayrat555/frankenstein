@@ -15,8 +15,17 @@ pub struct Api {
     #[builder(into)]
     pub api_url: String,
 
-    #[builder(default = ureq::builder().timeout(Duration::from_secs(500)).build())]
+    #[builder(default = default_agent())]
     pub request_agent: ureq::Agent,
+}
+
+fn default_agent() -> ureq::Agent {
+    ureq::Agent::new_with_config(
+        ureq::config::Config::builder()
+            .http_status_as_error(false)
+            .timeout_global(Some(Duration::from_secs(500)))
+            .build(),
+    )
 }
 
 impl Api {
@@ -31,21 +40,18 @@ impl Api {
     }
 
     fn decode_response<Output>(
-        response: Result<ureq::Response, ureq::Error>,
+        response: ureq::http::response::Response<ureq::Body>,
     ) -> Result<Output, Error>
     where
         Output: serde::de::DeserializeOwned,
     {
-        match response {
-            Ok(response) => {
-                let message = response.into_string().map_err(Error::DecodeUreqBody)?;
-                crate::json::decode(&message)
-            }
-            Err(ureq::Error::Status(_code, response)) => {
-                let message = response.into_string().map_err(Error::DecodeUreqBody)?;
-                Err(Error::Api(crate::json::decode(&message)?))
-            }
-            Err(ureq::Error::Transport(error)) => Err(Error::HttpUreq(error)),
+        let success = response.status().is_success();
+        let body = response.into_body().read_to_string()?;
+        if success {
+            crate::json::decode(&body)
+        } else {
+            let api_error = crate::json::decode(&body)?;
+            Err(Error::Api(api_error))
         }
     }
 }
@@ -59,15 +65,17 @@ impl TelegramApi for Api {
         Output: serde::de::DeserializeOwned,
     {
         let url = format!("{}/{method}", self.api_url);
-        let prepared_request = self
-            .request_agent
-            .post(&url)
-            .set("Content-Type", "application/json");
+        let request = self.request_agent.post(&url);
         let response = match params {
-            None => prepared_request.call(),
+            None => request.send_empty()?,
             Some(data) => {
                 let json = crate::json::encode(&data)?;
-                prepared_request.send_string(&json)
+                request
+                    .header(
+                        ureq::http::header::CONTENT_TYPE,
+                        ureq::http::HeaderValue::from_static("application/json; charset=utf-8"),
+                    )
+                    .send(&json)?
             }
         };
         Self::decode_response(response)
@@ -115,15 +123,15 @@ impl TelegramApi for Api {
         }
 
         let url = format!("{}/{method}", self.api_url);
-        let form_data = form.prepare().unwrap();
+        let mut form_data = form.prepare().unwrap();
         let response = self
             .request_agent
             .post(&url)
-            .set(
-                "Content-Type",
-                &format!("multipart/form-data; boundary={}", form_data.boundary()),
+            .header(
+                ureq::http::header::CONTENT_TYPE,
+                format!("multipart/form-data; boundary={}", form_data.boundary()),
             )
-            .send(form_data);
+            .send(ureq::SendBody::from_reader(&mut form_data))?;
         Self::decode_response(response)
     }
 }
