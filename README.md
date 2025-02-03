@@ -112,7 +112,7 @@ let result = bot.get_updates(&update_params);
 
 Every function returns a `Result` with a successful response or failed response.
 
-See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.38.0/examples) directory.
+See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.39.0/examples) directory.
 
 ### Uploading files
 
@@ -136,7 +136,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.38.0/frankenstein/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.39.0/frankenstein/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 

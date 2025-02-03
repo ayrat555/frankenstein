@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.39.0 (2025-02-03)
+
+* build!: rename the features and remove the default feature - [#248](https://github.com/ayrat555/frankenstein/pull/248)
+* feat(error)!: more specific errors including their source - [#252](https://github.com/ayrat555/frankenstein/pull/252)
+* feat!: name clients Bot to differentiate from TelegramApi - [#253](https://github.com/ayrat555/frankenstein/pull/253)
+* refactor(ureq): update to ureq v3 - [#247](https://github.com/ayrat555/frankenstein/pull/247)
+* build: specify rust-version and keep lock file - [#250](https://github.com/ayrat555/frankenstein/pull/250)
+* refactor(lint): fix clippy::unnecessary_semicolon - [#251](https://github.com/ayrat555/frankenstein/pull/251)
+
 ## 0.38.0 (2025-01-05)
 
 * New update types - [241](https://github.com/ayrat555/frankenstein/pull/241)
