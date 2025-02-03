@@ -1,11 +1,12 @@
-use frankenstein::{Api, TelegramApi};
+use frankenstein::client_ureq::Bot;
+use frankenstein::TelegramApi;
 
 static TOKEN: &str = "API_TOKEN";
 
 fn main() {
-    let api = Api::new(TOKEN);
+    let bot = Bot::new(TOKEN);
 
-    match api.get_me() {
+    match bot.get_me() {
         Ok(response) => {
             let user = response.result;
             println!(

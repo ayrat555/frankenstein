@@ -1,16 +1,17 @@
 use frankenstein::api_params::{GetUpdatesParams, ReplyParameters, SendMessageParams};
+use frankenstein::client_ureq::Bot;
 use frankenstein::objects::UpdateContent;
-use frankenstein::{Api, TelegramApi};
+use frankenstein::TelegramApi;
 
 static TOKEN: &str = "API_TOKEN";
 
 fn main() {
-    let api = Api::new(TOKEN);
+    let bot = Bot::new(TOKEN);
 
     let mut update_params = GetUpdatesParams::builder().build();
 
     loop {
-        let result = api.get_updates(&update_params);
+        let result = bot.get_updates(&update_params);
 
         println!("result: {result:?}");
 
@@ -26,7 +27,7 @@ fn main() {
                             .text("hello")
                             .reply_parameters(reply_parameters)
                             .build();
-                        if let Err(error) = api.send_message(&send_message_params) {
+                        if let Err(error) = bot.send_message(&send_message_params) {
                             println!("Failed to send message: {error:?}");
                         }
                     }

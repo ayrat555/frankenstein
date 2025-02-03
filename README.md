@@ -1,7 +1,5 @@
 <p align="center"><img src="frankenstein_logo.png" alt="frankenstein" height="300px"></p>
 
-[![Crates.io][s1]][ci] [![docs page][docs-badge]][docs] ![test][ga-test]
-
 # Frankenstein
 
 Telegram bot API client for Rust.
@@ -79,50 +77,42 @@ Optional fields are described as `Option`.
 Every struct can be created with the associated builder. Only required fields are required to set, optional fields are set to `None` when not provided:
 
 ```rust
+use frankenstein::api_params::SendMessageParams;
 let send_message_params = SendMessageParams::builder()
-    .chat_id(message.chat.id)
+    .chat_id(1337)
     .text("hello")
-    .reply_to_message_id(message.message_id)
     .build();
-```
-
-For API parameters, the same approach is used. The only difference for parameters is the name of the struct in Frankenstein ends with `Params` postfix.
-
-For example, parameters for `leaveChat` method:
-
-```rust
-pub struct LeaveChatParams {
-    chat_id: ChatId,
-}
 ```
 
 ### Making requests
 
-To make a request to the Telegram bot API initialize the `Api` struct.
-
-```rust
-use frankenstein::Api;
+```rust,no_run
+#![cfg(feature = "client-ureq")]
 use frankenstein::TelegramApi;
+use frankenstein::api_params::{GetUpdatesParams, SendMessageParams};
+use frankenstein::client_ureq::Bot;
+use frankenstein::objects::AllowedUpdate;
 
-...
+let token = "123:ABC";
+let bot = Bot::new(token);
 
-let token = "My_token";
-let api = Api::new(token);
-```
+// Send a message
+let send_message_params = SendMessageParams::builder()
+    .chat_id(1337)
+    .text("hello")
+    .build();
+let result = bot.send_message(&send_message_params);
 
-Then use this API object to make requests to the Bot API:
-
-```rust
+// or get the updates (= interactions with the bot)
 let update_params = GetUpdatesParams::builder()
     .allowed_updates(vec![AllowedUpdate::Message])
     .build();
-
-let result = api.get_updates(&update_params);
+let result = bot.get_updates(&update_params);
 ```
 
-Every function returns a `Result` enum with a successful response or failed response.
+Every function returns a `Result` with a successful response or failed response.
 
-See a complete example in the `examples` directory.
+See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.38.0/examples) directory.
 
 ### Uploading files
 
@@ -144,46 +134,9 @@ It has two variants:
 - `FileUpload::String` is used to pass the ID of the already uploaded file
 - `FileUpload::InputFile` is used to upload a new file using multipart upload.
 
-### Customizing HTTP clients
-
-Both the async (`reqwest`) and the blocking (`ureq`) HTTP clients can be customized with their builders.
-
-Customizing the blocking client:
-
-```rust
-use frankenstein::ureq;
-use frankenstein::Api;
-use std::time::Duration;
-
-let request_agent = ureq::builder().timeout(Duration::from_secs(100)).build();
-let api_url = format!("{}{}", BASE_API_URL, TOKEN);
-
-Api::builder()
-     .api_url(api_url)
-     .request_agent(request_agent)
-     .build()
-```
-
-Customizing the async client:
-
-```rust
-use frankenstein::reqwest;
-use frankenstein::AsyncApi;
-use std::time::Duration;
-
-let client = reqwest::ClientBuilder::new()
-    .connect_timeout(Duration::from_secs(100))
-    .timeout(Duration::from_secs(100))
-    .build()
-    .unwrap();
-let api_url = format!("{}{}", BASE_API_URL, TOKEN);
-
-AsyncApi::builder().api_url(api_url).client(client).build()
-```
-
 ### Documentation
 
-Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check [docs.rs](https://docs.rs/frankenstein/0.38.0/frankenstein/api_traits/telegram_api/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.38.0/frankenstein/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 
@@ -191,24 +144,6 @@ You can check out real-world bots created using this library:
 - [subvt-telegram-bot](https://github.com/helikon-labs/subvt-backend/tree/main/subvt-telegram-bot) - A Telegram bot for the validators of the [Polkadot](https://polkadot.network/) and [Kusama](https://kusama.network/).
 - [wdr-maus-downloader](https://github.com/EdJoPaTo/wdr-maus-downloader) - checks for a new episode of the WDR Maus and downloads it.
 - [weather_bot_rust](https://github.com/pxp9/weather_bot_rust) - A Telegram bot that provides weather info around the world.
-
-## Replacing the default HTTP client
-
-The library uses `ureq` HTTP client by default, but it can be easily replaced with any HTTP client of your choice.
-This is described here for the `trait-sync` and can be done similarly with `trait-async` based on your needs.
-
-```toml
-frankenstein = { version = "0.39", features = ["trait-sync"] }
-```
-
-Then implement the `TelegramApi` trait for your HTTP client which requires two functions:
-
-- `request_with_form_data` is used to upload files
-- `request` is used for requests without file uploads
-
-You can check [the default `TelegramApi` trait implementation](https://github.com/ayrat555/frankenstein/blob/aac88c01d06aa945393db7255ef2485a7c764d47/src/api_impl.rs) for `ureq`.
-
-Also, you can take a look at the [implementation for `isahc` HTTP client](https://github.com/ayrat555/frankenstein/blob/master/examples/api_trait_implementation.rs) in the `examples` directory.
 
 ## Contributing
 
@@ -221,9 +156,3 @@ Also, you can take a look at the [implementation for `isahc` HTTP client](https:
 ## Author
 
 Ayrat Badykov (@ayrat555)
-
-[s1]: https://img.shields.io/crates/v/frankenstein.svg
-[docs-badge]: https://img.shields.io/badge/docs-website-blue.svg
-[ci]: https://crates.io/crates/frankenstein
-[docs]: https://docs.rs/frankenstein/
-[ga-test]: https://github.com/ayrat555/frankenstein/actions/workflows/rust.yml/badge.svg

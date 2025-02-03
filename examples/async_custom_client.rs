@@ -1,15 +1,16 @@
 use std::time::Duration;
 
-use frankenstein::{AsyncApi, AsyncTelegramApi};
+use frankenstein::client_reqwest::Bot;
+use frankenstein::AsyncTelegramApi;
 
 static TOKEN: &str = "API_TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
 
 #[tokio::main]
 async fn main() {
-    let api = custom_client();
+    let bot = custom_client();
 
-    match api.get_me().await {
+    match bot.get_me().await {
         Ok(response) => {
             let user = response.result;
             println!(
@@ -24,7 +25,7 @@ async fn main() {
     }
 }
 
-fn custom_client() -> AsyncApi {
+fn custom_client() -> Bot {
     let client = frankenstein::reqwest::ClientBuilder::new()
         .connect_timeout(Duration::from_secs(100))
         .timeout(Duration::from_secs(100))
@@ -32,5 +33,5 @@ fn custom_client() -> AsyncApi {
         .unwrap();
     let api_url = format!("{BASE_API_URL}{TOKEN}");
 
-    AsyncApi::builder().api_url(api_url).client(client).build()
+    Bot::builder().api_url(api_url).client(client).build()
 }
