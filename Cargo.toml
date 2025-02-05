@@ -74,27 +74,17 @@ name = "api_trait_implementation"
 required-features = ["trait-sync"]
 
 [dependencies]
+async-trait = { version = "0.1", optional = true }
 bon = "3.0.0"
 macro_rules_attribute = "0.2.0"
+mime_guess = { version = "2", optional = true }
+multipart = { version = "0.18", optional = true, default-features = false, features = ["client"] }
 paste = "1.0.2"
 serde = { version = "1.0.157", features = ["derive"] }
 serde_json = { version = "1.0.45", optional = true }
 serde_with = "3.0.0"
 thiserror = "2"
-
-[dependencies.async-trait]
-version = "0.1"
-optional = true
-
-[dependencies.mime_guess]
-version = "2"
-optional = true
-
-[dependencies.multipart]
-version = "0.18"
-default-features = false
-features = ["client"]
-optional = true
+ureq = { version = "3.0.0", optional = true, default-features = false, features = ["rustls"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
 version = "0.12"
@@ -111,12 +101,6 @@ optional = true
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
 version = "1"
 features = ["fs"]
-optional = true
-
-[dependencies.ureq]
-version = "3.0.0"
-default-features = false
-features = ["rustls"]
 optional = true
 
 [dev-dependencies]
