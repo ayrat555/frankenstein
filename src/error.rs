@@ -1,6 +1,5 @@
 use crate::response::ErrorResponse;
 
-#[allow(clippy::large_enum_variant)]
 #[derive(Debug, thiserror::Error)]
 #[non_exhaustive]
 pub enum Error {
