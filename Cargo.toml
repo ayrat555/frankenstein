@@ -1,7 +1,11 @@
 [package]
 name = "frankenstein"
 version = "0.39.0"
-authors = ["Ayrat Badykov <ayratin555@gmail.com>", "EdJoPaTo <frankenstein-rust@edjopato.de>", "Pepe Márquez <pepe.marquezromero@gmail.com>"]
+authors = [
+    "Ayrat Badykov <ayratin555@gmail.com>",
+    "EdJoPaTo <frankenstein-rust@edjopato.de>",
+    "Pepe Márquez <pepe.marquezromero@gmail.com>"
+]
 description = "Telegram bot API client for Rust"
 edition = "2021"
 rust-version = "1.75.0"
@@ -25,13 +29,47 @@ unsafe_code = "forbid"
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }
 nursery = { level = "warn", priority = -1 }
-result_large_err = "allow" # due to ureq::Error
 struct_excessive_bools = "allow" # due to Telegram API
 
 # TODO: remove and fix (or allow explicitly on the specific problem)
 missing_errors_doc = "allow"
-option_if_let_else = "allow"
 unreadable_literal = "allow"
+
+[dependencies]
+async-trait = { version = "0.1", optional = true }
+bon = "3.0.0"
+macro_rules_attribute = "0.2.0"
+mime_guess = { version = "2", optional = true }
+multipart = { version = "0.18", optional = true, default-features = false, features = ["client"] }
+paste = "1.0.2"
+serde = { version = "1.0.157", features = ["derive"] }
+serde_json = { version = "1.0.45", optional = true }
+serde_with = { version = "3.0.0", default-features = false, features = ["macros"] }
+thiserror = "2"
+ureq = { version = "3.0.0", optional = true, default-features = false, features = ["rustls"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = ["multipart", "stream", "rustls-tls"]
+optional = true
+
+[target.'cfg(target_arch = "wasm32")'.dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = ["multipart", "stream"]
+optional = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
+version = "1"
+features = ["fs"]
+optional = true
+
+[dev-dependencies]
+isahc = "1"
+mockito = "1.0"
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
 
 [[example]]
 name = "get_me"
@@ -72,55 +110,3 @@ required-features = ["client-reqwest"]
 [[example]]
 name = "api_trait_implementation"
 required-features = ["trait-sync"]
-
-[dependencies]
-bon = "3.0.0"
-macro_rules_attribute = "0.2.0"
-paste = "1.0.2"
-serde = { version = "1.0.157", features = ["derive"] }
-serde_json = { version = "1.0.45", optional = true }
-serde_with = "3.0.0"
-thiserror = "2"
-
-[dependencies.async-trait]
-version = "0.1"
-optional = true
-
-[dependencies.mime_guess]
-version = "2"
-optional = true
-
-[dependencies.multipart]
-version = "0.18"
-default-features = false
-features = ["client"]
-optional = true
-
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
-version = "0.12"
-default-features = false
-features = ["multipart", "stream", "rustls-tls"]
-optional = true
-
-[target.'cfg(target_arch = "wasm32")'.dependencies.reqwest]
-version = "0.12"
-default-features = false
-features = ["multipart", "stream"]
-optional = true
-
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
-version = "1"
-features = ["fs"]
-optional = true
-
-[dependencies.ureq]
-version = "3.0.0"
-default-features = false
-features = ["rustls"]
-optional = true
-
-[dev-dependencies]
-isahc = "1"
-mockito = "1.0"
-serde_json = "1"
-tokio = { version = "1", features = ["full"] }
