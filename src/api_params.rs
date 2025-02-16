@@ -361,6 +361,8 @@ pub struct SendVideoParams {
     pub width: Option<u32>,
     pub height: Option<u32>,
     pub thumbnail: Option<FileUpload>,
+    pub cover: Option<String>,
+    pub start_timestamp: Option<u64>,
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
     pub caption_entities: Option<Vec<MessageEntity>>,
@@ -1233,7 +1235,8 @@ pub struct DeleteStickerSetParams {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendGiftParams {
-    pub user_id: u64,
+    pub user_id: Option<u64>,
+    pub chat_id: Option<ChatId>,
     pub gift_id: String,
     pub pay_for_upgrade: Option<bool>,
     pub text: Option<String>,
