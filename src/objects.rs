@@ -1837,6 +1837,8 @@ pub struct InputPaidMediaPhoto {
 pub struct InputPaidMediaVideo {
     pub media: String,
     pub thumbnail: String,
+    pub cover: Option<String>,
+    pub start_timestamp: Option<u64>,
     pub width: Option<u32>,
     pub height: Option<u32>,
     pub duration: Option<u32>,
