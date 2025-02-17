@@ -363,7 +363,7 @@ pub struct SendVideoParams {
     pub width: Option<u32>,
     pub height: Option<u32>,
     pub thumbnail: Option<FileUpload>,
-    pub cover: Option<String>,
+    pub cover: Option<FileUpload>,
     pub start_timestamp: Option<u64>,
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
