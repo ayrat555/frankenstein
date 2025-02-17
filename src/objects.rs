@@ -1796,7 +1796,7 @@ pub struct PaidMediaInfo {
 pub enum PaidMedia {
     Preview(PaidMediaPreview),
     Photo(PaidMediaPhoto),
-    Video(PaidMediaVideo),
+    Video(Box<PaidMediaVideo>),
 }
 
 #[apply(apistruct!)]
