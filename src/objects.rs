@@ -2283,7 +2283,7 @@ pub struct AffiliateInfo {
 #[non_exhaustive]
 pub enum TransactionPartner {
     User(Box<TransactionPartnerUser>),
-    Chat(TransactionPartnerChat),
+    Chat(Box<TransactionPartnerChat>),
     AffiliateProgram(TransactionPartnerAffiliateProgram),
     Fragment(TransactionPartnerFragment),
     TelegramAds(TransactionPartnerTelegramAds),
