@@ -1450,7 +1450,7 @@ pub struct InputMediaPhoto {
 pub struct InputMediaVideo {
     pub media: FileUpload,
     pub thumbnail: Option<FileUpload>,
-    pub cover: Option<String>,
+    pub cover: Option<FileUpload>,
     pub start_timestamp: Option<u64>,
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
