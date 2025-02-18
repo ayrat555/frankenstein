@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.39.1 (2025-02-18)
+
+* feat: Bot API 8.3 - [#256](https://github.com/ayrat555/frankenstein/pull/256)
+* build(cargo): improve Cargo.toml - [#255](https://github.com/ayrat555/frankenstein/pull/255)
+
 ## 0.39.0 (2025-02-03)
 
 * build!: rename the features and remove the default feature - [#248](https://github.com/ayrat555/frankenstein/pull/248)
