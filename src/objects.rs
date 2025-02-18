@@ -453,6 +453,7 @@ pub struct ChatFullInfo {
     pub invite_link: Option<String>,
     pub pinned_message: Option<Box<Message>>,
     pub permissions: Option<ChatPermissions>,
+    pub can_send_gift: Option<bool>,
     pub can_send_paid_media: Option<bool>,
     pub slow_mode_delay: Option<u16>,
     pub unrestrict_boost_count: Option<u32>,
@@ -721,6 +722,8 @@ pub struct Video {
     pub height: u32,
     pub duration: u32,
     pub thumbnail: Option<PhotoSize>,
+    pub cover: Option<Vec<PhotoSize>>,
+    pub start_timestamp: Option<u64>,
     pub file_name: Option<String>,
     pub mime_type: Option<String>,
     pub file_size: Option<u64>,
@@ -1793,7 +1796,7 @@ pub struct PaidMediaInfo {
 pub enum PaidMedia {
     Preview(PaidMediaPreview),
     Photo(PaidMediaPhoto),
-    Video(PaidMediaVideo),
+    Video(Box<PaidMediaVideo>),
 }
 
 #[apply(apistruct!)]
@@ -1834,6 +1837,8 @@ pub struct InputPaidMediaPhoto {
 pub struct InputPaidMediaVideo {
     pub media: String,
     pub thumbnail: String,
+    pub cover: Option<String>,
+    pub start_timestamp: Option<u64>,
     pub width: Option<u32>,
     pub height: Option<u32>,
     pub duration: Option<u32>,
@@ -2278,6 +2283,7 @@ pub struct AffiliateInfo {
 #[non_exhaustive]
 pub enum TransactionPartner {
     User(Box<TransactionPartnerUser>),
+    Chat(Box<TransactionPartnerChat>),
     AffiliateProgram(TransactionPartnerAffiliateProgram),
     Fragment(TransactionPartnerFragment),
     TelegramAds(TransactionPartnerTelegramAds),
@@ -2293,6 +2299,12 @@ pub struct TransactionPartnerUser {
     pub subscription_period: Option<u32>,
     pub paid_media: Option<Vec<PaidMedia>>,
     pub paid_media_payload: Option<String>,
+    pub gift: Option<Gift>,
+}
+
+#[apply(apistruct!)]
+pub struct TransactionPartnerChat {
+    pub chat: Chat,
     pub gift: Option<Gift>,
 }
 
