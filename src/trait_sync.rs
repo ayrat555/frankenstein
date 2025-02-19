@@ -169,6 +169,16 @@ pub trait TelegramApi {
                         files.push((name, input_file.path.clone()));
                     }
 
+                    if let Some(FileUpload::InputFile(input_file)) = &video.cover {
+                        let name = format!("file{file_idx}");
+                        let attach_name = format!("attach://{name}");
+                        file_idx += 1;
+
+                        new_video.cover = Some(FileUpload::String(attach_name));
+
+                        files.push((name, input_file.path.clone()));
+                    }
+
                     if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
                         let name = format!("file{file_idx}");
                         let attach_name = format!("attach://{name}");
@@ -219,6 +229,10 @@ pub trait TelegramApi {
 
         if let FileUpload::InputFile(input_file) = &params.video {
             files.push(("video", input_file.path.clone()));
+        }
+
+        if let Some(FileUpload::InputFile(input_file)) = &params.cover {
+            files.push(("cover", input_file.path.clone()));
         }
 
         if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
@@ -454,6 +468,15 @@ pub trait TelegramApi {
                     let attach_name = format!("attach://{name}");
 
                     new_video.media = FileUpload::String(attach_name);
+
+                    files.push((name, input_file.path.clone()));
+                }
+
+                if let Some(FileUpload::InputFile(input_file)) = &video.cover {
+                    let name = "video_thumb".to_string();
+                    let attach_name = format!("attach://{name}");
+
+                    new_video.cover = Some(FileUpload::String(attach_name));
 
                     files.push((name, input_file.path.clone()));
                 }
