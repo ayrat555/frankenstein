@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.39.2 (2025-02-19)
+
+* fix: attach video cover correctly as a file - [#258](https://github.com/ayrat555/frankenstein/pull/258)
+
 ## 0.39.1 (2025-02-18)
 
 * feat: Bot API 8.3 - [#256](https://github.com/ayrat555/frankenstein/pull/256)
