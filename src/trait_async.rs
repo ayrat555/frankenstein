@@ -7,9 +7,9 @@ use crate::api_params::{
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
-    GameHighScore, Gifts, InputSticker, MenuButton, Message, MessageId, Poll,
-    PreparedInlineMessage, SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User,
-    UserChatBoosts, UserProfilePhotos, WebhookInfo,
+    GameHighScore, Gifts, MenuButton, Message, MessageId, Poll, PreparedInlineMessage,
+    SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User, UserChatBoosts,
+    UserProfilePhotos, WebhookInfo,
 };
 use crate::response::{MessageOrBool, MethodResponse};
 
@@ -568,28 +568,26 @@ where
         params: &CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let method_name = "createNewStickerSet";
-        let mut new_stickers: Vec<InputSticker> = vec![];
         let mut files = Vec::new();
-        let mut file_idx = 0;
 
-        for sticker in &params.stickers {
-            let mut new_sticker = sticker.clone();
-
-            if let FileUpload::InputFile(input_file) = &sticker.sticker {
-                let name = format!("file{file_idx}");
-                let attach_name = format!("attach://{name}");
-                file_idx += 1;
-
-                new_sticker.sticker = FileUpload::String(attach_name);
-
-                files.push((name, input_file));
-            }
-
-            new_stickers.push(new_sticker);
-        }
-
-        let mut new_params = params.clone();
-        new_params.stickers = new_stickers;
+        let new_params = CreateNewStickerSetParams {
+            stickers: params
+                .stickers
+                .iter()
+                .enumerate()
+                .map(|(index, sticker)| {
+                    let mut new_sticker = sticker.clone();
+                    if let FileUpload::InputFile(input_file) = &sticker.sticker {
+                        let name = format!("file{index}");
+                        let attach_name = format!("attach://{name}");
+                        new_sticker.sticker = FileUpload::String(attach_name);
+                        files.push((name, input_file));
+                    }
+                    new_sticker
+                })
+                .collect(),
+            ..params.clone()
+        };
 
         let files_with_str_names = files
             .iter()
