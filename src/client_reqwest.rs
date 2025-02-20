@@ -1,8 +1,8 @@
-use std::path::PathBuf;
-
 use async_trait::async_trait;
 use bon::Builder;
+use serde_json::Value;
 
+use crate::api_params::InputFile;
 use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
 
@@ -93,60 +93,40 @@ impl AsyncTelegramApi for Bot {
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<(&str, &InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
         Output: serde::de::DeserializeOwned,
     {
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            use reqwest::multipart;
-            use serde_json::Value;
+        let json_string = crate::json::encode(&params)?;
+        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
-            let json_string = crate::json::encode(&params)?;
-            let json_struct: Value = serde_json::from_str(&json_string).unwrap();
+        let file_keys = files.iter().map(|(key, _)| *key).collect::<Vec<_>>();
 
-            let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-            let files_with_paths: Vec<(String, &str, String)> = files
-                .iter()
-                .map(|(key, path)| {
-                    (
-                        (*key).to_string(),
-                        path.to_str().unwrap(),
-                        path.file_name().unwrap().to_str().unwrap().to_string(),
-                    )
-                })
-                .collect();
-
-            let mut form = multipart::Form::new();
-            for (key, val) in json_struct.as_object().unwrap() {
-                if !file_keys.contains(&key.as_str()) {
-                    let val = match val {
-                        Value::String(val) => val.to_string(),
-                        other => other.to_string(),
-                    };
-
-                    form = form.text(key.clone(), val);
-                }
+        let mut form = reqwest::multipart::Form::new();
+        for (key, val) in json_struct.as_object().unwrap() {
+            if !file_keys.contains(&key.as_str()) {
+                let val = match val {
+                    Value::String(val) => val.to_string(),
+                    other => other.to_string(),
+                };
+                form = form.text(key.clone(), val);
             }
-
-            for (parameter_name, file_path, file_name) in files_with_paths {
-                let file = tokio::fs::File::open(file_path)
-                    .await
-                    .map_err(Error::ReadFile)?;
-                let part = multipart::Part::stream(file).file_name(file_name);
-                form = form.part(parameter_name, part);
-            }
-
-            let url = format!("{}/{method}", self.api_url);
-
-            let response = self.client.post(url).multipart(form).send().await?;
-            Self::decode_response(response).await
         }
 
-        #[cfg(target_arch = "wasm32")]
-        Err(Error::WasmHasNoFileSupportYet)
+        for (parameter_name, input_file) in files {
+            // The reqwest::multipart stuff requires 'static which we can not grant here.
+            // So we provide owned data.
+            let part = reqwest::multipart::Part::bytes(input_file.bytes.clone())
+                .file_name(input_file.file_name.clone());
+            form = form.part(parameter_name.to_owned(), part);
+        }
+
+        let url = format!("{}/{method}", self.api_url);
+
+        let response = self.client.post(url).multipart(form).send().await?;
+        Self::decode_response(response).await
     }
 }
 

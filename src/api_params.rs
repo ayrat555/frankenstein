@@ -1,6 +1,6 @@
 //! Parameters to Telegram API methods.
 
-use std::path::PathBuf;
+use std::path::Path;
 
 use serde::{Deserialize, Serialize};
 
@@ -31,14 +31,6 @@ pub enum FileUpload {
     String(String),
 }
 
-impl From<PathBuf> for FileUpload {
-    fn from(path: PathBuf) -> Self {
-        let input_file = InputFile { path };
-
-        Self::InputFile(input_file)
-    }
-}
-
 impl From<InputFile> for FileUpload {
     fn from(file: InputFile) -> Self {
         Self::InputFile(file)
@@ -48,6 +40,38 @@ impl From<InputFile> for FileUpload {
 impl From<String> for FileUpload {
     fn from(file: String) -> Self {
         Self::String(file)
+    }
+}
+
+impl InputFile {
+    /// This method is intended to be used after `fs` operations
+    fn file_name_from_path(path: &Path) -> std::io::Result<String> {
+        let file_name = path
+            .file_name()
+            .ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "A file that could be read should also have a name",
+                )
+            })?
+            .to_string_lossy()
+            .to_string();
+        Ok(file_name)
+    }
+
+    pub fn read_std<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
+        let path = path.as_ref();
+        let bytes = std::fs::read(path)?;
+        let file_name = Self::file_name_from_path(path)?;
+        Ok(Self { bytes, file_name })
+    }
+
+    #[cfg(feature = "inputfile-read-tokio")]
+    pub async fn read_tokio_fs<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
+        let path = path.as_ref();
+        let bytes = tokio::fs::read(path).await?;
+        let file_name = Self::file_name_from_path(path)?;
+        Ok(Self { bytes, file_name })
     }
 }
 
@@ -188,7 +212,8 @@ pub struct BotCommandScopeChatMember {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputFile {
-    pub path: PathBuf,
+    pub bytes: Vec<u8>,
+    pub file_name: String,
 }
 
 #[apply(apistruct!)]

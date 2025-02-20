@@ -19,10 +19,11 @@ categories = ["web-programming::http-client"]
 all-features = true
 
 [features]
-client-reqwest = ["trait-async", "dep:reqwest", "dep:tokio", "dep:serde_json"]
-client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
+client-reqwest = ["trait-async", "dep:reqwest", "dep:serde_json"]
+client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:serde_json"]
 trait-async = ["dep:async-trait"]
 trait-sync = []
+inputfile-read-tokio = ["dep:tokio", "tokio/fs"]
 
 [lints.rust]
 unsafe_code = "forbid"
@@ -39,13 +40,13 @@ unreadable_literal = "allow"
 async-trait = { version = "0.1", optional = true }
 bon = "3.0.0"
 macro_rules_attribute = "0.2.0"
-mime_guess = { version = "2", optional = true }
 multipart = { version = "0.18", optional = true, default-features = false, features = ["client"] }
 paste = "1.0.2"
 serde = { version = "1.0.157", features = ["derive"] }
 serde_json = { version = "1.0.45", optional = true }
 serde_with = { version = "3.0.0", default-features = false, features = ["macros"] }
 thiserror = "2"
+tokio = { version = "1", optional = true }
 ureq = { version = "3.0.0", optional = true, default-features = false, features = ["rustls"] }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
@@ -58,11 +59,6 @@ optional = true
 version = "0.12"
 default-features = false
 features = ["multipart", "stream"]
-optional = true
-
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
-version = "1"
-features = ["fs"]
 optional = true
 
 [dev-dependencies]
@@ -88,6 +84,10 @@ name = "inline_keyboard"
 required-features = ["client-ureq"]
 
 [[example]]
+name = "file_upload"
+required-features = ["client-ureq"]
+
+[[example]]
 name = "custom_client"
 required-features = ["client-ureq"]
 
@@ -101,7 +101,7 @@ required-features = ["client-reqwest"]
 
 [[example]]
 name = "async_file_upload"
-required-features = ["client-reqwest"]
+required-features = ["client-reqwest", "inputfile-read-tokio"]
 
 [[example]]
 name = "async_custom_client"

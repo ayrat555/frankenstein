@@ -1,6 +1,4 @@
-use std::path::PathBuf;
-
-use frankenstein::api_params::SendMessageParams;
+use frankenstein::api_params::{InputFile, SendMessageParams};
 use frankenstein::response::ErrorResponse;
 use frankenstein::TelegramApi;
 use isahc::prelude::*;
@@ -93,7 +91,7 @@ impl TelegramApi for MyApiClient {
         &self,
         _method: &str,
         _params: Params,
-        _files: Vec<(&str, PathBuf)>,
+        _files: Vec<(&str, &InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
