@@ -44,21 +44,6 @@ impl From<String> for FileUpload {
 }
 
 impl InputFile {
-    /// This method is intended to be used after `fs` operations
-    fn file_name_from_path(path: &Path) -> std::io::Result<String> {
-        let file_name = path
-            .file_name()
-            .ok_or_else(|| {
-                std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "A file that could be read should also have a name",
-                )
-            })?
-            .to_string_lossy()
-            .to_string();
-        Ok(file_name)
-    }
-
     pub fn read_std<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
         let path = path.as_ref();
         let bytes = std::fs::read(path)?;
@@ -72,6 +57,21 @@ impl InputFile {
         let bytes = tokio::fs::read(path).await?;
         let file_name = Self::file_name_from_path(path)?;
         Ok(Self { bytes, file_name })
+    }
+
+    /// This method is intended to be used after `fs` operations
+    fn file_name_from_path(path: &Path) -> std::io::Result<String> {
+        let file_name = path
+            .file_name()
+            .ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "A file that could be read should also have a name",
+                )
+            })?
+            .to_string_lossy()
+            .to_string();
+        Ok(file_name)
     }
 }
 
