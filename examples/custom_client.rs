@@ -3,8 +3,23 @@ use std::time::Duration;
 use frankenstein::client_ureq::Bot;
 use frankenstein::TelegramApi;
 
-static TOKEN: &str = "API_TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
+
+fn custom_client() -> Bot {
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+
+    let config = frankenstein::ureq::Agent::config_builder()
+        .http_status_as_error(false)
+        .timeout_global(Some(Duration::from_secs(100)))
+        .build();
+    let request_agent = frankenstein::ureq::Agent::new_with_config(config);
+    let api_url = format!("{BASE_API_URL}{token}");
+
+    Bot::builder()
+        .api_url(api_url)
+        .request_agent(request_agent)
+        .build()
+}
 
 fn main() {
     let bot = custom_client();
@@ -22,18 +37,4 @@ fn main() {
             eprintln!("Failed to get me: {error:?}");
         }
     }
-}
-
-fn custom_client() -> Bot {
-    let config = frankenstein::ureq::Agent::config_builder()
-        .http_status_as_error(false)
-        .timeout_global(Some(Duration::from_secs(100)))
-        .build();
-    let request_agent = frankenstein::ureq::Agent::new_with_config(config);
-    let api_url = format!("{BASE_API_URL}{TOKEN}");
-
-    Bot::builder()
-        .api_url(api_url)
-        .request_agent(request_agent)
-        .build()
 }

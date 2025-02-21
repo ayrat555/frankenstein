@@ -3,13 +3,14 @@ use frankenstein::client_ureq::Bot;
 use frankenstein::objects::{InlineKeyboardButton, InlineKeyboardMarkup};
 use frankenstein::TelegramApi;
 
-// replace with your token
-static TOKEN: &str = "TOKEN";
-// replace with your chat id
-static CHAT_ID: i64 = 275_808_073;
-
 fn main() {
-    let bot = Bot::new(TOKEN);
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+    let chat_id = std::env::var("TARGET_CHAT")
+        .expect("Should have TARGET_CHAT as environment variable")
+        .parse::<i64>()
+        .expect("TARGET_CHAT should be i64");
+
+    let bot = Bot::new(&token);
 
     let mut keyboard: Vec<Vec<InlineKeyboardButton>> = Vec::new();
 
@@ -22,7 +23,6 @@ fn main() {
                 .text(name)
                 .url("https://github.com/ayrat555/frankenstein")
                 .build();
-
             row.push(button);
         }
 
@@ -32,12 +32,10 @@ fn main() {
     let inline_keyboard = InlineKeyboardMarkup::builder()
         .inline_keyboard(keyboard)
         .build();
-
     let send_message_params = SendMessageParams::builder()
-        .chat_id(CHAT_ID)
+        .chat_id(chat_id)
         .text("hello!")
         .reply_markup(ReplyMarkup::InlineKeyboardMarkup(inline_keyboard))
         .build();
-
     bot.send_message(&send_message_params).unwrap();
 }
