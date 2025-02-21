@@ -1,10 +1,10 @@
 use frankenstein::client_ureq::Bot;
 use frankenstein::TelegramApi;
 
-static TOKEN: &str = "API_TOKEN";
-
 fn main() {
-    let bot = Bot::new(TOKEN);
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+
+    let bot = Bot::new(&token);
 
     match bot.get_me() {
         Ok(response) => {

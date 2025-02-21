@@ -94,10 +94,6 @@ impl TelegramApi for Bot {
         let json_string = crate::json::encode(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-        let files_with_names: Vec<(&str, Option<&str>, PathBuf)> = files
-            .iter()
-            .map(|(key, path)| (*key, path.file_name().unwrap().to_str(), path.clone()))
-            .collect();
 
         let mut form = Multipart::new();
         for (key, val) in json_struct.as_object().unwrap() {
@@ -111,9 +107,10 @@ impl TelegramApi for Bot {
             }
         }
 
-        for (parameter_name, file_name, file_path) in files_with_names {
-            let file = std::fs::File::open(&file_path).map_err(Error::ReadFile)?;
-            form.add_stream(parameter_name, file, file_name, None);
+        for (parameter_name, file_path) in &files {
+            let file = std::fs::File::open(file_path).map_err(Error::ReadFile)?;
+            let file_name = file_path.file_name().unwrap().to_string_lossy();
+            form.add_stream(*parameter_name, file, Some(file_name), None);
         }
 
         let url = format!("{}/{method}", self.api_url);
