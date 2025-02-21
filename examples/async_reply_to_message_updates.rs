@@ -3,18 +3,17 @@ use frankenstein::client_reqwest::Bot;
 use frankenstein::objects::{Message, UpdateContent};
 use frankenstein::AsyncTelegramApi;
 
-static TOKEN: &str = "API_TOKEN";
-
 #[tokio::main]
 async fn main() {
-    let bot = Bot::new(TOKEN);
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+
+    let bot = Bot::new(&token);
 
     let mut update_params = GetUpdatesParams::builder().build();
 
     loop {
         let result = bot.get_updates(&update_params).await;
-
-        println!("result: {result:?}");
+        dbg!(&result);
 
         match result {
             Ok(response) => {

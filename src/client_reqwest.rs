@@ -102,7 +102,7 @@ impl AsyncTelegramApi for Bot {
         let json_string = crate::json::encode(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
-        let file_keys = files.iter().map(|(key, _)| *key).collect::<Vec<_>>();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
 
         let mut form = reqwest::multipart::Form::new();
         for (key, val) in json_struct.as_object().unwrap() {
