@@ -2,23 +2,26 @@ use frankenstein::api_params::SendPhotoParams;
 use frankenstein::client_reqwest::Bot;
 use frankenstein::AsyncTelegramApi;
 
-static TOKEN: &str = "TOKEN";
-static CHAT_ID: i64 = 1;
-
 #[tokio::main]
 async fn main() {
-    let bot = Bot::new(TOKEN);
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+    let chat_id = std::env::var("TARGET_CHAT")
+        .expect("Should have TARGET_CHAT as environment variable")
+        .parse::<i64>()
+        .expect("TARGET_CHAT should be i64");
+
+    let bot = Bot::new(&token);
 
     let file = std::path::PathBuf::from("./frankenstein_logo.png");
 
     let params = SendPhotoParams::builder()
-        .chat_id(CHAT_ID)
+        .chat_id(chat_id)
         .photo(file)
         .build();
-
     match bot.send_photo(&params).await {
         Ok(response) => {
-            println!("Photo was uploaded {response:?}");
+            println!("Photo was uploaded successfully");
+            dbg!(response);
         }
         Err(error) => {
             eprintln!("Failed to upload photo: {error:?}");

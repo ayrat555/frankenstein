@@ -6,9 +6,7 @@ use frankenstein::TelegramApi;
 use isahc::prelude::*;
 use isahc::Request;
 
-static TOKEN: &str = "TOKEN";
 static BASE_API_URL: &str = "https://api.telegram.org/bot";
-static CHAT_ID: i64 = 1;
 
 pub struct MyApiClient {
     pub api_url: String,
@@ -105,13 +103,18 @@ impl TelegramApi for MyApiClient {
 }
 
 fn main() {
-    let bot = MyApiClient::new(TOKEN);
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+    let chat_id = std::env::var("TARGET_CHAT")
+        .expect("Should have TARGET_CHAT as environment variable")
+        .parse::<i64>()
+        .expect("TARGET_CHAT should be i64");
+
+    let bot = MyApiClient::new(&token);
 
     let params = SendMessageParams::builder()
-        .chat_id(CHAT_ID)
+        .chat_id(chat_id)
         .text("Hello!")
         .build();
-
     let result = bot.send_message(&params);
 
     eprintln!("{result:?}");
