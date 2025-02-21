@@ -108,16 +108,6 @@ impl AsyncTelegramApi for Bot {
             let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
             let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
-            let files_with_paths: Vec<(String, &str, String)> = files
-                .iter()
-                .map(|(key, path)| {
-                    (
-                        (*key).to_string(),
-                        path.to_str().unwrap(),
-                        path.file_name().unwrap().to_str().unwrap().to_string(),
-                    )
-                })
-                .collect();
 
             let mut form = multipart::Form::new();
             for (key, val) in json_struct.as_object().unwrap() {
@@ -131,12 +121,13 @@ impl AsyncTelegramApi for Bot {
                 }
             }
 
-            for (parameter_name, file_path, file_name) in files_with_paths {
-                let file = tokio::fs::File::open(file_path)
+            for (parameter_name, file_path) in files {
+                let file = tokio::fs::File::open(&file_path)
                     .await
                     .map_err(Error::ReadFile)?;
+                let file_name = file_path.file_name().unwrap().to_string_lossy().to_string();
                 let part = multipart::Part::stream(file).file_name(file_name);
-                form = form.part(parameter_name, part);
+                form = form.part(parameter_name.to_owned(), part);
             }
 
             let url = format!("{}/{method}", self.api_url);
