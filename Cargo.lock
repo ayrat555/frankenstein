@@ -344,6 +344,7 @@ dependencies = [
  "bon",
  "isahc",
  "macro_rules_attribute",
+ "mime_guess",
  "mockito",
  "multipart",
  "paste",

@@ -20,7 +20,7 @@ all-features = true
 
 [features]
 client-reqwest = ["trait-async", "dep:reqwest", "dep:serde_json"]
-client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:serde_json"]
+client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
 trait-async = ["dep:async-trait"]
 trait-sync = []
 inputfile-read-tokio = ["dep:tokio", "tokio/fs"]
@@ -40,6 +40,7 @@ unreadable_literal = "allow"
 async-trait = { version = "0.1", optional = true }
 bon = "3.0.0"
 macro_rules_attribute = "0.2.0"
+mime_guess = { version = "2", optional = true }
 multipart = { version = "0.18", optional = true, default-features = false, features = ["client"] }
 paste = "1.0.2"
 serde = { version = "1.0.157", features = ["derive"] }

@@ -108,11 +108,16 @@ impl TelegramApi for Bot {
         }
 
         for (parameter_name, input_file) in files {
+            let file_extension = std::path::Path::new(&input_file.file_name)
+                .extension()
+                .and_then(std::ffi::OsStr::to_str)
+                .unwrap_or("");
+            let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
             form.add_stream(
                 parameter_name,
                 &*input_file.bytes,
                 Some(&input_file.file_name),
-                None,
+                Some(mime),
             );
         }
 
