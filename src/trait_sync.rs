@@ -92,108 +92,80 @@ pub trait TelegramApi {
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
         let method_name = "sendMediaGroup";
         let mut files = Vec::new();
-        let mut new_medias = Vec::new();
-        let mut file_idx = 0;
 
-        for media in &params.media {
-            match media {
+        let new_medias = params
+            .media
+            .iter()
+            .map(|media| match media {
                 Media::Audio(audio) => {
                     let mut new_audio = audio.clone();
 
                     if let FileUpload::InputFile(input_file) = &audio.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_audio.media = FileUpload::String(attach_name);
-
+                        let name = format!("file{}", files.len());
+                        new_audio.media = FileUpload::String(format!("attach://{name}"));
                         files.push((name, input_file));
                     }
 
                     if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_audio.thumbnail = Some(FileUpload::String(attach_name));
-
+                        let name = format!("file{}", files.len());
+                        new_audio.thumbnail = Some(FileUpload::String(format!("attach://{name}")));
                         files.push((name, input_file));
                     }
 
-                    new_medias.push(Media::Audio(new_audio));
+                    Media::Audio(new_audio)
                 }
-
                 Media::Document(document) => {
                     let mut new_document = document.clone();
 
                     if let FileUpload::InputFile(input_file) = &document.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_document.media = FileUpload::String(attach_name);
-
+                        let name = format!("file{}", files.len());
+                        new_document.media = FileUpload::String(format!("attach://{name}"));
                         files.push((name, input_file));
                     }
 
-                    new_medias.push(Media::Document(new_document));
+                    Media::Document(new_document)
                 }
                 Media::Photo(photo) => {
                     let mut new_photo = photo.clone();
 
                     if let FileUpload::InputFile(input_file) = &photo.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_photo.media = FileUpload::String(attach_name);
-
+                        let name = format!("file{}", files.len());
+                        new_photo.media = FileUpload::String(format!("attach://{name}"));
                         files.push((name, input_file));
                     }
 
-                    new_medias.push(Media::Photo(new_photo));
+                    Media::Photo(new_photo)
                 }
-
                 Media::Video(video) => {
                     let mut new_video = video.clone();
 
                     if let FileUpload::InputFile(input_file) = &video.media {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_video.media = FileUpload::String(attach_name);
-
+                        let name = format!("file{}", files.len());
+                        new_video.media = FileUpload::String(format!("attach://{name}"));
                         files.push((name, input_file));
                     }
 
                     if let Some(FileUpload::InputFile(input_file)) = &video.cover {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_video.cover = Some(FileUpload::String(attach_name));
-
+                        let name = format!("file{}", files.len());
+                        new_video.cover = Some(FileUpload::String(format!("attach://{name}")));
                         files.push((name, input_file));
                     }
 
                     if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
-                        let name = format!("file{file_idx}");
-                        let attach_name = format!("attach://{name}");
-                        file_idx += 1;
-
-                        new_video.thumbnail = Some(FileUpload::String(attach_name));
-
+                        let name = format!("file{}", files.len());
+                        new_video.thumbnail = Some(FileUpload::String(format!("attach://{name}")));
                         files.push((name, input_file));
                     }
 
-                    new_medias.push(Media::Video(new_video));
+                    Media::Video(new_video)
                 }
-            }
-        }
+            })
+            .collect();
 
-        let mut new_params = params.clone();
-        new_params.media = new_medias;
+        let new_params = SendMediaGroupParams {
+            media: new_medias,
+            ..params.clone()
+        };
 
         let files_with_str_names = files
             .iter()
@@ -378,20 +350,16 @@ pub trait TelegramApi {
                 let mut new_animation = animation.clone();
 
                 if let FileUpload::InputFile(input_file) = &animation.media {
-                    let name = "animation".to_string();
+                    let name = "animation";
                     let attach_name = format!("attach://{name}");
-
                     new_animation.media = FileUpload::String(attach_name);
-
                     files.push((name, input_file));
                 }
 
                 if let Some(FileUpload::InputFile(input_file)) = &animation.thumbnail {
-                    let name = "animation_thumb".to_string();
+                    let name = "animation_thumb";
                     let attach_name = format!("attach://{name}");
-
                     new_animation.thumbnail = Some(FileUpload::String(attach_name));
-
                     files.push((name, input_file));
                 }
 
@@ -401,20 +369,16 @@ pub trait TelegramApi {
                 let mut new_document = document.clone();
 
                 if let FileUpload::InputFile(input_file) = &document.media {
-                    let name = "document".to_string();
+                    let name = "document";
                     let attach_name = format!("attach://{name}");
-
                     new_document.media = FileUpload::String(attach_name);
-
                     files.push((name, input_file));
                 }
 
                 if let Some(FileUpload::InputFile(input_file)) = &document.thumbnail {
-                    let name = "document_thumb".to_string();
+                    let name = "document_thumb";
                     let attach_name = format!("attach://{name}");
-
                     new_document.thumbnail = Some(FileUpload::String(attach_name));
-
                     files.push((name, input_file));
                 }
 
@@ -424,20 +388,16 @@ pub trait TelegramApi {
                 let mut new_audio = audio.clone();
 
                 if let FileUpload::InputFile(input_file) = &audio.media {
-                    let name = "audio".to_string();
+                    let name = "audio";
                     let attach_name = format!("attach://{name}");
-
                     new_audio.media = FileUpload::String(attach_name);
-
                     files.push((name, input_file));
                 }
 
                 if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
-                    let name = "audio_thumb".to_string();
+                    let name = "audio_thumb";
                     let attach_name = format!("attach://{name}");
-
                     new_audio.thumbnail = Some(FileUpload::String(attach_name));
-
                     files.push((name, input_file));
                 }
 
@@ -447,11 +407,9 @@ pub trait TelegramApi {
                 let mut new_photo = photo.clone();
 
                 if let FileUpload::InputFile(input_file) = &photo.media {
-                    let name = "photo".to_string();
+                    let name = "photo";
                     let attach_name = format!("attach://{name}");
-
                     new_photo.media = FileUpload::String(attach_name);
-
                     files.push((name, input_file));
                 }
 
@@ -461,45 +419,35 @@ pub trait TelegramApi {
                 let mut new_video = video.clone();
 
                 if let FileUpload::InputFile(input_file) = &video.media {
-                    let name = "video".to_string();
+                    let name = "video";
                     let attach_name = format!("attach://{name}");
-
                     new_video.media = FileUpload::String(attach_name);
-
                     files.push((name, input_file));
                 }
 
                 if let Some(FileUpload::InputFile(input_file)) = &video.cover {
-                    let name = "video_thumb".to_string();
+                    let name = "video_cover";
                     let attach_name = format!("attach://{name}");
-
                     new_video.cover = Some(FileUpload::String(attach_name));
-
                     files.push((name, input_file));
                 }
 
                 if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
-                    let name = "video_thumb".to_string();
+                    let name = "video_thumb";
                     let attach_name = format!("attach://{name}");
-
                     new_video.thumbnail = Some(FileUpload::String(attach_name));
-
                     files.push((name, input_file));
                 }
 
                 InputMedia::Video(new_video)
             }
         };
+        let new_params = EditMessageMediaParams {
+            media: new_media,
+            ..params.clone()
+        };
 
-        let mut new_params = params.clone();
-        new_params.media = new_media;
-
-        let files_with_str_names = files
-            .iter()
-            .map(|(key, file)| (key.as_str(), *file))
-            .collect();
-
-        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+        self.request_with_possible_form_data(method_name, &new_params, files)
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
@@ -547,8 +495,7 @@ pub trait TelegramApi {
                     let mut new_sticker = sticker.clone();
                     if let FileUpload::InputFile(input_file) = &sticker.sticker {
                         let name = format!("file{index}");
-                        let attach_name = format!("attach://{name}");
-                        new_sticker.sticker = FileUpload::String(attach_name);
+                        new_sticker.sticker = FileUpload::String(format!("attach://{name}"));
                         files.push((name, input_file));
                     }
                     new_sticker

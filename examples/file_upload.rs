@@ -18,7 +18,6 @@ fn main() {
         .chat_id(chat_id)
         .photo(file)
         .build();
-
     match bot.send_photo(&params) {
         Ok(response) => {
             println!("Photo was uploaded successfully");
