@@ -6,9 +6,10 @@ macro_rules_attribute::attribute_alias! {
         #[::serde_with::skip_serializing_none]
         #[derive(Clone, Debug, PartialEq, ::bon::Builder, ::serde::Serialize, ::serde::Deserialize)]
         #[builder(
-            on(String, into),
+            on(Box<_>, into),
             on(ChatId, into),
             on(FileUpload, into),
-            on(Box<_>, into),
+            on(InputFile, into),
+            on(String, into),
         )];
 }

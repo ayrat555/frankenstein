@@ -141,10 +141,10 @@ mod tests {
         DeleteChatPhotoParams, DeleteChatStickerSetParams, DeleteMessageParams,
         DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
         EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
-        EditMessageTextParams, ExportChatInviteLinkParams, FileUpload, ForwardMessageParams,
+        EditMessageTextParams, ExportChatInviteLinkParams, ForwardMessageParams,
         GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetChatParams,
         GetFileParams, GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams,
-        GetUserProfilePhotosParams, InlineQueryResult, InputFile, InputMedia, InputMediaPhoto,
+        GetUserProfilePhotosParams, InlineQueryResult, InputMedia, InputMediaPhoto,
         LeaveChatParams, Media, PinChatMessageParams, PromoteChatMemberParams,
         RestrictChatMemberParams, RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams,
         SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams,
@@ -592,9 +592,8 @@ mod tests {
     #[test]
     fn send_audio_file_id_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
-        let file = FileUpload::String(
-            "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ".to_string(),
-        );
+        let file =
+            "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ".to_string();
         let params = SendAudioParams::builder()
             .chat_id(275808073)
             .audio(file)
@@ -666,9 +665,7 @@ mod tests {
     #[test]
     fn set_chat_photo_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let file = InputFile {
-            path: std::path::PathBuf::from("./frankenstein_logo.png"),
-        };
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SetChatPhotoParams::builder()
             .chat_id(275808073)
             .photo(file)
