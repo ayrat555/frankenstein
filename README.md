@@ -27,8 +27,9 @@ Without enabling any additional features this crate will only ship with Telegram
   - `client-ureq` - a blocking HTTP API client based on `ureq`
   - `trait-sync` - a blocking API trait, it's included in the `client-ureq` feature. It may be useful for people who want to create a custom blocking client (for example, replacing an HTTP client)
 - async
-  - `client-reqwest` - an async HTTP API client based on `reqwest`. This client partially supports wasm32, but file uploads are currently not supported there.
+  - `client-reqwest` - an async HTTP API client based on `reqwest`. This client supports wasm32
   - `trait-async` - an async API trait, it's used in the `client-reqwest`. It may be useful for people who want to create a custom async client
+  - `inputfile-read-tokio` - helper function to read an `InputFile` from a file system with `tokio::fs::read`
 
 For example for the async client add the following line to your `Cargo.toml` file:
 
@@ -116,7 +117,7 @@ See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/t
 
 ### Uploading files
 
-Some methods in the API allow uploading files. In the Frankenstein for this `FileUpload` enum is used:
+Some methods in the API allow uploading files. In Frankenstein the `FileUpload` enum is used:
 
 ```rust
 pub enum FileUpload {
@@ -125,7 +126,8 @@ pub enum FileUpload {
 }
 
 pub struct InputFile {
-    path: std::path::PathBuf
+    bytes: Vec<u8>,
+    file_name: String,
 }
 ```
 
@@ -133,6 +135,8 @@ It has two variants:
 
 - `FileUpload::String` is used to pass the ID of the already uploaded file
 - `FileUpload::InputFile` is used to upload a new file using multipart upload.
+
+You can use the helper functions `InputFile::read_std(Path)` or `InputFile::read_tokio(Path)` for reading from the file system.
 
 ### Documentation
 
