@@ -9,7 +9,6 @@ macro_rules_attribute::attribute_alias! {
             on(Box<_>, into),
             on(ChatId, into),
             on(FileUpload, into),
-            on(InputFile, into),
             on(String, into),
         )];
 }
