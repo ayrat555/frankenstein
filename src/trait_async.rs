@@ -1,11 +1,7 @@
 use std::path::PathBuf;
 
-use crate::api_params::{
-    AddStickerToSetParams, CreateNewStickerSetParams, EditMessageMediaParams, FileUpload,
-    InputMedia, Media, SendAnimationParams, SendAudioParams, SendDocumentParams,
-    SendMediaGroupParams, SendPhotoParams, SendStickerParams, SendVideoNoteParams, SendVideoParams,
-    SendVoiceParams, SetChatPhotoParams, SetStickerSetThumbnailParams, UploadStickerFileParams,
-};
+use crate::api_params::{InputMedia, Media};
+use crate::input_file::HasInputFile;
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
@@ -48,6 +44,28 @@ macro_rules! request_nb {
     }
 }
 
+/// request with some properties utilizing [`HasInputFile`]
+macro_rules! request_f {
+    ($name:ident, $return:ty, $($fileproperty:ident),+) => {
+        paste::paste! {
+            #[allow(async_fn_in_trait)]
+            #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
+            async fn [<$name:snake>] (
+                &self,
+                params: &crate::api_params::[<$name:camel Params>],
+            ) -> Result<MethodResponse<$return>, Self::Error> {
+                let mut files = Vec::new();
+                $(
+                    if let Some(path) = params.$fileproperty.clone_path() {
+                        files.push((stringify!($fileproperty), path));
+                    }
+                )+
+                self.request_with_possible_form_data(stringify!($name), params, files).await
+            }
+        }
+    }
+}
+
 // Wasm target need not be `Send` because it is single-threaded
 #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
@@ -69,226 +87,58 @@ where
     request!(forwardMessages, Vec<MessageId>);
     request!(copyMessage, MessageId);
     request!(copyMessages, Vec<MessageId>);
-
-    async fn send_photo(
-        &self,
-        params: &SendPhotoParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendPhoto";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.photo {
-            files.push(("photo", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
-    async fn send_audio(
-        &self,
-        params: &SendAudioParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendAudio";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.audio {
-            files.push(("audio", input_file.path.clone()));
-        }
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
+    request_f!(sendPhoto, Message, photo);
+    request_f!(sendAudio, Message, audio, thumbnail);
 
     async fn send_media_group(
         &self,
-        params: &SendMediaGroupParams,
+        params: &crate::api_params::SendMediaGroupParams,
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
-        let method_name = "sendMediaGroup";
         let mut files = Vec::new();
 
-        let new_medias = params
-            .media
-            .iter()
-            .map(|media| match media {
+        macro_rules! replace_attach {
+            ($base:ident. $property:ident) => {
+                if let Some(file) = $base.$property.replace_attach_dyn(|| files.len()) {
+                    files.push(file);
+                }
+            };
+        }
+
+        let mut params = params.clone();
+        for media in &mut params.media {
+            match media {
                 Media::Audio(audio) => {
-                    let mut new_audio = audio.clone();
-
-                    if let FileUpload::InputFile(input_file) = &audio.media {
-                        let name = format!("file{}", files.len());
-                        new_audio.media = FileUpload::String(format!("attach://{name}"));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
-                        let name = format!("file{}", files.len());
-                        new_audio.thumbnail = Some(FileUpload::String(format!("attach://{name}")));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    Media::Audio(new_audio)
+                    replace_attach!(audio.media);
+                    replace_attach!(audio.thumbnail);
                 }
                 Media::Document(document) => {
-                    let mut new_document = document.clone();
-
-                    if let FileUpload::InputFile(input_file) = &document.media {
-                        let name = format!("file{}", files.len());
-                        new_document.media = FileUpload::String(format!("attach://{name}"));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    Media::Document(new_document)
+                    replace_attach!(document.media);
                 }
                 Media::Photo(photo) => {
-                    let mut new_photo = photo.clone();
-
-                    if let FileUpload::InputFile(input_file) = &photo.media {
-                        let name = format!("file{}", files.len());
-                        new_photo.media = FileUpload::String(format!("attach://{name}"));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    Media::Photo(new_photo)
+                    replace_attach!(photo.media);
                 }
                 Media::Video(video) => {
-                    let mut new_video = video.clone();
-
-                    if let FileUpload::InputFile(input_file) = &video.media {
-                        let name = format!("file{}", files.len());
-                        new_video.media = FileUpload::String(format!("attach://{name}"));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    if let Some(FileUpload::InputFile(input_file)) = &video.cover {
-                        let name = format!("file{}", files.len());
-                        new_video.cover = Some(FileUpload::String(format!("attach://{name}")));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
-                        let name = format!("file{}", files.len());
-                        new_video.thumbnail = Some(FileUpload::String(format!("attach://{name}")));
-                        files.push((name, input_file.path.clone()));
-                    }
-
-                    Media::Video(new_video)
+                    replace_attach!(video.media);
+                    replace_attach!(video.cover);
+                    replace_attach!(video.thumbnail);
                 }
-            })
-            .collect();
-
-        let new_params = SendMediaGroupParams {
-            media: new_medias,
-            ..params.clone()
-        };
+            }
+        }
 
         let files_with_str_names = files
             .iter()
             .map(|(key, path)| (key.as_str(), path.clone()))
             .collect();
 
-        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+        self.request_with_possible_form_data("sendMediaGroup", &params, files_with_str_names)
             .await
     }
 
-    async fn send_document(
-        &self,
-        params: &SendDocumentParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendDocument";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.document {
-            files.push(("document", input_file.path.clone()));
-        }
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
-    async fn send_video(
-        &self,
-        params: &SendVideoParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendVideo";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.video {
-            files.push(("video", input_file.path.clone()));
-        }
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.cover {
-            files.push(("cover", input_file.path.clone()));
-        }
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
-    async fn send_animation(
-        &self,
-        params: &SendAnimationParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendAnimation";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.animation {
-            files.push(("animation", input_file.path.clone()));
-        }
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
-    async fn send_voice(
-        &self,
-        params: &SendVoiceParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendVoice";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.voice {
-            files.push(("voice", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
-    async fn send_video_note(
-        &self,
-        params: &SendVideoNoteParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendVideoNote";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.video_note {
-            files.push(("video_note", input_file.path.clone()));
-        }
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
+    request_f!(sendDocument, Message, document, thumbnail);
+    request_f!(sendVideo, Message, video, cover, thumbnail);
+    request_f!(sendAnimation, Message, animation, thumbnail);
+    request_f!(sendVoice, Message, voice);
+    request_f!(sendVideoNote, Message, video_note, thumbnail);
     request!(sendPaidMedia, Message);
     request!(sendLocation, Message);
     request!(editMessageLiveLocation, MessageOrBool);
@@ -321,7 +171,7 @@ where
 
     async fn set_chat_photo(
         &self,
-        params: &SetChatPhotoParams,
+        params: &crate::api_params::SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let photo = &params.photo;
         self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
@@ -371,114 +221,44 @@ where
 
     async fn edit_message_media(
         &self,
-        params: &EditMessageMediaParams,
+        params: &crate::api_params::EditMessageMediaParams,
     ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
-        let method_name = "editMessageMedia";
         let mut files = Vec::new();
 
-        let new_media = match &params.media {
+        macro_rules! replace_attach {
+            ($base:ident. $property:ident) => {{
+                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
+                if let Some(file) = $base.$property.replace_attach(NAME) {
+                    files.push((NAME, file));
+                }
+            }};
+        }
+
+        let mut params = params.clone();
+        match &mut params.media {
             InputMedia::Animation(animation) => {
-                let mut new_animation = animation.clone();
-
-                if let FileUpload::InputFile(input_file) = &animation.media {
-                    let name = "animation";
-                    let attach_name = format!("attach://{name}");
-                    new_animation.media = FileUpload::String(attach_name);
-                    files.push((name, input_file.path.clone()));
-                }
-
-                if let Some(FileUpload::InputFile(input_file)) = &animation.thumbnail {
-                    let name = "animation_thumb";
-                    let attach_name = format!("attach://{name}");
-                    new_animation.thumbnail = Some(FileUpload::String(attach_name));
-                    files.push((name, input_file.path.clone()));
-                }
-
-                InputMedia::Animation(new_animation)
+                replace_attach!(animation.media);
+                replace_attach!(animation.thumbnail);
             }
             InputMedia::Document(document) => {
-                let mut new_document = document.clone();
-
-                if let FileUpload::InputFile(input_file) = &document.media {
-                    let name = "document";
-                    let attach_name = format!("attach://{name}");
-                    new_document.media = FileUpload::String(attach_name);
-                    files.push((name, input_file.path.clone()));
-                }
-
-                if let Some(FileUpload::InputFile(input_file)) = &document.thumbnail {
-                    let name = "document_thumb";
-                    let attach_name = format!("attach://{name}");
-                    new_document.thumbnail = Some(FileUpload::String(attach_name));
-                    files.push((name, input_file.path.clone()));
-                }
-
-                InputMedia::Document(new_document)
+                replace_attach!(document.media);
+                replace_attach!(document.thumbnail);
             }
             InputMedia::Audio(audio) => {
-                let mut new_audio = audio.clone();
-
-                if let FileUpload::InputFile(input_file) = &audio.media {
-                    let name = "audio";
-                    let attach_name = format!("attach://{name}");
-                    new_audio.media = FileUpload::String(attach_name);
-                    files.push((name, input_file.path.clone()));
-                }
-
-                if let Some(FileUpload::InputFile(input_file)) = &audio.thumbnail {
-                    let name = "audio_thumb";
-                    let attach_name = format!("attach://{name}");
-                    new_audio.thumbnail = Some(FileUpload::String(attach_name));
-                    files.push((name, input_file.path.clone()));
-                }
-
-                InputMedia::Audio(new_audio)
+                replace_attach!(audio.media);
+                replace_attach!(audio.thumbnail);
             }
             InputMedia::Photo(photo) => {
-                let mut new_photo = photo.clone();
-
-                if let FileUpload::InputFile(input_file) = &photo.media {
-                    let name = "photo";
-                    let attach_name = format!("attach://{name}");
-                    new_photo.media = FileUpload::String(attach_name);
-                    files.push((name, input_file.path.clone()));
-                }
-
-                InputMedia::Photo(new_photo)
+                replace_attach!(photo.media);
             }
             InputMedia::Video(video) => {
-                let mut new_video = video.clone();
-
-                if let FileUpload::InputFile(input_file) = &video.media {
-                    let name = "video";
-                    let attach_name = format!("attach://{name}");
-                    new_video.media = FileUpload::String(attach_name);
-                    files.push((name, input_file.path.clone()));
-                }
-
-                if let Some(FileUpload::InputFile(input_file)) = &video.cover {
-                    let name = "video_cover";
-                    let attach_name = format!("attach://{name}");
-                    new_video.cover = Some(FileUpload::String(attach_name));
-                    files.push((name, input_file.path.clone()));
-                }
-
-                if let Some(FileUpload::InputFile(input_file)) = &video.thumbnail {
-                    let name = "video_thumb";
-                    let attach_name = format!("attach://{name}");
-                    new_video.thumbnail = Some(FileUpload::String(attach_name));
-                    files.push((name, input_file.path.clone()));
-                }
-
-                InputMedia::Video(new_video)
+                replace_attach!(video.media);
+                replace_attach!(video.cover);
+                replace_attach!(video.thumbnail);
             }
-        };
-        let new_params = EditMessageMediaParams {
-            media: new_media,
-            ..params.clone()
-        };
+        }
 
-        self.request_with_possible_form_data(method_name, &new_params, files)
+        self.request_with_possible_form_data("editMessageMedia", &params, files)
             .await
     }
 
@@ -486,27 +266,12 @@ where
     request!(stopPoll, Poll);
     request!(deleteMessage, bool);
     request!(deleteMessages, bool);
-
-    async fn send_sticker(
-        &self,
-        params: &SendStickerParams,
-    ) -> Result<MethodResponse<Message>, Self::Error> {
-        let method_name = "sendSticker";
-        let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.sticker {
-            files.push(("sticker", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
+    request_f!(sendSticker, Message, sticker);
     request!(getStickerSet, StickerSet);
 
     async fn upload_sticker_file(
         &self,
-        params: &UploadStickerFileParams,
+        params: &crate::api_params::UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
         let sticker = &params.sticker;
         self.request_with_form_data(
@@ -519,77 +284,48 @@ where
 
     async fn create_new_sticker_set(
         &self,
-        params: &CreateNewStickerSetParams,
+        params: &crate::api_params::CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let method_name = "createNewStickerSet";
         let mut files = Vec::new();
 
-        let new_params = CreateNewStickerSetParams {
-            stickers: params
-                .stickers
-                .iter()
-                .enumerate()
-                .map(|(index, sticker)| {
-                    let mut new_sticker = sticker.clone();
-                    if let FileUpload::InputFile(input_file) = &sticker.sticker {
-                        let name = format!("file{index}");
-                        new_sticker.sticker = FileUpload::String(format!("attach://{name}"));
-                        files.push((name, input_file.path.clone()));
-                    }
-                    new_sticker
-                })
-                .collect(),
-            ..params.clone()
-        };
+        let mut params = params.clone();
+        for (index, sticker) in params.stickers.iter_mut().enumerate() {
+            if let Some(file) = sticker.sticker.replace_attach_dyn(|| index) {
+                files.push(file);
+            }
+        }
 
         let files_with_str_names = files
             .iter()
             .map(|(key, path)| (key.as_str(), path.clone()))
             .collect();
 
-        self.request_with_possible_form_data(method_name, &new_params, files_with_str_names)
+        self.request_with_possible_form_data("createNewStickerSet", &params, files_with_str_names)
             .await
     }
 
     request!(getCustomEmojiStickers, Vec<Sticker>);
+
     async fn add_sticker_to_set(
         &self,
-        params: &AddStickerToSetParams,
+        params: &crate::api_params::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
-        let method_name = "addStickerToSet";
         let mut files = Vec::new();
-
-        if let FileUpload::InputFile(input_file) = &params.sticker.sticker {
-            files.push(("sticker", input_file.path.clone()));
+        if let Some(file) = params.sticker.sticker.clone_path() {
+            files.push(("sticker", file));
         }
-
-        self.request_with_possible_form_data(method_name, params, files)
+        self.request_with_possible_form_data("addStickerToSet", params, files)
             .await
     }
 
     request!(setStickerPositionInSet, bool);
-    request!(replaceStickerInSet, bool);
     request!(deleteStickerFromSet, bool);
+    request!(replaceStickerInSet, bool);
     request!(setStickerEmojiList, bool);
     request!(setStickerKeywords, bool);
     request!(setStickerMaskPosition, bool);
     request!(setStickerSetTitle, bool);
-
-    async fn set_sticker_set_thumb(
-        &self,
-        params: &SetStickerSetThumbnailParams,
-    ) -> Result<MethodResponse<bool>, Self::Error> {
-        let method_name = "setStickerSetThumbnail";
-        let mut files = Vec::new();
-
-        if let Some(FileUpload::InputFile(input_file)) = &params.thumbnail {
-            files.push(("thumbnail", input_file.path.clone()));
-        }
-
-        self.request_with_possible_form_data(method_name, params, files)
-            .await
-    }
-
+    request_f!(setStickerSetThumbnail, bool, thumbnail);
     request!(setCustomEmojiStickerSetThumbnail, bool);
     request!(deleteStickerSet, bool);
     request_nb!(getAvailableGifts, Gifts);
@@ -616,15 +352,6 @@ where
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);
 
-    async fn request<Params, Output>(
-        &self,
-        method: &str,
-        params: Option<Params>,
-    ) -> Result<Output, Self::Error>
-    where
-        Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
-        Output: serde::de::DeserializeOwned;
-
     async fn request_with_possible_form_data<Params, Output>(
         &self,
         method_name: &str,
@@ -642,6 +369,15 @@ where
                 .await
         }
     }
+
+    async fn request<Params, Output>(
+        &self,
+        method: &str,
+        params: Option<Params>,
+    ) -> Result<Output, Self::Error>
+    where
+        Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
+        Output: serde::de::DeserializeOwned;
 
     async fn request_with_form_data<Params, Output>(
         &self,

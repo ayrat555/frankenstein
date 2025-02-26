@@ -9,6 +9,7 @@ pub use ureq;
 
 pub use self::api_params::*;
 pub use self::error::Error;
+pub use self::input_file::*;
 pub use self::objects::*;
 pub use self::parse_mode::ParseMode;
 pub use self::response::*;
@@ -23,6 +24,7 @@ pub mod client_reqwest;
 #[cfg(feature = "client-ureq")]
 pub mod client_ureq;
 mod error;
+pub mod input_file;
 #[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
 mod json;
 mod macros;

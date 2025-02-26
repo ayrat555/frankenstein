@@ -4,7 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::api_params::FileUpload;
+use crate::input_file::FileUpload;
 use crate::macros::{apistruct, apply};
 use crate::ParseMode;
 
