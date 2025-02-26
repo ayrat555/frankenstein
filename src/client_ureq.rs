@@ -136,16 +136,14 @@ impl TelegramApi for Bot {
 mod tests {
     use super::*;
     use crate::api_params::{
-        AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, BotCommandScope,
-        BotCommandScopeChat, ChatAction, ChatId, CopyMessageParams, CreateChatInviteLinkParams,
-        DeleteChatPhotoParams, DeleteChatStickerSetParams, DeleteMessageParams,
-        DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
+        AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CopyMessageParams,
+        CreateChatInviteLinkParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
+        DeleteMessageParams, DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
         EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
         EditMessageTextParams, ExportChatInviteLinkParams, ForwardMessageParams,
         GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetChatParams,
         GetFileParams, GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams,
-        GetUserProfilePhotosParams, InlineQueryResult, InputMedia, InputMediaPhoto,
-        LeaveChatParams, Media, PinChatMessageParams, PromoteChatMemberParams,
+        GetUserProfilePhotosParams, LeaveChatParams, PinChatMessageParams, PromoteChatMemberParams,
         RestrictChatMemberParams, RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams,
         SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams,
         SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams,
@@ -155,8 +153,11 @@ mod tests {
         SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
         UnbanChatMemberParams, UnpinChatMessageParams,
     };
+    use crate::inline_mode::{InlineQueryResult, InlineQueryResultVenue};
+    use crate::input_media::{InputMediaPhoto, MediaGroupInputMedia};
     use crate::objects::{
-        AllowedUpdate, BotCommand, ChatPermissions, InlineQueryResultVenue, InputPollOption,
+        AllowedUpdate, BotCommand, BotCommandScope, BotCommandScopeChat, ChatAction, ChatId,
+        ChatPermissions, InputPollOption,
     };
     use crate::test_json::assert_json_str;
 
@@ -957,7 +958,10 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":[{\"message_id\":510,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]},{\"message_id\":511,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}]}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let photo = InputMediaPhoto::builder().media(file).build();
-        let medias = vec![Media::Photo(photo.clone()), Media::Photo(photo)];
+        let medias = vec![
+            MediaGroupInputMedia::Photo(photo.clone()),
+            MediaGroupInputMedia::Photo(photo),
+        ];
         let params = SendMediaGroupParams::builder()
             .chat_id(-1001368460856)
             .media(medias)
@@ -971,9 +975,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":513,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"edit_date\":1619336788,\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = EditMessageMediaParams::builder()
-            .media(InputMedia::Photo(
-                InputMediaPhoto::builder().media(file).build(),
-            ))
+            .media(InputMediaPhoto::builder().media(file).build())
             .chat_id(-1001368460856)
             .message_id(513)
             .build();

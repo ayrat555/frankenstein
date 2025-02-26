@@ -1,161 +1,18 @@
-//! Parameters to Telegram API methods.
+//! Parameters of [Bot API methods](https://core.telegram.org/bots/api#available-methods).
 
-use serde::{Deserialize, Serialize};
-
+use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
 use crate::input_file::{FileUpload, InputFile};
+use crate::input_media::{InputMedia, InputPaidMedia, MediaGroupInputMedia};
 use crate::macros::{apistruct, apply};
 use crate::objects::{
-    AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
-    InlineKeyboardMarkup, InlineQueryResultArticle, InlineQueryResultAudio,
-    InlineQueryResultCachedAudio, InlineQueryResultCachedDocument, InlineQueryResultCachedGif,
-    InlineQueryResultCachedMpeg4Gif, InlineQueryResultCachedPhoto, InlineQueryResultCachedSticker,
-    InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact,
-    InlineQueryResultDocument, InlineQueryResultGame, InlineQueryResultGif,
-    InlineQueryResultLocation, InlineQueryResultMpeg4Gif, InlineQueryResultPhoto,
-    InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice, InputPaidMedia,
-    InputPollOption, InputSticker, LabeledPrice, LinkPreviewOptions, MaskPosition, MenuButton,
-    MessageEntity, PassportElementErrorDataField, PassportElementErrorFile,
-    PassportElementErrorFiles, PassportElementErrorFrontSide, PassportElementErrorReverseSide,
-    PassportElementErrorSelfie, PassportElementErrorTranslationFile,
-    PassportElementErrorTranslationFiles, PassportElementErrorUnspecified, PollType, ReactionType,
-    ReplyKeyboardMarkup, ReplyKeyboardRemove, ShippingOption, StickerFormat, StickerType,
-    WebAppInfo,
+    AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
+    ChatPermissions, InlineKeyboardMarkup, InputPollOption, LinkPreviewOptions, MenuButton,
+    MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters,
 };
+use crate::passport::PassportElementError;
+use crate::payments::{LabeledPrice, ShippingOption};
+use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::ParseMode;
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum InlineQueryResult {
-    Audio(MaybeCached<InlineQueryResultCachedAudio, InlineQueryResultAudio>),
-    Document(MaybeCached<InlineQueryResultCachedDocument, InlineQueryResultDocument>),
-    Gif(MaybeCached<InlineQueryResultCachedGif, InlineQueryResultGif>),
-    Mpeg4Gif(MaybeCached<InlineQueryResultCachedMpeg4Gif, InlineQueryResultMpeg4Gif>),
-    Photo(MaybeCached<InlineQueryResultCachedPhoto, InlineQueryResultPhoto>),
-    Sticker(InlineQueryResultCachedSticker),
-    Video(MaybeCached<InlineQueryResultCachedVideo, InlineQueryResultVideo>),
-    Voice(MaybeCached<InlineQueryResultCachedVoice, InlineQueryResultVoice>),
-    Article(InlineQueryResultArticle),
-    Contact(InlineQueryResultContact),
-    Game(InlineQueryResultGame),
-    Location(InlineQueryResultLocation),
-    Venue(InlineQueryResultVenue),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(untagged)]
-pub enum MaybeCached<T1, T2> {
-    Cached(T1),
-    NotCached(T2),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum InputMedia {
-    Animation(InputMediaAnimation),
-    Document(InputMediaDocument),
-    Audio(InputMediaAudio),
-    Photo(InputMediaPhoto),
-    Video(InputMediaVideo),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "source", rename_all = "snake_case")]
-pub enum PassportElementError {
-    #[serde(rename = "data")]
-    DataField(PassportElementErrorDataField),
-    FrontSide(PassportElementErrorFrontSide),
-    ReverseSide(PassportElementErrorReverseSide),
-    Selfie(PassportElementErrorSelfie),
-    File(PassportElementErrorFile),
-    Files(PassportElementErrorFiles),
-    TranslationFile(PassportElementErrorTranslationFile),
-    TranslationFiles(PassportElementErrorTranslationFiles),
-    Unspecified(PassportElementErrorUnspecified),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(untagged)]
-pub enum ChatId {
-    Integer(i64),
-    String(String),
-}
-
-impl From<i64> for ChatId {
-    fn from(id: i64) -> Self {
-        Self::Integer(id)
-    }
-}
-
-impl From<String> for ChatId {
-    fn from(id: String) -> Self {
-        Self::String(id)
-    }
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(untagged)]
-pub enum ReplyMarkup {
-    InlineKeyboardMarkup(InlineKeyboardMarkup),
-    ReplyKeyboardMarkup(ReplyKeyboardMarkup),
-    ReplyKeyboardRemove(ReplyKeyboardRemove),
-    ForceReply(ForceReply),
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum ChatAction {
-    Typing,
-    UploadPhoto,
-    RecordVideo,
-    UploadVideo,
-    RecordVoice,
-    UploadVoice,
-    UploadDocument,
-    ChooseSticker,
-    FindLocation,
-    RecordVideoNote,
-    UploadVideoNote,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum Media {
-    Audio(InputMediaAudio),
-    Document(InputMediaDocument),
-    Photo(InputMediaPhoto),
-    Video(InputMediaVideo),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum BotCommandScope {
-    Default,
-    AllPrivateChats,
-    AllGroupChats,
-    AllChatAdministrators,
-    Chat(BotCommandScopeChat),
-    ChatAdministrators(BotCommandScopeChatAdministrators),
-    ChatMember(BotCommandScopeChatMember),
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct BotCommandScopeChat {
-    pub chat_id: ChatId,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct BotCommandScopeChatAdministrators {
-    pub chat_id: ChatId,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct BotCommandScopeChatMember {
-    pub chat_id: ChatId,
-    pub user_id: u64,
-}
 
 #[apply(apistruct!)]
 #[derive(Eq)]
@@ -431,7 +288,7 @@ pub struct SendMediaGroupParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
-    pub media: Vec<Media>,
+    pub media: Vec<MediaGroupInputMedia>,
     pub disable_notification: Option<bool>,
     pub protect_content: Option<bool>,
     pub allow_paid_broadcast: Option<bool>,
@@ -1250,14 +1107,6 @@ pub struct AnswerInlineQueryParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
-pub struct InlineQueryResultsButton {
-    pub text: String,
-    pub web_app: Option<WebAppInfo>,
-    pub start_parameter: Option<String>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendInvoiceParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -1402,74 +1251,6 @@ pub struct GetGameHighScoresParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
-pub struct InputMediaPhoto {
-    pub media: FileUpload,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub has_spoiler: Option<bool>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputMediaVideo {
-    pub media: FileUpload,
-    pub thumbnail: Option<FileUpload>,
-    pub cover: Option<FileUpload>,
-    pub start_timestamp: Option<u64>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub width: Option<u32>,
-    pub height: Option<u32>,
-    pub duration: Option<u32>,
-    pub supports_streaming: Option<bool>,
-    pub has_spoiler: Option<bool>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputMediaAnimation {
-    pub media: FileUpload,
-    pub thumbnail: Option<FileUpload>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub width: Option<u32>,
-    pub height: Option<u32>,
-    pub duration: Option<u32>,
-    pub has_spoiler: Option<bool>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputMediaAudio {
-    pub media: FileUpload,
-    pub thumbnail: Option<FileUpload>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub duration: Option<u32>,
-    pub performer: Option<String>,
-    pub title: Option<String>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputMediaDocument {
-    pub media: FileUpload,
-    pub thumbnail: Option<FileUpload>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub disable_content_type_detection: Option<bool>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SetMyDefaultAdministratorRightsParams {
     pub rights: ChatAdministratorRights,
     pub for_channels: Option<bool>,
@@ -1514,16 +1295,4 @@ pub struct GetChatMenuButtonParams {
 #[derive(Eq)]
 pub struct UnpinAllGeneralForumTopicMessagesParams {
     pub chat_id: ChatId,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct ReplyParameters {
-    pub message_id: i32,
-    pub chat_id: Option<ChatId>,
-    pub allow_sending_without_reply: Option<bool>,
-    pub quote: Option<String>,
-    pub quote_parse_mode: Option<ParseMode>,
-    pub quote_entities: Option<Vec<MessageEntity>>,
-    pub quote_position: Option<u32>,
 }
