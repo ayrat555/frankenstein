@@ -183,8 +183,8 @@ mod tests {
 
     fn dummy_file() -> InputFile {
         InputFile {
-            bytes: vec![1, 2, 3],
-            file_name: "dummy.file".to_owned(),
+            bytes: include_bytes!("../frankenstein_logo.png").to_vec(),
+            file_name: "frankenstein_logo.png".to_owned(),
         }
     }
 
