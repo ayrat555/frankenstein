@@ -1,9 +1,6 @@
 use std::path::PathBuf;
 
-use crate::api_params::{
-    AddStickerToSetParams, CreateNewStickerSetParams, EditMessageMediaParams, InputMedia, Media,
-    SendMediaGroupParams, SetChatPhotoParams, UploadStickerFileParams,
-};
+use crate::api_params::{InputMedia, Media};
 use crate::input_file::HasInputFile;
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
@@ -95,7 +92,7 @@ where
 
     async fn send_media_group(
         &self,
-        params: &SendMediaGroupParams,
+        params: &crate::api_params::SendMediaGroupParams,
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
         let mut files = Vec::new();
 
@@ -174,7 +171,7 @@ where
 
     async fn set_chat_photo(
         &self,
-        params: &SetChatPhotoParams,
+        params: &crate::api_params::SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let photo = &params.photo;
         self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
@@ -224,7 +221,7 @@ where
 
     async fn edit_message_media(
         &self,
-        params: &EditMessageMediaParams,
+        params: &crate::api_params::EditMessageMediaParams,
     ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         let mut files = Vec::new();
 
@@ -274,7 +271,7 @@ where
 
     async fn upload_sticker_file(
         &self,
-        params: &UploadStickerFileParams,
+        params: &crate::api_params::UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
         let sticker = &params.sticker;
         self.request_with_form_data(
@@ -287,7 +284,7 @@ where
 
     async fn create_new_sticker_set(
         &self,
-        params: &CreateNewStickerSetParams,
+        params: &crate::api_params::CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
 
@@ -311,7 +308,7 @@ where
 
     async fn add_sticker_to_set(
         &self,
-        params: &AddStickerToSetParams,
+        params: &crate::api_params::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
         if let Some(file) = params.sticker.sticker.clone_path() {
