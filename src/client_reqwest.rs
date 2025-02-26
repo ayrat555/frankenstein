@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use bon::Builder;
 use serde_json::Value;
 
-use crate::api_params::InputFile;
+use crate::input_file::InputFile;
 use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
 

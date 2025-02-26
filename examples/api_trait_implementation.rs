@@ -1,4 +1,5 @@
-use frankenstein::api_params::{InputFile, SendMessageParams};
+use frankenstein::api_params::SendMessageParams;
+use frankenstein::input_file::InputFile;
 use frankenstein::response::ErrorResponse;
 use frankenstein::TelegramApi;
 use isahc::prelude::*;

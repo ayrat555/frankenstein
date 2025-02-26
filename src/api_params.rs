@@ -1,9 +1,8 @@
 //! Parameters to Telegram API methods.
 
-use std::path::Path;
-
 use serde::{Deserialize, Serialize};
 
+use crate::input_file::{FileUpload, InputFile};
 use crate::macros::{apistruct, apply};
 use crate::objects::{
     AllowedUpdate, BotCommand, ChatAdministratorRights, ChatPermissions, ForceReply,
@@ -23,57 +22,6 @@ use crate::objects::{
     WebAppInfo,
 };
 use crate::ParseMode;
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(untagged)]
-pub enum FileUpload {
-    InputFile(InputFile),
-    String(String),
-}
-
-impl From<InputFile> for FileUpload {
-    fn from(file: InputFile) -> Self {
-        Self::InputFile(file)
-    }
-}
-
-impl From<String> for FileUpload {
-    fn from(file: String) -> Self {
-        Self::String(file)
-    }
-}
-
-impl InputFile {
-    pub fn read_std<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
-        let path = path.as_ref();
-        let bytes = std::fs::read(path)?;
-        let file_name = Self::file_name_from_path(path)?;
-        Ok(Self { bytes, file_name })
-    }
-
-    #[cfg(feature = "inputfile-read-tokio")]
-    pub async fn read_tokio_fs<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
-        let path = path.as_ref();
-        let bytes = tokio::fs::read(path).await?;
-        let file_name = Self::file_name_from_path(path)?;
-        Ok(Self { bytes, file_name })
-    }
-
-    /// This method is intended to be used after `fs` operations
-    fn file_name_from_path(path: &Path) -> std::io::Result<String> {
-        let file_name = path
-            .file_name()
-            .ok_or_else(|| {
-                std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "A file that could be read should also have a name",
-                )
-            })?
-            .to_string_lossy()
-            .to_string();
-        Ok(file_name)
-    }
-}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
@@ -207,13 +155,6 @@ pub struct BotCommandScopeChatAdministrators {
 pub struct BotCommandScopeChatMember {
     pub chat_id: ChatId,
     pub user_id: u64,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputFile {
-    pub bytes: Vec<u8>,
-    pub file_name: String,
 }
 
 #[apply(apistruct!)]

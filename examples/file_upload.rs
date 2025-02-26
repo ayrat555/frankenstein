@@ -1,5 +1,6 @@
-use frankenstein::api_params::{InputFile, SendPhotoParams};
+use frankenstein::api_params::SendPhotoParams;
 use frankenstein::client_ureq::Bot;
+use frankenstein::input_file::InputFile;
 use frankenstein::TelegramApi;
 
 fn main() {
