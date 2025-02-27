@@ -1,6 +1,7 @@
-use frankenstein::api_params::{GetUpdatesParams, ReplyParameters, SendMessageParams};
+use frankenstein::api_params::{GetUpdatesParams, SendMessageParams};
 use frankenstein::client_reqwest::Bot;
-use frankenstein::objects::{Message, UpdateContent};
+use frankenstein::objects::{Message, ReplyParameters};
+use frankenstein::updates::UpdateContent;
 use frankenstein::AsyncTelegramApi;
 
 #[tokio::main]

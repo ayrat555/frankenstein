@@ -1,6 +1,6 @@
-use frankenstein::api_params::{ReplyMarkup, SendMessageParams};
+use frankenstein::api_params::SendMessageParams;
 use frankenstein::client_ureq::Bot;
-use frankenstein::objects::{KeyboardButton, ReplyKeyboardMarkup};
+use frankenstein::objects::{KeyboardButton, ReplyKeyboardMarkup, ReplyMarkup};
 use frankenstein::TelegramApi;
 
 fn main() {

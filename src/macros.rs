@@ -10,6 +10,8 @@ macro_rules_attribute::attribute_alias! {
             on(ChatId, into),
             on(FileUpload, into),
             on(InputFile, into),
+            on(InputMedia, into),
+            on(InputMessageContent, into),
             on(String, into),
         )];
 }
