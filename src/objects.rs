@@ -1,37 +1,101 @@
-//! Objects returned or used with the Telegram API.
+//! [Available Types](https://core.telegram.org/bots/api#available-types) of the Bot API.
 
 #![allow(deprecated)]
 
 use serde::{Deserialize, Serialize};
 
-use crate::input_file::FileUpload;
+use crate::games::{CallbackGame, Game};
 use crate::macros::{apistruct, apply};
+use crate::passport::PassportData;
+use crate::payments::{Invoice, RefundedPayment, SuccessfulPayment};
+use crate::stickers::Sticker;
 use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum StickerType {
-    Regular,
-    Mask,
-    CustomEmoji,
+#[serde(untagged)]
+pub enum ChatId {
+    Integer(i64),
+    String(String),
+}
+
+impl From<i64> for ChatId {
+    fn from(id: i64) -> Self {
+        Self::Integer(id)
+    }
+}
+
+impl From<String> for ChatId {
+    fn from(id: String) -> Self {
+        Self::String(id)
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum ReplyMarkup {
+    InlineKeyboardMarkup(InlineKeyboardMarkup),
+    ReplyKeyboardMarkup(ReplyKeyboardMarkup),
+    ReplyKeyboardRemove(ReplyKeyboardRemove),
+    ForceReply(ForceReply),
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
-pub enum StickerFormat {
-    Static,
-    Animated,
-    Video,
+pub enum ChatAction {
+    Typing,
+    UploadPhoto,
+    RecordVideo,
+    UploadVideo,
+    RecordVoice,
+    UploadVoice,
+    UploadDocument,
+    ChooseSticker,
+    FindLocation,
+    RecordVideoNote,
+    UploadVideoNote,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum InputMessageContent {
-    Text(InputTextMessageContent),
-    Location(InputLocationMessageContent),
-    Venue(InputVenueMessageContent),
-    Contact(InputContactMessageContent),
-    Invoice(InputInvoiceMessageContent),
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum BotCommandScope {
+    Default,
+    AllPrivateChats,
+    AllGroupChats,
+    AllChatAdministrators,
+    Chat(BotCommandScopeChat),
+    ChatAdministrators(BotCommandScopeChatAdministrators),
+    ChatMember(BotCommandScopeChatMember),
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BotCommandScopeChat {
+    pub chat_id: ChatId,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BotCommandScopeChatAdministrators {
+    pub chat_id: ChatId,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BotCommandScopeChatMember {
+    pub chat_id: ChatId,
+    pub user_id: u64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ReplyParameters {
+    pub message_id: i32,
+    pub chat_id: Option<ChatId>,
+    pub allow_sending_without_reply: Option<bool>,
+    pub quote: Option<String>,
+    pub quote_parse_mode: Option<ParseMode>,
+    pub quote_entities: Option<Vec<MessageEntity>>,
+    pub quote_position: Option<u32>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -85,84 +149,6 @@ pub enum MessageEntityType {
 pub enum PollType {
     Regular,
     Quiz,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum EncryptedPassportElementType {
-    PersonalDetails,
-    Passport,
-    DriverLicense,
-    IdentityCard,
-    InternalPassport,
-    Address,
-    UtilityBill,
-    BankStatement,
-    RentalAgreement,
-    PassportRegistration,
-    TemporaryRegistration,
-    PhoneNumber,
-    Email,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum PassportElementErrorDataFieldType {
-    PersonalDetails,
-    Passport,
-    DriverLicense,
-    IdentityCard,
-    InternalPassport,
-    Address,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum PassportElementErrorFrontSideType {
-    Passport,
-    DriverLicense,
-    IdentityCard,
-    InternalPassport,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum PassportElementErrorReverseSideType {
-    DriverLicense,
-    IdentityCard,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum PassportElementErrorSelfieType {
-    Passport,
-    DriverLicense,
-    IdentityCard,
-    InternalPassport,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum PassportElementErrorFileType {
-    UtilityBill,
-    BankStatement,
-    RentalAgreement,
-    PassportRegistration,
-    TemporaryRegistration,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum PassportElementErrorTranslationFileType {
-    Passport,
-    DriverLicense,
-    IdentityCard,
-    InternalPassport,
-    UtilityBill,
-    BankStatement,
-    RentalAgreement,
-    PassportRegistration,
-    TemporaryRegistration,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -281,10 +267,6 @@ pub struct VideoChatScheduled {
 }
 
 #[apply(apistruct!)]
-#[derive(Copy, Eq)]
-pub struct CallbackGame {}
-
-#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct BotDescription {
     pub description: String,
@@ -300,60 +282,6 @@ pub struct BotName {
 #[derive(Eq)]
 pub struct BotShortDescription {
     pub short_description: String,
-}
-
-/// Represents an incoming update from telegram.
-/// [Official documentation.](https://core.telegram.org/bots/api#update)
-#[apply(apistruct!)]
-pub struct Update {
-    pub update_id: u32,
-
-    /// Maps to exactly one of the many optional fields
-    /// from [the official documentation](https://core.telegram.org/bots/api#update).
-    #[serde(flatten)]
-    pub content: UpdateContent,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(rename_all = "snake_case")]
-pub enum UpdateContent {
-    Message(Message),
-    EditedMessage(Message),
-    ChannelPost(Message),
-    EditedChannelPost(Message),
-    BusinessConnection(BusinessConnection),
-    BusinessMessage(Message),
-    EditedBusinessMessage(Message),
-    DeletedBusinessMessages(BusinessMessagesDeleted),
-    MessageReaction(MessageReactionUpdated),
-    MessageReactionCount(MessageReactionCountUpdated),
-    InlineQuery(InlineQuery),
-    ChosenInlineResult(ChosenInlineResult),
-    CallbackQuery(CallbackQuery),
-    ShippingQuery(ShippingQuery),
-    PreCheckoutQuery(PreCheckoutQuery),
-    Poll(Poll),
-    PollAnswer(PollAnswer),
-    MyChatMember(ChatMemberUpdated),
-    ChatMember(ChatMemberUpdated),
-    ChatJoinRequest(ChatJoinRequest),
-    ChatBoost(ChatBoostUpdated),
-    RemovedChatBoost(ChatBoostRemoved),
-    PurchasedPaidMedia(PaidMediaPurchased),
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct WebhookInfo {
-    pub url: String,
-    pub has_custom_certificate: bool,
-    pub pending_update_count: u32,
-    pub ip_address: Option<String>,
-    pub last_error_date: Option<u64>,
-    pub last_error_message: Option<String>,
-    pub last_synchronization_error_date: Option<u64>,
-    pub max_connections: Option<u16>,
-    pub allowed_updates: Option<Vec<AllowedUpdate>>,
 }
 
 /// Control which updates to receive.
@@ -1315,473 +1243,10 @@ pub struct ResponseParameters {
 }
 
 #[apply(apistruct!)]
-pub struct Sticker {
-    pub file_id: String,
-    pub file_unique_id: String,
-    #[serde(rename = "type")]
-    pub sticker_type: StickerType,
-    pub width: u32,
-    pub height: u32,
-    pub is_animated: bool,
-    pub is_video: bool,
-    pub thumbnail: Option<PhotoSize>,
-    pub emoji: Option<String>,
-    pub set_name: Option<String>,
-    pub premium_animation: Option<File>,
-    pub mask_position: Option<MaskPosition>,
-    pub custom_emoji_id: Option<String>,
-    pub needs_repainting: Option<bool>,
-    pub file_size: Option<u64>,
-}
-
-#[apply(apistruct!)]
-pub struct InputSticker {
-    pub sticker: FileUpload,
-    pub format: StickerFormat,
-    pub emoji_list: Vec<String>,
-    pub mask_position: Option<MaskPosition>,
-    pub keywords: Option<Vec<String>>,
-}
-
-#[apply(apistruct!)]
-pub struct Gift {
-    pub id: String,
-    pub stricker: Sticker,
-    pub star_count: u32,
-    pub upgrade_star_count: Option<u32>,
-    pub total_count: Option<u32>,
-    pub remaining_count: Option<u32>,
-}
-
-#[apply(apistruct!)]
-pub struct Gifts {
-    pub gifts: Vec<Gift>,
-}
-
-#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Story {
     pub chat: Chat,
     pub id: u64,
-}
-
-#[apply(apistruct!)]
-pub struct StickerSet {
-    pub name: String,
-    pub title: String,
-    pub sticker_type: StickerType,
-    #[doc(hidden)]
-    #[deprecated(since = "0.19.2", note = "Please use `sticker_type` instead")]
-    pub contains_masks: bool,
-    pub stickers: Vec<Sticker>,
-    pub thumbnail: Option<PhotoSize>,
-}
-
-#[apply(apistruct!)]
-pub struct MaskPosition {
-    pub point: String,
-    pub x_shift: f64,
-    pub y_shift: f64,
-    pub scale: f64,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQuery {
-    pub id: String,
-    pub from: User,
-    pub location: Option<Location>,
-    pub chat_type: Option<String>,
-    pub query: String,
-    pub offset: String,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultArticle {
-    pub id: String,
-    pub title: String,
-    pub input_message_content: InputMessageContent,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub url: Option<String>,
-    #[doc(hidden)]
-    #[deprecated(
-        since = "0.38.0",
-        note = "Please pass an empty string as `url` instead"
-    )]
-    pub hide_url: Option<bool>,
-    pub description: Option<String>,
-    pub thumbnail_url: Option<String>,
-    pub thumbnail_width: Option<u32>,
-    pub thumbnail_height: Option<u32>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultPhoto {
-    pub id: String,
-    pub photo_url: String,
-    pub thumbnail_url: String,
-    pub photo_width: Option<u32>,
-    pub photo_height: Option<u32>,
-    pub title: Option<String>,
-    pub description: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultGif {
-    pub id: String,
-    pub gif_url: String,
-    pub gif_width: Option<u32>,
-    pub gif_height: Option<u32>,
-    pub gif_duration: Option<u32>,
-    pub thumbnail_url: String,
-    pub thumbnail_mime_type: Option<String>,
-    pub title: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultMpeg4Gif {
-    pub id: String,
-    pub mpeg4_url: String,
-    pub mpeg4_width: Option<u32>,
-    pub mpeg4_height: Option<u32>,
-    pub mpeg4_duration: Option<u32>,
-    pub thumbnail_url: String,
-    pub thumbnail_mime_type: Option<String>,
-    pub title: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultVideo {
-    pub id: String,
-    pub video_url: String,
-    pub mime_type: String,
-    pub thumbnail_url: String,
-    pub title: String,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub video_width: Option<u32>,
-    pub video_height: Option<u32>,
-    pub video_duration: Option<u32>,
-    pub description: Option<String>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultAudio {
-    pub id: String,
-    pub audio_url: String,
-    pub title: String,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub performer: Option<String>,
-    pub audio_duration: Option<u32>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultVoice {
-    pub id: String,
-    pub voice_url: String,
-    pub title: String,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub voice_duration: Option<u32>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultDocument {
-    pub id: String,
-    pub title: String,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub document_url: String,
-    pub mime_type: String,
-    pub description: Option<String>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-    pub thumbnail_url: Option<String>,
-    pub thumbnail_width: Option<u32>,
-    pub thumbnail_height: Option<u32>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultLocation {
-    pub id: String,
-    pub latitude: f64,
-    pub longitude: f64,
-    pub title: String,
-    pub horizontal_accuracy: Option<f64>,
-    pub live_period: Option<u32>,
-    pub heading: Option<u16>,
-    pub proximity_alert_radius: Option<u32>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-    pub thumbnail_url: Option<String>,
-    pub thumbnail_width: Option<u32>,
-    pub thumbnail_height: Option<u32>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultVenue {
-    pub id: String,
-    pub latitude: f64,
-    pub longitude: f64,
-    pub title: String,
-    pub address: String,
-    pub foursquare_id: Option<String>,
-    pub foursquare_type: Option<String>,
-    pub google_place_id: Option<String>,
-    pub google_place_type: Option<String>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-    pub thumbnail_url: Option<String>,
-    pub thumbnail_width: Option<u32>,
-    pub thumbnail_height: Option<u32>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultContact {
-    pub id: String,
-    pub phone_number: String,
-    pub first_name: String,
-    pub last_name: Option<String>,
-    pub vcard: Option<String>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-    pub thumbnail_url: Option<String>,
-    pub thumbnail_width: Option<u32>,
-    pub thumbnail_height: Option<u32>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InlineQueryResultGame {
-    pub id: String,
-    pub game_short_name: String,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedPhoto {
-    pub id: String,
-    pub photo_file_id: String,
-    pub title: Option<String>,
-    pub description: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedGif {
-    pub id: String,
-    pub gif_file_id: String,
-    pub title: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedMpeg4Gif {
-    pub id: String,
-    pub mpeg4_file_id: String,
-    pub title: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedSticker {
-    pub id: String,
-    pub sticker_file_id: String,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedDocument {
-    pub id: String,
-    pub title: String,
-    pub document_file_id: String,
-    pub description: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedVideo {
-    pub id: String,
-    pub video_file_id: String,
-    pub title: String,
-    pub description: Option<String>,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub show_caption_above_media: Option<bool>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedVoice {
-    pub id: String,
-    pub voice_file_id: String,
-    pub title: String,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-pub struct InlineQueryResultCachedAudio {
-    pub id: String,
-    pub audio_file_id: String,
-    pub caption: Option<String>,
-    pub parse_mode: Option<ParseMode>,
-    pub caption_entities: Option<Vec<MessageEntity>>,
-    pub reply_markup: Option<InlineKeyboardMarkup>,
-    pub input_message_content: Option<InputMessageContent>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputTextMessageContent {
-    pub message_text: String,
-    pub parse_mode: Option<ParseMode>,
-    pub entities: Option<Vec<MessageEntity>>,
-    pub link_preview_options: Option<LinkPreviewOptions>,
-}
-
-#[apply(apistruct!)]
-#[derive(Copy)]
-pub struct InputLocationMessageContent {
-    pub latitude: f64,
-    pub longitude: f64,
-    pub horizontal_accuracy: Option<f64>,
-    pub live_period: Option<u32>,
-    pub heading: Option<u16>,
-    pub proximity_alert_radius: Option<u32>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputInvoiceMessageContent {
-    pub title: String,
-    pub description: String,
-    pub payload: String,
-    pub provider_token: Option<String>,
-    pub currency: String,
-    pub prices: Vec<LabeledPrice>,
-    pub max_tip_amount: Option<u32>,
-    pub suggested_tip_amounts: Option<Vec<u32>>,
-    pub provider_data: Option<String>,
-    pub photo_url: Option<String>,
-    pub photo_size: Option<u32>,
-    pub photo_width: Option<u32>,
-    pub photo_height: Option<u32>,
-    pub need_name: Option<bool>,
-    pub need_phone_number: Option<bool>,
-    pub need_email: Option<bool>,
-    pub need_shipping_address: Option<bool>,
-    pub send_phone_number_to_provider: Option<bool>,
-    pub send_email_to_provider: Option<bool>,
-    pub is_flexible: Option<bool>,
-}
-
-#[apply(apistruct!)]
-pub struct InputVenueMessageContent {
-    pub latitude: f64,
-    pub longitude: f64,
-    pub title: String,
-    pub address: String,
-    pub foursquare_id: Option<String>,
-    pub foursquare_type: Option<String>,
-    pub google_place_id: Option<String>,
-    pub google_place_type: Option<String>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputContactMessageContent {
-    pub phone_number: String,
-    pub first_name: String,
-    pub last_name: Option<String>,
-    pub vcard: Option<String>,
-}
-
-#[apply(apistruct!)]
-pub struct ChosenInlineResult {
-    pub result_id: String,
-    pub from: User,
-    pub location: Option<Location>,
-    pub inline_message_id: Option<String>,
-    pub query: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PreparedInlineMessage {
-    pub id: String,
-    pub expiration_date: u64,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct LabeledPrice {
-    pub label: String,
-    pub amount: u32,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct Invoice {
-    pub title: String,
-    pub description: String,
-    pub start_parameter: String,
-    pub currency: String,
-    pub total_amount: u32,
 }
 
 #[apply(apistruct!)]
@@ -1817,254 +1282,6 @@ pub struct PaidMediaPhoto {
 #[derive(Eq)]
 pub struct PaidMediaVideo {
     pub video: Video,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum InputPaidMedia {
-    Photo(InputPaidMediaPhoto),
-    Video(InputPaidMediaVideo),
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputPaidMediaPhoto {
-    pub media: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct InputPaidMediaVideo {
-    pub media: String,
-    pub thumbnail: String,
-    pub cover: Option<String>,
-    pub start_timestamp: Option<u64>,
-    pub width: Option<u32>,
-    pub height: Option<u32>,
-    pub duration: Option<u32>,
-    pub supports_streaming: Option<bool>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct ShippingAddress {
-    pub country_code: String,
-    pub state: String,
-    pub city: String,
-    pub street_line1: String,
-    pub street_line2: String,
-    pub post_code: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct OrderInfo {
-    pub name: Option<String>,
-    pub phone_number: Option<String>,
-    pub email: Option<String>,
-    pub shipping_address: Option<ShippingAddress>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct ShippingOption {
-    pub id: String,
-    pub title: String,
-    pub prices: Vec<LabeledPrice>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct SuccessfulPayment {
-    pub currency: String,
-    pub total_amount: u32,
-    pub invoice_payload: String,
-    pub subscription_expiration_date: Option<u64>,
-    pub is_recurring: Option<bool>,
-    pub is_first_recurring: Option<bool>,
-    pub shipping_option_id: Option<String>,
-    pub order_info: Option<OrderInfo>,
-    pub telegram_payment_charge_id: String,
-    pub provider_payment_charge_id: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct RefundedPayment {
-    pub currency: String,
-    pub total_amount: u32,
-    pub invoice_payload: String,
-    pub telegram_payment_charge_id: String,
-    pub provider_payment_charge_id: Option<String>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct ShippingQuery {
-    pub id: String,
-    pub from: User,
-    pub invoice_payload: String,
-    pub shipping_address: ShippingAddress,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PreCheckoutQuery {
-    pub id: String,
-    pub from: User,
-    pub currency: String,
-    pub total_amount: u32,
-    pub invoice_payload: String,
-    pub shipping_option_id: Option<String>,
-    pub order_info: Option<OrderInfo>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PaidMediaPurchased {
-    pub from: User,
-    pub paid_media_payload: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportData {
-    pub data: Vec<EncryptedPassportElement>,
-    pub credentials: EncryptedCredentials,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportFile {
-    pub file_id: String,
-    pub file_unique_id: String,
-    pub file_size: u64,
-    pub file_date: u64,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct EncryptedPassportElement {
-    #[serde(rename = "type")]
-    pub type_field: EncryptedPassportElementType,
-    pub data: Option<String>,
-    pub phone_number: Option<String>,
-    pub email: Option<String>,
-    pub files: Option<Vec<PassportFile>>,
-    pub front_side: Option<PassportFile>,
-    pub reverse_side: Option<PassportFile>,
-    pub selfie: Option<PassportFile>,
-    pub translation: Option<Vec<PassportFile>>,
-    pub hash: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct EncryptedCredentials {
-    pub data: String,
-    pub hash: String,
-    pub secret: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorDataField {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorDataFieldType,
-    pub field_name: String,
-    pub data_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorFrontSide {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorFrontSideType,
-    pub file_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorReverseSide {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorReverseSideType,
-    pub file_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorSelfie {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorSelfieType,
-    pub file_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorFile {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorFileType,
-    pub file_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorFiles {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorFileType,
-    pub file_hashes: Vec<String>,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorTranslationFile {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorTranslationFileType,
-    pub file_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorTranslationFiles {
-    #[serde(rename = "type")]
-    pub type_field: PassportElementErrorTranslationFileType,
-    pub file_hashes: Vec<String>,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct PassportElementErrorUnspecified {
-    #[serde(rename = "type")]
-    pub type_field: EncryptedPassportElementType,
-    pub element_hash: String,
-    pub message: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct Game {
-    pub title: String,
-    pub description: String,
-    pub photo: Vec<PhotoSize>,
-    pub text: Option<String>,
-    pub text_entities: Option<Vec<MessageEntity>>,
-    pub animation: Option<Animation>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct GameHighScore {
-    pub position: u32,
-    pub user: User,
-    pub score: i32,
 }
 
 #[apply(apistruct!)]
@@ -2136,12 +1353,6 @@ pub struct ChatAdministratorRights {
 #[derive(Eq)]
 pub struct WebAppInfo {
     pub url: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct SentWebAppMessage {
-    pub inline_message_id: String,
 }
 
 #[apply(apistruct!)]
@@ -2245,171 +1456,9 @@ pub struct InaccessibleMessage {
     pub date: u64,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum RevenueWithdrawalState {
-    Pending(RevenueWithdrawalStatePending),
-    Succeeded(RevenueWithdrawalStateSucceeded),
-    Failed(RevenueWithdrawalStateFailed),
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct RevenueWithdrawalStatePending {}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct RevenueWithdrawalStateSucceeded {
-    pub date: u64,
-    pub url: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct RevenueWithdrawalStateFailed {}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct AffiliateInfo {
-    pub affiliate_user: Option<User>,
-    pub affiliate_chat: Option<Chat>,
-    pub commission_per_mille: u32,
-    pub amount: u32,
-    pub nanostar_amount: Option<u32>,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-#[serde(tag = "type", rename_all = "snake_case")]
-#[non_exhaustive]
-pub enum TransactionPartner {
-    User(Box<TransactionPartnerUser>),
-    Chat(Box<TransactionPartnerChat>),
-    AffiliateProgram(TransactionPartnerAffiliateProgram),
-    Fragment(TransactionPartnerFragment),
-    TelegramAds(TransactionPartnerTelegramAds),
-    TelegramApi(TransactionPartnerTelegramApi),
-    Other(TransactionPartnerOther),
-}
-
-#[apply(apistruct!)]
-pub struct TransactionPartnerUser {
-    pub user: User,
-    pub affiliate: Option<AffiliateInfo>,
-    pub invoice_payload: Option<String>,
-    pub subscription_period: Option<u32>,
-    pub paid_media: Option<Vec<PaidMedia>>,
-    pub paid_media_payload: Option<String>,
-    pub gift: Option<Gift>,
-}
-
-#[apply(apistruct!)]
-pub struct TransactionPartnerChat {
-    pub chat: Chat,
-    pub gift: Option<Gift>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct TransactionPartnerAffiliateProgram {
-    pub sponsor_user: User,
-    pub commission_per_mille: u32,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct TransactionPartnerFragment {
-    pub withdrawal_state: Option<RevenueWithdrawalState>,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct TransactionPartnerTelegramAds {}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct TransactionPartnerTelegramApi {
-    pub request_count: u64,
-}
-
-#[apply(apistruct!)]
-#[derive(Eq)]
-pub struct TransactionPartnerOther {}
-
-#[apply(apistruct!)]
-pub struct StarTransaction {
-    pub id: String,
-    pub amount: u32,
-    pub nanostar_amount: u32,
-    pub date: u64,
-    pub source: Option<TransactionPartner>,
-    pub receiver: Option<TransactionPartner>,
-}
-
-#[apply(apistruct!)]
-pub struct StarTransactions {
-    pub transactions: Vec<StarTransaction>,
-}
-
 #[cfg(test)]
 mod serde_tests {
     use super::*;
-
-    #[test]
-    pub fn update_content_is_flattened() {
-        let update_content = r#"{
-            "update_id": 2341,
-            "message": {
-                "message_id": 2746,
-                "from": {
-                    "id": 1276618370,
-                    "is_bot": true,
-                    "first_name": "test_el_bot",
-                    "username": "el_mon_test_bot"
-                },
-                "date": 1618207352,
-                "chat": {
-                    "id": 275808073,
-                    "type": "private",
-                    "username": "Ayrat555",
-                    "first_name": "Ayrat",
-                    "last_name": "Badykov"
-                },
-                "text": "Hello!"
-            }
-        }"#;
-
-        let update: Update = serde_json::from_str(update_content).unwrap();
-
-        let message = Message::builder()
-            .message_id(2746)
-            .from(
-                User::builder()
-                    .id(1276618370)
-                    .is_bot(true)
-                    .first_name("test_el_bot")
-                    .username("el_mon_test_bot")
-                    .build(),
-            )
-            .date(1618207352)
-            .chat(
-                Chat::builder()
-                    .id(275808073)
-                    .type_field(ChatType::Private)
-                    .username("Ayrat555")
-                    .first_name("Ayrat")
-                    .last_name("Badykov")
-                    .build(),
-            )
-            .text("Hello!")
-            .build();
-
-        let expected = Update {
-            update_id: 2341,
-            content: UpdateContent::Message(message),
-        };
-
-        assert_eq!(update, expected);
-    }
 
     #[test]
     pub fn kicked_user_status_is_parsed() {

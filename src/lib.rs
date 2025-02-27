@@ -10,6 +10,7 @@ pub use ureq;
 pub use self::api_params::*;
 pub use self::error::Error;
 pub use self::input_file::*;
+pub use self::input_media::*;
 pub use self::objects::*;
 pub use self::parse_mode::ParseMode;
 pub use self::response::*;
@@ -24,19 +25,26 @@ pub mod client_reqwest;
 #[cfg(feature = "client-ureq")]
 pub mod client_ureq;
 mod error;
+pub mod games;
+pub mod inline_mode;
 pub mod input_file;
+pub mod input_media;
 #[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
 mod json;
 mod macros;
 pub mod objects;
 mod parse_mode;
+pub mod passport;
+pub mod payments;
 pub mod response;
+pub mod stickers;
 #[cfg(test)]
 mod test_json;
 #[cfg(feature = "trait-async")]
 mod trait_async;
 #[cfg(feature = "trait-sync")]
 mod trait_sync;
+pub mod updates;
 
 /// Default Bot API URL
 pub const BASE_API_URL: &str = "https://api.telegram.org/bot";

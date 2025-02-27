@@ -1,13 +1,16 @@
-use crate::api_params::{InputMedia, Media};
+use crate::games::GameHighScore;
+use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::{HasInputFile, InputFile};
+use crate::input_media::{InputMedia, MediaGroupInputMedia};
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
-    GameHighScore, Gifts, MenuButton, Message, MessageId, Poll, PreparedInlineMessage,
-    SentWebAppMessage, StarTransactions, Sticker, StickerSet, Update, User, UserChatBoosts,
-    UserProfilePhotos, WebhookInfo,
+    MenuButton, Message, MessageId, Poll, User, UserChatBoosts, UserProfilePhotos,
 };
+use crate::payments::StarTransactions;
 use crate::response::{MessageOrBool, MethodResponse};
+use crate::stickers::{Gifts, Sticker, StickerSet};
+use crate::updates::{Update, WebhookInfo};
 
 macro_rules! request {
     ($name:ident, $return:ty) => {
@@ -105,17 +108,17 @@ where
         let mut params = params.clone();
         for media in &mut params.media {
             match media {
-                Media::Audio(audio) => {
+                MediaGroupInputMedia::Audio(audio) => {
                     replace_attach!(audio.media);
                     replace_attach!(audio.thumbnail);
                 }
-                Media::Document(document) => {
+                MediaGroupInputMedia::Document(document) => {
                     replace_attach!(document.media);
                 }
-                Media::Photo(photo) => {
+                MediaGroupInputMedia::Photo(photo) => {
                     replace_attach!(photo.media);
                 }
-                Media::Video(video) => {
+                MediaGroupInputMedia::Video(video) => {
                     replace_attach!(video.media);
                     replace_attach!(video.cover);
                     replace_attach!(video.thumbnail);
@@ -347,6 +350,7 @@ where
     request!(setChatMenuButton, bool);
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);
+    request!(setPassportDataErrors, bool);
 
     async fn request_with_possible_form_data<Params, Output>(
         &self,
