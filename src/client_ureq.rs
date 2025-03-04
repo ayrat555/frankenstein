@@ -230,7 +230,7 @@ mod tests {
     #[test]
     fn set_webhook_success() {
         let response_string =
-            "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
+            "{\"ok\":true,\"description\":\"Webhook is already deleted\",\"result\":true}";
         let params = SetWebhookParams::builder().url("").build();
         let response = case!(setWebhook, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -239,7 +239,7 @@ mod tests {
     #[test]
     fn delete_webhook_success() {
         let response_string =
-            "{\"ok\":true,\"result\":true,\"description\":\"Webhook is already deleted\"}";
+            "{\"ok\":true,\"description\":\"Webhook is already deleted\",\"result\":true}";
         let params = DeleteWebhookParams::builder().build();
         let response = case!(deleteWebhook, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
