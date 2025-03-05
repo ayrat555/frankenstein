@@ -1236,13 +1236,6 @@ pub struct BotCommand {
 }
 
 #[apply(apistruct!)]
-#[derive(Copy, Eq)]
-pub struct ResponseParameters {
-    pub migrate_to_chat_id: Option<i64>,
-    pub retry_after: Option<u16>,
-}
-
-#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct Story {
     pub chat: Chat,
