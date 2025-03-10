@@ -34,10 +34,7 @@ impl InputFile {
         let file_name = path
             .file_name()
             .ok_or_else(|| {
-                std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "A file that could be read should also have a name",
-                )
+                std::io::Error::other("A file that could be read should also have a name")
             })?
             .to_string_lossy()
             .to_string();
