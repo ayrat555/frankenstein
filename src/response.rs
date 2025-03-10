@@ -6,15 +6,22 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::objects::{Message, ResponseParameters};
+use crate::objects::Message;
 
+/// Response on successful request.
+///
+/// `ok` is always `true`.
+/// Some methods may return a human-readable `description` of the result.
+/// The result of the query can be found in the 'result' field.
+///
+/// See <https://core.telegram.org/bots/api#making-requests>
 #[serde_with::skip_serializing_none]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct MethodResponse<T> {
     /// Always true
     pub ok: bool,
-    pub result: T,
     pub description: Option<String>,
+    pub result: T,
 }
 
 /// Error on an unsuccessful request.
@@ -40,4 +47,11 @@ pub struct ErrorResponse {
 pub enum MessageOrBool {
     Message(Message),
     Bool(bool),
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde_with::skip_serializing_none]
+pub struct ResponseParameters {
+    pub migrate_to_chat_id: Option<i64>,
+    pub retry_after: Option<u16>,
 }

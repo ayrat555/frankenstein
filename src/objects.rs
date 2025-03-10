@@ -592,6 +592,16 @@ pub struct LinkPreviewOptions {
     pub show_above_text: Option<bool>,
 }
 
+impl LinkPreviewOptions {
+    pub const DISABLED: Self = Self {
+        is_disabled: Some(true),
+        url: None,
+        prefer_small_media: None,
+        prefer_large_media: None,
+        show_above_text: None,
+    };
+}
+
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PhotoSize {
@@ -1233,13 +1243,6 @@ pub struct ForumTopic {
 pub struct BotCommand {
     pub command: String,
     pub description: String,
-}
-
-#[apply(apistruct!)]
-#[derive(Copy, Eq)]
-pub struct ResponseParameters {
-    pub migrate_to_chat_id: Option<i64>,
-    pub retry_after: Option<u16>,
 }
 
 #[apply(apistruct!)]
