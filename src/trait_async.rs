@@ -57,8 +57,8 @@ macro_rules! request_f {
             ) -> Result<MethodResponse<$return>, Self::Error> {
                 let mut files = Vec::new();
                 $(
-                    if let Some(path) = params.$fileproperty.get_input_file_ref() {
-                        files.push((stringify!($fileproperty), path));
+                    if let Some(file) = params.$fileproperty.get_input_file_ref() {
+                        files.push((stringify!($fileproperty), file));
                     }
                 )+
                 self.request_with_possible_form_data(stringify!($name), params, files).await

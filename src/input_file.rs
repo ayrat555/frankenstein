@@ -1,44 +1,24 @@
 //! Structs for handling and uploading files
 
-use std::path::Path;
-
 use serde::{Deserialize, Serialize};
 
 /// Represents a new file to be uploaded via `multipart/form-data`.
 ///
 /// See <https://core.telegram.org/bots/api#inputfile>.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-pub struct InputFile {
-    pub bytes: Vec<u8>,
-    pub file_name: String,
+pub enum InputFile {
+    Bytes {
+        bytes: Vec<u8>,
+        file_name: String,
+    },
+    #[cfg(not(target_arch = "wasm32"))]
+    Path(std::path::PathBuf),
 }
 
-impl InputFile {
-    pub fn read_std<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
-        let path = path.as_ref();
-        let bytes = std::fs::read(path)?;
-        let file_name = Self::file_name_from_path(path)?;
-        Ok(Self { bytes, file_name })
-    }
-
-    #[cfg(feature = "inputfile-read-tokio")]
-    pub async fn read_tokio_fs<P: AsRef<Path>>(path: P) -> std::io::Result<Self> {
-        let path = path.as_ref();
-        let bytes = tokio::fs::read(path).await?;
-        let file_name = Self::file_name_from_path(path)?;
-        Ok(Self { bytes, file_name })
-    }
-
-    /// This method is intended to be used after `fs` operations
-    fn file_name_from_path(path: &Path) -> std::io::Result<String> {
-        let file_name = path
-            .file_name()
-            .ok_or_else(|| {
-                std::io::Error::other("A file that could be read should also have a name")
-            })?
-            .to_string_lossy()
-            .to_string();
-        Ok(file_name)
+#[cfg(not(target_arch = "wasm32"))]
+impl From<std::path::PathBuf> for InputFile {
+    fn from(value: std::path::PathBuf) -> Self {
+        Self::Path(value)
     }
 }
 
@@ -57,6 +37,13 @@ pub enum FileUpload {
 impl From<String> for FileUpload {
     fn from(file: String) -> Self {
         Self::String(file)
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+impl From<std::path::PathBuf> for FileUpload {
+    fn from(path: std::path::PathBuf) -> Self {
+        Self::InputFile(InputFile::Path(path))
     }
 }
 

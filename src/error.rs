@@ -19,6 +19,9 @@ pub enum Error {
         input: String,
     },
 
+    #[error("Read File Error: {0}")]
+    ReadFile(#[source] std::io::Error),
+
     #[cfg(feature = "client-reqwest")]
     #[error("HTTP error: {0}")]
     HttpReqwest(#[source] reqwest::Error),
@@ -29,7 +32,6 @@ pub enum Error {
 }
 
 impl Error {
-    #[allow(irrefutable_let_patterns)] // See https://github.com/rust-lang/rust/issues/72469
     #[cfg(test)]
     #[track_caller]
     pub(crate) fn unwrap_api(self) -> ErrorResponse {

@@ -1,6 +1,5 @@
 use frankenstein::api_params::SendPhotoParams;
 use frankenstein::client_reqwest::Bot;
-use frankenstein::input_file::InputFile;
 use frankenstein::AsyncTelegramApi;
 
 #[tokio::main]
@@ -13,10 +12,7 @@ async fn main() {
 
     let bot = Bot::new(&token);
 
-    let file = InputFile::read_tokio_fs("./frankenstein_logo.png")
-        .await
-        .expect("Should be able to read file");
-    println!("File size: {}", file.bytes.len());
+    let file = std::path::PathBuf::from("./frankenstein_logo.png");
 
     let params = SendPhotoParams::builder()
         .chat_id(chat_id)

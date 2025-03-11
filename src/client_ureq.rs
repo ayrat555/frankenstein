@@ -108,21 +108,22 @@ impl TelegramApi for Bot {
         }
 
         for (parameter_name, input_file) in files {
-            let file_extension = std::path::Path::new(&input_file.file_name)
-                .extension()
-                .and_then(std::ffi::OsStr::to_str)
-                .unwrap_or("");
-            let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
-            form.add_stream(
-                parameter_name,
-                &*input_file.bytes,
-                Some(&input_file.file_name),
-                Some(mime),
-            );
+            match input_file {
+                InputFile::Bytes { bytes, file_name } => {
+                    let mime = mime_guess::from_path(std::path::Path::new(&file_name))
+                        .first_or_octet_stream();
+                    form.add_stream(parameter_name, &**bytes, Some(&**file_name), Some(mime));
+                }
+                InputFile::Path(path) => {
+                    form.add_file(parameter_name, &**path);
+                }
+            }
         }
 
         let url = format!("{}/{method}", self.api_url);
-        let mut form_data = form.prepare().unwrap();
+        let mut form_data = form
+            .prepare()
+            .map_err(|error| crate::Error::ReadFile(error.error))?;
         let response = self
             .request_agent
             .post(&url)
@@ -180,13 +181,6 @@ mod tests {
                 response
             }
         }};
-    }
-
-    fn dummy_file() -> InputFile {
-        InputFile {
-            bytes: include_bytes!("../frankenstein_logo.png").to_vec(),
-            file_name: "frankenstein_logo.png".to_owned(),
-        }
     }
 
     #[test]
@@ -566,9 +560,10 @@ mod tests {
     #[test]
     fn send_photo_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2763,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618730180,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA20AA0U3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0U3AwAB\",\"width\":320,\"height\":320,\"file_size\":19968},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3gAA0Y3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0Y3AwAB\",\"width\":799,\"height\":800,\"file_size\":63581},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3kAA0M3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0M3AwAB\",\"width\":847,\"height\":848,\"file_size\":63763}]}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendPhotoParams::builder()
             .chat_id(275808073)
-            .photo(dummy_file())
+            .photo(file)
             .build();
         let response = case!(sendPhoto, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -577,9 +572,10 @@ mod tests {
     #[test]
     fn send_audio_file_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAudioParams::builder()
             .chat_id(275808073)
-            .audio(dummy_file())
+            .audio(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -588,10 +584,11 @@ mod tests {
     #[test]
     fn send_audio_file_with_thumb_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAudioParams::builder()
             .chat_id(275808073)
-            .audio(dummy_file())
-            .thumbnail(dummy_file())
+            .audio(file.clone())
+            .thumbnail(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -613,9 +610,10 @@ mod tests {
     #[test]
     fn send_document_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendDocumentParams::builder()
             .chat_id(275808073)
-            .document(dummy_file())
+            .document(file)
             .build();
         let response = case!(sendDocument, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -624,9 +622,10 @@ mod tests {
     #[test]
     fn send_video_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVideoParams::builder()
             .chat_id(275808073)
-            .video(dummy_file())
+            .video(file)
             .build();
         let response = case!(sendVideo, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -635,9 +634,10 @@ mod tests {
     #[test]
     fn send_animation_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAnimationParams::builder()
             .chat_id(275808073)
-            .animation(dummy_file())
+            .animation(file)
             .build();
         let response = case!(sendAnimation, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -646,9 +646,10 @@ mod tests {
     #[test]
     fn send_voice_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVoiceParams::builder()
             .chat_id(275808073)
-            .voice(dummy_file())
+            .voice(file)
             .build();
         let response = case!(sendVoice, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -657,9 +658,10 @@ mod tests {
     #[test]
     fn send_video_note_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVideoNoteParams::builder()
             .chat_id(275808073)
-            .video_note(dummy_file())
+            .video_note(file)
             .build();
         let response = case!(sendVideoNote, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -668,9 +670,10 @@ mod tests {
     #[test]
     fn set_chat_photo_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SetChatPhotoParams::builder()
             .chat_id(275808073)
-            .photo(dummy_file())
+            .photo(file)
             .build();
         let response = case!(setChatPhoto, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -937,9 +940,10 @@ mod tests {
     #[test]
     fn send_sticker_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"type\":\"regular\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumbnail\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendStickerParams::builder()
             .chat_id(275808073)
-            .sticker(dummy_file())
+            .sticker(file)
             .build();
         let response = case!(sendSticker, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -956,7 +960,8 @@ mod tests {
     #[test]
     fn send_media_group_success() {
         let response_string = "{\"ok\":true,\"result\":[{\"message_id\":510,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf5ghA-GtOaBIP2NOmtXdze-Un7PGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]},{\"message_id\":511,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619267462,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"media_group_id\":\"12954139699368426\",\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAf9ghA-GeFo0B7v78UyXoOD9drjEGgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}]}";
-        let photo = InputMediaPhoto::builder().media(dummy_file()).build();
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
+        let photo = InputMediaPhoto::builder().media(file).build();
         let medias = vec![
             MediaGroupInputMedia::Photo(photo.clone()),
             MediaGroupInputMedia::Photo(photo),
@@ -972,8 +977,9 @@ mod tests {
     #[test]
     fn edit_message_media_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":513,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":-1001368460856,\"type\":\"supergroup\",\"title\":\"Frankenstein\"},\"edit_date\":1619336788,\"photo\":[{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAANtAANYQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN4AANZQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAx0EUZEOOAACAgFghR5URaBN41jx7VNgLPi29xmfQgAC_q8xG0cfEUgpwpFo17XTfWTS5p8uAAMBAAMCAAN5AANaQgACHwQ\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}]}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = EditMessageMediaParams::builder()
-            .media(InputMediaPhoto::builder().media(dummy_file()).build())
+            .media(InputMediaPhoto::builder().media(file).build())
             .chat_id(-1001368460856)
             .message_id(513)
             .build();

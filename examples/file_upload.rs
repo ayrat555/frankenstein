@@ -1,6 +1,5 @@
 use frankenstein::api_params::SendPhotoParams;
 use frankenstein::client_ureq::Bot;
-use frankenstein::input_file::InputFile;
 use frankenstein::TelegramApi;
 
 fn main() {
@@ -12,8 +11,7 @@ fn main() {
 
     let bot = Bot::new(&token);
 
-    let file = InputFile::read_std("./frankenstein_logo.png").expect("Should be able to read file");
-    println!("File size: {}", file.bytes.len());
+    let file = std::path::PathBuf::from("./frankenstein_logo.png");
 
     let params = SendPhotoParams::builder()
         .chat_id(chat_id)

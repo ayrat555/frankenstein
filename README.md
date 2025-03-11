@@ -29,7 +29,6 @@ Without enabling any additional features this crate will only ship with Telegram
 - async
   - `client-reqwest` - an async HTTP API client based on `reqwest`. This client supports wasm32
   - `trait-async` - an async API trait, it's used in the `client-reqwest`. It may be useful for people who want to create a custom async client
-  - `inputfile-read-tokio` - helper function to read an `InputFile` from a file system with `tokio::fs::read`
 
 For example for the async client add the following line to your `Cargo.toml` file:
 

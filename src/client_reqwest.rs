@@ -116,10 +116,18 @@ impl AsyncTelegramApi for Bot {
         }
 
         for (parameter_name, input_file) in files {
-            // The reqwest::multipart stuff requires 'static which we can not grant here.
-            // So we provide owned data.
-            let part = reqwest::multipart::Part::bytes(input_file.bytes.clone())
-                .file_name(input_file.file_name.clone());
+            let part = match input_file {
+                InputFile::Bytes { bytes, file_name } => {
+                    // The reqwest::multipart stuff requires 'static which we can not grant here.
+                    // So we provide owned data by cloning it.
+                    reqwest::multipart::Part::bytes(bytes.clone()).file_name(file_name.clone())
+                }
+
+                #[cfg(not(target_arch = "wasm32"))]
+                InputFile::Path(path) => reqwest::multipart::Part::file(path)
+                    .await
+                    .map_err(crate::Error::ReadFile)?,
+            };
             form = form.part(parameter_name.to_owned(), part);
         }
 
