@@ -114,29 +114,6 @@ Every function returns a `Result` with a successful response or failed response.
 
 See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.39.2/examples) directory.
 
-### Uploading files
-
-Some methods in the API allow uploading files. In Frankenstein the `FileUpload` enum is used:
-
-```rust
-pub enum FileUpload {
-    InputFile(InputFile),
-    String(String),
-}
-
-pub struct InputFile {
-    bytes: Vec<u8>,
-    file_name: String,
-}
-```
-
-It has two variants:
-
-- `FileUpload::String` is used to pass the ID of the already uploaded file
-- `FileUpload::InputFile` is used to upload a new file using multipart upload.
-
-You can use the helper functions `InputFile::read_std(Path)` or `InputFile::read_tokio(Path)` for reading from the file system.
-
 ### Documentation
 
 Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.39.2/frankenstein/trait.TelegramApi.html#provided-methods)
