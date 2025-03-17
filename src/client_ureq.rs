@@ -1,10 +1,10 @@
-use std::path::PathBuf;
 use std::time::Duration;
 
 use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 
+use crate::input_file::InputFile;
 use crate::trait_sync::TelegramApi;
 use crate::Error;
 
@@ -85,7 +85,7 @@ impl TelegramApi for Bot {
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<(&str, &InputFile)>,
     ) -> Result<Output, Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
@@ -107,19 +107,23 @@ impl TelegramApi for Bot {
             }
         }
 
-        for (parameter_name, file_path) in &files {
-            let file = std::fs::File::open(file_path).map_err(Error::ReadFile)?;
-            let file_name = file_path.file_name().unwrap().to_string_lossy();
-            let file_extension = file_path
-                .extension()
-                .and_then(std::ffi::OsStr::to_str)
-                .unwrap_or("");
-            let mime = mime_guess::from_ext(file_extension).first_or_octet_stream();
-            form.add_stream(*parameter_name, file, Some(file_name), Some(mime));
+        for (parameter_name, input_file) in files {
+            match input_file {
+                InputFile::Bytes { bytes, file_name } => {
+                    let mime = mime_guess::from_path(std::path::Path::new(&file_name))
+                        .first_or_octet_stream();
+                    form.add_stream(parameter_name, &**bytes, Some(&**file_name), Some(mime));
+                }
+                InputFile::Path(path) => {
+                    form.add_file(parameter_name, &**path);
+                }
+            }
         }
 
         let url = format!("{}/{method}", self.api_url);
-        let mut form_data = form.prepare().unwrap();
+        let mut form_data = form
+            .prepare()
+            .map_err(|error| crate::Error::ReadFile(error.error))?;
         let response = self
             .request_agent
             .post(&url)

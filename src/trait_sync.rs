@@ -1,8 +1,6 @@
-use std::path::PathBuf;
-
 use crate::games::GameHighScore;
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
-use crate::input_file::HasInputFile;
+use crate::input_file::{HasInputFile, InputFile};
 use crate::input_media::{InputMedia, MediaGroupInputMedia};
 use crate::objects::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
@@ -56,8 +54,8 @@ macro_rules! request_f {
             ) -> Result<MethodResponse<$return>, Self::Error> {
                 let mut files = Vec::new();
                 $(
-                    if let Some(path) = params.$fileproperty.clone_path() {
-                        files.push((stringify!($fileproperty), path));
+                    if let Some(file) = params.$fileproperty.get_input_file_ref() {
+                        files.push((stringify!($fileproperty), file));
                     }
                 )+
                 self.request_with_possible_form_data(stringify!($name), params, files)
@@ -121,7 +119,7 @@ pub trait TelegramApi {
 
         let files_with_str_names = files
             .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
+            .map(|(key, file)| (key.as_str(), file))
             .collect();
 
         self.request_with_possible_form_data("sendMediaGroup", &params, files_with_str_names)
@@ -167,7 +165,7 @@ pub trait TelegramApi {
         params: &crate::api_params::SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let photo = &params.photo;
-        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
+        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo)])
     }
 
     request!(deleteChatPhoto, bool);
@@ -250,7 +248,9 @@ pub trait TelegramApi {
             }
         }
 
-        self.request_with_possible_form_data("editMessageMedia", &params, files)
+        let files_ref = files.iter().map(|(key, file)| (*key, file)).collect();
+
+        self.request_with_possible_form_data("editMessageMedia", &params, files_ref)
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
@@ -265,11 +265,7 @@ pub trait TelegramApi {
         params: &crate::api_params::UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
         let sticker = &params.sticker;
-        self.request_with_form_data(
-            "uploadStickerFile",
-            params,
-            vec![("sticker", sticker.path.clone())],
-        )
+        self.request_with_form_data("uploadStickerFile", params, vec![("sticker", sticker)])
     }
 
     fn create_new_sticker_set(
@@ -287,7 +283,7 @@ pub trait TelegramApi {
 
         let files_with_str_names = files
             .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
+            .map(|(key, file)| (key.as_str(), file))
             .collect();
 
         self.request_with_possible_form_data("createNewStickerSet", &params, files_with_str_names)
@@ -300,7 +296,7 @@ pub trait TelegramApi {
         params: &crate::api_params::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
-        if let Some(file) = params.sticker.sticker.clone_path() {
+        if let Some(file) = params.sticker.sticker.get_input_file_ref() {
             files.push(("sticker", file));
         }
         self.request_with_possible_form_data("addStickerToSet", params, files)
@@ -345,7 +341,7 @@ pub trait TelegramApi {
         &self,
         method_name: &str,
         params: Params,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<(&str, &InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
@@ -371,7 +367,7 @@ pub trait TelegramApi {
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<(&str, &InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
