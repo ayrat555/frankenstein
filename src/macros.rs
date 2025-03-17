@@ -5,6 +5,11 @@ macro_rules_attribute::attribute_alias! {
     #[apply(apistruct!)] =
         #[::serde_with::skip_serializing_none]
         #[derive(Clone, Debug, PartialEq, ::bon::Builder, ::serde::Serialize, ::serde::Deserialize)]
+        #[allow(
+            clippy::struct_excessive_bools,
+            clippy::struct_field_names,
+            // reason = "same as Telegram Bot API"
+        )]
         #[builder(
             on(Box<_>, into),
             on(ChatId, into),
