@@ -1,7 +1,5 @@
 //! [Available Types](https://core.telegram.org/bots/api#available-types) of the Bot API.
 
-#![allow(deprecated)]
-
 use serde::{Deserialize, Serialize};
 
 use crate::games::{CallbackGame, Game};
