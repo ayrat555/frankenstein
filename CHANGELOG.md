@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.40.0 (2025-03-19)
+
+* docs(examples): read token and chat from env - [#262](https://github.com/ayrat555/frankenstein/pull/262)
+* refactor: simplify file handling loop - [#263](https://github.com/ayrat555/frankenstein/pull/263)
+* refactor: simplify code when attaching many files - [#264](https://github.com/ayrat555/frankenstein/pull/264)
+* refactor!: simplify code with internal HasInputFile trait - [#265](https://github.com/ayrat555/frankenstein/pull/265)
+* refactor!: move objects into multiple modules - [#266](https://github.com/ayrat555/frankenstein/pull/266)
+* refactor!: move ResponseParams to response module - [#267](https://github.com/ayrat555/frankenstein/pull/267)
+* feat: add LinkPreviewOptions::DISABLED - [#268](https://github.com/ayrat555/frankenstein/pull/268)
+* ci(rust): dont check features on beta - [#271](https://github.com/ayrat555/frankenstein/pull/271)
+* build(lints): lint things that break API - [#272](https://github.com/ayrat555/frankenstein/pull/272)
+* fix(gift): fix typo in property name - [#274](https://github.com/ayrat555/frankenstein/pull/274)
+* refactor!: remove top level reexport and rename to methods / types - [#275](https://github.com/ayrat555/frankenstein/pull/275)
+
 ## 0.39.2 (2025-02-19)
 
 * fix: attach video cover correctly as a file - [#258](https://github.com/ayrat555/frankenstein/pull/258)
