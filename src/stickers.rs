@@ -74,7 +74,7 @@ pub struct InputSticker {
 #[apply(apistruct!)]
 pub struct Gift {
     pub id: String,
-    pub stricker: Sticker,
+    pub sticker: Sticker,
     pub star_count: u32,
     pub upgrade_star_count: Option<u32>,
     pub total_count: Option<u32>,
