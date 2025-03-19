@@ -144,7 +144,7 @@ impl AsyncTelegramApi for Bot {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api_params::SendMessageParams;
+    use crate::methods::SendMessageParams;
 
     #[tokio::test]
     async fn async_send_message_success() {

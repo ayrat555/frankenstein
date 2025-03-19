@@ -1,6 +1,6 @@
-use frankenstein::api_params::{GetUpdatesParams, SendMessageParams};
 use frankenstein::client_ureq::Bot;
-use frankenstein::objects::ReplyParameters;
+use frankenstein::methods::{GetUpdatesParams, SendMessageParams};
+use frankenstein::types::ReplyParameters;
 use frankenstein::updates::UpdateContent;
 use frankenstein::TelegramApi;
 
