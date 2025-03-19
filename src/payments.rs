@@ -3,8 +3,8 @@
 use serde::{Deserialize, Serialize};
 
 use crate::macros::{apistruct, apply};
-use crate::objects::{Chat, PaidMedia, User};
 use crate::stickers::Gift;
+use crate::types::{Chat, PaidMedia, User};
 
 #[apply(apistruct!)]
 #[derive(Eq)]

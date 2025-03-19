@@ -1,7 +1,7 @@
 //! API Objects to be used with [HTML5 games](https://core.telegram.org/bots/api#games).
 
 use crate::macros::{apistruct, apply};
-use crate::objects::{Animation, MessageEntity, PhotoSize, User};
+use crate::types::{Animation, MessageEntity, PhotoSize, User};
 
 #[apply(apistruct!)]
 #[derive(Copy, Eq)]

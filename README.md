@@ -6,7 +6,7 @@ Telegram bot API client for Rust.
 
 It's a complete wrapper for Telegram bot API, and it's up-to-date with version 8.3 of the API.
 
-Frankenstein's data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method parameters.
+Frankenstein's data structures (Rust structs and enums) are mapped one-to-one from Telegram bot API types and method parameters.
 
 ## Installation
 
@@ -42,7 +42,7 @@ Examples in this section use the blocking client (`frankenstein::Api`), but asyn
 
 ### Data structures
 
-All objects described in the API docs have direct counterparts in the Frankenstein. For example, in the docs there is [the user type](https://core.telegram.org/bots/api#user):
+All types described in the API docs have direct counterparts in the Frankenstein. For example, in the docs there is [the user type](https://core.telegram.org/bots/api#user):
 
 ```plaintext
 id	Integer	Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
@@ -77,7 +77,7 @@ Optional fields are described as `Option`.
 Every struct can be created with the associated builder. Only required fields are required to set, optional fields are set to `None` when not provided:
 
 ```rust
-use frankenstein::api_params::SendMessageParams;
+use frankenstein::methods::SendMessageParams;
 let send_message_params = SendMessageParams::builder()
     .chat_id(1337)
     .text("hello")
@@ -89,9 +89,9 @@ let send_message_params = SendMessageParams::builder()
 ```rust,no_run
 #![cfg(feature = "client-ureq")]
 use frankenstein::TelegramApi;
-use frankenstein::api_params::{GetUpdatesParams, SendMessageParams};
 use frankenstein::client_ureq::Bot;
-use frankenstein::objects::AllowedUpdate;
+use frankenstein::methods::{GetUpdatesParams, SendMessageParams};
+use frankenstein::types::AllowedUpdate;
 
 let token = "123:ABC";
 let bot = Bot::new(token);

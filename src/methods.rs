@@ -4,14 +4,14 @@ use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
 use crate::input_file::{FileUpload, InputFile};
 use crate::input_media::{InputMedia, InputPaidMedia, MediaGroupInputMedia};
 use crate::macros::{apistruct, apply};
-use crate::objects::{
+use crate::passport::PassportElementError;
+use crate::payments::{LabeledPrice, ShippingOption};
+use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
+use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
     ChatPermissions, InlineKeyboardMarkup, InputPollOption, LinkPreviewOptions, MenuButton,
     MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters,
 };
-use crate::passport::PassportElementError;
-use crate::payments::{LabeledPrice, ShippingOption};
-use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::ParseMode;
 
 #[apply(apistruct!)]

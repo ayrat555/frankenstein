@@ -6,7 +6,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::objects::Message;
+use crate::types::Message;
 
 /// Response on successful request.
 ///

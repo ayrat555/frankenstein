@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::input_file::FileUpload;
 use crate::macros::{apistruct, apply};
-use crate::objects::{File, PhotoSize};
+use crate::types::{File, PhotoSize};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]

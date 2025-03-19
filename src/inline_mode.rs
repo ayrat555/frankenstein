@@ -5,10 +5,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::macros::{apistruct, apply};
-use crate::objects::{
+use crate::payments::LabeledPrice;
+use crate::types::{
     InlineKeyboardMarkup, LinkPreviewOptions, Location, MessageEntity, User, WebAppInfo,
 };
-use crate::payments::LabeledPrice;
 use crate::ParseMode;
 
 #[apply(apistruct!)]

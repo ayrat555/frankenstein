@@ -4,14 +4,14 @@ use crate::games::GameHighScore;
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
 use crate::input_media::{InputMedia, MediaGroupInputMedia};
-use crate::objects::{
+use crate::payments::StarTransactions;
+use crate::response::{MessageOrBool, MethodResponse};
+use crate::stickers::{Gifts, Sticker, StickerSet};
+use crate::types::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
     MenuButton, Message, MessageId, Poll, User, UserChatBoosts, UserProfilePhotos,
 };
-use crate::payments::StarTransactions;
-use crate::response::{MessageOrBool, MethodResponse};
-use crate::stickers::{Gifts, Sticker, StickerSet};
 use crate::updates::{Update, WebhookInfo};
 
 macro_rules! request {
@@ -22,7 +22,7 @@ macro_rules! request {
             #[inline(always)]
             async fn [<$name:snake>] (
                 &self,
-                params: &crate::api_params::[<$name:camel Params>],
+                params: &crate::methods::[<$name:camel Params>],
             ) -> Result<MethodResponse<$return>, Self::Error> {
                 self.request(stringify!($name), Some(params)).await
             }
@@ -55,7 +55,7 @@ macro_rules! request_f {
             #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
             async fn [<$name:snake>] (
                 &self,
-                params: &crate::api_params::[<$name:camel Params>],
+                params: &crate::methods::[<$name:camel Params>],
             ) -> Result<MethodResponse<$return>, Self::Error> {
                 let mut files = Vec::new();
                 $(
@@ -95,7 +95,7 @@ where
 
     async fn send_media_group(
         &self,
-        params: &crate::api_params::SendMediaGroupParams,
+        params: &crate::methods::SendMediaGroupParams,
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
         let mut files = Vec::new();
 
@@ -174,7 +174,7 @@ where
 
     async fn set_chat_photo(
         &self,
-        params: &crate::api_params::SetChatPhotoParams,
+        params: &crate::methods::SetChatPhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let photo = &params.photo;
         self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
@@ -224,7 +224,7 @@ where
 
     async fn edit_message_media(
         &self,
-        params: &crate::api_params::EditMessageMediaParams,
+        params: &crate::methods::EditMessageMediaParams,
     ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         let mut files = Vec::new();
 
@@ -274,7 +274,7 @@ where
 
     async fn upload_sticker_file(
         &self,
-        params: &crate::api_params::UploadStickerFileParams,
+        params: &crate::methods::UploadStickerFileParams,
     ) -> Result<MethodResponse<File>, Self::Error> {
         let sticker = &params.sticker;
         self.request_with_form_data(
@@ -287,7 +287,7 @@ where
 
     async fn create_new_sticker_set(
         &self,
-        params: &crate::api_params::CreateNewStickerSetParams,
+        params: &crate::methods::CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
 
@@ -311,7 +311,7 @@ where
 
     async fn add_sticker_to_set(
         &self,
-        params: &crate::api_params::AddStickerToSetParams,
+        params: &crate::methods::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
         if let Some(file) = params.sticker.sticker.clone_path() {

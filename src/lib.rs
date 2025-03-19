@@ -7,19 +7,13 @@ pub use reqwest;
 #[cfg(feature = "client-ureq")]
 pub use ureq;
 
-pub use self::api_params::*;
 pub use self::error::Error;
-pub use self::input_file::*;
-pub use self::input_media::*;
-pub use self::objects::*;
 pub use self::parse_mode::ParseMode;
-pub use self::response::*;
 #[cfg(feature = "trait-async")]
 pub use self::trait_async::AsyncTelegramApi;
 #[cfg(feature = "trait-sync")]
 pub use self::trait_sync::TelegramApi;
 
-pub mod api_params;
 #[cfg(feature = "client-reqwest")]
 pub mod client_reqwest;
 #[cfg(feature = "client-ureq")]
@@ -32,7 +26,7 @@ pub mod input_media;
 #[cfg(any(feature = "client-reqwest", feature = "client-ureq"))]
 mod json;
 mod macros;
-pub mod objects;
+pub mod methods;
 mod parse_mode;
 pub mod passport;
 pub mod payments;
@@ -44,6 +38,7 @@ mod test_json;
 mod trait_async;
 #[cfg(feature = "trait-sync")]
 mod trait_sync;
+pub mod types;
 pub mod updates;
 
 /// Default Bot API URL
