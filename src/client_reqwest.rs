@@ -100,18 +100,18 @@ impl AsyncTelegramApi for Bot {
         Output: serde::de::DeserializeOwned,
     {
         let json_string = crate::json::encode(&params)?;
-        let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-
+        let json_struct: serde_json::Map<String, Value> =
+            serde_json::from_str(&json_string).unwrap();
         let file_keys: Vec<&str> = files.iter().map(|(key, _)| key.as_ref()).collect();
 
         let mut form = reqwest::multipart::Form::new();
-        for (key, val) in json_struct.as_object().unwrap() {
+        for (key, val) in json_struct {
             if !file_keys.contains(&key.as_str()) {
                 let val = match val {
-                    Value::String(val) => val.to_string(),
+                    Value::String(val) => val,
                     other => other.to_string(),
                 };
-                form = form.text(key.clone(), val);
+                form = form.text(key, val);
             }
         }
 
