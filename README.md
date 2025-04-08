@@ -6,7 +6,7 @@ Telegram bot API client for Rust.
 
 It's a complete wrapper for Telegram bot API, and it's up-to-date with version 8.3 of the API.
 
-Frankenstein's data structures (rust structs and enums) are mapped one-to-one from Telegram bot API objects and method parameters.
+Frankenstein's data structures (Rust structs and enums) are mapped one-to-one from Telegram bot API types and method parameters.
 
 ## Installation
 
@@ -14,7 +14,7 @@ Run `cargo add frankenstein` or add the following to your `Cargo.toml`.
 
 ```toml
 [dependencies]
-frankenstein = { version = "0.39", features = [] }
+frankenstein = { version = "0.40", features = [] }
 ```
 
 You likely want to use either a blocking or an async client. Enable it via the [Features](#features).
@@ -33,7 +33,7 @@ Without enabling any additional features this crate will only ship with Telegram
 For example for the async client add the following line to your `Cargo.toml` file:
 
 ```toml
-frankenstein = { version = "0.39", features = ["client-reqwest"] }
+frankenstein = { version = "0.40", features = ["client-reqwest"] }
 ```
 
 ## Usage
@@ -42,7 +42,7 @@ Examples in this section use the blocking client (`frankenstein::Api`), but asyn
 
 ### Data structures
 
-All objects described in the API docs have direct counterparts in the Frankenstein. For example, in the docs there is [the user type](https://core.telegram.org/bots/api#user):
+All types described in the API docs have direct counterparts in the Frankenstein. For example, in the docs there is [the user type](https://core.telegram.org/bots/api#user):
 
 ```plaintext
 id	Integer	Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier.
@@ -77,7 +77,7 @@ Optional fields are described as `Option`.
 Every struct can be created with the associated builder. Only required fields are required to set, optional fields are set to `None` when not provided:
 
 ```rust
-use frankenstein::api_params::SendMessageParams;
+use frankenstein::methods::SendMessageParams;
 let send_message_params = SendMessageParams::builder()
     .chat_id(1337)
     .text("hello")
@@ -89,9 +89,9 @@ let send_message_params = SendMessageParams::builder()
 ```rust,no_run
 #![cfg(feature = "client-ureq")]
 use frankenstein::TelegramApi;
-use frankenstein::api_params::{GetUpdatesParams, SendMessageParams};
 use frankenstein::client_ureq::Bot;
-use frankenstein::objects::AllowedUpdate;
+use frankenstein::methods::{GetUpdatesParams, SendMessageParams};
+use frankenstein::types::AllowedUpdate;
 
 let token = "123:ABC";
 let bot = Bot::new(token);
@@ -112,11 +112,11 @@ let result = bot.get_updates(&update_params);
 
 Every function returns a `Result` with a successful response or failed response.
 
-See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.39.2/examples) directory.
+See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.40.2/examples) directory.
 
 ### Documentation
 
-Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.39.2/frankenstein/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.40.0/frankenstein/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 

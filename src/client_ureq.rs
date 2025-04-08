@@ -139,7 +139,9 @@ impl TelegramApi for Bot {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api_params::{
+    use crate::inline_mode::{InlineQueryResult, InlineQueryResultVenue};
+    use crate::input_media::{InputMediaPhoto, MediaGroupInputMedia};
+    use crate::methods::{
         AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CopyMessageParams,
         CreateChatInviteLinkParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
         DeleteMessageParams, DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
@@ -157,13 +159,11 @@ mod tests {
         SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
         UnbanChatMemberParams, UnpinChatMessageParams,
     };
-    use crate::inline_mode::{InlineQueryResult, InlineQueryResultVenue};
-    use crate::input_media::{InputMediaPhoto, MediaGroupInputMedia};
-    use crate::objects::{
+    use crate::test_json::assert_json_str;
+    use crate::types::{
         AllowedUpdate, BotCommand, BotCommandScope, BotCommandScopeChat, ChatAction, ChatId,
         ChatPermissions, InputPollOption,
     };
-    use crate::test_json::assert_json_str;
 
     macro_rules! case {
         ($method:ident, $status:literal, $body:ident $(, $params:ident )? ) => {{

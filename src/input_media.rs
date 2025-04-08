@@ -1,8 +1,10 @@
+//! API Objects related to [InputMedia](https://core.telegram.org/bots/api#inputmedia)
+
 use serde::{Deserialize, Serialize};
 
 use crate::input_file::FileUpload;
 use crate::macros::{apistruct, apply};
-use crate::objects::MessageEntity;
+use crate::types::MessageEntity;
 use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]

@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.39.2"
+version = "0.40.0"
 authors = [
     "Ayrat Badykov <ayratin555@gmail.com>",
     "EdJoPaTo <frankenstein-rust@edjopato.de>",

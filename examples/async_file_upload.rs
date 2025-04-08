@@ -1,5 +1,5 @@
-use frankenstein::api_params::SendPhotoParams;
 use frankenstein::client_reqwest::Bot;
+use frankenstein::methods::SendPhotoParams;
 use frankenstein::AsyncTelegramApi;
 
 #[tokio::main]

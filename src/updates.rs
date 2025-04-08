@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 
 use crate::inline_mode::{ChosenInlineResult, InlineQuery};
 use crate::macros::{apistruct, apply};
-use crate::objects::{
+use crate::payments::{PaidMediaPurchased, PreCheckoutQuery, ShippingQuery};
+use crate::types::{
     AllowedUpdate, BusinessConnection, BusinessMessagesDeleted, CallbackQuery, ChatBoostRemoved,
     ChatBoostUpdated, ChatJoinRequest, ChatMemberUpdated, Message, MessageReactionCountUpdated,
     MessageReactionUpdated, Poll, PollAnswer,
 };
-use crate::payments::{PaidMediaPurchased, PreCheckoutQuery, ShippingQuery};
 
 /// Represents an incoming update from telegram.
 /// [Official documentation.](https://core.telegram.org/bots/api#update)
@@ -68,7 +68,7 @@ pub struct WebhookInfo {
 #[cfg(test)]
 mod serde_tests {
     use super::*;
-    use crate::objects::{Chat, ChatType, User};
+    use crate::types::{Chat, ChatType, User};
 
     #[test]
     pub fn update_content_is_flattened() {
