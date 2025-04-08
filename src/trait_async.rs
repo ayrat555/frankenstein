@@ -78,7 +78,7 @@ where
 
     request!(getUpdates, Vec<Update>);
     request!(sendMessage, Message);
-    request!(setWebhook, bool);
+    request_f!(setWebhook, bool, certificate);
     request!(deleteWebhook, bool);
     request_nb!(getWebhookInfo, WebhookInfo);
     request_nb!(getMe, User);
@@ -169,16 +169,7 @@ where
     request!(revokeChatInviteLink, ChatInviteLink);
     request!(approveChatJoinRequest, bool);
     request!(declineChatJoinRequest, bool);
-
-    async fn set_chat_photo(
-        &self,
-        params: &crate::methods::SetChatPhotoParams,
-    ) -> Result<MethodResponse<bool>, Self::Error> {
-        let photo = &params.photo;
-        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo)])
-            .await
-    }
-
+    request_f!(setChatPhoto, bool, photo);
     request!(deleteChatPhoto, bool);
     request!(setChatTitle, bool);
     request!(setChatDescription, bool);
@@ -271,15 +262,7 @@ where
     request!(deleteMessages, bool);
     request_f!(sendSticker, Message, sticker);
     request!(getStickerSet, StickerSet);
-
-    async fn upload_sticker_file(
-        &self,
-        params: &crate::methods::UploadStickerFileParams,
-    ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = &params.sticker;
-        self.request_with_form_data("uploadStickerFile", params, vec![("sticker", sticker)])
-            .await
-    }
+    request_f!(uploadStickerFile, File, sticker);
 
     async fn create_new_sticker_set(
         &self,
