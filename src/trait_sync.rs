@@ -64,6 +64,18 @@ macro_rules! request_f {
     }
 }
 
+macro_rules! docs_file {
+    ($name:ident, $url:ident) => {
+        concat!(
+            "Call the `",
+            stringify!($name),
+            "` method.\n\nSee <https://core.telegram.org/bots/api#",
+            stringify!($url),
+            ">."
+        )
+    };
+}
+
 pub trait TelegramApi {
     type Error;
 
@@ -82,6 +94,7 @@ pub trait TelegramApi {
     request_f!(sendPhoto, Message, photo);
     request_f!(sendAudio, Message, audio, thumbnail);
 
+    #[doc = docs_file!(sendMediaGroup, send_media_group)]
     fn send_media_group(
         &self,
         params: &crate::methods::SendMediaGroupParams,
@@ -201,6 +214,7 @@ pub trait TelegramApi {
     request!(editMessageText, MessageOrBool);
     request!(editMessageCaption, MessageOrBool);
 
+    #[doc = docs_file!(editMessageMedia, edit_message_media)]
     fn edit_message_media(
         &self,
         params: &crate::methods::EditMessageMediaParams,
@@ -253,6 +267,7 @@ pub trait TelegramApi {
     request!(getStickerSet, StickerSet);
     request_f!(uploadStickerFile, File, sticker);
 
+    #[doc = docs_file!(createNewStickerSet, create_new_sticker_set)]
     fn create_new_sticker_set(
         &self,
         params: &crate::methods::CreateNewStickerSetParams,
@@ -276,6 +291,7 @@ pub trait TelegramApi {
 
     request!(getCustomEmojiStickers, Vec<Sticker>);
 
+    #[doc = docs_file!(addStickerToSet, add_sticker_to_set)]
     fn add_sticker_to_set(
         &self,
         params: &crate::methods::AddStickerToSetParams,
@@ -322,6 +338,7 @@ pub trait TelegramApi {
     request!(unpinAllGeneralForumTopicMessages, bool);
     request!(setPassportDataErrors, bool);
 
+    #[doc(hidden)]
     fn request_with_possible_form_data<Params, Output>(
         &self,
         method_name: &str,

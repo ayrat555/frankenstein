@@ -67,6 +67,18 @@ macro_rules! request_f {
     }
 }
 
+macro_rules! docs_file {
+    ($name:ident, $url:ident) => {
+        concat!(
+            "Call the `",
+            stringify!($name),
+            "` method.\n\nSee <https://core.telegram.org/bots/api#",
+            stringify!($url),
+            ">."
+        )
+    };
+}
+
 // Wasm target need not be `Send` because it is single-threaded
 #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
@@ -91,6 +103,7 @@ where
     request_f!(sendPhoto, Message, photo);
     request_f!(sendAudio, Message, audio, thumbnail);
 
+    #[doc = docs_file!(sendMediaGroup, send_media_group)]
     async fn send_media_group(
         &self,
         params: &crate::methods::SendMediaGroupParams,
@@ -211,6 +224,7 @@ where
     request!(editMessageText, MessageOrBool);
     request!(editMessageCaption, MessageOrBool);
 
+    #[doc = docs_file!(editMessageMedia, edit_message_media)]
     async fn edit_message_media(
         &self,
         params: &crate::methods::EditMessageMediaParams,
@@ -264,6 +278,7 @@ where
     request!(getStickerSet, StickerSet);
     request_f!(uploadStickerFile, File, sticker);
 
+    #[doc = docs_file!(createNewStickerSet, create_new_sticker_set)]
     async fn create_new_sticker_set(
         &self,
         params: &crate::methods::CreateNewStickerSetParams,
@@ -288,6 +303,7 @@ where
 
     request!(getCustomEmojiStickers, Vec<Sticker>);
 
+    #[doc = docs_file!(addStickerToSet, add_sticker_to_set)]
     async fn add_sticker_to_set(
         &self,
         params: &crate::methods::AddStickerToSetParams,
@@ -335,6 +351,7 @@ where
     request!(unpinAllGeneralForumTopicMessages, bool);
     request!(setPassportDataErrors, bool);
 
+    #[doc(hidden)]
     async fn request_with_possible_form_data<Params, Output>(
         &self,
         method_name: &str,
