@@ -90,7 +90,7 @@ impl TelegramApi for MyApiClient {
         &self,
         _method: &str,
         _params: Params,
-        _files: Vec<(&str, &InputFile)>,
+        _files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,

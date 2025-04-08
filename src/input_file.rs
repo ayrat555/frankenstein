@@ -1,5 +1,7 @@
 //! Structs for handling and uploading files
 
+use std::borrow::Cow;
+
 use serde::{Deserialize, Serialize};
 
 /// Represents a new file to be uploaded via `multipart/form-data`.
@@ -53,84 +55,58 @@ impl From<InputFile> for FileUpload {
     }
 }
 
+type Filelist = Vec<(Cow<'static, str>, InputFile)>;
+
 #[cfg(any(feature = "trait-sync", feature = "trait-async"))]
 pub(crate) trait HasInputFile {
-    // TODO: replace with `replace_attach` when possible
-    fn get_input_file_ref(&self) -> Option<&InputFile>;
-    fn replace_attach(&mut self, name: &str) -> Option<InputFile>;
-    fn replace_attach_dyn(&mut self, index: impl FnOnce() -> usize) -> Option<(String, InputFile)>;
+    fn move_named_to_filelist(&mut self, name: &'static str, files: &mut Filelist);
+    fn move_to_filelist(&mut self, files: &mut Filelist);
 }
 
 #[cfg(any(feature = "trait-sync", feature = "trait-async"))]
 impl HasInputFile for FileUpload {
-    fn get_input_file_ref(&self) -> Option<&InputFile> {
-        match self {
-            Self::InputFile(input_file) => Some(input_file),
-            Self::String(_) => None,
+    fn move_named_to_filelist(&mut self, name: &'static str, files: &mut Filelist) {
+        if let Self::InputFile(_) = self {
+            let attach = Self::String(format!("attach://{name}"));
+            let Self::InputFile(file) = std::mem::replace(self, attach) else {
+                unreachable!("the match already ensures it being an input file");
+            };
+            files.push((Cow::Borrowed(name), file));
         }
     }
 
-    fn replace_attach(&mut self, name: &str) -> Option<InputFile> {
-        match self {
-            Self::InputFile(_) => {
-                let attach = Self::String(format!("attach://{name}"));
-                let Self::InputFile(file) = std::mem::replace(self, attach) else {
-                    unreachable!("the match already ensures it being an input file");
-                };
-                Some(file)
-            }
-            Self::String(_) => None,
-        }
-    }
-
-    fn replace_attach_dyn(&mut self, index: impl FnOnce() -> usize) -> Option<(String, InputFile)> {
-        match self {
-            Self::InputFile(_) => {
-                let name = format!("file{}", index());
-                let attach = Self::String(format!("attach://{name}"));
-                let Self::InputFile(file) = std::mem::replace(self, attach) else {
-                    unreachable!("the match already ensures it being an input file");
-                };
-                Some((name, file))
-            }
-            Self::String(_) => None,
+    fn move_to_filelist(&mut self, files: &mut Filelist) {
+        if let Self::InputFile(_) = self {
+            let name = format!("file{}", files.len());
+            let attach = Self::String(format!("attach://{name}"));
+            let Self::InputFile(file) = std::mem::replace(self, attach) else {
+                unreachable!("the match already ensures it being an input file");
+            };
+            files.push((Cow::Owned(name), file));
         }
     }
 }
 
 #[cfg(any(feature = "trait-sync", feature = "trait-async"))]
 impl HasInputFile for Option<FileUpload> {
-    fn get_input_file_ref(&self) -> Option<&InputFile> {
-        match self {
-            Some(FileUpload::InputFile(input_file)) => Some(input_file),
-            _ => None,
+    fn move_named_to_filelist(&mut self, name: &'static str, files: &mut Filelist) {
+        if let Some(FileUpload::InputFile(_)) = self {
+            let attach = Some(FileUpload::String(format!("attach://{name}")));
+            let Some(FileUpload::InputFile(file)) = std::mem::replace(self, attach) else {
+                unreachable!("the match already ensures it being an input file");
+            };
+            files.push((Cow::Borrowed(name), file));
         }
     }
 
-    fn replace_attach(&mut self, name: &str) -> Option<InputFile> {
-        match self {
-            Some(FileUpload::InputFile(_)) => {
-                let attach = Some(FileUpload::String(format!("attach://{name}")));
-                let Some(FileUpload::InputFile(file)) = std::mem::replace(self, attach) else {
-                    unreachable!("the match already ensures it being an input file");
-                };
-                Some(file)
-            }
-            _ => None,
-        }
-    }
-
-    fn replace_attach_dyn(&mut self, index: impl FnOnce() -> usize) -> Option<(String, InputFile)> {
-        match self {
-            Some(FileUpload::InputFile(_)) => {
-                let name = format!("file{}", index());
-                let attach = Some(FileUpload::String(format!("attach://{name}")));
-                let Some(FileUpload::InputFile(file)) = std::mem::replace(self, attach) else {
-                    unreachable!("the match already ensures it being an input file");
-                };
-                Some((name, file))
-            }
-            _ => None,
+    fn move_to_filelist(&mut self, files: &mut Filelist) {
+        if let Some(FileUpload::InputFile(_)) = self {
+            let name = format!("file{}", files.len());
+            let attach = Some(FileUpload::String(format!("attach://{name}")));
+            let Some(FileUpload::InputFile(file)) = std::mem::replace(self, attach) else {
+                unreachable!("the match already ensures it being an input file");
+            };
+            files.push((Cow::Owned(name), file));
         }
     }
 }

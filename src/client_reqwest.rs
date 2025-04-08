@@ -93,7 +93,7 @@ impl AsyncTelegramApi for Bot {
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, &InputFile)>,
+        files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
@@ -102,7 +102,7 @@ impl AsyncTelegramApi for Bot {
         let json_string = crate::json::encode(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
 
-        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| key.as_ref()).collect();
 
         let mut form = reqwest::multipart::Form::new();
         for (key, val) in json_struct.as_object().unwrap() {
@@ -128,7 +128,7 @@ impl AsyncTelegramApi for Bot {
                     .await
                     .map_err(crate::Error::ReadFile)?,
             };
-            form = form.part(parameter_name.to_owned(), part);
+            form = form.part(parameter_name, part);
         }
 
         let url = format!("{}/{method}", self.api_url);

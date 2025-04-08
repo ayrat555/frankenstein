@@ -53,13 +53,11 @@ macro_rules! request_f {
             #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
             async fn [<$name:snake>] (
                 &self,
-                params: &crate::methods::[<$name:camel Params>],
+                mut params: crate::methods::[<$name:camel Params>],
             ) -> Result<MethodResponse<$return>, Self::Error> {
                 let mut files = Vec::new();
                 $(
-                    if let Some(file) = params.$fileproperty.get_input_file_ref() {
-                        files.push((stringify!($fileproperty), file));
-                    }
+                    params.$fileproperty.move_named_to_filelist(stringify!($fileproperty), &mut files);
                 )+
                 self.request_with_possible_form_data(stringify!($name), params, files).await
             }
@@ -106,45 +104,29 @@ where
     #[doc = docs_file!(sendMediaGroup, send_media_group)]
     async fn send_media_group(
         &self,
-        params: &crate::methods::SendMediaGroupParams,
+        mut params: crate::methods::SendMediaGroupParams,
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
         let mut files = Vec::new();
-
-        macro_rules! replace_attach {
-            ($base:ident. $property:ident) => {
-                if let Some(file) = $base.$property.replace_attach_dyn(|| files.len()) {
-                    files.push(file);
-                }
-            };
-        }
-
-        let mut params = params.clone();
         for media in &mut params.media {
             match media {
                 MediaGroupInputMedia::Audio(audio) => {
-                    replace_attach!(audio.media);
-                    replace_attach!(audio.thumbnail);
+                    audio.media.move_to_filelist(&mut files);
+                    audio.thumbnail.move_to_filelist(&mut files);
                 }
                 MediaGroupInputMedia::Document(document) => {
-                    replace_attach!(document.media);
+                    document.media.move_to_filelist(&mut files);
                 }
                 MediaGroupInputMedia::Photo(photo) => {
-                    replace_attach!(photo.media);
+                    photo.media.move_to_filelist(&mut files);
                 }
                 MediaGroupInputMedia::Video(video) => {
-                    replace_attach!(video.media);
-                    replace_attach!(video.cover);
-                    replace_attach!(video.thumbnail);
+                    video.media.move_to_filelist(&mut files);
+                    video.cover.move_to_filelist(&mut files);
+                    video.thumbnail.move_to_filelist(&mut files);
                 }
             }
         }
-
-        let files_with_str_names = files
-            .iter()
-            .map(|(key, file)| (key.as_str(), file))
-            .collect();
-
-        self.request_with_possible_form_data("sendMediaGroup", &params, files_with_str_names)
+        self.request_with_possible_form_data("sendMediaGroup", &params, files)
             .await
     }
 
@@ -227,20 +209,19 @@ where
     #[doc = docs_file!(editMessageMedia, edit_message_media)]
     async fn edit_message_media(
         &self,
-        params: &crate::methods::EditMessageMediaParams,
+        mut params: crate::methods::EditMessageMediaParams,
     ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         let mut files = Vec::new();
 
         macro_rules! replace_attach {
-            ($base:ident. $property:ident) => {{
-                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
-                if let Some(file) = $base.$property.replace_attach(NAME) {
-                    files.push((NAME, file));
-                }
-            }};
+            ($base:ident. $property:ident) => {
+                $base.$property.move_named_to_filelist(
+                    concat!(stringify!($base), "_", stringify!($property)),
+                    &mut files,
+                );
+            };
         }
 
-        let mut params = params.clone();
         match &mut params.media {
             InputMedia::Animation(animation) => {
                 replace_attach!(animation.media);
@@ -264,9 +245,7 @@ where
             }
         }
 
-        let files_ref = files.iter().map(|(key, file)| (*key, file)).collect();
-
-        self.request_with_possible_form_data("editMessageMedia", &params, files_ref)
+        self.request_with_possible_form_data("editMessageMedia", &params, files)
             .await
     }
 
@@ -281,23 +260,15 @@ where
     #[doc = docs_file!(createNewStickerSet, create_new_sticker_set)]
     async fn create_new_sticker_set(
         &self,
-        params: &crate::methods::CreateNewStickerSetParams,
+        mut params: crate::methods::CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
 
-        let mut params = params.clone();
-        for (index, sticker) in params.stickers.iter_mut().enumerate() {
-            if let Some(file) = sticker.sticker.replace_attach_dyn(|| index) {
-                files.push(file);
-            }
+        for sticker in &mut params.stickers {
+            sticker.sticker.move_to_filelist(&mut files);
         }
 
-        let files_with_str_names = files
-            .iter()
-            .map(|(key, file)| (key.as_str(), file))
-            .collect();
-
-        self.request_with_possible_form_data("createNewStickerSet", &params, files_with_str_names)
+        self.request_with_possible_form_data("createNewStickerSet", &params, files)
             .await
     }
 
@@ -306,12 +277,13 @@ where
     #[doc = docs_file!(addStickerToSet, add_sticker_to_set)]
     async fn add_sticker_to_set(
         &self,
-        params: &crate::methods::AddStickerToSetParams,
+        mut params: crate::methods::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
-        if let Some(file) = params.sticker.sticker.get_input_file_ref() {
-            files.push(("sticker", file));
-        }
+        params
+            .sticker
+            .sticker
+            .move_named_to_filelist("sticker", &mut files);
         self.request_with_possible_form_data("addStickerToSet", params, files)
             .await
     }
@@ -356,7 +328,7 @@ where
         &self,
         method_name: &str,
         params: Params,
-        files: Vec<(&str, &InputFile)>,
+        files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,
@@ -383,7 +355,7 @@ where
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, &InputFile)>,
+        files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug + std::marker::Send,

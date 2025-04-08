@@ -18,7 +18,7 @@ async fn main() {
         .chat_id(chat_id)
         .photo(file)
         .build();
-    match bot.send_photo(&params).await {
+    match bot.send_photo(params).await {
         Ok(response) => {
             println!("Photo was uploaded successfully");
             dbg!(response);

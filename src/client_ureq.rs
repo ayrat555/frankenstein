@@ -85,7 +85,7 @@ impl TelegramApi for Bot {
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, &InputFile)>,
+        files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
@@ -93,7 +93,7 @@ impl TelegramApi for Bot {
     {
         let json_string = crate::json::encode(&params)?;
         let json_struct: Value = serde_json::from_str(&json_string).unwrap();
-        let file_keys: Vec<&str> = files.iter().map(|(key, _)| *key).collect();
+        let file_keys: Vec<&str> = files.iter().map(|(key, _)| key.as_ref()).collect();
 
         let mut form = Multipart::new();
         for (key, val) in json_struct.as_object().unwrap() {
@@ -107,15 +107,20 @@ impl TelegramApi for Bot {
             }
         }
 
-        for (parameter_name, input_file) in files {
+        for (parameter_name, input_file) in &files {
             match input_file {
                 InputFile::Bytes { bytes, file_name } => {
                     let mime = mime_guess::from_path(std::path::Path::new(&file_name))
                         .first_or_octet_stream();
-                    form.add_stream(parameter_name, &**bytes, Some(&**file_name), Some(mime));
+                    form.add_stream(
+                        parameter_name.as_ref(),
+                        &**bytes,
+                        Some(file_name),
+                        Some(mime),
+                    );
                 }
                 InputFile::Path(path) => {
-                    form.add_file(parameter_name, &**path);
+                    form.add_file::<&str, &std::path::Path>(parameter_name.as_ref(), path.as_ref());
                 }
             }
         }
@@ -183,6 +188,25 @@ mod tests {
         }};
     }
 
+    /// Test case for methods using files. They move the params in instead of taking a reference.
+    macro_rules! case_f {
+        ($method:ident, $status:literal, $body:ident $(, $params:ident )? ) => {{
+            paste::paste! {
+                let mut server = mockito::Server::new();
+                let mock = server
+                    .mock("POST", concat!("/", stringify!($method)))
+                    .with_status($status)
+                    .with_body($body)
+                    .create();
+                let api = Bot::new_url(server.url());
+                let response = dbg!(api.[<$method:snake>]($( $params )?));
+                mock.assert();
+                drop(server);
+                response
+            }
+        }};
+    }
+
     #[test]
     fn new_sets_correct_url() {
         let api = Bot::new("hey");
@@ -236,7 +260,7 @@ mod tests {
         let response_string =
             "{\"ok\":true,\"description\":\"Webhook is already deleted\",\"result\":true}";
         let params = SetWebhookParams::builder().url("").build();
-        let response = case!(setWebhook, 200, response_string, params).unwrap();
+        let response = case_f!(setWebhook, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -565,7 +589,7 @@ mod tests {
             .chat_id(275808073)
             .photo(file)
             .build();
-        let response = case!(sendPhoto, 200, response_string, params).unwrap();
+        let response = case_f!(sendPhoto, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -577,7 +601,7 @@ mod tests {
             .chat_id(275808073)
             .audio(file)
             .build();
-        let response = case!(sendAudio, 200, response_string, params).unwrap();
+        let response = case_f!(sendAudio, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -590,7 +614,7 @@ mod tests {
             .audio(file.clone())
             .thumbnail(file)
             .build();
-        let response = case!(sendAudio, 200, response_string, params).unwrap();
+        let response = case_f!(sendAudio, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -603,7 +627,7 @@ mod tests {
             .chat_id(275808073)
             .audio(file)
             .build();
-        let response = case!(sendAudio, 200, response_string, params).unwrap();
+        let response = case_f!(sendAudio, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -615,7 +639,7 @@ mod tests {
             .chat_id(275808073)
             .document(file)
             .build();
-        let response = case!(sendDocument, 200, response_string, params).unwrap();
+        let response = case_f!(sendDocument, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -627,7 +651,7 @@ mod tests {
             .chat_id(275808073)
             .video(file)
             .build();
-        let response = case!(sendVideo, 200, response_string, params).unwrap();
+        let response = case_f!(sendVideo, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -639,7 +663,7 @@ mod tests {
             .chat_id(275808073)
             .animation(file)
             .build();
-        let response = case!(sendAnimation, 200, response_string, params).unwrap();
+        let response = case_f!(sendAnimation, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -651,7 +675,7 @@ mod tests {
             .chat_id(275808073)
             .voice(file)
             .build();
-        let response = case!(sendVoice, 200, response_string, params).unwrap();
+        let response = case_f!(sendVoice, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -663,7 +687,7 @@ mod tests {
             .chat_id(275808073)
             .video_note(file)
             .build();
-        let response = case!(sendVideoNote, 200, response_string, params).unwrap();
+        let response = case_f!(sendVideoNote, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -675,7 +699,7 @@ mod tests {
             .chat_id(275808073)
             .photo(file)
             .build();
-        let response = case!(setChatPhoto, 200, response_string, params).unwrap();
+        let response = case_f!(setChatPhoto, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -945,7 +969,7 @@ mod tests {
             .chat_id(275808073)
             .sticker(file)
             .build();
-        let response = case!(sendSticker, 200, response_string, params).unwrap();
+        let response = case_f!(sendSticker, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -970,7 +994,7 @@ mod tests {
             .chat_id(-1001368460856)
             .media(medias)
             .build();
-        let response = case!(sendMediaGroup, 200, response_string, params).unwrap();
+        let response = case_f!(sendMediaGroup, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
@@ -983,7 +1007,7 @@ mod tests {
             .chat_id(-1001368460856)
             .message_id(513)
             .build();
-        let response = case!(editMessageMedia, 200, response_string, params).unwrap();
+        let response = case_f!(editMessageMedia, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
