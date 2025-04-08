@@ -1,7 +1,5 @@
 //! Structs for handling and uploading files
 
-use std::borrow::Cow;
-
 use serde::{Deserialize, Serialize};
 
 /// Represents a new file to be uploaded via `multipart/form-data`.
@@ -55,7 +53,8 @@ impl From<InputFile> for FileUpload {
     }
 }
 
-type Filelist = Vec<(Cow<'static, str>, InputFile)>;
+#[cfg(any(feature = "trait-sync", feature = "trait-async"))]
+type Filelist = Vec<(std::borrow::Cow<'static, str>, InputFile)>;
 
 #[cfg(any(feature = "trait-sync", feature = "trait-async"))]
 pub(crate) trait HasInputFile {
@@ -71,7 +70,7 @@ impl HasInputFile for FileUpload {
             let Self::InputFile(file) = std::mem::replace(self, attach) else {
                 unreachable!("the match already ensures it being an input file");
             };
-            files.push((Cow::Borrowed(name), file));
+            files.push((std::borrow::Cow::Borrowed(name), file));
         }
     }
 
@@ -82,7 +81,7 @@ impl HasInputFile for FileUpload {
             let Self::InputFile(file) = std::mem::replace(self, attach) else {
                 unreachable!("the match already ensures it being an input file");
             };
-            files.push((Cow::Owned(name), file));
+            files.push((std::borrow::Cow::Owned(name), file));
         }
     }
 }
@@ -95,7 +94,7 @@ impl HasInputFile for Option<FileUpload> {
             let Some(FileUpload::InputFile(file)) = std::mem::replace(self, attach) else {
                 unreachable!("the match already ensures it being an input file");
             };
-            files.push((Cow::Borrowed(name), file));
+            files.push((std::borrow::Cow::Borrowed(name), file));
         }
     }
 
@@ -106,7 +105,7 @@ impl HasInputFile for Option<FileUpload> {
             let Some(FileUpload::InputFile(file)) = std::mem::replace(self, attach) else {
                 unreachable!("the match already ensures it being an input file");
             };
-            files.push((Cow::Owned(name), file));
+            files.push((std::borrow::Cow::Owned(name), file));
         }
     }
 }

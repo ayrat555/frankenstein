@@ -120,7 +120,7 @@ impl AsyncTelegramApi for Bot {
                 InputFile::Bytes { bytes, file_name } => {
                     // The reqwest::multipart stuff requires 'static which we can not grant here.
                     // So we provide owned data by cloning it.
-                    reqwest::multipart::Part::bytes(bytes.clone()).file_name(file_name.clone())
+                    reqwest::multipart::Part::bytes(bytes).file_name(file_name)
                 }
 
                 #[cfg(not(target_arch = "wasm32"))]
