@@ -26,7 +26,7 @@ pub struct Update {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum UpdateContent {
-    Message(Message),
+    Message(Box<Message>),
     EditedMessage(Message),
     ChannelPost(Message),
     EditedChannelPost(Message),
@@ -38,7 +38,7 @@ pub enum UpdateContent {
     MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
     ChosenInlineResult(ChosenInlineResult),
-    CallbackQuery(CallbackQuery),
+    CallbackQuery(Box<CallbackQuery>),
     ShippingQuery(ShippingQuery),
     PreCheckoutQuery(PreCheckoutQuery),
     Poll(Poll),

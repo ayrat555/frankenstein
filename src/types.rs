@@ -1445,7 +1445,7 @@ pub struct BusinessMessagesDeleted {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum MaybeInaccessibleMessage {
-    Message(Message),
+    Message(Box<Message>),
     InaccessibleMessage(InaccessibleMessage),
 }
 
