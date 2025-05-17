@@ -2,10 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::ParseMode;
 use crate::input_file::FileUpload;
 use crate::macros::{apistruct, apply};
 use crate::types::MessageEntity;
-use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
@@ -168,4 +168,23 @@ pub struct InputPaidMediaVideo {
     pub height: Option<u32>,
     pub duration: Option<u32>,
     pub supports_streaming: Option<bool>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputProfilePhoto {
+    Static(InputProfilePhotoStatic),
+    Animated(InputProfilePhotoAnimated),
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputProfilePhotoStatic {
+    pub photo: String,
+}
+
+#[apply(apistruct!)]
+pub struct InputProfilePhotoAnimated {
+    pub animation: String,
+    pub main_frame_timestamp: Option<f64>,
 }

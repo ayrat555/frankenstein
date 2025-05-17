@@ -1,8 +1,9 @@
 //! Parameters of [Bot API methods](https://core.telegram.org/bots/api#available-methods).
 
+use crate::ParseMode;
 use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
 use crate::input_file::{FileUpload, InputFile};
-use crate::input_media::{InputMedia, InputPaidMedia, MediaGroupInputMedia};
+use crate::input_media::{InputMedia, InputPaidMedia, InputProfilePhoto, MediaGroupInputMedia};
 use crate::macros::{apistruct, apply};
 use crate::passport::PassportElementError;
 use crate::payments::{LabeledPrice, ShippingOption};
@@ -12,7 +13,6 @@ use crate::types::{
     ChatPermissions, InlineKeyboardMarkup, InputPollOption, LinkPreviewOptions, MenuButton,
     MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters,
 };
-use crate::ParseMode;
 
 #[apply(apistruct!)]
 #[derive(Eq)]
@@ -1093,6 +1093,50 @@ pub struct RemoveUserVerificationParams {
 #[derive(Eq)]
 pub struct RemoveChatVerificationParams {
     pub chat_id: ChatId,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ReadBusinessMessageParams {
+    pub business_connection_id: String,
+    pub chat_id: i64,
+    pub message_id: i32,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct DeleteBusinessMessagesParams {
+    pub business_connection_id: String,
+    pub message_ids: Vec<i32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountNameParams {
+    pub business_connection_id: String,
+    pub first_name: String,
+    pub last_name: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountUsernameParams {
+    pub business_connection_id: String,
+    pub username: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountBioParams {
+    pub business_connection_id: String,
+    pub bio: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct SetBusinessAccountProfilePhotoParams {
+    pub business_connection_id: String,
+    pub photo: InputProfilePhoto,
+    pub is_public: Option<bool>,
 }
 
 #[apply(apistruct!)]

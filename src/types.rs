@@ -2,12 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::ParseMode;
 use crate::games::{CallbackGame, Game};
 use crate::macros::{apistruct, apply};
 use crate::passport::PassportData;
 use crate::payments::{Invoice, RefundedPayment, SuccessfulPayment};
 use crate::stickers::Sticker;
-use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
@@ -1430,8 +1430,27 @@ pub struct BusinessConnection {
     pub user: User,
     pub user_chat_id: u64,
     pub date: u64,
-    pub can_reply: bool,
+    pub rights: Option<BusinessBotRights>,
     pub is_enabled: bool,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BusinessBotRights {
+    pub can_reply: Option<bool>,
+    pub can_read_messages: Option<bool>,
+    pub can_delete_sent_messages: Option<bool>,
+    pub can_delete_all_messages: Option<bool>,
+    pub can_edit_name: Option<bool>,
+    pub can_edit_bio: Option<bool>,
+    pub can_edit_profile_photo: Option<bool>,
+    pub can_edit_username: Option<bool>,
+    pub can_change_gift_settings: Option<bool>,
+    pub can_view_gifts_and_stars: Option<bool>,
+    pub can_convert_gifts_to_stars: Option<bool>,
+    pub can_transfer_and_upgrade_gifts: Option<bool>,
+    pub can_transfer_stars: Option<bool>,
+    pub can_manage_stories: Option<bool>,
 }
 
 #[apply(apistruct!)]
