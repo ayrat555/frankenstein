@@ -27,12 +27,12 @@ pub struct Update {
 #[serde(rename_all = "snake_case")]
 pub enum UpdateContent {
     Message(Box<Message>),
-    EditedMessage(Message),
-    ChannelPost(Message),
-    EditedChannelPost(Message),
+    EditedMessage(Box<Message>),
+    ChannelPost(Box<Message>),
+    EditedChannelPost(Box<Message>),
     BusinessConnection(BusinessConnection),
-    BusinessMessage(Message),
-    EditedBusinessMessage(Message),
+    BusinessMessage(Box<Message>),
+    EditedBusinessMessage(Box<Message>),
     DeletedBusinessMessages(BusinessMessagesDeleted),
     MessageReaction(MessageReactionUpdated),
     MessageReactionCount(MessageReactionCountUpdated),
