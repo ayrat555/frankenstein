@@ -337,6 +337,11 @@ where
     request!(verifyChat, bool);
     request!(removeUserVerification, bool);
     request!(removeChatVerification, bool);
+    request!(readBusinessMessage, bool);
+    request!(deleteBusinessMessages, bool);
+    request!(setBusinessAccountName, bool);
+    request!(setBusinessAccountUsername, bool);
+    request!(setBusinessAccountBio, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);
