@@ -23,7 +23,7 @@ async fn main() {
                         let bot_clone = bot.clone();
 
                         tokio::spawn(async move {
-                            process_message(^message, bot_clone).await;
+                            process_message(*message, bot_clone).await;
                         });
                     }
                     update_params.offset = Some(i64::from(update.update_id) + 1);
