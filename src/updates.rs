@@ -121,7 +121,7 @@ mod serde_tests {
 
         let expected = Update {
             update_id: 2341,
-            content: UpdateContent::Message(message),
+            content: UpdateContent::Message(Box::new(message)),
         };
 
         assert_eq!(update, expected);
