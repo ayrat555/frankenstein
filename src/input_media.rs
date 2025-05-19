@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::ParseMode;
+use crate::parse_mode::ParseMode;
 use crate::input_file::FileUpload;
 use crate::macros::{apistruct, apply};
 use crate::types::MessageEntity;
