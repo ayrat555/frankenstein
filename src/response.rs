@@ -45,7 +45,7 @@ pub struct ErrorResponse {
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
 pub enum MessageOrBool {
-    Message(Message),
+    Message(Box<Message>),
     Bool(bool),
 }
 

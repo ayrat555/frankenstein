@@ -26,19 +26,19 @@ pub struct Update {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum UpdateContent {
-    Message(Message),
-    EditedMessage(Message),
-    ChannelPost(Message),
-    EditedChannelPost(Message),
+    Message(Box<Message>),
+    EditedMessage(Box<Message>),
+    ChannelPost(Box<Message>),
+    EditedChannelPost(Box<Message>),
     BusinessConnection(BusinessConnection),
-    BusinessMessage(Message),
-    EditedBusinessMessage(Message),
+    BusinessMessage(Box<Message>),
+    EditedBusinessMessage(Box<Message>),
     DeletedBusinessMessages(BusinessMessagesDeleted),
     MessageReaction(MessageReactionUpdated),
     MessageReactionCount(MessageReactionCountUpdated),
     InlineQuery(InlineQuery),
     ChosenInlineResult(ChosenInlineResult),
-    CallbackQuery(CallbackQuery),
+    CallbackQuery(Box<CallbackQuery>),
     ShippingQuery(ShippingQuery),
     PreCheckoutQuery(PreCheckoutQuery),
     Poll(Poll),
@@ -121,7 +121,7 @@ mod serde_tests {
 
         let expected = Update {
             update_id: 2341,
-            content: UpdateContent::Message(message),
+            content: UpdateContent::Message(Box::new(message)),
         };
 
         assert_eq!(update, expected);
