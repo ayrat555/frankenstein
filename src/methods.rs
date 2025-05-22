@@ -1,7 +1,7 @@
 //! Parameters of [Bot API methods](https://core.telegram.org/bots/api#available-methods).
 
 use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
-use crate::input_file::{FileUpload, InputFile};
+use crate::input_file::FileUpload;
 use crate::input_media::{InputMedia, InputPaidMedia, MediaGroupInputMedia};
 use crate::macros::{apistruct, apply};
 use crate::passport::PassportElementError;
@@ -27,7 +27,7 @@ pub struct GetUpdatesParams {
 #[derive(Eq)]
 pub struct SetWebhookParams {
     pub url: String,
-    pub certificate: Option<InputFile>,
+    pub certificate: Option<FileUpload>,
     pub ip_address: Option<String>,
     pub max_connections: Option<u32>,
     pub allowed_updates: Option<Vec<AllowedUpdate>>,
@@ -611,7 +611,7 @@ pub struct DeclineChatJoinRequestParams {
 #[derive(Eq)]
 pub struct SetChatPhotoParams {
     pub chat_id: ChatId,
-    pub photo: InputFile,
+    pub photo: FileUpload,
 }
 
 #[apply(apistruct!)]
@@ -960,7 +960,7 @@ pub struct GetStickerSetParams {
 #[derive(Eq)]
 pub struct UploadStickerFileParams {
     pub user_id: u64,
-    pub sticker: InputFile,
+    pub sticker: FileUpload,
     pub sticker_format: StickerFormat,
 }
 

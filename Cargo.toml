@@ -19,7 +19,7 @@ categories = ["web-programming::http-client"]
 all-features = true
 
 [features]
-client-reqwest = ["trait-async", "dep:reqwest", "dep:tokio", "dep:serde_json"]
+client-reqwest = ["trait-async", "dep:reqwest", "dep:serde_json"]
 client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
 trait-async = ["dep:async-trait"]
 trait-sync = []
@@ -59,11 +59,6 @@ default-features = false
 features = ["multipart", "stream"]
 optional = true
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies.tokio]
-version = "1"
-features = ["fs"]
-optional = true
-
 [dev-dependencies]
 isahc = "1"
 mockito = "1.0"
@@ -84,6 +79,10 @@ required-features = ["client-ureq"]
 
 [[example]]
 name = "inline_keyboard"
+required-features = ["client-ureq"]
+
+[[example]]
+name = "file_upload"
 required-features = ["client-ureq"]
 
 [[example]]

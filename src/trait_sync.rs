@@ -1,8 +1,6 @@
-use std::path::PathBuf;
-
 use crate::games::GameHighScore;
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
-use crate::input_file::HasInputFile;
+use crate::input_file::{HasInputFile, InputFile};
 use crate::input_media::{InputMedia, MediaGroupInputMedia};
 use crate::payments::StarTransactions;
 use crate::response::{MessageOrBool, MethodResponse};
@@ -52,13 +50,11 @@ macro_rules! request_f {
             #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
             fn [<$name:snake>] (
                 &self,
-                params: &crate::methods::[<$name:camel Params>],
+                mut params: crate::methods::[<$name:camel Params>],
             ) -> Result<MethodResponse<$return>, Self::Error> {
                 let mut files = Vec::new();
                 $(
-                    if let Some(path) = params.$fileproperty.clone_path() {
-                        files.push((stringify!($fileproperty), path));
-                    }
+                    params.$fileproperty.move_named_to_filelist(stringify!($fileproperty), &mut files);
                 )+
                 self.request_with_possible_form_data(stringify!($name), params, files)
             }
@@ -66,12 +62,24 @@ macro_rules! request_f {
     }
 }
 
+macro_rules! docs_file {
+    ($name:ident, $url:ident) => {
+        concat!(
+            "Call the `",
+            stringify!($name),
+            "` method.\n\nSee <https://core.telegram.org/bots/api#",
+            stringify!($url),
+            ">."
+        )
+    };
+}
+
 pub trait TelegramApi {
     type Error;
 
     request!(getUpdates, Vec<Update>);
     request!(sendMessage, Message);
-    request!(setWebhook, bool);
+    request_f!(setWebhook, bool, certificate);
     request!(deleteWebhook, bool);
     request_nb!(getWebhookInfo, WebhookInfo);
     request_nb!(getMe, User);
@@ -84,47 +92,32 @@ pub trait TelegramApi {
     request_f!(sendPhoto, Message, photo);
     request_f!(sendAudio, Message, audio, thumbnail);
 
+    #[doc = docs_file!(sendMediaGroup, send_media_group)]
     fn send_media_group(
         &self,
-        params: &crate::methods::SendMediaGroupParams,
+        mut params: crate::methods::SendMediaGroupParams,
     ) -> Result<MethodResponse<Vec<Message>>, Self::Error> {
         let mut files = Vec::new();
-
-        macro_rules! replace_attach {
-            ($base:ident. $property:ident) => {
-                if let Some(file) = $base.$property.replace_attach_dyn(|| files.len()) {
-                    files.push(file);
-                }
-            };
-        }
-
-        let mut params = params.clone();
         for media in &mut params.media {
             match media {
                 MediaGroupInputMedia::Audio(audio) => {
-                    replace_attach!(audio.media);
-                    replace_attach!(audio.thumbnail);
+                    audio.media.move_to_filelist(&mut files);
+                    audio.thumbnail.move_to_filelist(&mut files);
                 }
                 MediaGroupInputMedia::Document(document) => {
-                    replace_attach!(document.media);
+                    document.media.move_to_filelist(&mut files);
                 }
                 MediaGroupInputMedia::Photo(photo) => {
-                    replace_attach!(photo.media);
+                    photo.media.move_to_filelist(&mut files);
                 }
                 MediaGroupInputMedia::Video(video) => {
-                    replace_attach!(video.media);
-                    replace_attach!(video.cover);
-                    replace_attach!(video.thumbnail);
+                    video.media.move_to_filelist(&mut files);
+                    video.cover.move_to_filelist(&mut files);
+                    video.thumbnail.move_to_filelist(&mut files);
                 }
             }
         }
-
-        let files_with_str_names = files
-            .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
-            .collect();
-
-        self.request_with_possible_form_data("sendMediaGroup", &params, files_with_str_names)
+        self.request_with_possible_form_data("sendMediaGroup", &params, files)
     }
 
     request_f!(sendDocument, Message, document, thumbnail);
@@ -161,15 +154,7 @@ pub trait TelegramApi {
     request!(revokeChatInviteLink, ChatInviteLink);
     request!(approveChatJoinRequest, bool);
     request!(declineChatJoinRequest, bool);
-
-    fn set_chat_photo(
-        &self,
-        params: &crate::methods::SetChatPhotoParams,
-    ) -> Result<MethodResponse<bool>, Self::Error> {
-        let photo = &params.photo;
-        self.request_with_form_data("setChatPhoto", params, vec![("photo", photo.path.clone())])
-    }
-
+    request_f!(setChatPhoto, bool, photo);
     request!(deleteChatPhoto, bool);
     request!(setChatTitle, bool);
     request!(setChatDescription, bool);
@@ -211,22 +196,22 @@ pub trait TelegramApi {
     request!(editMessageText, MessageOrBool);
     request!(editMessageCaption, MessageOrBool);
 
+    #[doc = docs_file!(editMessageMedia, edit_message_media)]
     fn edit_message_media(
         &self,
-        params: &crate::methods::EditMessageMediaParams,
+        mut params: crate::methods::EditMessageMediaParams,
     ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
         let mut files = Vec::new();
 
         macro_rules! replace_attach {
-            ($base:ident. $property:ident) => {{
-                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
-                if let Some(file) = $base.$property.replace_attach(NAME) {
-                    files.push((NAME, file));
-                }
-            }};
+            ($base:ident. $property:ident) => {
+                $base.$property.move_named_to_filelist(
+                    concat!(stringify!($base), "_", stringify!($property)),
+                    &mut files,
+                );
+            };
         }
 
-        let mut params = params.clone();
         match &mut params.media {
             InputMedia::Animation(animation) => {
                 replace_attach!(animation.media);
@@ -259,50 +244,32 @@ pub trait TelegramApi {
     request!(deleteMessages, bool);
     request_f!(sendSticker, Message, sticker);
     request!(getStickerSet, StickerSet);
+    request_f!(uploadStickerFile, File, sticker);
 
-    fn upload_sticker_file(
-        &self,
-        params: &crate::methods::UploadStickerFileParams,
-    ) -> Result<MethodResponse<File>, Self::Error> {
-        let sticker = &params.sticker;
-        self.request_with_form_data(
-            "uploadStickerFile",
-            params,
-            vec![("sticker", sticker.path.clone())],
-        )
-    }
-
+    #[doc = docs_file!(createNewStickerSet, create_new_sticker_set)]
     fn create_new_sticker_set(
         &self,
-        params: &crate::methods::CreateNewStickerSetParams,
+        mut params: crate::methods::CreateNewStickerSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
-
-        let mut params = params.clone();
-        for (index, sticker) in params.stickers.iter_mut().enumerate() {
-            if let Some(file) = sticker.sticker.replace_attach_dyn(|| index) {
-                files.push(file);
-            }
+        for sticker in &mut params.stickers {
+            sticker.sticker.move_to_filelist(&mut files);
         }
-
-        let files_with_str_names = files
-            .iter()
-            .map(|(key, path)| (key.as_str(), path.clone()))
-            .collect();
-
-        self.request_with_possible_form_data("createNewStickerSet", &params, files_with_str_names)
+        self.request_with_possible_form_data("createNewStickerSet", &params, files)
     }
 
     request!(getCustomEmojiStickers, Vec<Sticker>);
 
+    #[doc = docs_file!(addStickerToSet, add_sticker_to_set)]
     fn add_sticker_to_set(
         &self,
-        params: &crate::methods::AddStickerToSetParams,
+        mut params: crate::methods::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
-        if let Some(file) = params.sticker.sticker.clone_path() {
-            files.push(("sticker", file));
-        }
+        params
+            .sticker
+            .sticker
+            .move_named_to_filelist("sticker", &mut files);
         self.request_with_possible_form_data("addStickerToSet", params, files)
     }
 
@@ -341,11 +308,12 @@ pub trait TelegramApi {
     request!(unpinAllGeneralForumTopicMessages, bool);
     request!(setPassportDataErrors, bool);
 
+    #[doc(hidden)]
     fn request_with_possible_form_data<Params, Output>(
         &self,
         method_name: &str,
         params: Params,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,
@@ -371,7 +339,7 @@ pub trait TelegramApi {
         &self,
         method: &str,
         params: Params,
-        files: Vec<(&str, PathBuf)>,
+        files: Vec<(std::borrow::Cow<'static, str>, InputFile)>,
     ) -> Result<Output, Self::Error>
     where
         Params: serde::ser::Serialize + std::fmt::Debug,

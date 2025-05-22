@@ -27,7 +27,7 @@ Without enabling any additional features this crate will only ship with Telegram
   - `client-ureq` - a blocking HTTP API client based on `ureq`
   - `trait-sync` - a blocking API trait, it's included in the `client-ureq` feature. It may be useful for people who want to create a custom blocking client (for example, replacing an HTTP client)
 - async
-  - `client-reqwest` - an async HTTP API client based on `reqwest`. This client partially supports wasm32, but file uploads are currently not supported there.
+  - `client-reqwest` - an async HTTP API client based on `reqwest`. This client supports wasm32
   - `trait-async` - an async API trait, it's used in the `client-reqwest`. It may be useful for people who want to create a custom async client
 
 For example for the async client add the following line to your `Cargo.toml` file:
@@ -113,26 +113,6 @@ let result = bot.get_updates(&update_params);
 Every function returns a `Result` with a successful response or failed response.
 
 See more examples in the [`examples`](https://github.com/ayrat555/frankenstein/tree/0.40.2/examples) directory.
-
-### Uploading files
-
-Some methods in the API allow uploading files. In the Frankenstein for this `FileUpload` enum is used:
-
-```rust
-pub enum FileUpload {
-    InputFile(InputFile),
-    String(String),
-}
-
-pub struct InputFile {
-    path: std::path::PathBuf
-}
-```
-
-It has two variants:
-
-- `FileUpload::String` is used to pass the ID of the already uploaded file
-- `FileUpload::InputFile` is used to upload a new file using multipart upload.
 
 ### Documentation
 
