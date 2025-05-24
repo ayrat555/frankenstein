@@ -188,3 +188,23 @@ pub struct InputProfilePhotoAnimated {
     pub animation: String,
     pub main_frame_timestamp: Option<f64>,
 }
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputStoryContent {
+    Photo(InputStoryContentPhoto),
+    Video(InputStoryContentPhoto),
+}
+
+#[apply(apistruct!)]
+pub struct InputStoryContentPhoto {
+    pub photo: String,
+}
+
+#[apply(apistruct!)]
+pub struct InputStoryContentVideo {
+    pub video: String,
+    pub duration: Option<f64>,
+    pub cover_frame_timestamp: Option<f64>,
+    pub is_animation: Option<bool>,
+}

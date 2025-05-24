@@ -1169,6 +1169,75 @@ pub struct BusinessOpeningHours {
 }
 
 #[apply(apistruct!)]
+pub struct StoryAreaPosition {
+    pub x_percentage: f64,
+    pub y_percentage: f64,
+    pub width_percentage: f64,
+    pub height_percentage: f64,
+    pub rotation_angle: f64,
+    pub corner_radius_percentage: f64,
+}
+
+#[apply(apistruct!)]
+pub struct LocationAddress {
+    pub country_code: String,
+    pub state: Option<String>,
+    pub city: Option<String>,
+    pub street: Option<String>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum StoryAreaType {
+    Location(StoryAreaTypeLocation),
+    SuggestedReaction(StoryAreaTypeSuggestedReaction),
+    Link(StoryAreaTypeLink),
+    Weather(StoryAreaTypeWeather),
+    UniqueGift(StoryAreaTypeUniqueGift),
+}
+
+#[apply(apistruct!)]
+pub struct StoryAreaTypeLocation {
+    pub latitude: f64,
+    pub longitude: f64,
+    pub address: Option<LocationAddress>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StoryAreaTypeSuggestedReaction {
+    pub reaction_type: ReactionType,
+    pub is_dark: Option<bool>,
+    pub is_flipped: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StoryAreaTypeLink {
+    pub url: String,
+}
+
+#[apply(apistruct!)]
+pub struct StoryAreaTypeWeather {
+    pub temperature: f64,
+    pub emoji: String,
+    pub background_color: i64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StoryAreaTypeUniqueGift {
+    pub name: String,
+}
+
+#[apply(apistruct!)]
+pub struct StoryArea {
+    pub position: StoryAreaPosition,
+    #[serde(rename = "type")]
+    pub type_field: StoryAreaType,
+}
+
+#[apply(apistruct!)]
 pub struct ChatLocation {
     pub location: Location,
     pub address: String,

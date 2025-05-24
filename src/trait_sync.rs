@@ -11,7 +11,7 @@ use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
-    MenuButton, Message, MessageId, Poll, User, UserChatBoosts, UserProfilePhotos,
+    MenuButton, Message, MessageId, Poll, Story, User, UserChatBoosts, UserProfilePhotos,
 };
 use crate::updates::{Update, WebhookInfo};
 
@@ -337,6 +337,9 @@ pub trait TelegramApi {
     request!(convertGiftToStars, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);
+    request!(postStory, Story);
+    request!(editStory, Story);
+    request!(deleteStory, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);

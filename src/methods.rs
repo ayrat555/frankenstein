@@ -3,7 +3,9 @@
 use crate::gifts::AcceptedGiftTypes;
 use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
 use crate::input_file::{FileUpload, InputFile};
-use crate::input_media::{InputMedia, InputPaidMedia, InputProfilePhoto, MediaGroupInputMedia};
+use crate::input_media::{
+    InputMedia, InputPaidMedia, InputProfilePhoto, InputStoryContent, MediaGroupInputMedia,
+};
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportElementError;
@@ -12,7 +14,7 @@ use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
     ChatPermissions, InlineKeyboardMarkup, InputPollOption, LinkPreviewOptions, MenuButton,
-    MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters,
+    MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters, StoryArea,
 };
 
 #[apply(apistruct!)]
@@ -1205,6 +1207,36 @@ pub struct TransferGiftParams {
     pub owner_gift_id: String,
     pub new_owner_chat_id: i64,
     pub star_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
+pub struct PostStoryParams {
+    pub business_connection_id: String,
+    pub content: InputStoryContent,
+    pub active_period: u32,
+    pub caption: Option<String>,
+    pub parse_mode: Option<String>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub areas: Option<Vec<StoryArea>>,
+    pub post_to_chat_page: Option<bool>,
+    pub protect_content: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct EditStoryParams {
+    pub business_connection_id: String,
+    pub story_id: i64,
+    pub content: InputStoryContent,
+    pub caption: Option<String>,
+    pub parse_mode: Option<String>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub areas: Option<Vec<StoryArea>>,
+}
+
+#[apply(apistruct!)]
+pub struct DeleteStoryParams {
+    pub business_connection_id: String,
+    pub story_id: i64,
 }
 
 #[apply(apistruct!)]
