@@ -210,6 +210,7 @@ pub struct StarTransactions {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct StarAmount {
     pub amount: i32,
     pub nanostar_amount: Option<i32>,

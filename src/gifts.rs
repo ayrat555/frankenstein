@@ -43,6 +43,7 @@ pub struct UniqueGiftBackdropColors {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct UniqueGiftBackdrop {
     pub name: String,
     pub colors: UniqueGiftBackdropColors,
