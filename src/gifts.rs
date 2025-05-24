@@ -61,6 +61,26 @@ pub struct UniqueGift {
 }
 
 #[apply(apistruct!)]
+pub struct GiftInfo {
+    pub gift: Gift,
+    pub owned_gift_id: Option<String>,
+    pub convert_star_count: Option<u32>,
+    pub prepaid_upgrade_star_count: Option<u32>,
+    pub can_be_upgraded: Option<bool>,
+    pub text: Option<String>,
+    pub entities: Option<Vec<MessageEntity>>,
+    pub is_private: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct UniqueGiftInfo {
+    pub gift: UniqueGift,
+    pub origin: String,
+    pub owned_gift_id: Option<String>,
+    pub transfer_star_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct AcceptedGiftTypes {
     pub unlimited_gifts: bool,

@@ -3,6 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::games::{CallbackGame, Game};
+use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftInfo};
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
@@ -379,7 +380,7 @@ pub struct ChatFullInfo {
     pub invite_link: Option<String>,
     pub pinned_message: Option<Box<Message>>,
     pub permissions: Option<ChatPermissions>,
-    pub can_send_gift: Option<bool>,
+    pub accepted_gift_types: AcceptedGiftTypes,
     pub can_send_paid_media: Option<bool>,
     pub slow_mode_delay: Option<u16>,
     pub unrestrict_boost_count: Option<u32>,
@@ -460,6 +461,8 @@ pub struct Message {
     pub refunded_payment: Option<Box<RefundedPayment>>,
     pub users_shared: Option<Box<UsersShared>>,
     pub chat_shared: Option<Box<ChatShared>>,
+    pub gift: Option<GiftInfo>,
+    pub unique_gift: Option<UniqueGiftInfo>,
     pub connected_website: Option<String>,
     pub write_access_allowed: Option<WriteAccessAllowed>,
     pub passport_data: Option<Box<PassportData>>,
