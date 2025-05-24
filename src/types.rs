@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 
 use crate::games::{CallbackGame, Game};
 use crate::macros::{apistruct, apply};
+use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
 use crate::payments::{Invoice, RefundedPayment, SuccessfulPayment};
 use crate::stickers::Sticker;
-use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(untagged)]
@@ -1169,6 +1169,76 @@ pub struct BusinessOpeningHours {
 }
 
 #[apply(apistruct!)]
+pub struct StoryAreaPosition {
+    pub x_percentage: f64,
+    pub y_percentage: f64,
+    pub width_percentage: f64,
+    pub height_percentage: f64,
+    pub rotation_angle: f64,
+    pub corner_radius_percentage: f64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct LocationAddress {
+    pub country_code: String,
+    pub state: Option<String>,
+    pub city: Option<String>,
+    pub street: Option<String>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum StoryAreaType {
+    Location(StoryAreaTypeLocation),
+    SuggestedReaction(StoryAreaTypeSuggestedReaction),
+    Link(StoryAreaTypeLink),
+    Weather(StoryAreaTypeWeather),
+    UniqueGift(StoryAreaTypeUniqueGift),
+}
+
+#[apply(apistruct!)]
+pub struct StoryAreaTypeLocation {
+    pub latitude: f64,
+    pub longitude: f64,
+    pub address: Option<LocationAddress>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StoryAreaTypeSuggestedReaction {
+    pub reaction_type: ReactionType,
+    pub is_dark: Option<bool>,
+    pub is_flipped: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StoryAreaTypeLink {
+    pub url: String,
+}
+
+#[apply(apistruct!)]
+pub struct StoryAreaTypeWeather {
+    pub temperature: f64,
+    pub emoji: String,
+    pub background_color: i64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StoryAreaTypeUniqueGift {
+    pub name: String,
+}
+
+#[apply(apistruct!)]
+pub struct StoryArea {
+    pub position: StoryAreaPosition,
+    #[serde(rename = "type")]
+    pub type_field: StoryAreaType,
+}
+
+#[apply(apistruct!)]
 pub struct ChatLocation {
     pub location: Location,
     pub address: String,
@@ -1430,8 +1500,27 @@ pub struct BusinessConnection {
     pub user: User,
     pub user_chat_id: u64,
     pub date: u64,
-    pub can_reply: bool,
+    pub rights: Option<BusinessBotRights>,
     pub is_enabled: bool,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BusinessBotRights {
+    pub can_reply: Option<bool>,
+    pub can_read_messages: Option<bool>,
+    pub can_delete_sent_messages: Option<bool>,
+    pub can_delete_all_messages: Option<bool>,
+    pub can_edit_name: Option<bool>,
+    pub can_edit_bio: Option<bool>,
+    pub can_edit_profile_photo: Option<bool>,
+    pub can_edit_username: Option<bool>,
+    pub can_change_gift_settings: Option<bool>,
+    pub can_view_gifts_and_stars: Option<bool>,
+    pub can_convert_gifts_to_stars: Option<bool>,
+    pub can_transfer_and_upgrade_gifts: Option<bool>,
+    pub can_transfer_stars: Option<bool>,
+    pub can_manage_stories: Option<bool>,
 }
 
 #[apply(apistruct!)]

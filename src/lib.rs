@@ -20,6 +20,7 @@ pub mod client_reqwest;
 pub mod client_ureq;
 mod error;
 pub mod games;
+pub mod gifts;
 pub mod inline_mode;
 pub mod input_file;
 pub mod input_media;

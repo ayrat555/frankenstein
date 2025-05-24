@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::input_file::FileUpload;
 use crate::macros::{apistruct, apply};
+use crate::parse_mode::ParseMode;
 use crate::types::MessageEntity;
-use crate::ParseMode;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
@@ -168,4 +168,44 @@ pub struct InputPaidMediaVideo {
     pub height: Option<u32>,
     pub duration: Option<u32>,
     pub supports_streaming: Option<bool>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputProfilePhoto {
+    Static(InputProfilePhotoStatic),
+    Animated(InputProfilePhotoAnimated),
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputProfilePhotoStatic {
+    pub photo: String,
+}
+
+#[apply(apistruct!)]
+pub struct InputProfilePhotoAnimated {
+    pub animation: String,
+    pub main_frame_timestamp: Option<f64>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputStoryContent {
+    Photo(InputStoryContentPhoto),
+    Video(InputStoryContentPhoto),
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputStoryContentPhoto {
+    pub photo: String,
+}
+
+#[apply(apistruct!)]
+pub struct InputStoryContentVideo {
+    pub video: String,
+    pub duration: Option<f64>,
+    pub cover_frame_timestamp: Option<f64>,
+    pub is_animation: Option<bool>,
 }
