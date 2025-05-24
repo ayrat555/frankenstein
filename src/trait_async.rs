@@ -1,12 +1,13 @@
 use std::path::PathBuf;
 
 use crate::games::GameHighScore;
+use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
 use crate::input_media::{InputMedia, MediaGroupInputMedia};
-use crate::payments::StarTransactions;
+use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
-use crate::stickers::{Gifts, Sticker, StickerSet};
+use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
