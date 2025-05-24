@@ -1183,12 +1183,14 @@ pub struct GetBusinessAccountGiftsParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct ConvertGiftToStarsParams {
     pub business_connection_id: String,
     pub owner_gift_id: String,
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct UpgradeGiftParams {
     pub business_connection_id: String,
     pub owner_gift_id: String,
@@ -1197,6 +1199,7 @@ pub struct UpgradeGiftParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct TransferGiftParams {
     pub business_connection_id: String,
     pub owner_gift_id: String,
