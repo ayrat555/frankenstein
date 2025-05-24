@@ -34,6 +34,7 @@ pub struct UniqueGiftSymbol {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct UniqueGiftBackdropColors {
     pub center_color: u32,
     pub edge_color: u32,
@@ -59,6 +60,7 @@ pub struct UniqueGift {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct AcceptedGiftTypes {
     pub unlimited_gifts: bool,
     pub limited_gifts: bool,
@@ -69,8 +71,8 @@ pub struct AcceptedGiftTypes {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum OwnedGift {
-    Regular(OwnedGiftRegular),
-    Unique(OwnedGiftUnique),
+    Regular(Box<OwnedGiftRegular>),
+    Unique(Box<OwnedGiftUnique>),
 }
 
 #[apply(apistruct!)]

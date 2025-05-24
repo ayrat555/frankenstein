@@ -1134,6 +1134,7 @@ pub struct SetBusinessAccountBioParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct SetBusinessAccountProfilePhotoParams {
     pub business_connection_id: String,
     pub photo: InputProfilePhoto,
@@ -1141,12 +1142,14 @@ pub struct SetBusinessAccountProfilePhotoParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct RemoveBusinessAccountProfilePhotoParams {
     pub business_connection_id: String,
     pub is_public: Option<bool>,
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct SetBusinessAccountGiftSettingsParams {
     pub business_connection_id: String,
     pub show_gift_button: bool,
@@ -1154,17 +1157,20 @@ pub struct SetBusinessAccountGiftSettingsParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct GetBusinessAccountStarBalanceParams {
     pub business_connection_id: String,
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct TransferBusinessAccountStarsParams {
     pub business_connection_id: String,
     pub start_count: u32,
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct GetBusinessAccountGiftsParams {
     pub business_connection_id: String,
     pub exclude_unsaved: Option<bool>,
