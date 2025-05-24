@@ -1183,6 +1183,28 @@ pub struct GetBusinessAccountGiftsParams {
 }
 
 #[apply(apistruct!)]
+pub struct ConvertGiftToStarsParams {
+    pub business_connection_id: String,
+    pub owner_gift_id: String,
+}
+
+#[apply(apistruct!)]
+pub struct UpgradeGiftParams {
+    pub business_connection_id: String,
+    pub owner_gift_id: String,
+    pub keep_original_details: Option<bool>,
+    pub star_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
+pub struct TransferGiftParams {
+    pub business_connection_id: String,
+    pub owner_gift_id: String,
+    pub new_owner_chat_id: i64,
+    pub star_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
 pub struct AnswerInlineQueryParams {
     pub inline_query_id: String,
     pub results: Vec<InlineQueryResult>,
