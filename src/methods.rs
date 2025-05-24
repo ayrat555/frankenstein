@@ -1134,7 +1134,6 @@ pub struct SetBusinessAccountBioParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SetBusinessAccountProfilePhotoParams {
     pub business_connection_id: String,
     pub photo: InputProfilePhoto,
