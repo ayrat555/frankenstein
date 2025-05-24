@@ -5,8 +5,8 @@ use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 
-use crate::trait_sync::TelegramApi;
 use crate::Error;
+use crate::trait_sync::TelegramApi;
 
 /// Synchronous [`TelegramApi`] implementation with [`ureq`].
 #[derive(Debug, Clone, Builder)]
@@ -143,17 +143,17 @@ mod tests {
         DeleteMessageParams, DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
         EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
         EditMessageTextParams, ExportChatInviteLinkParams, ForwardMessageParams,
-        GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetChatParams,
-        GetFileParams, GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams,
-        GetUserProfilePhotosParams, LeaveChatParams, PinChatMessageParams, PromoteChatMemberParams,
-        RestrictChatMemberParams, RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams,
-        SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams,
-        SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams,
-        SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams,
-        SendVoiceParams, SetChatAdministratorCustomTitleParams, SetChatDescriptionParams,
-        SetChatPermissionsParams, SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams,
-        SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
-        UnbanChatMemberParams, UnpinChatMessageParams,
+        GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetFileParams,
+        GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams, GetUserProfilePhotosParams,
+        LeaveChatParams, PinChatMessageParams, PromoteChatMemberParams, RestrictChatMemberParams,
+        RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams, SendChatActionParams,
+        SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams,
+        SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams,
+        SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams,
+        SetChatAdministratorCustomTitleParams, SetChatDescriptionParams, SetChatPermissionsParams,
+        SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams, SetMyCommandsParams,
+        SetWebhookParams, StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
+        UnpinChatMessageParams,
     };
     use crate::test_json::assert_json_str;
     use crate::types::{
