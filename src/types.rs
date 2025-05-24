@@ -1232,7 +1232,6 @@ pub struct StoryAreaTypeUniqueGift {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct StoryArea {
     pub position: StoryAreaPosition,
     #[serde(rename = "type")]
