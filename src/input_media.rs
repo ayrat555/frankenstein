@@ -197,6 +197,7 @@ pub enum InputStoryContent {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct InputStoryContentPhoto {
     pub photo: String,
 }

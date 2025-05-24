@@ -1179,6 +1179,7 @@ pub struct StoryAreaPosition {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct LocationAddress {
     pub country_code: String,
     pub state: Option<String>,
@@ -1231,6 +1232,7 @@ pub struct StoryAreaTypeUniqueGift {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct StoryArea {
     pub position: StoryAreaPosition,
     #[serde(rename = "type")]
