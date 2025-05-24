@@ -189,7 +189,7 @@ pub struct InputProfilePhotoAnimated {
     pub main_frame_timestamp: Option<f64>,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputStoryContent {
     Photo(InputStoryContentPhoto),

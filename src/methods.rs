@@ -1234,6 +1234,7 @@ pub struct EditStoryParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
 pub struct DeleteStoryParams {
     pub business_connection_id: String,
     pub story_id: i64,
