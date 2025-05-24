@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::gifts::Gift;
 use crate::macros::{apistruct, apply};
-use crate::stickers::Gift;
 use crate::types::{Chat, PaidMedia, User};
 
 #[apply(apistruct!)]
@@ -207,4 +207,10 @@ pub struct StarTransaction {
 #[apply(apistruct!)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
+}
+
+#[apply(apistruct!)]
+pub struct StarAmount {
+    pub amount: i32,
+    pub nanostar_amount: Option<i32>,
 }

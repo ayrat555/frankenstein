@@ -1,10 +1,11 @@
 //! Parameters of [Bot API methods](https://core.telegram.org/bots/api#available-methods).
 
-use crate::ParseMode;
+use crate::gifts::AcceptedGiftTypes;
 use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
 use crate::input_file::{FileUpload, InputFile};
 use crate::input_media::{InputMedia, InputPaidMedia, InputProfilePhoto, MediaGroupInputMedia};
 use crate::macros::{apistruct, apply};
+use crate::parse_mode::ParseMode;
 use crate::passport::PassportElementError;
 use crate::payments::{LabeledPrice, ShippingOption};
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
@@ -1137,6 +1138,43 @@ pub struct SetBusinessAccountProfilePhotoParams {
     pub business_connection_id: String,
     pub photo: InputProfilePhoto,
     pub is_public: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct RemoveBusinessAccountProfilePhotoParams {
+    pub business_connection_id: String,
+    pub is_public: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct SetBusinessAccountGiftSettingsParams {
+    pub business_connection_id: String,
+    pub show_gift_button: bool,
+    pub accepted_gift_types: AcceptedGiftTypes,
+}
+
+#[apply(apistruct!)]
+pub struct GetBusinessAccountStarBalanceParams {
+    pub business_connection_id: String,
+}
+
+#[apply(apistruct!)]
+pub struct TransferBusinessAccountStarsParams {
+    pub business_connection_id: String,
+    pub start_count: u32,
+}
+
+#[apply(apistruct!)]
+pub struct GetBusinessAccountGiftsParams {
+    pub business_connection_id: String,
+    pub exclude_unsaved: Option<bool>,
+    pub exclude_saved: Option<bool>,
+    pub exclude_unlimited: Option<bool>,
+    pub exclude_limited: Option<bool>,
+    pub exclude_unique: Option<bool>,
+    pub sort_by_price: Option<bool>,
+    pub offset: Option<String>,
+    pub limit: Option<u32>,
 }
 
 #[apply(apistruct!)]

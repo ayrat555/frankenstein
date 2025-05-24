@@ -327,6 +327,12 @@ pub trait TelegramApi {
     request!(setBusinessAccountName, bool);
     request!(setBusinessAccountUsername, bool);
     request!(setBusinessAccountBio, bool);
+    request!(setBusinessAccountProfilePhoto, bool);
+    request!(removeBusinessAccountProfilePhoto, bool);
+    request!(setBusinessAccountGiftSettings, bool);
+    request!(getBusinessAccountStarBalance, StarAmount);
+    request!(transferBusinessAccountStars, bool);
+    request!(getBusinessAccountGifts, OwnedGifts);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);

@@ -2,9 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::ParseMode;
 use crate::games::{CallbackGame, Game};
 use crate::macros::{apistruct, apply};
+use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
 use crate::payments::{Invoice, RefundedPayment, SuccessfulPayment};
 use crate::stickers::Sticker;
