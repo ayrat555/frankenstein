@@ -150,8 +150,19 @@ pub enum TransactionPartner {
     Other(TransactionPartnerOther),
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum TransactionType {
+    InvoicePayment,
+    PaidMediaPayment,
+    GiftPurchase,
+    PremiumPurchase,
+    BusinessAccountTransfer,
+}
+
 #[apply(apistruct!)]
 pub struct TransactionPartnerUser {
+    pub transaction_type: TransactionType,
     pub user: User,
     pub affiliate: Option<AffiliateInfo>,
     pub invoice_payload: Option<String>,
@@ -159,6 +170,7 @@ pub struct TransactionPartnerUser {
     pub paid_media: Option<Vec<PaidMedia>>,
     pub paid_media_payload: Option<String>,
     pub gift: Option<Gift>,
+    pub premium_subscription_duration: Option<u32>,
 }
 
 #[apply(apistruct!)]

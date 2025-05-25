@@ -1074,6 +1074,17 @@ pub struct SendGiftParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct GiftPremiumSubscriptionParams {
+    pub user_id: u64,
+    pub month_count: u32,
+    pub star_count: u32,
+    pub text: Option<String>,
+    pub text_parse_mode: Option<String>,
+    pub text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct VerifyUserParams {
     pub user_id: u64,
     pub custom_description: Option<String>,
