@@ -150,7 +150,7 @@ pub enum TransactionPartner {
     Other(TransactionPartnerOther),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum TransactionType {
     InvoicePayment,
