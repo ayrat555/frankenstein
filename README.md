@@ -14,7 +14,7 @@ Run `cargo add frankenstein` or add the following to your `Cargo.toml`.
 
 ```toml
 [dependencies]
-frankenstein = { version = "0.40", features = [] }
+frankenstein = { version = "0.41", features = [] }
 ```
 
 You likely want to use either a blocking or an async client. Enable it via the [Features](#features).
