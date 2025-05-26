@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::gifts::Gift;
 use crate::macros::{apistruct, apply};
-use crate::stickers::Gift;
 use crate::types::{Chat, PaidMedia, User};
 
 #[apply(apistruct!)]
@@ -150,8 +150,19 @@ pub enum TransactionPartner {
     Other(TransactionPartnerOther),
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum TransactionType {
+    InvoicePayment,
+    PaidMediaPayment,
+    GiftPurchase,
+    PremiumPurchase,
+    BusinessAccountTransfer,
+}
+
 #[apply(apistruct!)]
 pub struct TransactionPartnerUser {
+    pub transaction_type: TransactionType,
     pub user: User,
     pub affiliate: Option<AffiliateInfo>,
     pub invoice_payload: Option<String>,
@@ -159,6 +170,7 @@ pub struct TransactionPartnerUser {
     pub paid_media: Option<Vec<PaidMedia>>,
     pub paid_media_payload: Option<String>,
     pub gift: Option<Gift>,
+    pub premium_subscription_duration: Option<u32>,
 }
 
 #[apply(apistruct!)]
@@ -207,4 +219,11 @@ pub struct StarTransaction {
 #[apply(apistruct!)]
 pub struct StarTransactions {
     pub transactions: Vec<StarTransaction>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct StarAmount {
+    pub amount: i32,
+    pub nanostar_amount: Option<i32>,
 }

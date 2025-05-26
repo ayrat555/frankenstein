@@ -1,18 +1,21 @@
 //! Parameters of [Bot API methods](https://core.telegram.org/bots/api#available-methods).
 
+use crate::gifts::AcceptedGiftTypes;
 use crate::inline_mode::{InlineQueryResult, InlineQueryResultsButton};
 use crate::input_file::{FileUpload, InputFile};
-use crate::input_media::{InputMedia, InputPaidMedia, MediaGroupInputMedia};
+use crate::input_media::{
+    InputMedia, InputPaidMedia, InputProfilePhoto, InputStoryContent, MediaGroupInputMedia,
+};
 use crate::macros::{apistruct, apply};
+use crate::parse_mode::ParseMode;
 use crate::passport::PassportElementError;
 use crate::payments::{LabeledPrice, ShippingOption};
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
     ChatPermissions, InlineKeyboardMarkup, InputPollOption, LinkPreviewOptions, MenuButton,
-    MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters,
+    MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters, StoryArea,
 };
-use crate::ParseMode;
 
 #[apply(apistruct!)]
 #[derive(Eq)]
@@ -1071,6 +1074,17 @@ pub struct SendGiftParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct GiftPremiumSubscriptionParams {
+    pub user_id: u64,
+    pub month_count: u32,
+    pub star_count: u32,
+    pub text: Option<String>,
+    pub text_parse_mode: Option<String>,
+    pub text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct VerifyUserParams {
     pub user_id: u64,
     pub custom_description: Option<String>,
@@ -1093,6 +1107,148 @@ pub struct RemoveUserVerificationParams {
 #[derive(Eq)]
 pub struct RemoveChatVerificationParams {
     pub chat_id: ChatId,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ReadBusinessMessageParams {
+    pub business_connection_id: String,
+    pub chat_id: i64,
+    pub message_id: i32,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct DeleteBusinessMessagesParams {
+    pub business_connection_id: String,
+    pub message_ids: Vec<i32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountNameParams {
+    pub business_connection_id: String,
+    pub first_name: String,
+    pub last_name: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountUsernameParams {
+    pub business_connection_id: String,
+    pub username: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountBioParams {
+    pub business_connection_id: String,
+    pub bio: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct SetBusinessAccountProfilePhotoParams {
+    pub business_connection_id: String,
+    pub photo: InputProfilePhoto,
+    pub is_public: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct RemoveBusinessAccountProfilePhotoParams {
+    pub business_connection_id: String,
+    pub is_public: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetBusinessAccountGiftSettingsParams {
+    pub business_connection_id: String,
+    pub show_gift_button: bool,
+    pub accepted_gift_types: AcceptedGiftTypes,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetBusinessAccountStarBalanceParams {
+    pub business_connection_id: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct TransferBusinessAccountStarsParams {
+    pub business_connection_id: String,
+    pub start_count: u32,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetBusinessAccountGiftsParams {
+    pub business_connection_id: String,
+    pub exclude_unsaved: Option<bool>,
+    pub exclude_saved: Option<bool>,
+    pub exclude_unlimited: Option<bool>,
+    pub exclude_limited: Option<bool>,
+    pub exclude_unique: Option<bool>,
+    pub sort_by_price: Option<bool>,
+    pub offset: Option<String>,
+    pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ConvertGiftToStarsParams {
+    pub business_connection_id: String,
+    pub owner_gift_id: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct UpgradeGiftParams {
+    pub business_connection_id: String,
+    pub owner_gift_id: String,
+    pub keep_original_details: Option<bool>,
+    pub star_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct TransferGiftParams {
+    pub business_connection_id: String,
+    pub owner_gift_id: String,
+    pub new_owner_chat_id: i64,
+    pub star_count: Option<u32>,
+}
+
+#[apply(apistruct!)]
+pub struct PostStoryParams {
+    pub business_connection_id: String,
+    pub content: InputStoryContent,
+    pub active_period: u32,
+    pub caption: Option<String>,
+    pub parse_mode: Option<String>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub areas: Option<Vec<StoryArea>>,
+    pub post_to_chat_page: Option<bool>,
+    pub protect_content: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct EditStoryParams {
+    pub business_connection_id: String,
+    pub story_id: i64,
+    pub content: InputStoryContent,
+    pub caption: Option<String>,
+    pub parse_mode: Option<String>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub areas: Option<Vec<StoryArea>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct DeleteStoryParams {
+    pub business_connection_id: String,
+    pub story_id: i64,
 }
 
 #[apply(apistruct!)]

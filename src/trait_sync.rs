@@ -1,16 +1,17 @@
 use std::path::PathBuf;
 
 use crate::games::GameHighScore;
+use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
 use crate::input_media::{InputMedia, MediaGroupInputMedia};
-use crate::payments::StarTransactions;
+use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
-use crate::stickers::{Gifts, Sticker, StickerSet};
+use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
-    MenuButton, Message, MessageId, Poll, User, UserChatBoosts, UserProfilePhotos,
+    MenuButton, Message, MessageId, Poll, Story, User, UserChatBoosts, UserProfilePhotos,
 };
 use crate::updates::{Update, WebhookInfo};
 
@@ -318,10 +319,28 @@ pub trait TelegramApi {
     request!(deleteStickerSet, bool);
     request_nb!(getAvailableGifts, Gifts);
     request!(sendGift, bool);
+    request!(giftPremiumSubscription, bool);
     request!(verifyUser, bool);
     request!(verifyChat, bool);
     request!(removeUserVerification, bool);
     request!(removeChatVerification, bool);
+    request!(readBusinessMessage, bool);
+    request!(deleteBusinessMessages, bool);
+    request!(setBusinessAccountName, bool);
+    request!(setBusinessAccountUsername, bool);
+    request!(setBusinessAccountBio, bool);
+    request!(setBusinessAccountProfilePhoto, bool);
+    request!(removeBusinessAccountProfilePhoto, bool);
+    request!(setBusinessAccountGiftSettings, bool);
+    request!(getBusinessAccountStarBalance, StarAmount);
+    request!(transferBusinessAccountStars, bool);
+    request!(getBusinessAccountGifts, OwnedGifts);
+    request!(convertGiftToStars, bool);
+    request!(upgradeGift, bool);
+    request!(transferGift, bool);
+    request!(postStory, Story);
+    request!(editStory, Story);
+    request!(deleteStory, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);

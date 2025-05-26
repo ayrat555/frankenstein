@@ -70,18 +70,3 @@ pub struct InputSticker {
     pub mask_position: Option<MaskPosition>,
     pub keywords: Option<Vec<String>>,
 }
-
-#[apply(apistruct!)]
-pub struct Gift {
-    pub id: String,
-    pub sticker: Sticker,
-    pub star_count: u32,
-    pub upgrade_star_count: Option<u32>,
-    pub total_count: Option<u32>,
-    pub remaining_count: Option<u32>,
-}
-
-#[apply(apistruct!)]
-pub struct Gifts {
-    pub gifts: Vec<Gift>,
-}

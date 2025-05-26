@@ -5,11 +5,11 @@
 use serde::{Deserialize, Serialize};
 
 use crate::macros::{apistruct, apply};
+use crate::parse_mode::ParseMode;
 use crate::payments::LabeledPrice;
 use crate::types::{
     InlineKeyboardMarkup, LinkPreviewOptions, Location, MessageEntity, User, WebAppInfo,
 };
-use crate::ParseMode;
 
 #[apply(apistruct!)]
 pub struct InlineQuery {
