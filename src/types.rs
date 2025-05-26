@@ -479,9 +479,10 @@ pub struct Message {
     pub giveaway: Option<Giveaway>,
     pub giveaway_winners: Option<GiveawayWinners>,
     pub giveaway_completed: Option<GiveawayCompleted>,
+    pub paid_message_price_changed: Option<PaidMessagePriceChanged>,
+    pub video_chat_scheduled: Option<Box<VideoChatScheduled>>,
     pub video_chat_started: Option<Box<VideoChatStarted>>,
     pub video_chat_ended: Option<Box<VideoChatEnded>>,
-    pub video_chat_scheduled: Option<Box<VideoChatScheduled>>,
     pub video_chat_participants_invited: Option<Box<VideoChatParticipantsInvited>>,
     pub web_app_data: Option<Box<WebAppData>>,
     pub reply_markup: Option<Box<InlineKeyboardMarkup>>,
@@ -1356,6 +1357,12 @@ pub struct PaidMediaPhoto {
 #[derive(Eq)]
 pub struct PaidMediaVideo {
     pub video: Video,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct PaidMessagePriceChanged {
+    pub paid_message_star_count: u32,
 }
 
 #[apply(apistruct!)]
