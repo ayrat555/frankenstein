@@ -319,6 +319,7 @@ pub trait TelegramApi {
     request!(deleteStickerSet, bool);
     request_nb!(getAvailableGifts, Gifts);
     request!(sendGift, bool);
+    request!(giftPremiumSubscription, bool);
     request!(verifyUser, bool);
     request!(verifyChat, bool);
     request!(removeUserVerification, bool);
