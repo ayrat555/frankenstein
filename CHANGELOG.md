@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.41.0 (2025-05-26)
+
+* refactor!: box large enum variants - [#278](https://github.com/ayrat555/frankenstein/pull/278)
+* feat!: Bot API 9.0 - [#277](https://github.com/ayrat555/frankenstein/pull/277)
+
 ## 0.40.0 (2025-03-19)
 
 * docs(examples): read token and chat from env - [#262](https://github.com/ayrat555/frankenstein/pull/262)
