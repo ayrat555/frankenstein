@@ -180,12 +180,12 @@ pub enum InputProfilePhoto {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputProfilePhotoStatic {
-    pub photo: String,
+    pub photo: FileUpload,
 }
 
 #[apply(apistruct!)]
 pub struct InputProfilePhotoAnimated {
-    pub animation: String,
+    pub animation: FileUpload,
     pub main_frame_timestamp: Option<f64>,
 }
 
@@ -199,12 +199,12 @@ pub enum InputStoryContent {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputStoryContentPhoto {
-    pub photo: String,
+    pub photo: FileUpload,
 }
 
 #[apply(apistruct!)]
 pub struct InputStoryContentVideo {
-    pub video: String,
+    pub video: FileUpload,
     pub duration: Option<f64>,
     pub cover_frame_timestamp: Option<f64>,
     pub is_animation: Option<bool>,
