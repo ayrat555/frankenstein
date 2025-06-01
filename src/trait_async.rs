@@ -362,10 +362,10 @@ where
 
         let mut params = params.clone();
         match &mut params.photo {
-            InputProfilePhoto::InputProfilePhotoStatic(photo_static) => {
+            InputProfilePhoto::Static(photo_static) => {
                 replace_attach!(photo_static.photo)
             }
-            InputProfilePhoto::InputProfilePhotoAnimated(photo_animated) => {
+            InputProfilePhoto::Animated(photo_animated) => {
                 replace_attach!(photo_animated.animation)
             }
         }
