@@ -330,7 +330,7 @@ pub trait TelegramApi {
     request!(setBusinessAccountUsername, bool);
     request!(setBusinessAccountBio, bool);
 
-    fn setBusinessAccountProfilePhoto(
+    fn set_business_account_profile_photo(
         &self,
         params: &crate::methods::SetBusinessAccountProfilePhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {

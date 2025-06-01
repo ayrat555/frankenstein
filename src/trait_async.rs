@@ -345,7 +345,7 @@ where
     request!(setBusinessAccountUsername, bool);
     request!(setBusinessAccountBio, bool);
 
-    async fn setBusinessAccountProfilePhoto(
+    async fn set_business_account_profile_photo(
         &self,
         params: &crate::methods::SetBusinessAccountProfilePhotoParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
