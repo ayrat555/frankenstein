@@ -4,7 +4,7 @@ use crate::games::GameHighScore;
 use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
-use crate::input_media::{InputMedia, MediaGroupInputMedia};
+use crate::input_media::{InputMedia, InputProfilePhoto, MediaGroupInputMedia};
 use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
@@ -347,7 +347,7 @@ pub trait TelegramApi {
 
         let mut params = params.clone();
         match &mut params.photo {
-            InputProfilePhoto::InputProfilePhotoStatic(photo_staic) => {
+            InputProfilePhoto::InputProfilePhotoStatic(photo_static) => {
                 replace_attach!(photo_static.photo)
             }
             InputProfilePhoto::InputProfilePhotoAnimated(photo_animated) => {
