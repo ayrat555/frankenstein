@@ -1,8 +1,6 @@
 use frankenstein::client_ureq::Bot;
 use frankenstein::input_file::{FileUpload, InputFile};
-use frankenstein::methods::{
-    AddStickerToSetParams, CreateNewStickerSetParams, UploadStickerFileParams,
-};
+use frankenstein::methods::AddStickerToSetParams;
 use frankenstein::stickers::{InputSticker, StickerFormat};
 use frankenstein::TelegramApi;
 
