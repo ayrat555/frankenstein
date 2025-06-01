@@ -37,7 +37,6 @@ fn main() {
         }
         Err(error) => {
             eprintln!("Failed to create a sticker set: {error:?}");
-            return;
         }
     }
 }
