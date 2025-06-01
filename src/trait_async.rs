@@ -344,7 +344,36 @@ where
     request!(setBusinessAccountName, bool);
     request!(setBusinessAccountUsername, bool);
     request!(setBusinessAccountBio, bool);
-    request!(setBusinessAccountProfilePhoto, bool);
+
+    async fn setBusinessAccountProfilePhoto(
+        &self,
+        params: &crate::methods::SetBusinessAccountProfilePhotoParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut files = Vec::new();
+
+        macro_rules! replace_attach {
+            ($base:ident. $property:ident) => {{
+                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
+                if let Some(file) = $base.$property.replace_attach(NAME) {
+                    files.push((NAME, file));
+                }
+            }};
+        }
+
+        let mut params = params.clone();
+        match &mut params.photo {
+            InputProfilePhoto::InputProfilePhotoStatic(photo_staic) => {
+                replace_attach!(photo_static.photo)
+            }
+            InputProfilePhoto::InputProfilePhotoAnimated(photo_animated) => {
+                replace_attach!(photo_animated.animation)
+            }
+        }
+
+        self.request_with_possible_form_data("SetBusinessAccountProfilePhoto", params, files)
+            .await
+    }
+
     request!(removeBusinessAccountProfilePhoto, bool);
     request!(setBusinessAccountGiftSettings, bool);
     request!(getBusinessAccountStarBalance, StarAmount);
