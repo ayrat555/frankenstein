@@ -1,5 +1,5 @@
-use frankenstein::client_ureq::Bot;
 use frankenstein::TelegramApi;
+use frankenstein::client_ureq::Bot;
 
 fn main() {
     let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
@@ -10,8 +10,9 @@ fn main() {
         Ok(response) => {
             let user = response.result;
             println!(
-                "Hello, I'm @{}, https://t.me/{}",
+                "Hello, I'm @{}, https://t.me/{} - {}",
                 user.first_name,
+                user.id,
                 user.username.expect("The bot must have a username.")
             );
         }
