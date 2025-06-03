@@ -71,7 +71,7 @@ jobs:
           path: target/
 
       - name: Check all targets
-        run: cargo hack --keep-going --feature-powerset check --all-targets --offline --features="client-ureq"
+        run: cargo hack --keep-going --feature-powerset check --all-targets --offline
 
       - name: Check without dev dependencies
         run: cargo hack --keep-going --feature-powerset --no-dev-deps check --offline
