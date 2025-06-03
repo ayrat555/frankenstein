@@ -109,3 +109,15 @@ required-features = ["client-reqwest"]
 [[example]]
 name = "api_trait_implementation"
 required-features = ["trait-sync"]
+
+[[example]]
+name = "add_sticker_to_set"
+required-features = ["client-ureq"]
+
+[[example]]
+name = "upload_sticker_file"
+required-features = ["client-ureq"]
+
+[[example]]
+name = "create_new_sticker_set"
+required-features = ["client-ureq"]

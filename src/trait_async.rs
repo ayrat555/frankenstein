@@ -315,8 +315,9 @@ where
         params: &crate::methods::AddStickerToSetParams,
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
-        if let Some(file) = params.sticker.sticker.clone_path() {
-            files.push(("sticker", file));
+        let mut params = params.clone();
+        if let Some(file) = params.sticker.sticker.replace_attach("sticker_upload") {
+            files.push(("sticker_upload", file));
         }
         self.request_with_possible_form_data("addStickerToSet", params, files)
             .await
