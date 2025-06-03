@@ -4,7 +4,7 @@ use crate::games::GameHighScore;
 use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
-use crate::input_media::{InputMedia, MediaGroupInputMedia};
+use crate::input_media::{InputMedia, InputProfilePhoto, MediaGroupInputMedia};
 use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
@@ -330,7 +330,35 @@ pub trait TelegramApi {
     request!(setBusinessAccountName, bool);
     request!(setBusinessAccountUsername, bool);
     request!(setBusinessAccountBio, bool);
-    request!(setBusinessAccountProfilePhoto, bool);
+
+    fn set_business_account_profile_photo(
+        &self,
+        params: &crate::methods::SetBusinessAccountProfilePhotoParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut files = Vec::new();
+
+        macro_rules! replace_attach {
+            ($base:ident. $property:ident) => {{
+                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
+                if let Some(file) = $base.$property.replace_attach(NAME) {
+                    files.push((NAME, file));
+                }
+            }};
+        }
+
+        let mut params = params.clone();
+        match &mut params.photo {
+            InputProfilePhoto::Static(photo_static) => {
+                replace_attach!(photo_static.photo)
+            }
+            InputProfilePhoto::Animated(photo_animated) => {
+                replace_attach!(photo_animated.animation)
+            }
+        }
+
+        self.request_with_possible_form_data("SetBusinessAccountProfilePhoto", params, files)
+    }
+
     request!(removeBusinessAccountProfilePhoto, bool);
     request!(setBusinessAccountGiftSettings, bool);
     request!(getBusinessAccountStarBalance, StarAmount);
