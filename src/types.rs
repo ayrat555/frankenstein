@@ -1142,7 +1142,7 @@ pub struct ChatPermissions {
 pub struct Birthdate {
     pub day: u8,
     pub month: u8,
-    pub year: u16,
+    pub year: Option<u16>,
 }
 
 #[apply(apistruct!)]
