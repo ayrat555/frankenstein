@@ -210,7 +210,7 @@ pub struct TransactionPartnerOther {}
 pub struct StarTransaction {
     pub id: String,
     pub amount: u32,
-    pub nanostar_amount: u32,
+    pub nanostar_amount: Option<u32>,
     pub date: u64,
     pub source: Option<TransactionPartner>,
     pub receiver: Option<TransactionPartner>,
