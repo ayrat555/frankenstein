@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.42.0 (2025-07-04)
+
+* fix!: make year in Birthdate optional - [#286](https://github.com/ayrat555/frankenstein/pull/286)
+* fix: fix add_sticker_to_set, add sticker examples - [#284](https://github.com/ayrat555/frankenstein/pull/284)
+* fix: make nanostar_amount optional in StarTransaction struct - [#288](https://github.com/ayrat555/frankenstein/pull/288)
+
 ## 0.41.0 (2025-05-26)
 
 * refactor!: box large enum variants - [#278](https://github.com/ayrat555/frankenstein/pull/278)
