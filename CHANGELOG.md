@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.43.0 (2025-07-07)
+
+* fix!: make `origin` of ExternalReplyInfo not optional - [#289](https://github.com/ayrat555/frankenstein/pull/289)
+
 ## 0.42.0 (2025-07-04)
 
 * fix!: make year in Birthdate optional - [#286](https://github.com/ayrat555/frankenstein/pull/286)
