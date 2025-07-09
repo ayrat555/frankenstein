@@ -518,7 +518,7 @@ pub struct TextQuote {
 
 #[apply(apistruct!)]
 pub struct ExternalReplyInfo {
-    pub origin: Option<MessageOrigin>,
+    pub origin: MessageOrigin,
     pub chat: Option<Chat>,
     pub message_id: Option<i32>,
     pub link_preview_options: Option<LinkPreviewOptions>,
