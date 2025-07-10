@@ -1,17 +1,18 @@
-use frankenstein::payments::LabeledPrice;
-use frankenstein::TelegramApi;
 use frankenstein::client_ureq::Bot;
 use frankenstein::methods::{AnswerPreCheckoutQueryParams, GetUpdatesParams, SendInvoiceParams};
+use frankenstein::payments::LabeledPrice;
 use frankenstein::types::AllowedUpdate;
 use frankenstein::updates::UpdateContent;
+use frankenstein::TelegramApi;
 
 fn main() {
     // you need to send a message /start to bot
-    let your_token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+    let your_token =
+        std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
     let your_id = std::env::var("YOUR_ID").expect("Should have YOUR_ID as environment variable");
 
     // stars
-    let amount = 10;
+    let number_of_stars = 10;
 
     let bot = Bot::new(&your_token);
 
@@ -24,7 +25,7 @@ fn main() {
         .currency("XTR".to_string())
         .prices(vec![LabeledPrice {
             label: "amount".to_string(),
-            amount: amount,
+            amount: number_of_stars,
         }])
         .build();
     if let Err(error) = bot.send_invoice(&send_invoice) {
