@@ -6,19 +6,16 @@ use frankenstein::updates::UpdateContent;
 use frankenstein::TelegramApi;
 
 fn main() {
-    // you need to send a message /start to bot
-    let your_token =
+    let token =
         std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
-    let your_id = std::env::var("YOUR_ID").expect("Should have YOUR_ID as environment variable");
+    let user_id = std::env::var("TARGET_USER").expect("Should have TARGET_USER as environment variable");
 
-    // stars
     let number_of_stars = 10;
 
-    let bot = Bot::new(&your_token);
+    let bot = Bot::new(&token);
 
-    // send invoice
     let send_invoice = SendInvoiceParams::builder()
-        .chat_id(your_id)
+        .chat_id(user_id)
         .title("Send stars".to_string())
         .description("Get stars for bot".to_string())
         .payload("gift_purchase".to_string())
