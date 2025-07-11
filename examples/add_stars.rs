@@ -35,7 +35,7 @@ fn main() {
         .timeout(100)
         .build();
 
-    loop {
+    'main_loop: loop {
         let result = bot.get_updates(&update_params);
 
         match result {
@@ -50,13 +50,18 @@ fn main() {
                             Ok(successfully) => {
                                 if successfully.result {
                                     println!("Pre-checkout query answered successfully.");
-                                    break;
-                                } else {
-                                    println!("Failed to answer pre-checkout query.");
+
+                                    // This is necessary so that the previous transaction is not visible during the next run.
+                                    update_params.offset = Some(i64::from(update.update_id) + 1);
+                                    update_params.timeout = None;
+                                    let _ = bot.get_updates(&update_params);
+
+                                    break 'main_loop;
                                 }
+                                println!("Failed to answer pre-checkout query.");
                             }
                             Err(error) => {
-                                println!("Error answering pre-checkout query: {error:?}")
+                                println!("Error answering pre-checkout query: {error:?}");
                             }
                         }
                     }
