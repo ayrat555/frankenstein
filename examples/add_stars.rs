@@ -42,12 +42,23 @@ fn main() {
             Ok(response) => {
                 for update in response.result {
                     if let UpdateContent::PreCheckoutQuery(message) = update.content {
-                        let bot_clone = bot.clone();
                         let params = AnswerPreCheckoutQueryParams::builder()
-                            .pre_checkout_query_id(message.id.clone())
+                            .pre_checkout_query_id(message.id)
                             .ok(true)
                             .build();
-                        bot_clone.answer_pre_checkout_query(&params).ok();
+                        match bot.answer_pre_checkout_query(&params) {
+                            Ok(successfully) => {
+                                if successfully.result {
+                                    println!("Pre-checkout query answered successfully.");
+                                    break;
+                                } else {
+                                    println!("Failed to answer pre-checkout query.");
+                                }
+                            }
+                            Err(error) => {
+                                println!("Error answering pre-checkout query: {error:?}")
+                            }
+                        }
                     }
                     update_params.offset = Some(i64::from(update.update_id) + 1);
                 }
