@@ -6,9 +6,9 @@ use frankenstein::updates::UpdateContent;
 use frankenstein::TelegramApi;
 
 fn main() {
-    let token =
-        std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
-    let user_id = std::env::var("TARGET_USER").expect("Should have TARGET_USER as environment variable");
+    let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
+    let user_id =
+        std::env::var("TARGET_USER").expect("Should have TARGET_USER as environment variable");
 
     let number_of_stars = 10;
 
