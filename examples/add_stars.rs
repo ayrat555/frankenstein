@@ -1,9 +1,9 @@
+use frankenstein::TelegramApi;
 use frankenstein::client_ureq::Bot;
 use frankenstein::methods::{AnswerPreCheckoutQueryParams, GetUpdatesParams, SendInvoiceParams};
 use frankenstein::payments::LabeledPrice;
 use frankenstein::types::AllowedUpdate;
 use frankenstein::updates::UpdateContent;
-use frankenstein::TelegramApi;
 
 fn main() {
     let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
@@ -32,10 +32,9 @@ fn main() {
     // waiting for payment confirmation
     let mut update_params = GetUpdatesParams::builder()
         .allowed_updates(vec![AllowedUpdate::PreCheckoutQuery])
-        .timeout(100)
         .build();
 
-    'main_loop: loop {
+    loop {
         let result = bot.get_updates(&update_params);
 
         match result {
@@ -47,18 +46,8 @@ fn main() {
                             .ok(true)
                             .build();
                         match bot.answer_pre_checkout_query(&params) {
-                            Ok(successfully) => {
-                                if successfully.result {
-                                    println!("Pre-checkout query answered successfully.");
-
-                                    // This is necessary so that the previous transaction is not visible during the next run.
-                                    update_params.offset = Some(i64::from(update.update_id) + 1);
-                                    update_params.timeout = None;
-                                    let _ = bot.get_updates(&update_params);
-
-                                    break 'main_loop;
-                                }
-                                println!("Failed to answer pre-checkout query.");
+                            Ok(_) => {
+                                println!("Pre-checkout query answered successfully.");
                             }
                             Err(error) => {
                                 println!("Error answering pre-checkout query: {error:?}");
