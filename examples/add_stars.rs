@@ -1,9 +1,9 @@
-use frankenstein::TelegramApi;
 use frankenstein::client_ureq::Bot;
 use frankenstein::methods::{AnswerPreCheckoutQueryParams, GetUpdatesParams, SendInvoiceParams};
 use frankenstein::payments::LabeledPrice;
 use frankenstein::types::AllowedUpdate;
 use frankenstein::updates::UpdateContent;
+use frankenstein::TelegramApi;
 
 fn main() {
     let token = std::env::var("BOT_TOKEN").expect("Should have BOT_TOKEN as environment variable");
