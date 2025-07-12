@@ -121,3 +121,7 @@ required-features = ["client-ureq"]
 [[example]]
 name = "create_new_sticker_set"
 required-features = ["client-ureq"]
+
+[[example]]
+name = "add_stars"
+required-features = ["client-ureq"]
