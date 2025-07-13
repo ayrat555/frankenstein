@@ -352,26 +352,21 @@ where
     ) -> Result<MethodResponse<bool>, Self::Error> {
         let mut files = Vec::new();
 
-        macro_rules! replace_attach {
-            ($base:ident. $property:ident) => {{
-                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
-                if let Some(file) = $base.$property.replace_attach(NAME) {
-                    files.push((NAME, file));
-                }
-            }};
-        }
-
         let mut params = params.clone();
         match &mut params.photo {
             InputProfilePhoto::Static(photo_static) => {
-                replace_attach!(photo_static.photo)
+                if let Some(file) = photo_static.replace_attach("photo_static") {
+                    files.push(("photo_static", file));
+                }
             }
             InputProfilePhoto::Animated(photo_animated) => {
-                replace_attach!(photo_animated.animation)
+                if let Some(file) = photo_animated.replace_attach("photo_animated") {
+                    files.push(("photo_animated", file));
+                }
             }
         }
 
-        self.request_with_possible_form_data("SetBusinessAccountProfilePhoto", params, files)
+        self.request_with_possible_form_data("setBusinessAccountProfilePhoto", params, files)
             .await
     }
 
