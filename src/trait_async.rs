@@ -425,7 +425,7 @@ where
             }
         }
 
-        self.request_with_possible_form_data("postStory", params, files)
+        self.request_with_possible_form_data("editStory", params, files)
             .await
     }
     request!(deleteStory, bool);
