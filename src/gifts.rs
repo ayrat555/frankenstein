@@ -75,9 +75,20 @@ pub struct GiftInfo {
 #[apply(apistruct!)]
 pub struct UniqueGiftInfo {
     pub gift: UniqueGift,
-    pub origin: String,
+    pub origin: GiftOrigin,
+    pub last_resale_star_count: Option<u32>,
     pub owned_gift_id: Option<String>,
     pub transfer_star_count: Option<u32>,
+    pub next_transfer_date: Option<u64>,
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[non_exhaustive]
+#[serde(rename_all = "snake_case")]
+pub enum GiftOrigin {
+    Upgrade,
+    Transfer,
+    Resale,
 }
 
 #[apply(apistruct!)]
@@ -121,6 +132,7 @@ pub struct OwnedGiftUnique {
     pub is_saved: Option<bool>,
     pub can_be_transferred: Option<bool>,
     pub transfer_star_count: Option<u32>,
+    pub next_transfer_date: Option<u64>,
 }
 
 #[apply(apistruct!)]
