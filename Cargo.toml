@@ -1,6 +1,6 @@
 [package]
 name = "frankenstein"
-version = "0.41.0"
+version = "0.43.0"
 authors = [
     "Ayrat Badykov <ayratin555@gmail.com>",
     "EdJoPaTo <frankenstein-rust@edjopato.de>",
@@ -109,3 +109,15 @@ required-features = ["client-reqwest"]
 [[example]]
 name = "api_trait_implementation"
 required-features = ["trait-sync"]
+
+[[example]]
+name = "add_sticker_to_set"
+required-features = ["client-ureq"]
+
+[[example]]
+name = "upload_sticker_file"
+required-features = ["client-ureq"]
+
+[[example]]
+name = "create_new_sticker_set"
+required-features = ["client-ureq"]
