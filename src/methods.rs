@@ -13,8 +13,8 @@ use crate::payments::{LabeledPrice, ShippingOption};
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
-    ChatPermissions, InlineKeyboardMarkup, InputPollOption, LinkPreviewOptions, MenuButton,
-    MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters, StoryArea,
+    ChatPermissions, InlineKeyboardMarkup, InputChecklist, InputPollOption, LinkPreviewOptions,
+    MenuButton, MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters, StoryArea,
 };
 
 #[apply(apistruct!)]
@@ -344,6 +344,16 @@ pub struct StopMessageLiveLocationParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct EditMessageChecklistParams {
+    pub business_connection_id: String,
+    pub chat_id: ChatId,
+    pub message_id: i32,
+    pub checklist: InputChecklist,
+    pub reply_markup: Option<InlineKeyboardMarkup>,
+}
+
+#[apply(apistruct!)]
 pub struct SendVenueParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -424,6 +434,19 @@ pub struct SendDiceParams {
     pub message_effect_id: Option<String>,
     pub reply_parameters: Option<ReplyParameters>,
     pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendChecklistParams {
+    pub business_connection_id: String,
+    pub chat_id: ChatId,
+    pub checklist: InputChecklist,
+    pub disable_notification: Option<bool>,
+    pub protect_content: Option<bool>,
+    pub message_effect_id: Option<String>,
+    pub reply_parameters: Option<ReplyParameters>,
+    pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
 #[apply(apistruct!)]

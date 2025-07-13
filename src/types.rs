@@ -438,6 +438,7 @@ pub struct Message {
     pub caption_entities: Option<Vec<MessageEntity>>,
     pub show_caption_above_media: Option<bool>,
     pub has_media_spoiler: Option<bool>,
+    pub checklist: Option<Checklist>,
     pub contact: Option<Box<Contact>>,
     pub dice: Option<Box<Dice>>,
     pub game: Option<Box<Game>>,
@@ -469,6 +470,9 @@ pub struct Message {
     pub proximity_alert_triggered: Option<Box<ProximityAlertTriggered>>,
     pub boost_added: Option<Box<ChatBoostAdded>>,
     pub chat_background_set: Option<Box<ChatBackground>>,
+    pub checklist_tasks_done: Option<Box<ChecklistTasksDone>>,
+    pub checklist_tasks_added: Option<Box<ChecklistTasksAdded>>,
+    pub direct_message_price_changed: Option<Box<DirectMessagePriceChanged>>,
     pub forum_topic_created: Option<Box<ForumTopicCreated>>,
     pub forum_topic_edited: Option<Box<ForumTopicEdited>>,
     pub forum_topic_closed: Option<Box<ForumTopicClosed>>,
@@ -533,6 +537,7 @@ pub struct ExternalReplyInfo {
     pub video_note: Option<VideoNote>,
     pub voice: Option<Voice>,
     pub has_media_spoiler: Option<bool>,
+    pub checklist: Option<Checklist>,
     pub contact: Option<Contact>,
     pub dice: Option<Dice>,
     pub game: Option<Game>,
@@ -750,6 +755,59 @@ pub struct Poll {
     pub explanation_entities: Option<Vec<MessageEntity>>,
     pub open_period: Option<u32>,
     pub close_date: Option<u64>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChecklistTask {
+    pub id: i64,
+    pub text: String,
+    pub text_entities: Option<Vec<MessageEntity>>,
+    pub completed_by_user: Option<User>,
+    pub completion_date: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct Checklist {
+    pub title: String,
+    pub title_entities: Option<Vec<MessageEntity>>,
+    pub tasks: Vec<ChecklistTask>,
+    pub others_can_add_tasks: Option<bool>,
+    pub others_can_mark_tasks_as_done: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputChecklistTask {
+    pub id: i64,
+    pub text: String,
+    pub parse_mode: Option<String>,
+    pub text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputChecklist {
+    pub title: String,
+    pub parse_mode: Option<String>,
+    pub title_entities: Option<Vec<MessageEntity>>,
+    pub tasks: Vec<InputChecklistTask>,
+    pub others_can_add_tasks: Option<bool>,
+    pub others_can_mark_tasks_as_done: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct ChecklistTasksDone {
+    pub checklist_message: Option<Message>,
+    pub marked_as_done_task_ids: Option<Vec<i64>>,
+    pub marked_as_not_done_task_ids: Option<Vec<i64>>,
+}
+
+#[apply(apistruct!)]
+pub struct ChecklistTasksAdded {
+    pub checklist_message: Option<Message>,
+    pub tasks: Vec<ChecklistTask>,
 }
 
 #[apply(apistruct!)]
@@ -1363,6 +1421,13 @@ pub struct PaidMediaVideo {
 #[derive(Eq)]
 pub struct PaidMessagePriceChanged {
     pub paid_message_star_count: u32,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct DirectMessagePriceChanged {
+    pub are_direct_messages_enabled: bool,
+    pub direct_message_star_count: Option<u32>,
 }
 
 #[apply(apistruct!)]

@@ -137,6 +137,8 @@ pub trait TelegramApi {
     request!(sendLocation, Message);
     request!(editMessageLiveLocation, MessageOrBool);
     request!(stopMessageLiveLocation, MessageOrBool);
+    request!(sendChecklist, MessageOrBool);
+    request!(editMessageChecklist, MessageOrBool);
     request!(sendVenue, Message);
     request!(sendContact, Message);
     request!(sendPoll, Message);
@@ -346,6 +348,7 @@ pub trait TelegramApi {
     request!(createInvoiceLink, String);
     request!(answerShippingQuery, bool);
     request!(answerPreCheckoutQuery, bool);
+    request_nb!(getMyStarBalance, u32);
     request!(getStarTransactions, StarTransactions);
     request!(refundStarPayment, bool);
     request!(editUserStarSubscription, bool);
