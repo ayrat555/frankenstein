@@ -380,7 +380,30 @@ where
             .await
     }
 
-    request!(editStory, Story);
+    async fn edit_story(
+        &self,
+        params: &crate::methods::EditStoryParams,
+    ) -> Result<MethodResponse<Story>, Self::Error> {
+        let mut files = Vec::new();
+
+        let mut params = params.clone();
+
+        match &mut params.content {
+            InputStoryContent::Photo(photo_content) => {
+                if let Some(file) = photo_content.photo.replace_attach("photo_content") {
+                    files.push(("photo_content", file));
+                }
+            }
+            InputStoryContent::Video(video_content) => {
+                if let Some(file) = video_content.video.replace_attach("video_content") {
+                    files.push(("video_content", file));
+                }
+            }
+        }
+
+        self.request_with_possible_form_data("postStory", params, files)
+            .await
+    }
     request!(deleteStory, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
