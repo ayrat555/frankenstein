@@ -4,7 +4,7 @@ use crate::games::GameHighScore;
 use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
-use crate::input_media::{InputMedia, MediaGroupInputMedia};
+use crate::input_media::{InputMedia, InputStoryContent, MediaGroupInputMedia};
 use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
