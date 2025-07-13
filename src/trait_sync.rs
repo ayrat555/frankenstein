@@ -4,7 +4,7 @@ use crate::games::GameHighScore;
 use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
-use crate::input_media::{InputMedia, InputProfilePhoto, MediaGroupInputMedia};
+use crate::input_media::{InputMedia, InputProfilePhoto, InputStoryContent, MediaGroupInputMedia};
 use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
@@ -362,8 +362,55 @@ pub trait TelegramApi {
     request!(convertGiftToStars, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);
-    request!(postStory, Story);
-    request!(editStory, Story);
+
+    fn post_story(
+        &self,
+        params: &crate::methods::PostStoryParams,
+    ) -> Result<MethodResponse<Story>, Self::Error> {
+        let mut files = Vec::new();
+
+        let mut params = params.clone();
+
+        match &mut params.content {
+            InputStoryContent::Photo(photo_content) => {
+                if let Some(file) = photo_content.photo.replace_attach("photo_content") {
+                    files.push(("photo_content", file));
+                }
+            }
+            InputStoryContent::Video(video_content) => {
+                if let Some(file) = video_content.video.replace_attach("video_content") {
+                    files.push(("video_content", file));
+                }
+            }
+        }
+
+        self.request_with_possible_form_data("postStory", params, files)
+    }
+
+    fn edit_story(
+        &self,
+        params: &crate::methods::EditStoryParams,
+    ) -> Result<MethodResponse<Story>, Self::Error> {
+        let mut files = Vec::new();
+
+        let mut params = params.clone();
+
+        match &mut params.content {
+            InputStoryContent::Photo(photo_content) => {
+                if let Some(file) = photo_content.photo.replace_attach("photo_content") {
+                    files.push(("photo_content", file));
+                }
+            }
+            InputStoryContent::Video(video_content) => {
+                if let Some(file) = video_content.video.replace_attach("video_content") {
+                    files.push(("video_content", file));
+                }
+            }
+        }
+
+        self.request_with_possible_form_data("editStory", params, files)
+    }
+
     request!(deleteStory, bool);
     request!(sendInvoice, Message);
     request!(createInvoiceLink, String);
