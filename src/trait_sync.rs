@@ -4,7 +4,7 @@ use crate::games::GameHighScore;
 use crate::gifts::{Gifts, OwnedGifts};
 use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
 use crate::input_file::HasInputFile;
-use crate::input_media::{InputMedia, MediaGroupInputMedia};
+use crate::input_media::{InputMedia, InputProfilePhoto, MediaGroupInputMedia};
 use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
@@ -330,7 +330,30 @@ pub trait TelegramApi {
     request!(setBusinessAccountName, bool);
     request!(setBusinessAccountUsername, bool);
     request!(setBusinessAccountBio, bool);
-    request!(setBusinessAccountProfilePhoto, bool);
+
+    fn set_business_account_profile_photo(
+        &self,
+        params: &crate::methods::SetBusinessAccountProfilePhotoParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut files = Vec::new();
+
+        let mut params = params.clone();
+        match &mut params.photo {
+            InputProfilePhoto::Static(photo_static) => {
+                if let Some(file) = photo_static.photo.replace_attach("photo_static") {
+                    files.push(("photo_static", file));
+                }
+            }
+            InputProfilePhoto::Animated(photo_animated) => {
+                if let Some(file) = photo_animated.animation.replace_attach("photo_animated") {
+                    files.push(("photo_animated", file));
+                }
+            }
+        }
+
+        self.request_with_possible_form_data("setBusinessAccountProfilePhoto", params, files)
+    }
+
     request!(removeBusinessAccountProfilePhoto, bool);
     request!(setBusinessAccountGiftSettings, bool);
     request!(getBusinessAccountStarBalance, StarAmount);

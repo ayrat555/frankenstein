@@ -180,12 +180,12 @@ pub enum InputProfilePhoto {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct InputProfilePhotoStatic {
-    pub photo: String,
+    pub photo: FileUpload,
 }
 
 #[apply(apistruct!)]
 pub struct InputProfilePhotoAnimated {
-    pub animation: String,
+    pub animation: FileUpload,
     pub main_frame_timestamp: Option<f64>,
 }
 
