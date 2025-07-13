@@ -349,12 +349,12 @@ pub trait TelegramApi {
         let mut params = params.clone();
 
         match &mut params.content {
-            InputStoryContent::InputStoryContentPhoto(photo_content) => {
+            InputStoryContent::Photo(photo_content) => {
                 if let Some(file) = photo_content.photo.replace_attach("photo_content") {
                     files.push(("photo_content", file));
                 }
             }
-            InputStoryContent::InputStoryContentVideo(video_content) => {
+            InputStoryContent::Video(video_content) => {
                 if let Some(file) = video_content.video.replace_attach("video_content") {
                     files.push(("video_content", file));
                 }
