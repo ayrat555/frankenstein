@@ -34,7 +34,7 @@ fn main() {
         .allowed_updates(vec![AllowedUpdate::PreCheckoutQuery])
         .build();
 
-    loop {
+    'main_loop: loop {
         let result = bot.get_updates(&update_params);
 
         match result {
@@ -48,6 +48,12 @@ fn main() {
                         match bot.answer_pre_checkout_query(&params) {
                             Ok(_) => {
                                 println!("Pre-checkout query answered successfully.");
+                                // This is necessary so that the previous transaction is not visible during the next run.
+                                update_params.offset = Some(i64::from(update.update_id) + 1);
+                                update_params.timeout = None;
+                                let _ = bot.get_updates(&update_params);
+
+                                break 'main_loop;
                             }
                             Err(error) => {
                                 println!("Error answering pre-checkout query: {error:?}");
