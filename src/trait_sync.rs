@@ -339,7 +339,31 @@ pub trait TelegramApi {
     request!(convertGiftToStars, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);
-    request!(postStory, Story);
+
+    fn post_story(
+        &self,
+        params: &crate::methods::PostStoryParams,
+    ) -> Result<MethodResponse<Story>, Self::Error> {
+        let mut files = Vec::new();
+
+        let mut params = params.clone();
+
+        match &mut params.content {
+            InputStoryContent::InputStoryContentPhoto(photo_content) => {
+                if let Some(file) = photo_content.photo.replace_attach("photo_content") {
+                    files.push(("photo_content", file));
+                }
+            }
+            InputStoryContent::InputStoryContentVideo(video_content) => {
+                if let Some(file) = video_content.video.replace_attach("video_content") {
+                    files.push(("video_content", file));
+                }
+            }
+        }
+
+        self.request_with_possible_form_data("postStory", params, files)
+    }
+
     request!(editStory, Story);
     request!(deleteStory, bool);
     request!(sendInvoice, Message);
