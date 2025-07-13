@@ -355,12 +355,12 @@ where
         let mut params = params.clone();
         match &mut params.photo {
             InputProfilePhoto::Static(photo_static) => {
-                if let Some(file) = photo_static.replace_attach("photo_static") {
+                if let Some(file) = photo_static.photo.replace_attach("photo_static") {
                     files.push(("photo_static", file));
                 }
             }
             InputProfilePhoto::Animated(photo_animated) => {
-                if let Some(file) = photo_animated.replace_attach("photo_animated") {
+                if let Some(file) = photo_animated.animation.replace_attach("photo_animated") {
                     files.push(("photo_animated", file));
                 }
             }
