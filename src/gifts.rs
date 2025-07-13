@@ -83,6 +83,7 @@ pub struct UniqueGiftInfo {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[non_exhaustive]
 #[serde(rename_all = "snake_case")]
 pub enum GiftOrigin {
     Upgrade,
