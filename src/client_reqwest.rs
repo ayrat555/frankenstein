@@ -3,8 +3,8 @@ use std::path::PathBuf;
 use async_trait::async_trait;
 use bon::Builder;
 
-use crate::Error;
 use crate::trait_async::AsyncTelegramApi;
+use crate::Error;
 
 /// Asynchronous [`AsyncTelegramApi`] implementation with [`reqwest`]
 #[derive(Debug, Clone, Builder)]

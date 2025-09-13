@@ -5,8 +5,8 @@ use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 
-use crate::Error;
 use crate::trait_sync::TelegramApi;
+use crate::Error;
 
 /// Synchronous [`TelegramApi`] implementation with [`ureq`].
 #[derive(Debug, Clone, Builder)]
