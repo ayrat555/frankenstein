@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::macros::{apistruct, apply};
 use crate::stickers::Sticker;
-use crate::types::{MessageEntity, User};
+use crate::types::{Chat, MessageEntity, User};
 
 #[apply(apistruct!)]
 pub struct Gift {
@@ -12,6 +12,7 @@ pub struct Gift {
     pub upgrade_star_count: Option<u32>,
     pub total_count: Option<u32>,
     pub remaining_count: Option<u32>,
+    pub publisher_chat: Option<Box<Chat>>,
 }
 
 #[apply(apistruct!)]
@@ -58,6 +59,7 @@ pub struct UniqueGift {
     pub model: UniqueGiftModel,
     pub symbol: UniqueGiftSymbol,
     pub backdrop: UniqueGiftBackdrop,
+    pub publisher_chat: Option<Box<Chat>>,
 }
 
 #[apply(apistruct!)]
