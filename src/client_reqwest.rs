@@ -3,8 +3,8 @@ use std::path::PathBuf;
 use async_trait::async_trait;
 use bon::Builder;
 
-use crate::trait_async::AsyncTelegramApi;
 use crate::Error;
+use crate::trait_async::AsyncTelegramApi;
 
 /// Asynchronous [`AsyncTelegramApi`] implementation with [`reqwest`]
 #[derive(Debug, Clone, Builder)]
@@ -113,7 +113,7 @@ impl AsyncTelegramApi for Bot {
             for (key, val) in json_struct.as_object().unwrap() {
                 if !file_keys.contains(&key.as_str()) {
                     let val = match val {
-                        Value::String(val) => val.to_string(),
+                        Value::String(val) => val.clone(),
                         other => other.to_string(),
                     };
 

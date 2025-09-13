@@ -5,8 +5,8 @@ use bon::Builder;
 use multipart::client::lazy::Multipart;
 use serde_json::Value;
 
-use crate::trait_sync::TelegramApi;
 use crate::Error;
+use crate::trait_sync::TelegramApi;
 
 /// Synchronous [`TelegramApi`] implementation with [`ureq`].
 #[derive(Debug, Clone, Builder)]
@@ -99,7 +99,7 @@ impl TelegramApi for Bot {
         for (key, val) in json_struct.as_object().unwrap() {
             if !file_keys.contains(&key.as_str()) {
                 let val = match val {
-                    Value::String(val) => val.to_string(),
+                    Value::String(val) => val.clone(),
                     other => other.to_string(),
                 };
 
