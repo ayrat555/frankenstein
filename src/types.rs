@@ -95,6 +95,7 @@ pub struct ReplyParameters {
     pub quote_parse_mode: Option<ParseMode>,
     pub quote_entities: Option<Vec<MessageEntity>>,
     pub quote_position: Option<u32>,
+    pub checklist_task_id: Option<i64>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -344,6 +345,7 @@ pub struct Chat {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub is_forum: Option<bool>,
+    pub is_direct_messages: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -356,6 +358,7 @@ pub struct ChatFullInfo {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub is_forum: Option<bool>,
+    pub is_direct_messages: Option<bool>,
     pub photo: Option<ChatPhoto>,
     pub active_usernames: Option<Vec<String>>,
     pub birthdate: Option<Birthdate>,
@@ -363,6 +366,7 @@ pub struct ChatFullInfo {
     pub business_location: Option<BusinessLocation>,
     pub business_opening_hours: Option<BusinessOpeningHours>,
     pub personal_chat: Option<Box<Chat>>,
+    pub parent_chat: Option<Box<Chat>>,
     pub available_reactions: Option<Vec<ReactionType>>,
     pub accent_color_id: Option<u16>,
     pub max_reaction_count: Option<u16>,
@@ -400,6 +404,7 @@ pub struct ChatFullInfo {
 pub struct Message {
     pub message_id: i32,
     pub message_thread_id: Option<i32>,
+    pub direct_messages_topic: Option<Box<DirectMessagesTopic>>,
     pub from: Option<Box<User>>,
     pub sender_chat: Option<Box<Chat>>,
     pub sender_boost_count: Option<u32>,
@@ -414,6 +419,7 @@ pub struct Message {
     pub external_reply: Option<Box<ExternalReplyInfo>>,
     pub quote: Option<Box<TextQuote>>,
     pub reply_to_story: Option<Box<Story>>,
+    pub reply_to_checklist_task_id: Option<i64>,
     pub via_bot: Option<Box<User>>,
     pub edit_date: Option<u64>,
     pub has_protected_content: Option<bool>,
@@ -980,6 +986,13 @@ pub struct VideoChatEnded {
 #[derive(Eq)]
 pub struct VideoChatParticipantsInvited {
     pub users: Option<Vec<User>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct DirectMessagesTopic {
+    pub topic_id: i64,
+    pub user: Option<User>,
 }
 
 #[apply(apistruct!)]
