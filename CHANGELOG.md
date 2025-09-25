@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.45.0 (2025-09-25)
+
+* perf(client): less clones on creating multipart form - [#297](https://github.com/ayrat555/frankenstein/pull/297)
+* feat: Bot API 9.2 - Checklists/Gifts/Direct Messages in Channels - [#298](https://github.com/ayrat555/frankenstein/pull/298)
+* feat: Bot API 9.2 - Suggested Posts - [#299](https://github.com/ayrat555/frankenstein/pull/299)
+
 ## 0.44.0 (2025-07-13)
 
 * feat: Bot API 9.1 - [#293](https://github.com/ayrat555/frankenstein/pull/293)
