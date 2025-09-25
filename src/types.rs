@@ -617,6 +617,20 @@ impl LinkPreviewOptions {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct SuggestedPostPrice {
+    pub currency: String,
+    pub amount: u64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SuggestedPostParameters {
+    pub price: Option<SuggestedPostPrice>,
+    pub send_date: Option<u64>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct PhotoSize {
     pub file_id: String,
     pub file_unique_id: String,
