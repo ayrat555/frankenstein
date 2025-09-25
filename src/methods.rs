@@ -984,7 +984,7 @@ pub struct StopPollParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
-pub struct ApproveSuggestedPost {
+pub struct ApproveSuggestedPostParams {
     pub chat_id: i64,
     pub message_id: i32,
     pub send_date: Option<u64>,
@@ -992,7 +992,7 @@ pub struct ApproveSuggestedPost {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
-pub struct DeclineSuggestedPost {
+pub struct DeclineSuggestedPostParams {
     pub chat_id: i64,
     pub message_id: i32,
     pub send_date: Option<u64>,
