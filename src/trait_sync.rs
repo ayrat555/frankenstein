@@ -258,6 +258,8 @@ pub trait TelegramApi {
 
     request!(editMessageReplyMarkup, MessageOrBool);
     request!(stopPoll, Poll);
+    request!(approveSuggestedPost, bool);
+    request!(declineSuggestedPost, bool);
     request!(deleteMessage, bool);
     request!(deleteMessages, bool);
     request_f!(sendSticker, Message, sticker);
