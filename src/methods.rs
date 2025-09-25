@@ -571,6 +571,7 @@ pub struct PromoteChatMemberParams {
     pub can_invite_users: Option<bool>,
     pub can_pin_messages: Option<bool>,
     pub can_manage_topics: Option<bool>,
+    pub can_manage_direct_messages: Option<bool>,
 }
 
 #[apply(apistruct!)]

@@ -7,7 +7,7 @@ use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftInfo};
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
-use crate::payments::{Invoice, RefundedPayment, SuccessfulPayment};
+use crate::payments::{Invoice, RefundedPayment, StarAmount, SuccessfulPayment};
 use crate::stickers::Sticker;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -211,6 +211,7 @@ pub struct ChatMemberAdministrator {
     pub can_edit_stories: Option<bool>,
     pub can_delete_stories: Option<bool>,
     pub can_manage_topics: Option<bool>,
+    pub can_manage_direct_messages: Option<bool>,
     pub custom_title: Option<String>,
 }
 
@@ -424,11 +425,13 @@ pub struct Message {
     pub edit_date: Option<u64>,
     pub has_protected_content: Option<bool>,
     pub is_from_offline: Option<bool>,
+    pub is_paid_post: Option<bool>,
     pub media_group_id: Option<String>,
     pub author_signature: Option<String>,
     pub text: Option<String>,
     pub entities: Option<Vec<MessageEntity>>,
     pub link_preview_options: Option<LinkPreviewOptions>,
+    pub suggested_post_info: Option<SuggestedPostInfo>,
     pub effect_id: Option<String>,
     pub animation: Option<Box<Animation>>,
     pub audio: Option<Box<Audio>>,
@@ -490,6 +493,11 @@ pub struct Message {
     pub giveaway_winners: Option<GiveawayWinners>,
     pub giveaway_completed: Option<GiveawayCompleted>,
     pub paid_message_price_changed: Option<PaidMessagePriceChanged>,
+    pub suggested_post_approved: Option<Box<SuggestedPostApproved>>,
+    pub suggested_post_approval_failed: Option<Box<SuggestedPostApprovalFailed>>,
+    pub suggested_post_declined: Option<Box<SuggestedPostDeclined>>,
+    pub suggested_post_paid: Option<Box<SuggestedPostPaid>>,
+    pub suggested_post_refunded: Option<Box<SuggestedPostRefunded>>,
     pub video_chat_scheduled: Option<Box<VideoChatScheduled>>,
     pub video_chat_started: Option<Box<VideoChatStarted>>,
     pub video_chat_ended: Option<Box<VideoChatEnded>>,
@@ -620,6 +628,22 @@ impl LinkPreviewOptions {
 pub struct SuggestedPostPrice {
     pub currency: String,
     pub amount: u64,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum SuggestedPostState {
+    Pending,
+    Approved,
+    Declined,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SuggestedPostInfo {
+    pub state: SuggestedPostState,
+    pub price: Option<SuggestedPostPrice>,
+    pub send_date: Option<u64>,
 }
 
 #[apply(apistruct!)]
@@ -1458,6 +1482,46 @@ pub struct DirectMessagePriceChanged {
 }
 
 #[apply(apistruct!)]
+pub struct SuggestedPostApproved {
+    pub suggested_post_message: Option<Message>,
+    pub price: Option<SuggestedPostPrice>,
+    pub send_date: u64,
+}
+
+#[apply(apistruct!)]
+pub struct SuggestedPostApprovalFailed {
+    pub suggested_post_message: Option<Message>,
+    pub price: SuggestedPostPrice,
+}
+
+#[apply(apistruct!)]
+pub struct SuggestedPostDeclined {
+    pub suggested_post_message: Option<Message>,
+    pub comment: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct SuggestedPostPaid {
+    pub suggested_post_message: Option<Message>,
+    pub currency: String,
+    pub amount: Option<u64>,
+    pub star_amount: Option<StarAmount>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum RefundReason {
+    PostDeleted,
+    PaymentRefunded,
+}
+
+#[apply(apistruct!)]
+pub struct SuggestedPostRefunded {
+    pub suggested_post_message: Option<Message>,
+    pub reason: RefundReason,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct GiveawayCreated {
     pub prize_star_count: Option<u32>,
@@ -1520,6 +1584,7 @@ pub struct ChatAdministratorRights {
     pub can_edit_stories: Option<bool>,
     pub can_delete_stories: Option<bool>,
     pub can_manage_topics: Option<bool>,
+    pub can_manage_direct_messages: Option<bool>,
 }
 
 #[apply(apistruct!)]
