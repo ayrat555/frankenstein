@@ -1,6 +1,10 @@
 //! [Available Types](https://core.telegram.org/bots/api#available-types) of the Bot API.
 
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "serde_json")]
+use serde::de;
+#[cfg(feature = "serde_json")]
+use serde_json::Value;
 
 use crate::games::{CallbackGame, Game};
 use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftInfo};
@@ -159,13 +163,58 @@ pub enum MenuButton {
     Default,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, PartialEq, Eq)]
+#[cfg_attr(not(feature = "serde_json"), derive(Deserialize))]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum ChatBackground {
     Fill(BackgroundTypeFill),
     Wallpaper(BackgroundTypeWallpaper),
-    Patter(BackgroundTypePattern),
+    Pattern(BackgroundTypePattern),
     ChatTheme(BackgroundTypeChatTheme),
+}
+
+#[cfg(feature = "serde_json")]
+#[derive(Deserialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
+enum ChatBackgroundTagged {
+    Fill(BackgroundTypeFill),
+    Wallpaper(BackgroundTypeWallpaper),
+    Pattern(BackgroundTypePattern),
+    ChatTheme(BackgroundTypeChatTheme),
+}
+
+#[cfg(feature = "serde_json")]
+impl From<ChatBackgroundTagged> for ChatBackground {
+    fn from(value: ChatBackgroundTagged) -> Self {
+        match value {
+            ChatBackgroundTagged::Fill(value) => ChatBackground::Fill(value),
+            ChatBackgroundTagged::Wallpaper(value) => ChatBackground::Wallpaper(value),
+            ChatBackgroundTagged::Pattern(value) => ChatBackground::Pattern(value),
+            ChatBackgroundTagged::ChatTheme(value) => ChatBackground::ChatTheme(value),
+        }
+    }
+}
+
+#[cfg(feature = "serde_json")]
+impl<'de> Deserialize<'de> for ChatBackground {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = Value::deserialize(deserializer)?;
+        if let Value::Object(map) = &value {
+            if let Some(Value::Object(inner)) = map.get("type") {
+                let tagged: ChatBackgroundTagged =
+                    serde_json::from_value(Value::Object(inner.clone()))
+                        .map_err(de::Error::custom)?;
+                return Ok(ChatBackground::from(tagged));
+            }
+        }
+
+        let tagged: ChatBackgroundTagged =
+            serde_json::from_value(value).map_err(de::Error::custom)?;
+        Ok(ChatBackground::from(tagged))
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
