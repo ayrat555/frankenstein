@@ -416,7 +416,7 @@ pub struct Message {
     pub forward_origin: Option<Box<MessageOrigin>>,
     pub is_topic_message: Option<bool>,
     pub is_automatic_forward: Option<bool>,
-    pub reply_to_message: Option<Box<Message>>,
+    pub reply_to_message: Option<Box<Self>>,
     pub external_reply: Option<Box<ExternalReplyInfo>>,
     pub quote: Option<Box<TextQuote>>,
     pub reply_to_story: Option<Box<Story>>,
