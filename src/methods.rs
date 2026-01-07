@@ -473,6 +473,17 @@ pub struct SendDiceParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct SendMessageDraftParams {
+    pub chat_id: ChatId,
+    pub message_thread_id: Option<i32>,
+    pub draft_id: Option<i32>,
+    pub text: String,
+    pub parse_mode: Option<ParseMode>,
+    pub entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct SendChecklistParams {
     pub business_connection_id: String,
     pub chat_id: ChatId,
