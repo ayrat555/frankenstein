@@ -153,6 +153,7 @@ where
     request!(sendContact, Message);
     request!(sendPoll, Message);
     request!(sendDice, Message);
+    request!(sendMessageDraft, bool);
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
     request!(getUserProfilePhotos, UserProfilePhotos);

@@ -333,6 +333,7 @@ pub struct User {
     pub supports_inline_queries: Option<bool>,
     pub can_connect_to_business: Option<bool>,
     pub has_main_web_app: Option<bool>,
+    pub has_topics_enabled: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -954,6 +955,7 @@ pub struct ForumTopicCreated {
     pub name: String,
     pub icon_color: u32,
     pub icon_custom_emoji_id: Option<String>,
+    pub is_name_implicit: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -1417,6 +1419,7 @@ pub struct ForumTopic {
     pub name: String,
     pub icon_color: u32,
     pub icon_custom_emoji_id: Option<String>,
+    pub is_name_implicit: Option<bool>,
 }
 
 #[apply(apistruct!)]
