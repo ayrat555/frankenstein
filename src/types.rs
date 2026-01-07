@@ -164,7 +164,7 @@ pub enum MenuButton {
 pub enum ChatBackground {
     Fill(BackgroundTypeFill),
     Wallpaper(BackgroundTypeWallpaper),
-    Patter(BackgroundTypePattern),
+    Pattern(BackgroundTypePattern),
     ChatTheme(BackgroundTypeChatTheme),
 }
 
