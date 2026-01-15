@@ -1276,7 +1276,39 @@ pub struct GetBusinessAccountGiftsParams {
     pub exclude_unsaved: Option<bool>,
     pub exclude_saved: Option<bool>,
     pub exclude_unlimited: Option<bool>,
-    pub exclude_limited: Option<bool>,
+    pub exclude_limited_upgradable: Option<bool>,
+    pub exclude_limited_non_upgradable: Option<bool>,
+    pub exclude_unique: Option<bool>,
+    pub exclude_from_blockchain: Option<bool>,
+    pub sort_by_price: Option<bool>,
+    pub offset: Option<String>,
+    pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetUserGiftsParams {
+    pub user_id: u64,
+    pub exclude_unlimited: Option<bool>,
+    pub exclude_limited_upgradable: Option<bool>,
+    pub exclude_limited_non_upgradable: Option<bool>,
+    pub exclude_from_blockchain: Option<bool>,
+    pub exclude_unique: Option<bool>,
+    pub sort_by_price: Option<bool>,
+    pub offset: Option<String>,
+    pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetChatGiftsParams {
+    pub chat_id: ChatId,
+    pub exclude_unsaved: Option<bool>,
+    pub exclude_saved: Option<bool>,
+    pub exclude_unlimited: Option<bool>,
+    pub exclude_limited_upgradable: Option<bool>,
+    pub exclude_limited_non_upgradable: Option<bool>,
+    pub exclude_from_blockchain: Option<bool>,
     pub exclude_unique: Option<bool>,
     pub sort_by_price: Option<bool>,
     pub offset: Option<String>,

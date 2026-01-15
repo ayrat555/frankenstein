@@ -364,6 +364,8 @@ pub trait TelegramApi {
     request!(getBusinessAccountStarBalance, StarAmount);
     request!(transferBusinessAccountStars, bool);
     request!(getBusinessAccountGifts, OwnedGifts);
+    request!(getUserGifts, OwnedGifts);
+    request!(getChatGifts, OwnedGifts);
     request!(convertGiftToStars, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);

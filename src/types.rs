@@ -474,6 +474,7 @@ pub struct Message {
     pub chat_shared: Option<Box<ChatShared>>,
     pub gift: Option<GiftInfo>,
     pub unique_gift: Option<UniqueGiftInfo>,
+    pub gift_upgrade_sent: Option<GiftInfo>,
     pub connected_website: Option<String>,
     pub write_access_allowed: Option<WriteAccessAllowed>,
     pub passport_data: Option<Box<PassportData>>,
