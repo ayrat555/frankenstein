@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::games::{CallbackGame, Game};
-use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftInfo};
+use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftColors, UniqueGiftInfo};
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
