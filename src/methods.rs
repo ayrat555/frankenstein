@@ -75,6 +75,7 @@ pub struct ForwardMessageParams {
     pub video_start_timestamp: Option<u64>,
     pub disable_notification: Option<bool>,
     pub protect_content: Option<bool>,
+    pub message_effect_id: Option<String>,
     pub suggested_post_parameters: Option<SuggestedPostParameters>,
     pub message_id: i32,
 }
@@ -107,6 +108,7 @@ pub struct CopyMessageParams {
     pub disable_notification: Option<bool>,
     pub protect_content: Option<bool>,
     pub allow_paid_broadcast: Option<bool>,
+    pub message_effect_id: Option<String>,
     pub suggested_post_parameters: Option<SuggestedPostParameters>,
     pub reply_parameters: Option<ReplyParameters>,
     pub reply_markup: Option<ReplyMarkup>,
@@ -469,6 +471,17 @@ pub struct SendDiceParams {
     pub suggested_post_parameters: Option<SuggestedPostParameters>,
     pub reply_parameters: Option<ReplyParameters>,
     pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendMessageDraftParams {
+    pub chat_id: ChatId,
+    pub message_thread_id: Option<i32>,
+    pub draft_id: Option<i32>,
+    pub text: String,
+    pub parse_mode: Option<ParseMode>,
+    pub entities: Option<Vec<MessageEntity>>,
 }
 
 #[apply(apistruct!)]
@@ -1265,7 +1278,39 @@ pub struct GetBusinessAccountGiftsParams {
     pub exclude_unsaved: Option<bool>,
     pub exclude_saved: Option<bool>,
     pub exclude_unlimited: Option<bool>,
-    pub exclude_limited: Option<bool>,
+    pub exclude_limited_upgradable: Option<bool>,
+    pub exclude_limited_non_upgradable: Option<bool>,
+    pub exclude_unique: Option<bool>,
+    pub exclude_from_blockchain: Option<bool>,
+    pub sort_by_price: Option<bool>,
+    pub offset: Option<String>,
+    pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetUserGiftsParams {
+    pub user_id: u64,
+    pub exclude_unlimited: Option<bool>,
+    pub exclude_limited_upgradable: Option<bool>,
+    pub exclude_limited_non_upgradable: Option<bool>,
+    pub exclude_from_blockchain: Option<bool>,
+    pub exclude_unique: Option<bool>,
+    pub sort_by_price: Option<bool>,
+    pub offset: Option<String>,
+    pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetChatGiftsParams {
+    pub chat_id: ChatId,
+    pub exclude_unsaved: Option<bool>,
+    pub exclude_saved: Option<bool>,
+    pub exclude_unlimited: Option<bool>,
+    pub exclude_limited_upgradable: Option<bool>,
+    pub exclude_limited_non_upgradable: Option<bool>,
+    pub exclude_from_blockchain: Option<bool>,
     pub exclude_unique: Option<bool>,
     pub sort_by_price: Option<bool>,
     pub offset: Option<String>,
@@ -1306,6 +1351,17 @@ pub struct PostStoryParams {
     pub parse_mode: Option<String>,
     pub caption_entities: Option<Vec<MessageEntity>>,
     pub areas: Option<Vec<StoryArea>>,
+    pub post_to_chat_page: Option<bool>,
+    pub protect_content: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct RepostStoryParams {
+    pub business_connection_id: String,
+    pub from_chat_id: ChatId,
+    pub from_story_id: i64,
+    pub active_period: u32,
     pub post_to_chat_page: Option<bool>,
     pub protect_content: Option<bool>,
 }

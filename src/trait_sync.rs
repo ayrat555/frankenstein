@@ -143,6 +143,7 @@ pub trait TelegramApi {
     request!(sendContact, Message);
     request!(sendPoll, Message);
     request!(sendDice, Message);
+    request!(sendMessageDraft, bool);
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
     request!(getUserProfilePhotos, UserProfilePhotos);
@@ -363,6 +364,8 @@ pub trait TelegramApi {
     request!(getBusinessAccountStarBalance, StarAmount);
     request!(transferBusinessAccountStars, bool);
     request!(getBusinessAccountGifts, OwnedGifts);
+    request!(getUserGifts, OwnedGifts);
+    request!(getChatGifts, OwnedGifts);
     request!(convertGiftToStars, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);
@@ -390,6 +393,8 @@ pub trait TelegramApi {
 
         self.request_with_possible_form_data("postStory", params, files)
     }
+
+    request!(repostStory, Story);
 
     fn edit_story(
         &self,

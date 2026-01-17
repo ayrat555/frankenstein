@@ -5,13 +5,27 @@ use crate::stickers::Sticker;
 use crate::types::{Chat, MessageEntity, User};
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GiftBackground {
+    pub center_color: u32,
+    pub edge_color: u32,
+    pub text_color: u32,
+}
+
+#[apply(apistruct!)]
 pub struct Gift {
     pub id: String,
     pub sticker: Sticker,
     pub star_count: u32,
     pub upgrade_star_count: Option<u32>,
+    pub is_premium: Option<bool>,
+    pub has_colors: Option<bool>,
     pub total_count: Option<u32>,
     pub remaining_count: Option<u32>,
+    pub personal_total_count: Option<u32>,
+    pub personal_remaining_count: Option<u32>,
+    pub background: Option<GiftBackground>,
+    pub unique_gift_variant_count: Option<u32>,
     pub publisher_chat: Option<Box<Chat>>,
 }
 
@@ -53,12 +67,16 @@ pub struct UniqueGiftBackdrop {
 
 #[apply(apistruct!)]
 pub struct UniqueGift {
+    pub gift_id: String,
     pub base_name: String,
     pub name: String,
     pub number: u32,
     pub model: UniqueGiftModel,
     pub symbol: UniqueGiftSymbol,
     pub backdrop: UniqueGiftBackdrop,
+    pub is_premium: Option<bool>,
+    pub is_from_blockchain: Option<bool>,
+    pub colors: Option<UniqueGiftColors>,
     pub publisher_chat: Option<Box<Chat>>,
 }
 
@@ -68,17 +86,20 @@ pub struct GiftInfo {
     pub owned_gift_id: Option<String>,
     pub convert_star_count: Option<u32>,
     pub prepaid_upgrade_star_count: Option<u32>,
+    pub is_upgrade_separate: Option<bool>,
     pub can_be_upgraded: Option<bool>,
     pub text: Option<String>,
     pub entities: Option<Vec<MessageEntity>>,
     pub is_private: Option<bool>,
+    pub unique_gift_number: Option<u32>,
 }
 
 #[apply(apistruct!)]
 pub struct UniqueGiftInfo {
     pub gift: UniqueGift,
     pub origin: GiftOrigin,
-    pub last_resale_star_count: Option<u32>,
+    pub last_resale_currency: Option<String>,
+    pub last_resale_amount: Option<u64>,
     pub owned_gift_id: Option<String>,
     pub transfer_star_count: Option<u32>,
     pub next_transfer_date: Option<u64>,
@@ -91,6 +112,8 @@ pub enum GiftOrigin {
     Upgrade,
     Transfer,
     Resale,
+    GiftedUpgrade,
+    Offer,
 }
 
 #[apply(apistruct!)]
@@ -100,6 +123,7 @@ pub struct AcceptedGiftTypes {
     pub limited_gifts: bool,
     pub unique_gifts: bool,
     pub premium_subscription: bool,
+    pub gifts_from_channels: bool,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -123,6 +147,19 @@ pub struct OwnedGiftRegular {
     pub was_refunded: Option<bool>,
     pub convert_star_count: Option<u32>,
     pub prepaid_upgrade_star_count: Option<u32>,
+    pub is_upgrade_separate: Option<bool>,
+    pub unique_gift_number: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct UniqueGiftColors {
+    pub model_custom_emoji_id: String,
+    pub symbol_custom_emoji_id: String,
+    pub light_theme_main_color: u32,
+    pub light_theme_other_colors: Vec<u32>,
+    pub dark_theme_main_color: u32,
+    pub dark_theme_other_colors: Vec<u32>,
 }
 
 #[apply(apistruct!)]
