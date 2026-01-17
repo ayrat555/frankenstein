@@ -411,6 +411,8 @@ where
             .await
     }
 
+    request!(repostStory, Story);
+
     async fn edit_story(
         &self,
         params: &crate::methods::EditStoryParams,

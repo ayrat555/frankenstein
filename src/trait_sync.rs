@@ -394,6 +394,8 @@ pub trait TelegramApi {
         self.request_with_possible_form_data("postStory", params, files)
     }
 
+    request!(repostStory, Story);
+
     fn edit_story(
         &self,
         params: &crate::methods::EditStoryParams,

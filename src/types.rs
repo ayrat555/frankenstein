@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::games::{CallbackGame, Game};
-use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftInfo};
+use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftColors, UniqueGiftInfo};
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
@@ -400,6 +400,9 @@ pub struct ChatFullInfo {
     pub custom_emoji_sticker_set_name: Option<String>,
     pub linked_chat_id: Option<i64>,
     pub location: Option<ChatLocation>,
+    pub rating: Option<UserRating>,
+    pub unique_gift_colors: Option<UniqueGiftColors>,
+    pub paid_message_star_count: Option<u32>,
 }
 
 #[apply(apistruct!)]
@@ -539,7 +542,7 @@ pub struct TextQuote {
 #[apply(apistruct!)]
 pub struct ExternalReplyInfo {
     pub origin: MessageOrigin,
-    pub chat: Option<Chat>,
+    pub chat: Option<Box<Chat>>,
     pub message_id: Option<i32>,
     pub link_preview_options: Option<LinkPreviewOptions>,
     pub animation: Option<Animation>,
@@ -810,6 +813,7 @@ pub struct ChecklistTask {
     pub text: String,
     pub text_entities: Option<Vec<MessageEntity>>,
     pub completed_by_user: Option<User>,
+    pub completed_by_chat: Option<Box<Chat>>,
     pub completion_date: Option<u32>,
 }
 
@@ -1282,6 +1286,15 @@ pub struct BusinessOpeningHoursInterval {
 pub struct BusinessOpeningHours {
     pub time_zone_name: String,
     pub opening_hours: Vec<BusinessOpeningHoursInterval>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct UserRating {
+    pub level: i32,
+    pub rating: i32,
+    pub current_level_rating: i32,
+    pub next_level_rating: Option<i32>,
 }
 
 #[apply(apistruct!)]
