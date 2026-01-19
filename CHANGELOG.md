@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.46.1 (2026-01-19)
+
+* fix: remove doc_auto_cfg on docsrs to fix docs build - [#310](https://github.com/ayrat555/frankenstein/pull/310)
+
 ## 0.46.0 (2026-01-17)
 
 * refactor(clippy): use_self  - [#302](https://github.com/ayrat555/frankenstein/pull/302)
