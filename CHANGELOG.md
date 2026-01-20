@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.46.1 (2026-01-20)
+
+* docs(docsrs): doc_auto_cfg feature was merged into doc_cfg - [#312](https://github.com/ayrat555/frankenstein/pull/312)
+
 ## 0.46.0 (2026-01-17)
 
 * refactor(clippy): use_self  - [#302](https://github.com/ayrat555/frankenstein/pull/302)
