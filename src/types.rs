@@ -54,6 +54,14 @@ pub enum ChatAction {
     UploadVideoNote,
 }
 
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ButtonStyle {
+    Danger,
+    Success,
+    Primary,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum BotCommandScope {
@@ -1113,7 +1121,7 @@ pub struct KeyboardButton {
     pub request_location: Option<bool>,
     pub request_poll: Option<KeyboardButtonPollType>,
     pub web_app: Option<WebAppInfo>,
-    pub style: Option<String>,
+    pub style: Option<ButtonStyle>,
 }
 
 #[apply(apistruct!)]
@@ -1179,7 +1187,7 @@ pub struct InlineKeyboardButton {
     pub copy_text: Option<CopyTextButton>,
     pub callback_game: Option<CallbackGame>,
     pub pay: Option<bool>,
-    pub style: Option<String>,
+    pub style: Option<ButtonStyle>,
 }
 
 #[apply(apistruct!)]
