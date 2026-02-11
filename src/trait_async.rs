@@ -250,7 +250,6 @@ where
     }
 
     request_nb!(removeMyProfilePhoto, bool);
-
     request!(answerInlineQuery, bool);
     request!(editMessageText, MessageOrBool);
     request!(editMessageCaption, MessageOrBool);
