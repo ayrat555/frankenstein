@@ -11,7 +11,8 @@ use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
     BotCommand, BotDescription, BotName, BotShortDescription, BusinessConnection,
     ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File, ForumTopic,
-    MenuButton, Message, MessageId, Poll, Story, User, UserChatBoosts, UserProfilePhotos,
+    MenuButton, Message, MessageId, Poll, Story, User, UserChatBoosts, UserProfileAudios,
+    UserProfilePhotos,
 };
 use crate::updates::{Update, WebhookInfo};
 
@@ -157,6 +158,7 @@ where
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
     request!(getUserProfilePhotos, UserProfilePhotos);
+    request!(getUserProfileAudios, UserProfileAudios);
     request!(setUserEmojiStatus, bool);
     request!(getFile, File);
     request!(banChatMember, bool);
@@ -222,6 +224,32 @@ where
     request!(getMyDescription, BotDescription);
     request!(setMyShortDescription, bool);
     request!(getMyShortDescription, BotShortDescription);
+
+    async fn set_my_profile_photo(
+        &self,
+        params: &crate::methods::SetMyProfilePhotoParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut files = Vec::new();
+
+        let mut params = params.clone();
+        match &mut params.photo {
+            InputProfilePhoto::Static(photo_static) => {
+                if let Some(file) = photo_static.photo.replace_attach("photo_static") {
+                    files.push(("photo_static", file));
+                }
+            }
+            InputProfilePhoto::Animated(photo_animated) => {
+                if let Some(file) = photo_animated.animation.replace_attach("photo_animated") {
+                    files.push(("photo_animated", file));
+                }
+            }
+        }
+
+        self.request_with_possible_form_data("setMyProfilePhoto", params, files)
+            .await
+    }
+
+    request_nb!(removeMyProfilePhoto, bool);
     request!(answerInlineQuery, bool);
     request!(editMessageText, MessageOrBool);
     request!(editMessageCaption, MessageOrBool);

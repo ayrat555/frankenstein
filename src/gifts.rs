@@ -39,6 +39,7 @@ pub struct UniqueGiftModel {
     pub name: String,
     pub sticker: Sticker,
     pub rarity_per_mille: u32,
+    pub rarity: Option<String>,
 }
 
 #[apply(apistruct!)]
@@ -75,6 +76,7 @@ pub struct UniqueGift {
     pub symbol: UniqueGiftSymbol,
     pub backdrop: UniqueGiftBackdrop,
     pub is_premium: Option<bool>,
+    pub is_burned: Option<bool>,
     pub is_from_blockchain: Option<bool>,
     pub colors: Option<UniqueGiftColors>,
     pub publisher_chat: Option<Box<Chat>>,

@@ -524,6 +524,14 @@ pub struct GetUserProfilePhotosParams {
 }
 
 #[apply(apistruct!)]
+#[derive(Copy, Eq)]
+pub struct GetUserProfileAudiosParams {
+    pub user_id: u64,
+    pub offset: Option<u32>,
+    pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SetUserEmojiStatusParams {
     pub user_id: u64,
@@ -921,6 +929,11 @@ pub struct SetMyShortDescriptionParams {
 #[derive(Eq)]
 pub struct GetMyShortDescriptionParams {
     pub language_code: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct SetMyProfilePhotoParams {
+    pub photo: InputProfilePhoto,
 }
 
 #[apply(apistruct!)]

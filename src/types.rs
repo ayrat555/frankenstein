@@ -54,6 +54,14 @@ pub enum ChatAction {
     UploadVideoNote,
 }
 
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ButtonStyle {
+    Danger,
+    Success,
+    Primary,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum BotCommandScope {
@@ -334,6 +342,7 @@ pub struct User {
     pub can_connect_to_business: Option<bool>,
     pub has_main_web_app: Option<bool>,
     pub has_topics_enabled: Option<bool>,
+    pub allows_users_to_create_topics: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -401,6 +410,7 @@ pub struct ChatFullInfo {
     pub linked_chat_id: Option<i64>,
     pub location: Option<ChatLocation>,
     pub rating: Option<UserRating>,
+    pub first_profile_audio: Option<Audio>,
     pub unique_gift_colors: Option<UniqueGiftColors>,
     pub paid_message_star_count: Option<u32>,
 }
@@ -460,6 +470,8 @@ pub struct Message {
     pub location: Option<Box<Location>>,
     pub new_chat_members: Option<Vec<User>>,
     pub left_chat_member: Option<Box<User>>,
+    pub chat_owner_left: Option<Box<ChatOwnerLeft>>,
+    pub chat_owner_changed: Option<Box<ChatOwnerChanged>>,
     pub new_chat_title: Option<String>,
     pub new_chat_photo: Option<Vec<PhotoSize>>,
     pub delete_chat_photo: Option<bool>,
@@ -709,6 +721,17 @@ pub struct Document {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct VideoQuality {
+    pub file_id: String,
+    pub file_unique_id: String,
+    pub width: u32,
+    pub height: u32,
+    pub codec: String,
+    pub file_size: Option<u64>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct Video {
     pub file_id: String,
     pub file_unique_id: String,
@@ -718,6 +741,7 @@ pub struct Video {
     pub thumbnail: Option<PhotoSize>,
     pub cover: Option<Vec<PhotoSize>>,
     pub start_timestamp: Option<u64>,
+    pub qualities: Option<Vec<VideoQuality>>,
     pub file_name: Option<String>,
     pub mime_type: Option<String>,
     pub file_size: Option<u64>,
@@ -897,6 +921,18 @@ pub struct MessageAutoDeleteTimerChanged {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChatOwnerLeft {
+    pub new_owner: Option<User>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChatOwnerChanged {
+    pub new_owner: User,
+}
+
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct ChatBoostAdded {
     pub boost_count: u32,
@@ -1049,6 +1085,13 @@ pub struct UserProfilePhotos {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct UserProfileAudios {
+    pub total_count: u32,
+    pub audios: Vec<Audio>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct File {
     pub file_id: String,
     pub file_unique_id: String,
@@ -1071,12 +1114,14 @@ pub struct ReplyKeyboardMarkup {
 #[derive(Eq)]
 pub struct KeyboardButton {
     pub text: String,
+    pub icon_custom_emoji_id: Option<String>,
     pub request_users: Option<KeyboardButtonRequestUsers>,
     pub request_chat: Option<KeyboardButtonRequestChat>,
     pub request_contact: Option<bool>,
     pub request_location: Option<bool>,
     pub request_poll: Option<KeyboardButtonPollType>,
     pub web_app: Option<WebAppInfo>,
+    pub style: Option<ButtonStyle>,
 }
 
 #[apply(apistruct!)]
@@ -1131,6 +1176,7 @@ pub struct InlineKeyboardMarkup {
 #[derive(Eq)]
 pub struct InlineKeyboardButton {
     pub text: String,
+    pub icon_custom_emoji_id: Option<String>,
     pub url: Option<String>,
     pub login_url: Option<LoginUrl>,
     pub callback_data: Option<String>,
@@ -1141,6 +1187,7 @@ pub struct InlineKeyboardButton {
     pub copy_text: Option<CopyTextButton>,
     pub callback_game: Option<CallbackGame>,
     pub pay: Option<bool>,
+    pub style: Option<ButtonStyle>,
 }
 
 #[apply(apistruct!)]
