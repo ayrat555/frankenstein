@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.47.0 (2026-02-12)
+
+* feat: Bot API 9.4 - [#314](https://github.com/ayrat555/frankenstein/pull/314)
+
 ## 0.46.1 (2026-01-20)
 
 * docs(docsrs): doc_auto_cfg feature was merged into doc_cfg - [#312](https://github.com/ayrat555/frankenstein/pull/312)
