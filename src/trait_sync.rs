@@ -156,6 +156,7 @@ pub trait TelegramApi {
     request!(restrictChatMember, bool);
     request!(promoteChatMember, bool);
     request!(setChatAdministratorCustomTitle, bool);
+    request!(setChatMemberTag, bool);
     request!(banChatSenderChat, bool);
     request!(unbanChatSenderChat, bool);
     request!(setChatPermissions, bool);

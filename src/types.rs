@@ -220,12 +220,14 @@ pub struct ChatMemberAdministrator {
     pub can_delete_stories: Option<bool>,
     pub can_manage_topics: Option<bool>,
     pub can_manage_direct_messages: Option<bool>,
+    pub can_manage_tags: Option<bool>,
     pub custom_title: Option<String>,
 }
 
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberMember {
+    pub tag: Option<String>,
     pub user: User,
     pub until_date: Option<u64>,
 }
@@ -233,6 +235,7 @@ pub struct ChatMemberMember {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ChatMemberRestricted {
+    pub tag: Option<String>,
     pub user: User,
     pub is_member: bool,
     pub can_send_messages: bool,
@@ -245,6 +248,7 @@ pub struct ChatMemberRestricted {
     pub can_send_polls: bool,
     pub can_send_other_messages: bool,
     pub can_add_web_page_previews: bool,
+    pub can_edit_tag: bool,
     pub can_change_info: bool,
     pub can_invite_users: bool,
     pub can_pin_messages: bool,
@@ -424,6 +428,7 @@ pub struct Message {
     pub sender_chat: Option<Box<Chat>>,
     pub sender_boost_count: Option<u32>,
     pub sender_business_bot: Option<Box<User>>,
+    pub sender_tag: Option<String>,
     pub date: u64,
     pub business_connection_id: Option<String>,
     pub chat: Box<Chat>,
@@ -540,6 +545,8 @@ pub struct MessageEntity {
     pub user: Option<User>,
     pub language: Option<String>,
     pub custom_emoji_id: Option<String>,
+    pub unix_time: Option<u64>,
+    pub date_time_format: Option<String>,
 }
 
 #[apply(apistruct!)]
@@ -1294,6 +1301,7 @@ pub struct ChatPermissions {
     pub can_send_polls: Option<bool>,
     pub can_send_other_messages: Option<bool>,
     pub can_add_web_page_previews: Option<bool>,
+    pub can_edit_tag: Option<bool>,
     pub can_change_info: Option<bool>,
     pub can_invite_users: Option<bool>,
     pub can_pin_messages: Option<bool>,
@@ -1649,6 +1657,7 @@ pub struct ChatAdministratorRights {
     pub can_delete_stories: Option<bool>,
     pub can_manage_topics: Option<bool>,
     pub can_manage_direct_messages: Option<bool>,
+    pub can_manage_tags: Option<bool>,
 }
 
 #[apply(apistruct!)]

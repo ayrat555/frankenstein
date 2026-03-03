@@ -593,6 +593,7 @@ pub struct PromoteChatMemberParams {
     pub can_pin_messages: Option<bool>,
     pub can_manage_topics: Option<bool>,
     pub can_manage_direct_messages: Option<bool>,
+    pub can_manage_tags: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -601,6 +602,14 @@ pub struct SetChatAdministratorCustomTitleParams {
     pub chat_id: ChatId,
     pub user_id: u64,
     pub custom_title: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetChatMemberTagParams {
+    pub chat_id: ChatId,
+    pub user_id: u64,
+    pub tag: Option<String>,
 }
 
 #[apply(apistruct!)]
