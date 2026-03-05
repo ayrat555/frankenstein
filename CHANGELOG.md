@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.48.0 (2026-03-05)
+
+* feat: Bot API 9.5 - [#317](https://github.com/ayrat555/frankenstein/pull/317)
+
 ## 0.47.0 (2026-02-12)
 
 * feat: Bot API 9.4 - [#314](https://github.com/ayrat555/frankenstein/pull/314)
