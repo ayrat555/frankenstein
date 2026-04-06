@@ -13,9 +13,9 @@ use crate::payments::{LabeledPrice, ShippingOption};
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
-    ChatPermissions, InlineKeyboardMarkup, InputChecklist, InputPollOption, LinkPreviewOptions,
-    MenuButton, MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters, StoryArea,
-    SuggestedPostParameters,
+    ChatPermissions, InlineKeyboardMarkup, InputChecklist, InputPollOption, KeyboardButton,
+    LinkPreviewOptions, MenuButton, MessageEntity, PollType, ReactionType, ReplyMarkup,
+    ReplyParameters, StoryArea, SuggestedPostParameters,
 };
 
 #[apply(apistruct!)]
@@ -441,13 +441,20 @@ pub struct SendPollParams {
     #[serde(rename = "type")]
     pub type_field: Option<PollType>,
     pub allows_multiple_answers: Option<bool>,
-    pub correct_option_id: Option<u8>,
+    pub allows_revoting: Option<bool>,
+    pub shuffle_options: Option<bool>,
+    pub allow_adding_options: Option<bool>,
+    pub hide_results_until_closes: Option<bool>,
+    pub correct_option_ids: Option<Vec<u8>>,
     pub explanation: Option<String>,
     pub explanation_parse_mode: Option<ParseMode>,
     pub explanation_entities: Option<Vec<MessageEntity>>,
     pub open_period: Option<u32>,
     pub close_date: Option<u64>,
     pub is_closed: Option<bool>,
+    pub description: Option<String>,
+    pub description_parse_mode: Option<ParseMode>,
+    pub description_entities: Option<Vec<MessageEntity>>,
     pub disable_notification: Option<bool>,
     pub protect_content: Option<bool>,
     pub allow_paid_broadcast: Option<bool>,
@@ -529,6 +536,18 @@ pub struct GetUserProfileAudiosParams {
     pub user_id: u64,
     pub offset: Option<u32>,
     pub limit: Option<u32>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetManagedBotTokenParams {
+    pub user_id: u64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ReplaceManagedBotTokenParams {
+    pub user_id: u64,
 }
 
 #[apply(apistruct!)]
@@ -1589,6 +1608,13 @@ pub struct SavePreparedInlineMessageParams {
     pub allow_bot_chats: Option<bool>,
     pub allow_group_chats: Option<bool>,
     pub allow_channel_chats: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SavePreparedKeyboardButtonParams {
+    pub user_id: u64,
+    pub button: KeyboardButton,
 }
 
 #[apply(apistruct!)]

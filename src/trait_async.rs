@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use crate::games::GameHighScore;
 use crate::gifts::{Gifts, OwnedGifts};
-use crate::inline_mode::{PreparedInlineMessage, SentWebAppMessage};
+use crate::inline_mode::{PreparedInlineMessage, PreparedKeyboardButton, SentWebAppMessage};
 use crate::input_file::HasInputFile;
 use crate::input_media::{InputMedia, InputProfilePhoto, InputStoryContent, MediaGroupInputMedia};
 use crate::payments::{StarAmount, StarTransactions};
@@ -159,6 +159,8 @@ where
     request!(setMessageReaction, bool);
     request!(getUserProfilePhotos, UserProfilePhotos);
     request!(getUserProfileAudios, UserProfileAudios);
+    request!(getManagedBotToken, String);
+    request!(replaceManagedBotToken, String);
     request!(setUserEmojiStatus, bool);
     request!(getFile, File);
     request!(banChatMember, bool);
@@ -482,6 +484,7 @@ where
     request!(getMyDefaultAdministratorRights, ChatAdministratorRights);
     request!(answerWebAppQuery, SentWebAppMessage);
     request!(savePreparedInlineMessage, PreparedInlineMessage);
+    request!(savePreparedKeyboardButton, PreparedKeyboardButton);
     request!(setChatMenuButton, bool);
     request!(getChatMenuButton, MenuButton);
     request!(unpinAllGeneralForumTopicMessages, bool);

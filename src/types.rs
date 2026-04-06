@@ -104,6 +104,7 @@ pub struct ReplyParameters {
     pub quote_entities: Option<Vec<MessageEntity>>,
     pub quote_position: Option<u32>,
     pub checklist_task_id: Option<i64>,
+    pub poll_option_id: Option<String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -146,6 +147,7 @@ pub enum MessageEntityType {
     TextLink,
     TextMention,
     CustomEmoji,
+    DateTime,
     Blockquote,
     ExpandableBlockquote,
     #[serde(other)]
@@ -327,6 +329,7 @@ pub enum AllowedUpdate {
     ChatJoinRequest,
     ChatBoost,
     RemovedChatBoost,
+    ManagedBot,
 }
 
 #[apply(apistruct!)]
@@ -347,6 +350,7 @@ pub struct User {
     pub has_main_web_app: Option<bool>,
     pub has_topics_enabled: Option<bool>,
     pub allows_users_to_create_topics: Option<bool>,
+    pub can_manage_bots: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -440,6 +444,7 @@ pub struct Message {
     pub quote: Option<Box<TextQuote>>,
     pub reply_to_story: Option<Box<Story>>,
     pub reply_to_checklist_task_id: Option<i64>,
+    pub reply_to_poll_option_id: Option<String>,
     pub via_bot: Option<Box<User>>,
     pub edit_date: Option<u64>,
     pub has_protected_content: Option<bool>,
@@ -514,10 +519,13 @@ pub struct Message {
     pub giveaway: Option<Giveaway>,
     pub giveaway_winners: Option<GiveawayWinners>,
     pub giveaway_completed: Option<GiveawayCompleted>,
+    pub managed_bot_created: Option<Box<ManagedBotCreated>>,
     pub paid_message_price_changed: Option<PaidMessagePriceChanged>,
     pub suggested_post_approved: Option<Box<SuggestedPostApproved>>,
     pub suggested_post_approval_failed: Option<Box<SuggestedPostApprovalFailed>>,
     pub suggested_post_declined: Option<Box<SuggestedPostDeclined>>,
+    pub poll_option_added: Option<Box<PollOptionAdded>>,
+    pub poll_option_deleted: Option<Box<PollOptionDeleted>>,
     pub suggested_post_paid: Option<Box<SuggestedPostPaid>>,
     pub suggested_post_refunded: Option<Box<SuggestedPostRefunded>>,
     pub video_chat_scheduled: Option<Box<VideoChatScheduled>>,
@@ -795,9 +803,13 @@ pub struct Dice {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PollOption {
+    pub persistent_id: String,
     pub text: String,
     pub text_entities: Option<Vec<MessageEntity>>,
     pub voter_count: u32,
+    pub added_by_user: Option<User>,
+    pub added_by_chat: Option<Box<Chat>>,
+    pub addition_date: Option<u32>,
 }
 
 #[apply(apistruct!)]
@@ -815,6 +827,7 @@ pub struct PollAnswer {
     pub voter_chat: Option<Chat>,
     pub user: Option<Box<User>>,
     pub option_ids: Vec<u8>,
+    pub option_persistent_ids: Vec<String>,
 }
 
 #[apply(apistruct!)]
@@ -830,11 +843,14 @@ pub struct Poll {
     #[serde(rename = "type")]
     pub type_field: PollType,
     pub allows_multiple_answers: bool,
-    pub correct_option_id: Option<u8>,
+    pub allows_revoting: bool,
+    pub correct_option_ids: Option<Vec<u8>>,
     pub explanation: Option<String>,
     pub explanation_entities: Option<Vec<MessageEntity>>,
     pub open_period: Option<u32>,
     pub close_date: Option<u64>,
+    pub description: Option<String>,
+    pub description_entities: Option<Vec<MessageEntity>>,
 }
 
 #[apply(apistruct!)]
@@ -1124,6 +1140,7 @@ pub struct KeyboardButton {
     pub icon_custom_emoji_id: Option<String>,
     pub request_users: Option<KeyboardButtonRequestUsers>,
     pub request_chat: Option<KeyboardButtonRequestChat>,
+    pub request_managed_bot: Option<KeyboardButtonRequestManagedBot>,
     pub request_contact: Option<bool>,
     pub request_location: Option<bool>,
     pub request_poll: Option<KeyboardButtonPollType>,
@@ -1157,6 +1174,14 @@ pub struct KeyboardButtonRequestChat {
     pub request_title: Option<bool>,
     pub request_username: Option<bool>,
     pub request_photo: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct KeyboardButtonRequestManagedBot {
+    pub request_id: i32,
+    pub suggested_name: Option<String>,
+    pub suggested_username: Option<String>,
 }
 
 #[apply(apistruct!)]
@@ -1784,6 +1809,35 @@ pub struct InaccessibleMessage {
     pub chat: Chat,
     pub message_id: i32,
     pub date: u64,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ManagedBotCreated {
+    pub bot: User,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ManagedBotUpdated {
+    pub user: User,
+    pub bot: User,
+}
+
+#[apply(apistruct!)]
+pub struct PollOptionAdded {
+    pub poll_message: Option<MaybeInaccessibleMessage>,
+    pub option_persistent_id: String,
+    pub option_text: String,
+    pub option_text_entities: Option<Vec<MessageEntity>>,
+}
+
+#[apply(apistruct!)]
+pub struct PollOptionDeleted {
+    pub poll_message: Option<MaybeInaccessibleMessage>,
+    pub option_persistent_id: String,
+    pub option_text: String,
+    pub option_text_entities: Option<Vec<MessageEntity>>,
 }
 
 #[cfg(test)]

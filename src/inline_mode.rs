@@ -516,3 +516,9 @@ pub struct PreparedInlineMessage {
     pub id: String,
     pub expiration_date: u64,
 }
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct PreparedKeyboardButton {
+    pub id: String,
+}
