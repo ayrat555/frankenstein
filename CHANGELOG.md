@@ -1,9 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.49.0 (2026-04-07)
 
-* feat: Bot API 9.6
-* fix(types): add the missing `date_time` message entity kind
+* feat: Bot API 9.6 - [#319](https://github.com/ayrat555/frankenstein/pull/319)
 
 ## 0.48.0 (2026-03-05)
 
