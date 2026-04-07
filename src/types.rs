@@ -842,8 +842,8 @@ pub struct Poll {
     pub is_anonymous: bool,
     #[serde(rename = "type")]
     pub type_field: PollType,
-    pub allows_multiple_answers: bool,
-    pub allows_revoting: bool,
+    pub allows_multiple_answers: Option<bool>,
+    pub allows_revoting: Option<bool>,
     pub correct_option_ids: Option<Vec<u8>>,
     pub explanation: Option<String>,
     pub explanation_entities: Option<Vec<MessageEntity>>,
