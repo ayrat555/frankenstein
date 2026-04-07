@@ -803,7 +803,7 @@ pub struct Dice {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct PollOption {
-    pub persistent_id: String,
+    pub persistent_id: Option<String>,
     pub text: String,
     pub text_entities: Option<Vec<MessageEntity>>,
     pub voter_count: u32,
