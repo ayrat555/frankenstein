@@ -24,7 +24,7 @@ pub struct InputRichMessage {
 #[serde(untagged)]
 pub enum RichText {
     Text(String),
-    List(Vec<RichText>),
+    List(Vec<Self>),
     Object(RichTextObject),
 }
 
@@ -40,8 +40,8 @@ impl From<&str> for RichText {
     }
 }
 
-impl From<Vec<RichText>> for RichText {
-    fn from(value: Vec<RichText>) -> Self {
+impl From<Vec<Self>> for RichText {
+    fn from(value: Vec<Self>) -> Self {
         Self::List(value)
     }
 }

@@ -1945,7 +1945,7 @@ mod serde_tests {
 
     #[test]
     pub fn rich_message_is_parsed() {
-        let content = r##"{
+        let content = r#"{
             "blocks": [
                 {
                     "type": "paragraph",
@@ -1964,7 +1964,7 @@ mod serde_tests {
                 }
             ],
             "is_rtl": true
-        }"##;
+        }"#;
 
         let rich_message: RichMessage = serde_json::from_str(content).unwrap();
         assert_eq!(rich_message.blocks.len(), 1);
