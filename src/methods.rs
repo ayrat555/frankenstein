@@ -11,6 +11,7 @@ use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportElementError;
 use crate::payments::{LabeledPrice, ShippingOption};
+use crate::rich_message::InputRichMessage;
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
@@ -64,6 +65,32 @@ pub struct SendMessageParams {
     pub suggested_post_parameters: Option<SuggestedPostParameters>,
     pub reply_parameters: Option<ReplyParameters>,
     pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendRichMessageParams {
+    pub business_connection_id: Option<String>,
+    pub chat_id: ChatId,
+    pub message_thread_id: Option<i32>,
+    pub direct_messages_topic_id: Option<i64>,
+    pub rich_message: InputRichMessage,
+    pub disable_notification: Option<bool>,
+    pub protect_content: Option<bool>,
+    pub allow_paid_broadcast: Option<bool>,
+    pub message_effect_id: Option<String>,
+    pub suggested_post_parameters: Option<SuggestedPostParameters>,
+    pub reply_parameters: Option<ReplyParameters>,
+    pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendRichMessageDraftParams {
+    pub chat_id: i64,
+    pub message_thread_id: Option<i32>,
+    pub draft_id: i64,
+    pub rich_message: InputRichMessage,
 }
 
 #[apply(apistruct!)]
@@ -761,6 +788,20 @@ pub struct DeclineChatJoinRequestParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct AnswerChatJoinRequestQueryParams {
+    pub chat_join_request_query_id: String,
+    pub result: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SendChatJoinRequestWebAppParams {
+    pub chat_join_request_query_id: String,
+    pub web_app_url: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct SetChatPhotoParams {
     pub chat_id: ChatId,
     pub photo: InputFile,
@@ -1040,10 +1081,11 @@ pub struct EditMessageTextParams {
     pub chat_id: Option<ChatId>,
     pub message_id: Option<i32>,
     pub inline_message_id: Option<String>,
-    pub text: String,
+    pub text: Option<String>,
     pub parse_mode: Option<ParseMode>,
     pub entities: Option<Vec<MessageEntity>>,
     pub link_preview_options: Option<LinkPreviewOptions>,
+    pub rich_message: Option<InputRichMessage>,
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 

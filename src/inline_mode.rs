@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::payments::LabeledPrice;
+use crate::rich_message::InputRichMessage;
 use crate::types::{
     InlineKeyboardMarkup, LinkPreviewOptions, Location, MessageEntity, User, WebAppInfo,
 };
@@ -397,6 +398,7 @@ pub struct InlineQueryResultCachedAudio {
 #[serde(untagged)]
 pub enum InputMessageContent {
     Text(InputTextMessageContent),
+    Rich(InputRichMessageContent),
     Location(InputLocationMessageContent),
     Venue(InputVenueMessageContent),
     Contact(InputContactMessageContent),
@@ -406,6 +408,11 @@ pub enum InputMessageContent {
 impl From<InputTextMessageContent> for InputMessageContent {
     fn from(value: InputTextMessageContent) -> Self {
         Self::Text(value)
+    }
+}
+impl From<InputRichMessageContent> for InputMessageContent {
+    fn from(value: InputRichMessageContent) -> Self {
+        Self::Rich(value)
     }
 }
 impl From<InputLocationMessageContent> for InputMessageContent {
@@ -436,6 +443,11 @@ pub struct InputTextMessageContent {
     pub parse_mode: Option<ParseMode>,
     pub entities: Option<Vec<MessageEntity>>,
     pub link_preview_options: Option<LinkPreviewOptions>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichMessageContent {
+    pub rich_message: InputRichMessage,
 }
 
 #[apply(apistruct!)]

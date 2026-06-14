@@ -9,6 +9,7 @@ use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
 use crate::passport::PassportData;
 use crate::payments::{Invoice, RefundedPayment, StarAmount, SuccessfulPayment};
+pub use crate::rich_message::*;
 use crate::stickers::Sticker;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -349,6 +350,7 @@ pub struct User {
     pub can_join_groups: Option<bool>,
     pub can_read_all_group_messages: Option<bool>,
     pub supports_guest_queries: Option<bool>,
+    pub supports_join_request_queries: Option<bool>,
     pub supports_inline_queries: Option<bool>,
     pub can_connect_to_business: Option<bool>,
     pub has_main_web_app: Option<bool>,
@@ -425,6 +427,7 @@ pub struct ChatFullInfo {
     pub first_profile_audio: Option<Audio>,
     pub unique_gift_colors: Option<UniqueGiftColors>,
     pub paid_message_star_count: Option<u32>,
+    pub guard_bot: Option<User>,
 }
 
 #[apply(apistruct!)]
@@ -464,6 +467,7 @@ pub struct Message {
     pub link_preview_options: Option<LinkPreviewOptions>,
     pub suggested_post_info: Option<SuggestedPostInfo>,
     pub effect_id: Option<String>,
+    pub rich_message: Option<Box<RichMessage>>,
     pub animation: Option<Box<Animation>>,
     pub audio: Option<Box<Audio>>,
     pub document: Option<Box<Document>>,
@@ -823,10 +827,17 @@ pub struct Dice {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct Link {
+    pub url: String,
+}
+
+#[apply(apistruct!)]
 pub struct PollMedia {
     pub animation: Option<Animation>,
     pub audio: Option<Audio>,
     pub document: Option<Document>,
+    pub link: Option<Link>,
     pub live_photo: Option<LivePhoto>,
     pub location: Option<Location>,
     pub photo: Option<Vec<PhotoSize>>,
@@ -1349,6 +1360,7 @@ pub struct ChatJoinRequest {
     pub date: u64,
     pub bio: Option<String>,
     pub invite_link: Option<ChatInviteLink>,
+    pub query_id: Option<String>,
 }
 
 #[apply(apistruct!)]
@@ -1929,5 +1941,79 @@ mod serde_tests {
                 ..
             }
         ));
+    }
+
+    #[test]
+    pub fn rich_message_is_parsed() {
+        let content = r##"{
+            "blocks": [
+                {
+                    "type": "paragraph",
+                    "text": [
+                        "Hello ",
+                        {
+                            "type": "bold",
+                            "text": "world"
+                        },
+                        {
+                            "type": "anchor_link",
+                            "text": "top",
+                            "anchor_name": ""
+                        }
+                    ]
+                }
+            ],
+            "is_rtl": true
+        }"##;
+
+        let rich_message: RichMessage = serde_json::from_str(content).unwrap();
+        assert_eq!(rich_message.blocks.len(), 1);
+        assert_eq!(rich_message.is_rtl, Some(true));
+
+        let RichBlock::Paragraph(paragraph) = &rich_message.blocks[0] else {
+            panic!("expected paragraph block");
+        };
+
+        let RichText::List(text) = &paragraph.text else {
+            panic!("expected rich text list");
+        };
+
+        assert!(matches!(text[1], RichText::Object(RichTextObject::Bold(_))));
+        assert!(matches!(
+            text[2],
+            RichText::Object(RichTextObject::AnchorLink(_))
+        ));
+    }
+
+    #[test]
+    pub fn input_rich_message_is_serialized() {
+        let input = InputRichMessage::builder()
+            .html("<p>Hello</p>")
+            .is_rtl(false)
+            .skip_entity_detection(true)
+            .build();
+
+        let value = serde_json::to_value(input).unwrap();
+        assert_eq!(
+            value,
+            serde_json::json!({
+                "html": "<p>Hello</p>",
+                "is_rtl": false,
+                "skip_entity_detection": true
+            })
+        );
+    }
+
+    #[test]
+    pub fn poll_media_link_is_parsed() {
+        let media: PollMedia =
+            serde_json::from_str(r#"{"link":{"url":"https://example.com"}}"#).unwrap();
+
+        assert_eq!(
+            media.link,
+            Some(Link {
+                url: "https://example.com".to_owned(),
+            })
+        );
     }
 }

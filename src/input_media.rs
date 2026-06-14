@@ -105,6 +105,7 @@ pub enum InputPollMedia {
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum InputPollOptionMedia {
     Animation(InputMediaAnimation),
+    Link(InputMediaLink),
     LivePhoto(InputMediaLivePhoto),
     Location(InputMediaLocation),
     Photo(InputMediaPhoto),
@@ -179,6 +180,12 @@ pub struct InputMediaDocument {
     pub parse_mode: Option<ParseMode>,
     pub caption_entities: Option<Vec<MessageEntity>>,
     pub disable_content_type_detection: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputMediaLink {
+    pub url: String,
 }
 
 #[apply(apistruct!)]

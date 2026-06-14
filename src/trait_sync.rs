@@ -78,6 +78,8 @@ pub trait TelegramApi {
 
     request!(getUpdates, Vec<Update>);
     request!(sendMessage, Message);
+    request!(sendRichMessage, Message);
+    request!(sendRichMessageDraft, bool);
     request!(setWebhook, bool);
     request!(deleteWebhook, bool);
     request_nb!(getWebhookInfo, WebhookInfo);
@@ -285,6 +287,8 @@ pub trait TelegramApi {
     request!(revokeChatInviteLink, ChatInviteLink);
     request!(approveChatJoinRequest, bool);
     request!(declineChatJoinRequest, bool);
+    request!(answerChatJoinRequestQuery, bool);
+    request!(sendChatJoinRequestWebApp, bool);
 
     fn set_chat_photo(
         &self,

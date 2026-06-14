@@ -32,6 +32,7 @@ mod parse_mode;
 pub mod passport;
 pub mod payments;
 pub mod response;
+pub mod rich_message;
 pub mod stickers;
 #[cfg(test)]
 mod test_json;

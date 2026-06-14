@@ -87,6 +87,8 @@ where
 
     request!(getUpdates, Vec<Update>);
     request!(sendMessage, Message);
+    request!(sendRichMessage, Message);
+    request!(sendRichMessageDraft, bool);
     request!(setWebhook, bool);
     request!(deleteWebhook, bool);
     request_nb!(getWebhookInfo, WebhookInfo);
@@ -298,6 +300,8 @@ where
     request!(revokeChatInviteLink, ChatInviteLink);
     request!(approveChatJoinRequest, bool);
     request!(declineChatJoinRequest, bool);
+    request!(answerChatJoinRequestQuery, bool);
+    request!(sendChatJoinRequestWebApp, bool);
 
     async fn set_chat_photo(
         &self,
