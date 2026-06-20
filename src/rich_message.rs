@@ -260,19 +260,15 @@ pub struct RichBlockListItem {
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum RichBlock {
     Paragraph(RichBlockParagraph),
-    #[serde(rename = "heading")]
-    SectionHeading(RichBlockSectionHeading),
-    #[serde(rename = "pre")]
-    Preformatted(RichBlockPreformatted),
+    Heading(RichBlockSectionHeading),
+    Pre(RichBlockPreformatted),
     Footer(RichBlockFooter),
     Divider(RichBlockDivider),
     MathematicalExpression(RichBlockMathematicalExpression),
     Anchor(RichBlockAnchor),
     List(RichBlockList),
-    #[serde(rename = "blockquote")]
-    BlockQuotation(RichBlockBlockQuotation),
-    #[serde(rename = "pullquote")]
-    PullQuotation(RichBlockPullQuotation),
+    Blockquote(RichBlockBlockQuotation),
+    Pullquote(RichBlockPullQuotation),
     Collage(RichBlockCollage),
     Slideshow(RichBlockSlideshow),
     Table(RichBlockTable),
