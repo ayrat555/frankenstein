@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-* feat: allow overriding the `reqwest` TLS backend via the `rustls-tls` (default), `rustls-tls-no-provider` and `native-tls` features instead of hardcoding `rustls`/`aws-lc-rs`
+* feat: allow overriding the `reqwest` TLS backend via the `rustls-tls` (default) and `rustls-tls-no-provider` features instead of hardcoding `rustls`/`aws-lc-rs`
 
 ## 0.50.1 (2026-06-20)
 

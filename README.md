@@ -32,7 +32,6 @@ Without enabling any additional features this crate will only ship with Telegram
 - TLS backend for the `reqwest` client (enabled by `default`):
   - `rustls-tls` - rustls with the `aws-lc-rs` provider (default; previous behaviour)
   - `rustls-tls-no-provider` - rustls without a built-in crypto provider. Install your own (e.g. `rustls::crypto::ring::default_provider().install_default()`) before making requests. Avoids pulling in `aws-lc-sys` and its C build.
-  - `native-tls` - the platform's native TLS
 
 For example for the async client add the following line to your `Cargo.toml` file:
 

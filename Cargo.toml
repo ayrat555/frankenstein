@@ -26,14 +26,13 @@ trait-async = ["dep:async-trait"]
 trait-sync = []
 
 # TLS backend for the reqwest client. `rustls-tls` is enabled by default and keeps
-# the previous behaviour (rustls with the `aws-lc-rs` provider). To choose a
-# different backend, disable default features and enable one of the alternatives,
-# e.g. `rustls-tls-no-provider` (install your own rustls `CryptoProvider`, which
-# avoids pulling in `aws-lc-sys` and its C build) or `native-tls`. These are no-ops
-# unless the reqwest client is enabled. ureq always uses its own bundled rustls.
+# the previous behaviour (rustls with the `aws-lc-rs` provider). To use rustls
+# without a built-in provider, disable default features and enable
+# `rustls-tls-no-provider` instead, then install your own rustls `CryptoProvider`
+# at runtime; this avoids pulling in `aws-lc-sys` and its C build. These are no-ops
+# unless the reqwest client is enabled.
 rustls-tls = ["reqwest?/rustls"]
 rustls-tls-no-provider = ["reqwest?/rustls-no-provider"]
-native-tls = ["reqwest?/native-tls"]
 
 [lints.rust]
 unsafe_code = "forbid"
