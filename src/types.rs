@@ -171,9 +171,16 @@ pub enum MenuButton {
     Default,
 }
 
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChatBackground {
+    #[serde(rename = "type")]
+    pub type_field: BackgroundType,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", rename_all = "snake_case")]
-pub enum ChatBackground {
+pub enum BackgroundType {
     Fill(BackgroundTypeFill),
     Wallpaper(BackgroundTypeWallpaper),
     Pattern(BackgroundTypePattern),
@@ -2002,6 +2009,13 @@ mod serde_tests {
                 "skip_entity_detection": true
             })
         );
+    }
+
+    #[test]
+    pub fn chat_background_set_is_parsed() {
+        let json = r#"{"type":{"type":"wallpaper","document":{"file_id":"EAACAgIAAxUAAWpEOWtsM9rqRO6kUKtDPg29mLuzAAIupQACRlYhSk400Uru27X0PAQ","file_unique_id":"AgADLqUAAkZWIUo","file_size":105235,"mime_type":"image/jpeg"},"dark_theme_dimming":4,"is_moving":true}}"#;
+        let bg: ChatBackground = serde_json::from_str(json).unwrap();
+        assert!(matches!(bg.type_field, BackgroundType::Wallpaper(_)));
     }
 
     #[test]

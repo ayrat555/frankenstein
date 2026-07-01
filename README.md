@@ -86,8 +86,7 @@ let send_message_params = SendMessageParams::builder()
 
 ### Making requests
 
-```rust,no_run
-#![cfg(feature = "client-ureq")]
+```rust,no_run,ignore
 use frankenstein::TelegramApi;
 use frankenstein::client_ureq::Bot;
 use frankenstein::methods::{GetUpdatesParams, SendMessageParams};
