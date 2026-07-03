@@ -29,11 +29,21 @@ Without enabling any additional features this crate will only ship with Telegram
 - async
   - `client-reqwest` - an async HTTP API client based on `reqwest`. This client partially supports wasm32, but file uploads are currently not supported there.
   - `trait-async` - an async API trait, it's used in the `client-reqwest`. It may be useful for people who want to create a custom async client
+- TLS backend for the `reqwest` client (enabled by `default`):
+  - `rustls-tls` - rustls with the `aws-lc-rs` provider (default; previous behaviour)
+  - `rustls-tls-no-provider` - rustls without a built-in crypto provider. Install your own (e.g. `rustls::crypto::ring::default_provider().install_default()`) before making requests. Avoids pulling in `aws-lc-sys` and its C build.
 
 For example for the async client add the following line to your `Cargo.toml` file:
 
 ```toml
 frankenstein = { version = "0.50", features = ["client-reqwest"] }
+```
+
+To pick a different TLS backend, disable default features and enable one of the
+alternatives above, for example:
+
+```toml
+frankenstein = { version = "0.50", default-features = false, features = ["client-reqwest", "rustls-tls-no-provider"] }
 ```
 
 ## Usage

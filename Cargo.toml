@@ -19,10 +19,20 @@ categories = ["web-programming::http-client"]
 all-features = true
 
 [features]
+default = ["rustls-tls"]
 client-reqwest = ["trait-async", "dep:reqwest", "dep:tokio", "dep:serde_json"]
 client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
 trait-async = ["dep:async-trait"]
 trait-sync = []
+
+# TLS backend for the reqwest client. `rustls-tls` is enabled by default and keeps
+# the previous behaviour (rustls with the `aws-lc-rs` provider). To use rustls
+# without a built-in provider, disable default features and enable
+# `rustls-tls-no-provider` instead, then install your own rustls `CryptoProvider`
+# at runtime; this avoids pulling in `aws-lc-sys` and its C build. These are no-ops
+# unless the reqwest client is enabled.
+rustls-tls = ["reqwest?/rustls"]
+rustls-tls-no-provider = ["reqwest?/rustls-no-provider"]
 
 [lints.rust]
 unsafe_code = "forbid"
@@ -47,10 +57,14 @@ serde_with = { version = "3.0.0", default-features = false, features = ["macros"
 thiserror = "2"
 ureq = { version = "3.0.0", optional = true, default-features = false, features = ["rustls"] }
 
+# The TLS backend is selected via frankenstein's own `rustls-tls` (default),
+# `rustls-tls-no-provider` and `native-tls` features rather than hardcoded here,
+# so downstreams can override it (additive Cargo features otherwise make the
+# hardcoded `rustls`/`aws-lc-rs` provider impossible to opt out of).
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
 version = "0.13"
 default-features = false
-features = ["multipart", "stream", "rustls"]
+features = ["multipart", "stream"]
 optional = true
 
 [target.'cfg(target_arch = "wasm32")'.dependencies.reqwest]
