@@ -4,7 +4,7 @@
 
 Telegram bot API client for Rust.
 
-It's a complete wrapper for Telegram bot API, and it's up-to-date with version 10.0 of the API.
+It's a complete wrapper for Telegram bot API, and it's up-to-date with version 10.1 of the API.
 
 Frankenstein's data structures (Rust structs and enums) are mapped one-to-one from Telegram bot API types and method parameters.
 
@@ -138,7 +138,7 @@ It has two variants:
 
 ### Documentation
 
-Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.50.1/frankenstein/trait.TelegramApi.html#provided-methods)
+Frankenstein implements all Telegram bot API methods. To see which parameters you should pass, check the [official Telegram Bot API documentation](https://core.telegram.org/bots/api#available-methods) or [docs.rs/frankenstein](https://docs.rs/frankenstein/0.50.2/frankenstein/trait.TelegramApi.html#provided-methods)
 
 You can check out real-world bots created using this library:
 

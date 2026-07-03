@@ -416,7 +416,7 @@ dependencies = [
 
 [[package]]
 name = "frankenstein"
-version = "0.50.1"
+version = "0.50.2"
 dependencies = [
  "async-trait",
  "bon",
