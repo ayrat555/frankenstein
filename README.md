@@ -36,6 +36,28 @@ For example for the async client add the following line to your `Cargo.toml` fil
 frankenstein = { version = "0.50", features = ["client-reqwest"] }
 ```
 
+### TLS backend for the `reqwest` client
+
+By default (`default` feature) the `reqwest` client uses rustls with the `aws-lc-rs`
+provider, keeping the previous behaviour. To pick a different backend, disable default
+features and add your own `reqwest` dependency selecting the TLS features you want.
+`reqwest`'s features are additive, so you only need to add the TLS feature —
+`frankenstein` already enables `multipart`/`stream`. For example, to use rustls without
+the `aws-lc-rs` provider (avoids pulling in `aws-lc-sys` and its C build; install your
+own `rustls::crypto::CryptoProvider` before making requests):
+
+```toml
+frankenstein = { version = "0.50", default-features = false, features = ["client-reqwest"] }
+reqwest = { version = "0.13", default-features = false, features = ["rustls-no-provider"] }
+```
+
+Or, to use native-tls:
+
+```toml
+frankenstein = { version = "0.50", default-features = false, features = ["client-reqwest"] }
+reqwest = { version = "0.13", default-features = false, features = ["native-tls"] }
+```
+
 ## Usage
 
 Examples in this section use the blocking client (`frankenstein::Api`), but async examples would look the same (just replace `frankenstein::Api` with `frankenstein::AsyncApi`)

@@ -18,7 +18,12 @@ categories = ["web-programming::http-client"]
 [package.metadata.docs.rs]
 all-features = true
 
+# `default` enables rustls (with the `aws-lc-rs` provider) as the TLS backend for the
+# reqwest client, keeping the previous behaviour. `reqwest?/rustls` is a no-op unless
+# the reqwest client is enabled. To use a different backend, disable default features
+# and add your own `reqwest` dependency selecting the TLS features you want (see README).
 [features]
+default = ["reqwest?/rustls"]
 client-reqwest = ["trait-async", "dep:reqwest", "dep:tokio", "dep:serde_json"]
 client-ureq = ["trait-sync", "dep:ureq", "dep:multipart", "dep:mime_guess", "dep:serde_json"]
 trait-async = ["dep:async-trait"]
@@ -47,10 +52,14 @@ serde_with = { version = "3.0.0", default-features = false, features = ["macros"
 thiserror = "2"
 ureq = { version = "3.0.0", optional = true, default-features = false, features = ["rustls"] }
 
+# The TLS backend is selected via the `default` feature (`reqwest?/rustls`) rather
+# than hardcoded here, so downstreams can override it by disabling default features
+# and bringing their own `reqwest` dependency (additive Cargo features otherwise make
+# a hardcoded `rustls`/`aws-lc-rs` provider impossible to opt out of).
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies.reqwest]
 version = "0.13"
 default-features = false
-features = ["multipart", "stream", "rustls"]
+features = ["multipart", "stream"]
 optional = true
 
 [target.'cfg(target_arch = "wasm32")'.dependencies.reqwest]

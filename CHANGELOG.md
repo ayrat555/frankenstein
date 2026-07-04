@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* build: allow overriding the `reqwest` TLS backend. rustls with the `aws-lc-rs` provider stays the default; to use another backend, disable default features and add your own `reqwest` dependency selecting the TLS features you want (previously the `rustls`/`aws-lc-rs` provider was hardcoded and impossible to opt out of)
+
 ## 0.50.1 (2026-06-20)
 
 * feat: Bot API 10.1 - [#325](https://github.com/ayrat555/frankenstein/pull/325)
