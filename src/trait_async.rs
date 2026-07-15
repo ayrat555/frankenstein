@@ -429,11 +429,16 @@ where
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
+    request!(editEphemeralMessageText, bool);
+    request!(editEphemeralMessageMedia, bool);
+    request!(editEphemeralMessageCaption, bool);
+    request!(editEphemeralMessageReplyMarkup, bool);
     request!(stopPoll, Poll);
     request!(approveSuggestedPost, bool);
     request!(declineSuggestedPost, bool);
     request!(deleteMessage, bool);
     request!(deleteMessages, bool);
+    request!(deleteEphemeralMessage, bool);
     request!(deleteMessageReaction, bool);
     request!(deleteAllMessageReactions, bool);
     request_f!(sendSticker, Message, sticker);

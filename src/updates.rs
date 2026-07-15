@@ -6,9 +6,10 @@ use crate::inline_mode::{ChosenInlineResult, InlineQuery};
 use crate::macros::{apistruct, apply};
 use crate::payments::{PaidMediaPurchased, PreCheckoutQuery, ShippingQuery};
 use crate::types::{
-    AllowedUpdate, BusinessConnection, BusinessMessagesDeleted, CallbackQuery, ChatBoostRemoved,
-    ChatBoostUpdated, ChatJoinRequest, ChatMemberUpdated, ManagedBotUpdated, Message,
-    MessageReactionCountUpdated, MessageReactionUpdated, Poll, PollAnswer,
+    AllowedUpdate, BotSubscriptionUpdated, BusinessConnection, BusinessMessagesDeleted,
+    CallbackQuery, ChatBoostRemoved, ChatBoostUpdated, ChatJoinRequest, ChatMemberUpdated,
+    ManagedBotUpdated, Message, MessageReactionCountUpdated, MessageReactionUpdated, Poll,
+    PollAnswer,
 };
 
 /// Represents an incoming update from telegram.
@@ -51,6 +52,7 @@ pub enum UpdateContent {
     RemovedChatBoost(ChatBoostRemoved),
     PurchasedPaidMedia(PaidMediaPurchased),
     ManagedBot(ManagedBotUpdated),
+    Subscription(BotSubscriptionUpdated),
 }
 
 #[apply(apistruct!)]

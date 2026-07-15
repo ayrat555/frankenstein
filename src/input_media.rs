@@ -215,6 +215,16 @@ pub struct InputMediaSticker {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputMediaVoiceNote {
+    pub media: FileUpload,
+    pub caption: Option<String>,
+    pub parse_mode: Option<ParseMode>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub duration: Option<u32>,
+}
+
+#[apply(apistruct!)]
 pub struct InputMediaVenue {
     pub latitude: f64,
     pub longitude: f64,

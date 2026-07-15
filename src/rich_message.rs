@@ -2,6 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::input_media::{
+    InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoiceNote,
+};
 use crate::macros::{apistruct, apply};
 use crate::types::{Animation, Audio, Location, PhotoSize, User, Video, Voice};
 
@@ -12,12 +15,31 @@ pub struct RichMessage {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct InputRichMessage {
+    pub blocks: Option<Vec<InputRichBlock>>,
     pub html: Option<String>,
     pub markdown: Option<String>,
+    pub media: Option<Vec<InputRichMessageMedia>>,
     pub is_rtl: Option<bool>,
     pub skip_entity_detection: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputRichMessageMedia {
+    pub id: String,
+    pub media: InputRichMessageMediaKind,
+}
+
+/// The media of an [`InputRichMessageMedia`].
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputRichMessageMediaKind {
+    Animation(InputMediaAnimation),
+    Audio(InputMediaAudio),
+    Photo(InputMediaPhoto),
+    Video(InputMediaVideo),
+    VoiceNote(InputMediaVoiceNote),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -408,5 +430,167 @@ pub struct RichBlockVoiceNote {
 
 #[apply(apistruct!)]
 pub struct RichBlockThinking {
+    pub text: RichText,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputRichBlock {
+    Paragraph(InputRichBlockParagraph),
+    Heading(InputRichBlockSectionHeading),
+    Pre(InputRichBlockPreformatted),
+    Footer(InputRichBlockFooter),
+    Divider(InputRichBlockDivider),
+    MathematicalExpression(InputRichBlockMathematicalExpression),
+    Anchor(InputRichBlockAnchor),
+    List(InputRichBlockList),
+    Blockquote(InputRichBlockBlockQuotation),
+    Pullquote(InputRichBlockPullQuotation),
+    Collage(InputRichBlockCollage),
+    Slideshow(InputRichBlockSlideshow),
+    Table(InputRichBlockTable),
+    Details(InputRichBlockDetails),
+    Map(InputRichBlockMap),
+    Animation(InputRichBlockAnimation),
+    Audio(InputRichBlockAudio),
+    Photo(InputRichBlockPhoto),
+    Video(InputRichBlockVideo),
+    VoiceNote(InputRichBlockVoiceNote),
+    Thinking(InputRichBlockThinking),
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockParagraph {
+    pub text: RichText,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockSectionHeading {
+    pub text: RichText,
+    pub size: u8,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockPreformatted {
+    pub text: RichText,
+    pub language: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockFooter {
+    pub text: RichText,
+}
+
+#[apply(apistruct!)]
+#[derive(Copy, Eq)]
+pub struct InputRichBlockDivider {}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputRichBlockMathematicalExpression {
+    pub expression: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputRichBlockAnchor {
+    pub name: String,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockList {
+    pub items: Vec<InputRichBlockListItem>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockListItem {
+    pub blocks: Vec<InputRichBlock>,
+    pub has_checkbox: Option<bool>,
+    pub is_checked: Option<bool>,
+    pub value: Option<i32>,
+    #[serde(rename = "type")]
+    pub type_field: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockBlockQuotation {
+    pub blocks: Vec<InputRichBlock>,
+    pub credit: Option<RichText>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockPullQuotation {
+    pub text: RichText,
+    pub credit: Option<RichText>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockCollage {
+    pub blocks: Vec<InputRichBlock>,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockSlideshow {
+    pub blocks: Vec<InputRichBlock>,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockTable {
+    pub cells: Vec<Vec<RichBlockTableCell>>,
+    pub is_bordered: Option<bool>,
+    pub is_striped: Option<bool>,
+    pub caption: Option<RichText>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockDetails {
+    pub summary: RichText,
+    pub blocks: Vec<InputRichBlock>,
+    pub is_open: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockMap {
+    pub location: Location,
+    pub zoom: u8,
+    pub width: u32,
+    pub height: u32,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockAnimation {
+    pub animation: InputMediaAnimation,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockAudio {
+    pub audio: InputMediaAudio,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockPhoto {
+    pub photo: InputMediaPhoto,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockVideo {
+    pub video: InputMediaVideo,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockVoiceNote {
+    pub voice_note: InputMediaVoiceNote,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockThinking {
     pub text: RichText,
 }

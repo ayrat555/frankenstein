@@ -446,7 +446,6 @@ pub struct InputTextMessageContent {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct InputRichMessageContent {
     pub rich_message: InputRichMessage,
 }
