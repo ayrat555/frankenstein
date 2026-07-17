@@ -138,10 +138,6 @@ mod tests {
     use super::*;
     use crate::inline_mode::{InlineQueryResult, InlineQueryResultVenue};
     use crate::input_media::{InputMediaPhoto, MediaGroupInputMedia};
-    use crate::rich_message::{
-        InputRichBlock, InputRichBlockPhoto, InputRichMessage, InputRichMessageMedia,
-        InputRichMessageMediaKind,
-    };
     use crate::methods::{
         AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CopyMessageParams,
         CreateChatInviteLinkParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
@@ -160,6 +156,10 @@ mod tests {
         SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams, SetMyCommandsParams,
         SetWebhookParams, StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
         UnpinChatMessageParams,
+    };
+    use crate::rich_message::{
+        InputRichBlock, InputRichBlockPhoto, InputRichMessage, InputRichMessageMedia,
+        InputRichMessageMediaKind,
     };
     use crate::test_json::assert_json_str;
     use crate::types::{
@@ -1022,9 +1022,7 @@ mod tests {
     #[test]
     fn send_rich_message_without_file_upload_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
-        let rich_message = InputRichMessage::builder()
-            .html("<p>Hello</p>")
-            .build();
+        let rich_message = InputRichMessage::builder().html("<p>Hello</p>").build();
         let params = SendRichMessageParams::builder()
             .chat_id(275808073)
             .rich_message(rich_message)

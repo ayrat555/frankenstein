@@ -602,8 +602,7 @@ mod input_file_replacement {
     use super::{InputRichBlock, InputRichMessage, InputRichMessageMediaKind};
     use crate::input_file::HasInputFile;
     use crate::input_media::{
-        InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo,
-        InputMediaVoiceNote,
+        InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoiceNote,
     };
 
     type Files = Vec<(String, PathBuf)>;
