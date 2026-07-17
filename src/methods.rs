@@ -340,6 +340,8 @@ pub struct SendLivePhotoParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
+    pub receiver_user_id: Option<u64>,
+    pub callback_query_id: Option<String>,
     pub media: FileUpload,
     pub photo: FileUpload,
     pub caption: Option<String>,

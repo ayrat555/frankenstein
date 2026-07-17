@@ -133,9 +133,15 @@ impl TelegramApi for Bot {
 
 #[cfg(test)]
 mod tests {
+    use mockito::Matcher;
+
     use super::*;
     use crate::inline_mode::{InlineQueryResult, InlineQueryResultVenue};
     use crate::input_media::{InputMediaPhoto, MediaGroupInputMedia};
+    use crate::rich_message::{
+        InputRichBlock, InputRichBlockPhoto, InputRichMessage, InputRichMessageMedia,
+        InputRichMessageMediaKind,
+    };
     use crate::methods::{
         AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CopyMessageParams,
         CreateChatInviteLinkParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
@@ -148,7 +154,8 @@ mod tests {
         RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams, SendChatActionParams,
         SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams,
         SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams,
-        SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams,
+        SendRichMessageDraftParams, SendRichMessageParams, SendStickerParams, SendVenueParams,
+        SendVideoNoteParams, SendVideoParams, SendVoiceParams,
         SetChatAdministratorCustomTitleParams, SetChatDescriptionParams, SetChatPermissionsParams,
         SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams, SetMyCommandsParams,
         SetWebhookParams, StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
@@ -971,6 +978,145 @@ mod tests {
             .message_id(513)
             .build();
         let response = case!(editMessageMedia, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn send_rich_message_with_file_upload_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
+        let rich_message = InputRichMessage::builder()
+            .html("<p>Hello <img src=\"tg://photo?id=logo\"></p>")
+            .media(vec![InputRichMessageMedia::builder()
+                .id("logo")
+                .media(InputRichMessageMediaKind::Photo(
+                    InputMediaPhoto::builder().media(file).build(),
+                ))
+                .build()])
+            .build();
+        let params = SendRichMessageParams::builder()
+            .chat_id(275808073)
+            .rich_message(rich_message)
+            .build();
+
+        let mut server = mockito::Server::new();
+        let mock = server
+            .mock("POST", "/sendRichMessage")
+            .match_header(
+                "content-type",
+                Matcher::Regex("^multipart/form-data".to_string()),
+            )
+            .match_body(Matcher::Regex("attach://file0".to_string()))
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Bot::new_url(server.url());
+
+        let response = api.send_rich_message(&params).unwrap();
+        mock.assert();
+        drop(server);
+
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn send_rich_message_without_file_upload_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let rich_message = InputRichMessage::builder()
+            .html("<p>Hello</p>")
+            .build();
+        let params = SendRichMessageParams::builder()
+            .chat_id(275808073)
+            .rich_message(rich_message)
+            .build();
+
+        let mut server = mockito::Server::new();
+        let mock = server
+            .mock("POST", "/sendRichMessage")
+            .match_header("content-type", "application/json; charset=utf-8")
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Bot::new_url(server.url());
+
+        let response = api.send_rich_message(&params).unwrap();
+        mock.assert();
+        drop(server);
+
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn send_rich_message_draft_with_file_upload_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
+        let rich_message = InputRichMessage::builder()
+            .blocks(vec![InputRichBlock::Photo(
+                InputRichBlockPhoto::builder()
+                    .photo(InputMediaPhoto::builder().media(file).build())
+                    .build(),
+            )])
+            .build();
+        let params = SendRichMessageDraftParams::builder()
+            .chat_id(275808073)
+            .draft_id(1)
+            .rich_message(rich_message)
+            .build();
+
+        let mut server = mockito::Server::new();
+        let mock = server
+            .mock("POST", "/sendRichMessageDraft")
+            .match_header(
+                "content-type",
+                Matcher::Regex("^multipart/form-data".to_string()),
+            )
+            .match_body(Matcher::Regex("attach://file0".to_string()))
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Bot::new_url(server.url());
+
+        let response = api.send_rich_message_draft(&params).unwrap();
+        mock.assert();
+        drop(server);
+
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn edit_message_text_rich_message_with_file_upload_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619158446,\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
+        let rich_message = InputRichMessage::builder()
+            .blocks(vec![InputRichBlock::Photo(
+                InputRichBlockPhoto::builder()
+                    .photo(InputMediaPhoto::builder().media(file).build())
+                    .build(),
+            )])
+            .build();
+        let params = EditMessageTextParams::builder()
+            .chat_id(275808073)
+            .message_id(2782)
+            .rich_message(rich_message)
+            .build();
+
+        let mut server = mockito::Server::new();
+        let mock = server
+            .mock("POST", "/editMessageText")
+            .match_header(
+                "content-type",
+                Matcher::Regex("^multipart/form-data".to_string()),
+            )
+            .match_body(Matcher::Regex("attach://file0".to_string()))
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Bot::new_url(server.url());
+
+        let response = api.edit_message_text(&params).unwrap();
+        mock.assert();
+        drop(server);
+
         assert_json_str(&response, response_string);
     }
 
