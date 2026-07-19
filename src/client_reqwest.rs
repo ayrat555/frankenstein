@@ -142,7 +142,9 @@ impl AsyncTelegramApi for Bot {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::methods::SendMessageParams;
+    use crate::input_media::InputMediaPhoto;
+    use crate::methods::{SendMessageParams, SendRichMessageParams};
+    use crate::rich_message::{InputRichBlock, InputRichBlockPhoto, InputRichMessage};
 
     #[tokio::test]
     async fn async_send_message_success() {
@@ -161,6 +163,42 @@ mod tests {
         let api = Bot::new_url(server.url());
 
         let response = api.send_message(&params).await.unwrap();
+        mock.assert();
+        drop(server);
+
+        crate::test_json::assert_json_str(&response, response_string);
+    }
+
+    #[tokio::test]
+    async fn async_send_rich_message_with_file_upload_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
+        let rich_message = InputRichMessage::builder()
+            .blocks(vec![InputRichBlock::Photo(
+                InputRichBlockPhoto::builder()
+                    .photo(InputMediaPhoto::builder().media(file).build())
+                    .build(),
+            )])
+            .build();
+        let params = SendRichMessageParams::builder()
+            .chat_id(275808073)
+            .rich_message(rich_message)
+            .build();
+        let mut server = mockito::Server::new_async().await;
+        let mock = server
+            .mock("POST", "/sendRichMessage")
+            .match_header(
+                "content-type",
+                mockito::Matcher::Regex("^multipart/form-data".to_string()),
+            )
+            .match_body(mockito::Matcher::Regex("attach://file0".to_string()))
+            .with_status(200)
+            .with_body(response_string)
+            .create_async()
+            .await;
+        let api = Bot::new_url(server.url());
+
+        let response = api.send_rich_message(&params).await.unwrap();
         mock.assert();
         drop(server);
 

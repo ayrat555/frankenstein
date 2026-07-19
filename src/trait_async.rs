@@ -87,8 +87,35 @@ where
 
     request!(getUpdates, Vec<Update>);
     request!(sendMessage, Message);
-    request!(sendRichMessage, Message);
-    request!(sendRichMessageDraft, bool);
+
+    async fn send_rich_message(
+        &self,
+        params: &crate::methods::SendRichMessageParams,
+    ) -> Result<MethodResponse<Message>, Self::Error> {
+        let mut params = params.clone();
+        let files = params.rich_message.replace_input_files();
+        let files_with_str_names = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+        self.request_with_possible_form_data("sendRichMessage", &params, files_with_str_names)
+            .await
+    }
+
+    async fn send_rich_message_draft(
+        &self,
+        params: &crate::methods::SendRichMessageDraftParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut params = params.clone();
+        let files = params.rich_message.replace_input_files();
+        let files_with_str_names = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+        self.request_with_possible_form_data("sendRichMessageDraft", &params, files_with_str_names)
+            .await
+    }
+
     request!(setWebhook, bool);
     request!(deleteWebhook, bool);
     request_nb!(getWebhookInfo, WebhookInfo);
@@ -378,7 +405,25 @@ where
 
     request_nb!(removeMyProfilePhoto, bool);
     request!(answerInlineQuery, bool);
-    request!(editMessageText, MessageOrBool);
+
+    async fn edit_message_text(
+        &self,
+        params: &crate::methods::EditMessageTextParams,
+    ) -> Result<MethodResponse<MessageOrBool>, Self::Error> {
+        let mut params = params.clone();
+        let files = params
+            .rich_message
+            .as_mut()
+            .map(crate::rich_message::InputRichMessage::replace_input_files)
+            .unwrap_or_default();
+        let files_with_str_names = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+        self.request_with_possible_form_data("editMessageText", &params, files_with_str_names)
+            .await
+    }
+
     request!(editMessageCaption, MessageOrBool);
 
     async fn edit_message_media(
@@ -429,11 +474,16 @@ where
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
+    request!(editEphemeralMessageText, bool);
+    request!(editEphemeralMessageMedia, bool);
+    request!(editEphemeralMessageCaption, bool);
+    request!(editEphemeralMessageReplyMarkup, bool);
     request!(stopPoll, Poll);
     request!(approveSuggestedPost, bool);
     request!(declineSuggestedPost, bool);
     request!(deleteMessage, bool);
     request!(deleteMessages, bool);
+    request!(deleteEphemeralMessage, bool);
     request!(deleteMessageReaction, bool);
     request!(deleteAllMessageReactions, bool);
     request_f!(sendSticker, Message, sticker);

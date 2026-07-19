@@ -2,6 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::input_media::{
+    InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoiceNote,
+};
 use crate::macros::{apistruct, apply};
 use crate::types::{Animation, Audio, Location, PhotoSize, User, Video, Voice};
 
@@ -12,12 +15,31 @@ pub struct RichMessage {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct InputRichMessage {
+    pub blocks: Option<Vec<InputRichBlock>>,
     pub html: Option<String>,
     pub markdown: Option<String>,
+    pub media: Option<Vec<InputRichMessageMedia>>,
     pub is_rtl: Option<bool>,
     pub skip_entity_detection: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputRichMessageMedia {
+    pub id: String,
+    pub media: InputRichMessageMediaKind,
+}
+
+/// The media of an [`InputRichMessageMedia`].
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputRichMessageMediaKind {
+    Animation(InputMediaAnimation),
+    Audio(InputMediaAudio),
+    Photo(InputMediaPhoto),
+    Video(InputMediaVideo),
+    VoiceNote(InputMediaVoiceNote),
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -409,4 +431,337 @@ pub struct RichBlockVoiceNote {
 #[apply(apistruct!)]
 pub struct RichBlockThinking {
     pub text: RichText,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum InputRichBlock {
+    Paragraph(InputRichBlockParagraph),
+    Heading(InputRichBlockSectionHeading),
+    Pre(InputRichBlockPreformatted),
+    Footer(InputRichBlockFooter),
+    Divider(InputRichBlockDivider),
+    MathematicalExpression(InputRichBlockMathematicalExpression),
+    Anchor(InputRichBlockAnchor),
+    List(InputRichBlockList),
+    Blockquote(InputRichBlockBlockQuotation),
+    Pullquote(InputRichBlockPullQuotation),
+    Collage(InputRichBlockCollage),
+    Slideshow(InputRichBlockSlideshow),
+    Table(InputRichBlockTable),
+    Details(InputRichBlockDetails),
+    Map(InputRichBlockMap),
+    Animation(InputRichBlockAnimation),
+    Audio(InputRichBlockAudio),
+    Photo(InputRichBlockPhoto),
+    Video(InputRichBlockVideo),
+    VoiceNote(InputRichBlockVoiceNote),
+    Thinking(InputRichBlockThinking),
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockParagraph {
+    pub text: RichText,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockSectionHeading {
+    pub text: RichText,
+    pub size: u8,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockPreformatted {
+    pub text: RichText,
+    pub language: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockFooter {
+    pub text: RichText,
+}
+
+#[apply(apistruct!)]
+#[derive(Copy, Eq)]
+pub struct InputRichBlockDivider {}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputRichBlockMathematicalExpression {
+    pub expression: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputRichBlockAnchor {
+    pub name: String,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockList {
+    pub items: Vec<InputRichBlockListItem>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockListItem {
+    pub blocks: Vec<InputRichBlock>,
+    pub has_checkbox: Option<bool>,
+    pub is_checked: Option<bool>,
+    pub value: Option<i32>,
+    #[serde(rename = "type")]
+    pub type_field: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockBlockQuotation {
+    pub blocks: Vec<InputRichBlock>,
+    pub credit: Option<RichText>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockPullQuotation {
+    pub text: RichText,
+    pub credit: Option<RichText>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockCollage {
+    pub blocks: Vec<InputRichBlock>,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockSlideshow {
+    pub blocks: Vec<InputRichBlock>,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockTable {
+    pub cells: Vec<Vec<RichBlockTableCell>>,
+    pub is_bordered: Option<bool>,
+    pub is_striped: Option<bool>,
+    pub caption: Option<RichText>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockDetails {
+    pub summary: RichText,
+    pub blocks: Vec<InputRichBlock>,
+    pub is_open: Option<bool>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockMap {
+    pub location: Location,
+    pub zoom: u8,
+    pub width: u32,
+    pub height: u32,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockAnimation {
+    pub animation: InputMediaAnimation,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockAudio {
+    pub audio: InputMediaAudio,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockPhoto {
+    pub photo: InputMediaPhoto,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockVideo {
+    pub video: InputMediaVideo,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockVoiceNote {
+    pub voice_note: InputMediaVoiceNote,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockThinking {
+    pub text: RichText,
+}
+
+#[cfg(any(feature = "trait-sync", feature = "trait-async"))]
+mod input_file_replacement {
+    use std::path::PathBuf;
+
+    use super::{InputRichBlock, InputRichMessage, InputRichMessageMediaKind};
+    use crate::input_file::HasInputFile;
+    use crate::input_media::{
+        InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoiceNote,
+    };
+
+    type Files = Vec<(String, PathBuf)>;
+
+    macro_rules! replace_attach {
+        ($property:expr, $files:ident) => {
+            if let Some(file) = $property.replace_attach_dyn(|| $files.len()) {
+                $files.push(file);
+            }
+        };
+    }
+
+    fn replace_animation(animation: &mut InputMediaAnimation, files: &mut Files) {
+        replace_attach!(animation.media, files);
+        replace_attach!(animation.thumbnail, files);
+    }
+
+    fn replace_audio(audio: &mut InputMediaAudio, files: &mut Files) {
+        replace_attach!(audio.media, files);
+        replace_attach!(audio.thumbnail, files);
+    }
+
+    fn replace_photo(photo: &mut InputMediaPhoto, files: &mut Files) {
+        replace_attach!(photo.media, files);
+    }
+
+    fn replace_video(video: &mut InputMediaVideo, files: &mut Files) {
+        replace_attach!(video.media, files);
+        replace_attach!(video.cover, files);
+        replace_attach!(video.thumbnail, files);
+    }
+
+    fn replace_voice_note(voice_note: &mut InputMediaVoiceNote, files: &mut Files) {
+        replace_attach!(voice_note.media, files);
+    }
+
+    fn replace_blocks(blocks: &mut [InputRichBlock], files: &mut Files) {
+        for block in blocks {
+            match block {
+                InputRichBlock::List(list) => {
+                    for item in &mut list.items {
+                        replace_blocks(&mut item.blocks, files);
+                    }
+                }
+                InputRichBlock::Blockquote(blockquote) => {
+                    replace_blocks(&mut blockquote.blocks, files);
+                }
+                InputRichBlock::Collage(collage) => replace_blocks(&mut collage.blocks, files),
+                InputRichBlock::Slideshow(slideshow) => {
+                    replace_blocks(&mut slideshow.blocks, files);
+                }
+                InputRichBlock::Details(details) => replace_blocks(&mut details.blocks, files),
+                InputRichBlock::Animation(b) => replace_animation(&mut b.animation, files),
+                InputRichBlock::Audio(b) => replace_audio(&mut b.audio, files),
+                InputRichBlock::Photo(b) => replace_photo(&mut b.photo, files),
+                InputRichBlock::Video(b) => replace_video(&mut b.video, files),
+                InputRichBlock::VoiceNote(b) => replace_voice_note(&mut b.voice_note, files),
+                InputRichBlock::Paragraph(_)
+                | InputRichBlock::Heading(_)
+                | InputRichBlock::Pre(_)
+                | InputRichBlock::Footer(_)
+                | InputRichBlock::Divider(_)
+                | InputRichBlock::MathematicalExpression(_)
+                | InputRichBlock::Anchor(_)
+                | InputRichBlock::Pullquote(_)
+                | InputRichBlock::Table(_)
+                | InputRichBlock::Map(_)
+                | InputRichBlock::Thinking(_) => {}
+            }
+        }
+    }
+
+    impl InputRichMessage {
+        pub(crate) fn replace_input_files(&mut self) -> Files {
+            let mut files = Files::new();
+            if let Some(media) = &mut self.media {
+                for media in media {
+                    match &mut media.media {
+                        InputRichMessageMediaKind::Animation(animation) => {
+                            replace_animation(animation, &mut files);
+                        }
+                        InputRichMessageMediaKind::Audio(audio) => {
+                            replace_audio(audio, &mut files);
+                        }
+                        InputRichMessageMediaKind::Photo(photo) => {
+                            replace_photo(photo, &mut files);
+                        }
+                        InputRichMessageMediaKind::Video(video) => {
+                            replace_video(video, &mut files);
+                        }
+                        InputRichMessageMediaKind::VoiceNote(voice_note) => {
+                            replace_voice_note(voice_note, &mut files);
+                        }
+                    }
+                }
+            }
+            if let Some(blocks) = &mut self.blocks {
+                replace_blocks(blocks, &mut files);
+            }
+            files
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use std::path::PathBuf;
+
+        use super::super::{
+            InputRichBlock, InputRichBlockDetails, InputRichBlockPhoto, InputRichMessage,
+            InputRichMessageMedia, InputRichMessageMediaKind, RichText,
+        };
+        use crate::input_media::{InputMediaPhoto, InputMediaVideo};
+
+        #[test]
+        fn input_files_are_replaced_with_attach_references() {
+            let mut message = InputRichMessage::builder()
+                .media(vec![InputRichMessageMedia::builder()
+                    .id("video1")
+                    .media(InputRichMessageMediaKind::Video(
+                        InputMediaVideo::builder()
+                            .media(PathBuf::from("video.mp4"))
+                            .thumbnail(PathBuf::from("thumbnail.jpg"))
+                            .build(),
+                    ))
+                    .build()])
+                .blocks(vec![InputRichBlock::Details(
+                    InputRichBlockDetails::builder()
+                        .summary(RichText::from("photos"))
+                        .blocks(vec![InputRichBlock::Photo(
+                            InputRichBlockPhoto::builder()
+                                .photo(
+                                    InputMediaPhoto::builder()
+                                        .media(PathBuf::from("photo.jpg"))
+                                        .build(),
+                                )
+                                .build(),
+                        )])
+                        .build(),
+                )])
+                .build();
+
+            let files = message.replace_input_files();
+
+            assert_eq!(
+                files,
+                vec![
+                    ("file0".to_owned(), PathBuf::from("video.mp4")),
+                    ("file1".to_owned(), PathBuf::from("thumbnail.jpg")),
+                    ("file2".to_owned(), PathBuf::from("photo.jpg")),
+                ]
+            );
+
+            let value = serde_json::to_value(&message).unwrap();
+            assert_eq!(value["media"][0]["media"]["media"], "attach://file0");
+            assert_eq!(value["media"][0]["media"]["thumbnail"], "attach://file1");
+            assert_eq!(
+                value["blocks"][0]["blocks"][0]["photo"]["media"],
+                "attach://file2"
+            );
+        }
+    }
 }

@@ -98,8 +98,9 @@ pub struct BotCommandScopeChatMember {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct ReplyParameters {
-    pub message_id: i32,
+    pub message_id: Option<i32>,
     pub chat_id: Option<ChatId>,
+    pub ephemeral_message_id: Option<i32>,
     pub allow_sending_without_reply: Option<bool>,
     pub quote: Option<String>,
     pub quote_parse_mode: Option<ParseMode>,
@@ -341,6 +342,7 @@ pub enum AllowedUpdate {
     ChatBoost,
     RemovedChatBoost,
     ManagedBot,
+    Subscription,
 }
 
 #[apply(apistruct!)]
@@ -435,6 +437,7 @@ pub struct ChatFullInfo {
     pub unique_gift_colors: Option<UniqueGiftColors>,
     pub paid_message_star_count: Option<u32>,
     pub guard_bot: Option<User>,
+    pub community: Option<Community>,
 }
 
 #[apply(apistruct!)]
@@ -447,6 +450,8 @@ pub struct Message {
     pub sender_boost_count: Option<u32>,
     pub sender_business_bot: Option<Box<User>>,
     pub sender_tag: Option<String>,
+    pub receiver_user: Option<Box<User>>,
+    pub ephemeral_message_id: Option<i32>,
     pub date: u64,
     pub guest_query_id: Option<String>,
     pub business_connection_id: Option<String>,
@@ -527,6 +532,8 @@ pub struct Message {
     pub chat_background_set: Option<Box<ChatBackground>>,
     pub checklist_tasks_done: Option<Box<ChecklistTasksDone>>,
     pub checklist_tasks_added: Option<Box<ChecklistTasksAdded>>,
+    pub community_chat_added: Option<Box<CommunityChatAdded>>,
+    pub community_chat_removed: Option<Box<CommunityChatRemoved>>,
     pub direct_message_price_changed: Option<Box<DirectMessagePriceChanged>>,
     pub forum_topic_created: Option<Box<ForumTopicCreated>>,
     pub forum_topic_edited: Option<Box<ForumTopicEdited>>,
@@ -962,6 +969,23 @@ pub struct ChecklistTasksAdded {
     pub checklist_message: Option<Message>,
     pub tasks: Vec<ChecklistTask>,
 }
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct Community {
+    pub id: i64,
+    pub name: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct CommunityChatAdded {
+    pub community: Community,
+}
+
+#[apply(apistruct!)]
+#[derive(Copy, Eq)]
+pub struct CommunityChatRemoved {}
 
 #[apply(apistruct!)]
 #[derive(Copy)]
@@ -1579,6 +1603,7 @@ pub struct ForumTopic {
 pub struct BotCommand {
     pub command: String,
     pub description: String,
+    pub is_ephemeral: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -1894,6 +1919,23 @@ pub struct ManagedBotCreated {
 pub struct ManagedBotUpdated {
     pub user: User,
     pub bot: User,
+}
+
+/// The new state of a user payment subscription in [`BotSubscriptionUpdated`].
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum BotSubscriptionState {
+    Canceled,
+    Active,
+    Failed,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BotSubscriptionUpdated {
+    pub user: User,
+    pub invoice_payload: String,
+    pub state: BotSubscriptionState,
 }
 
 #[apply(apistruct!)]
