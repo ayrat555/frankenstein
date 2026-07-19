@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.51.0 (2026-07-19)
+
+* feat: Bot API 10.2 - [#332](https://github.com/ayrat555/frankenstein/pull/332)
+
 ## 0.50.2 (2026-07-03)
 
 * fix: ChatBackground deserialization - [#328](https://github.com/ayrat555/frankenstein/pull/328)
