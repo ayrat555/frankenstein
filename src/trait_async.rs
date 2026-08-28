@@ -77,6 +77,7 @@ macro_rules! request_f {
 }
 
 // Wasm target need not be `Send` because it is single-threaded
+#[allow(clippy::double_must_use)]
 #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait AsyncTelegramApi
