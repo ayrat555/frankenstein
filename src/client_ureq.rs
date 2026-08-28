@@ -142,19 +142,20 @@ mod tests {
         AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CopyMessageParams,
         CreateChatInviteLinkParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
         DeleteMessageParams, DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
-        EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams,
-        EditMessageTextParams, ExportChatInviteLinkParams, ForwardMessageParams,
-        GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetFileParams,
-        GetMyCommandsParams, GetStickerSetParams, GetUpdatesParams, GetUserProfilePhotosParams,
-        LeaveChatParams, PinChatMessageParams, PromoteChatMemberParams, RestrictChatMemberParams,
-        RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams, SendChatActionParams,
-        SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams,
-        SendMediaGroupParams, SendMessageParams, SendPhotoParams, SendPollParams,
-        SendRichMessageDraftParams, SendRichMessageParams, SendStickerParams, SendVenueParams,
-        SendVideoNoteParams, SendVideoParams, SendVoiceParams,
-        SetChatAdministratorCustomTitleParams, SetChatDescriptionParams, SetChatPermissionsParams,
-        SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams, SetMyCommandsParams,
-        SetWebhookParams, StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
+        EditEphemeralMessageMediaParams, EditMessageCaptionParams, EditMessageLiveLocationParams,
+        EditMessageMediaParams, EditMessageTextParams, ExportChatInviteLinkParams,
+        ForwardMessageParams, GetChatAdministratorsParams, GetChatMemberCountParams,
+        GetChatMemberParams, GetFileParams, GetMyCommandsParams, GetStickerSetParams,
+        GetUpdatesParams, GetUserProfilePhotosParams, LeaveChatParams, PinChatMessageParams,
+        PromoteChatMemberParams, RestrictChatMemberParams, RevokeChatInviteLinkParams,
+        SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams,
+        SendDiceParams, SendDocumentParams, SendLocationParams, SendMediaGroupParams,
+        SendMessageParams, SendPhotoParams, SendPollParams, SendRichMessageDraftParams,
+        SendRichMessageParams, SendStickerParams, SendVenueParams, SendVideoNoteParams,
+        SendVideoParams, SendVoiceParams, SetChatAdministratorCustomTitleParams,
+        SetChatDescriptionParams, SetChatPermissionsParams, SetChatPhotoParams,
+        SetChatStickerSetParams, SetChatTitleParams, SetMyCommandsParams, SetWebhookParams,
+        StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
         UnpinChatMessageParams,
     };
     use crate::rich_message::{
@@ -732,7 +733,7 @@ mod tests {
 
     #[test]
     fn get_chat_administrators_success() {
-        let response_string = "{\"ok\":true,\"result\":[{\"status\":\"administrator\",\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"can_be_edited\":false,\"is_anonymous\":true,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_video_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":false,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true},{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}]}";
+        let response_string = "{\"ok\":true,\"result\":[{\"status\":\"administrator\",\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"can_be_edited\":false,\"is_anonymous\":true,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_video_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":false,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true,\"can_send_welcome_messages\":false},{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}]}";
         let params = GetChatAdministratorsParams::builder()
             .chat_id(-1001368460856)
             .build();
@@ -978,6 +979,37 @@ mod tests {
             .message_id(513)
             .build();
         let response = case!(editMessageMedia, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn edit_ephemeral_message_media_with_file_upload_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let file = std::path::PathBuf::from("./frankenstein_logo.png");
+        let params = EditEphemeralMessageMediaParams::builder()
+            .chat_id(-1001368460856)
+            .receiver_user_id(275808073)
+            .ephemeral_message_id(513)
+            .media(InputMediaPhoto::builder().media(file).build())
+            .build();
+
+        let mut server = mockito::Server::new();
+        let mock = server
+            .mock("POST", "/editEphemeralMessageMedia")
+            .match_header(
+                "content-type",
+                Matcher::Regex("^multipart/form-data".to_string()),
+            )
+            .match_body(Matcher::Regex("attach://photo_media".to_string()))
+            .with_status(200)
+            .with_body(response_string)
+            .create();
+        let api = Bot::new_url(server.url());
+
+        let response = api.edit_ephemeral_message_media(&params).unwrap();
+        mock.assert();
+        drop(server);
+
         assert_json_str(&response, response_string);
     }
 

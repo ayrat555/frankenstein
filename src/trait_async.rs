@@ -77,6 +77,7 @@ macro_rules! request_f {
 }
 
 // Wasm target need not be `Send` because it is single-threaded
+#[allow(clippy::double_must_use)]
 #[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
 #[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
 pub trait AsyncTelegramApi
@@ -474,8 +475,72 @@ where
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
-    request!(editEphemeralMessageText, bool);
-    request!(editEphemeralMessageMedia, bool);
+    async fn edit_ephemeral_message_text(
+        &self,
+        params: &crate::methods::EditEphemeralMessageTextParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut params = params.clone();
+        let files = params
+            .rich_message
+            .as_mut()
+            .map(crate::rich_message::InputRichMessage::replace_input_files)
+            .unwrap_or_default();
+        let files_with_str_names = files
+            .iter()
+            .map(|(key, path)| (key.as_str(), path.clone()))
+            .collect();
+        self.request_with_possible_form_data(
+            "editEphemeralMessageText",
+            &params,
+            files_with_str_names,
+        )
+        .await
+    }
+
+    async fn edit_ephemeral_message_media(
+        &self,
+        params: &crate::methods::EditEphemeralMessageMediaParams,
+    ) -> Result<MethodResponse<bool>, Self::Error> {
+        let mut files = Vec::new();
+
+        macro_rules! replace_attach {
+            ($base:ident. $property:ident) => {{
+                const NAME: &str = concat!(stringify!($base), "_", stringify!($property));
+                if let Some(file) = $base.$property.replace_attach(NAME) {
+                    files.push((NAME, file));
+                }
+            }};
+        }
+
+        let mut params = params.clone();
+        match &mut params.media {
+            InputMedia::Animation(animation) => {
+                replace_attach!(animation.media);
+                replace_attach!(animation.thumbnail);
+            }
+            InputMedia::Document(document) => {
+                replace_attach!(document.media);
+                replace_attach!(document.thumbnail);
+            }
+            InputMedia::Audio(audio) => {
+                replace_attach!(audio.media);
+                replace_attach!(audio.thumbnail);
+            }
+            InputMedia::LivePhoto(live_photo) => {
+                replace_attach!(live_photo.media);
+                replace_attach!(live_photo.photo);
+            }
+            InputMedia::Photo(photo) => replace_attach!(photo.media),
+            InputMedia::Video(video) => {
+                replace_attach!(video.media);
+                replace_attach!(video.cover);
+                replace_attach!(video.thumbnail);
+            }
+        }
+
+        self.request_with_possible_form_data("editEphemeralMessageMedia", &params, files)
+            .await
+    }
     request!(editEphemeralMessageCaption, bool);
     request!(editEphemeralMessageReplyMarkup, bool);
     request!(stopPoll, Poll);

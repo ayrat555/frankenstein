@@ -15,9 +15,9 @@ use crate::rich_message::InputRichMessage;
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
     AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
-    ChatPermissions, InlineKeyboardMarkup, InputChecklist, InputPollOption, KeyboardButton,
-    LinkPreviewOptions, MenuButton, MessageEntity, PollType, ReactionType, ReplyMarkup,
-    ReplyParameters, StoryArea, SuggestedPostParameters,
+    ChatPermissions, EphemeralMessageParameters, InlineKeyboardMarkup, InputChecklist,
+    InputPollOption, KeyboardButton, LinkPreviewOptions, MenuButton, MessageEntity, PollType,
+    ReactionType, ReplyMarkup, ReplyParameters, StoryArea, SuggestedPostParameters,
 };
 
 #[apply(apistruct!)]
@@ -54,8 +54,7 @@ pub struct SendMessageParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub text: String,
     pub parse_mode: Option<ParseMode>,
     pub entities: Option<Vec<MessageEntity>>,
@@ -75,6 +74,7 @@ pub struct SendRichMessageParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub rich_message: InputRichMessage,
     pub disable_notification: Option<bool>,
     pub protect_content: Option<bool>,
@@ -91,6 +91,8 @@ pub struct SendRichMessageDraftParams {
     pub message_thread_id: Option<i32>,
     pub draft_id: i64,
     pub rich_message: InputRichMessage,
+    pub can_stop: Option<bool>,
+    pub keep_on_stop: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -162,8 +164,7 @@ pub struct SendPhotoParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub photo: FileUpload,
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
@@ -186,8 +187,7 @@ pub struct SendAudioParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub audio: FileUpload,
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
@@ -212,8 +212,7 @@ pub struct SendDocumentParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub document: FileUpload,
     pub thumbnail: Option<FileUpload>,
     pub caption: Option<String>,
@@ -236,8 +235,7 @@ pub struct SendVideoParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub video: FileUpload,
     pub duration: Option<u32>,
     pub width: Option<u32>,
@@ -267,8 +265,7 @@ pub struct SendAnimationParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub animation: FileUpload,
     pub duration: Option<u32>,
     pub width: Option<u32>,
@@ -295,8 +292,7 @@ pub struct SendVoiceParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub voice: FileUpload,
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
@@ -318,8 +314,7 @@ pub struct SendVideoNoteParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub video_note: FileUpload,
     pub duration: Option<u32>,
     pub length: Option<u32>,
@@ -340,8 +335,7 @@ pub struct SendLivePhotoParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub media: FileUpload,
     pub photo: FileUpload,
     pub caption: Option<String>,
@@ -401,8 +395,7 @@ pub struct SendLocationParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub latitude: f64,
     pub longitude: f64,
     pub horizontal_accuracy: Option<f64>,
@@ -459,8 +452,7 @@ pub struct SendVenueParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub latitude: f64,
     pub longitude: f64,
     pub title: String,
@@ -485,8 +477,7 @@ pub struct SendContactParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub phone_number: String,
     pub first_name: String,
     pub last_name: Option<String>,
@@ -565,6 +556,8 @@ pub struct SendMessageDraftParams {
     pub text: String,
     pub parse_mode: Option<ParseMode>,
     pub entities: Option<Vec<MessageEntity>>,
+    pub can_stop: Option<bool>,
+    pub keep_on_stop: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -703,6 +696,7 @@ pub struct PromoteChatMemberParams {
     pub can_manage_topics: Option<bool>,
     pub can_manage_direct_messages: Option<bool>,
     pub can_manage_tags: Option<bool>,
+    pub can_send_welcome_messages: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -1155,14 +1149,14 @@ pub struct StopPollParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct EditEphemeralMessageTextParams {
     pub chat_id: ChatId,
     pub receiver_user_id: u64,
     pub ephemeral_message_id: i32,
-    pub text: String,
+    pub text: Option<String>,
     pub parse_mode: Option<ParseMode>,
     pub entities: Option<Vec<MessageEntity>>,
+    pub rich_message: Option<InputRichMessage>,
     pub link_preview_options: Option<LinkPreviewOptions>,
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
@@ -1186,6 +1180,7 @@ pub struct EditEphemeralMessageCaptionParams {
     pub caption: Option<String>,
     pub parse_mode: Option<ParseMode>,
     pub caption_entities: Option<Vec<MessageEntity>>,
+    pub show_caption_above_media: Option<bool>,
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
@@ -1260,8 +1255,7 @@ pub struct SendStickerParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
-    pub receiver_user_id: Option<u64>,
-    pub callback_query_id: Option<String>,
+    pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
     pub sticker: FileUpload,
     pub emoji: Option<String>,
     pub disable_notification: Option<bool>,
