@@ -100,6 +100,9 @@ pub struct GiftInfo {
 pub struct UniqueGiftInfo {
     pub gift: UniqueGift,
     pub origin: GiftOrigin,
+    pub text: Option<String>,
+    pub entities: Option<Vec<MessageEntity>>,
+    pub is_private: Option<bool>,
     pub last_resale_currency: Option<String>,
     pub last_resale_amount: Option<u64>,
     pub owned_gift_id: Option<String>,

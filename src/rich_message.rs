@@ -3,10 +3,14 @@
 use serde::{Deserialize, Serialize};
 
 use crate::input_media::{
-    InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoiceNote,
+    InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo,
+    InputMediaVoiceNote,
 };
 use crate::macros::{apistruct, apply};
-use crate::types::{Animation, Audio, Location, PhotoSize, User, Video, Voice};
+use crate::types::{
+    Animation, Audio, CopyTextButton, DisabledButton, Document, Location, LoginUrl, PhotoSize,
+    SwitchInlineQueryChosenChat, User, Video, Voice, WebAppInfo,
+};
 
 #[apply(apistruct!)]
 pub struct RichMessage {
@@ -37,6 +41,7 @@ pub struct InputRichMessageMedia {
 pub enum InputRichMessageMediaKind {
     Animation(InputMediaAnimation),
     Audio(InputMediaAudio),
+    Document(InputMediaDocument),
     Photo(InputMediaPhoto),
     Video(InputMediaVideo),
     VoiceNote(InputMediaVoiceNote),
@@ -92,6 +97,7 @@ pub enum RichTextObject {
     Hashtag(RichTextHashtag),
     Cashtag(RichTextCashtag),
     BotCommand(RichTextBotCommand),
+    Button(Box<RichTextButton>),
     Anchor(RichTextAnchor),
     AnchorLink(RichTextAnchorLink),
     Reference(RichTextReference),
@@ -133,6 +139,12 @@ rich_text_from!(RichTextAnchor, Anchor);
 rich_text_from!(RichTextAnchorLink, AnchorLink);
 rich_text_from!(RichTextReference, Reference);
 rich_text_from!(RichTextReferenceLink, ReferenceLink);
+
+impl From<RichTextButton> for RichText {
+    fn from(value: RichTextButton) -> Self {
+        Self::Object(RichTextObject::Button(Box::new(value)))
+    }
+}
 
 macro_rules! rich_text_format_struct {
     ($type:ident) => {
@@ -228,6 +240,26 @@ pub struct RichTextBotCommand {
 }
 
 #[apply(apistruct!)]
+pub struct RichMessageButton {
+    pub text: Box<RichText>,
+    pub style: Option<String>,
+    pub url: Option<String>,
+    pub callback_data: Option<String>,
+    pub web_app: Option<WebAppInfo>,
+    pub login_url: Option<LoginUrl>,
+    pub switch_inline_query: Option<String>,
+    pub switch_inline_query_current_chat: Option<String>,
+    pub switch_inline_query_chosen_chat: Option<SwitchInlineQueryChosenChat>,
+    pub copy_text: Option<CopyTextButton>,
+    pub disabled: Option<DisabledButton>,
+}
+
+#[apply(apistruct!)]
+pub struct RichTextButton {
+    pub button: RichMessageButton,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct RichTextAnchor {
     pub name: String,
@@ -290,14 +322,17 @@ pub enum RichBlock {
     Anchor(RichBlockAnchor),
     List(RichBlockList),
     Blockquote(RichBlockBlockQuotation),
+    ExpandableBlockquote(RichBlockExpandableBlockQuotation),
     Pullquote(RichBlockPullQuotation),
     Collage(RichBlockCollage),
     Slideshow(RichBlockSlideshow),
     Table(RichBlockTable),
     Details(RichBlockDetails),
     Map(RichBlockMap),
+    Buttons(RichBlockButtons),
     Animation(RichBlockAnimation),
     Audio(RichBlockAudio),
+    Document(RichBlockDocument),
     Photo(RichBlockPhoto),
     Video(RichBlockVideo),
     VoiceNote(RichBlockVoiceNote),
@@ -354,6 +389,12 @@ pub struct RichBlockBlockQuotation {
 }
 
 #[apply(apistruct!)]
+pub struct RichBlockExpandableBlockQuotation {
+    pub text: RichText,
+    pub credit: Option<RichText>,
+}
+
+#[apply(apistruct!)]
 pub struct RichBlockPullQuotation {
     pub text: RichText,
     pub credit: Option<RichText>,
@@ -376,6 +417,7 @@ pub struct RichBlockTable {
     pub cells: Vec<Vec<RichBlockTableCell>>,
     pub is_bordered: Option<bool>,
     pub is_striped: Option<bool>,
+    pub is_compact: Option<bool>,
     pub caption: Option<RichText>,
 }
 
@@ -396,6 +438,12 @@ pub struct RichBlockMap {
 }
 
 #[apply(apistruct!)]
+pub struct RichBlockButtons {
+    pub buttons: Vec<RichMessageButton>,
+    pub align: Option<String>,
+}
+
+#[apply(apistruct!)]
 pub struct RichBlockAnimation {
     pub animation: Animation,
     pub has_spoiler: Option<bool>,
@@ -405,6 +453,12 @@ pub struct RichBlockAnimation {
 #[apply(apistruct!)]
 pub struct RichBlockAudio {
     pub audio: Audio,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct RichBlockDocument {
+    pub document: Document,
     pub caption: Option<RichBlockCaption>,
 }
 
@@ -445,14 +499,17 @@ pub enum InputRichBlock {
     Anchor(InputRichBlockAnchor),
     List(InputRichBlockList),
     Blockquote(InputRichBlockBlockQuotation),
+    ExpandableBlockquote(InputRichBlockExpandableBlockQuotation),
     Pullquote(InputRichBlockPullQuotation),
     Collage(InputRichBlockCollage),
     Slideshow(InputRichBlockSlideshow),
     Table(InputRichBlockTable),
     Details(InputRichBlockDetails),
     Map(InputRichBlockMap),
+    Buttons(InputRichBlockButtons),
     Animation(InputRichBlockAnimation),
     Audio(InputRichBlockAudio),
+    Document(InputRichBlockDocument),
     Photo(InputRichBlockPhoto),
     Video(InputRichBlockVideo),
     VoiceNote(InputRichBlockVoiceNote),
@@ -519,6 +576,12 @@ pub struct InputRichBlockBlockQuotation {
 }
 
 #[apply(apistruct!)]
+pub struct InputRichBlockExpandableBlockQuotation {
+    pub text: RichText,
+    pub credit: Option<RichText>,
+}
+
+#[apply(apistruct!)]
 pub struct InputRichBlockPullQuotation {
     pub text: RichText,
     pub credit: Option<RichText>,
@@ -541,6 +604,7 @@ pub struct InputRichBlockTable {
     pub cells: Vec<Vec<RichBlockTableCell>>,
     pub is_bordered: Option<bool>,
     pub is_striped: Option<bool>,
+    pub is_compact: Option<bool>,
     pub caption: Option<RichText>,
 }
 
@@ -561,6 +625,12 @@ pub struct InputRichBlockMap {
 }
 
 #[apply(apistruct!)]
+pub struct InputRichBlockButtons {
+    pub buttons: Vec<RichMessageButton>,
+    pub align: Option<String>,
+}
+
+#[apply(apistruct!)]
 pub struct InputRichBlockAnimation {
     pub animation: InputMediaAnimation,
     pub caption: Option<RichBlockCaption>,
@@ -569,6 +639,12 @@ pub struct InputRichBlockAnimation {
 #[apply(apistruct!)]
 pub struct InputRichBlockAudio {
     pub audio: InputMediaAudio,
+    pub caption: Option<RichBlockCaption>,
+}
+
+#[apply(apistruct!)]
+pub struct InputRichBlockDocument {
+    pub document: InputMediaDocument,
     pub caption: Option<RichBlockCaption>,
 }
 
@@ -602,7 +678,8 @@ mod input_file_replacement {
     use super::{InputRichBlock, InputRichMessage, InputRichMessageMediaKind};
     use crate::input_file::HasInputFile;
     use crate::input_media::{
-        InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoiceNote,
+        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo,
+        InputMediaVoiceNote,
     };
 
     type Files = Vec<(String, PathBuf)>;
@@ -623,6 +700,11 @@ mod input_file_replacement {
     fn replace_audio(audio: &mut InputMediaAudio, files: &mut Files) {
         replace_attach!(audio.media, files);
         replace_attach!(audio.thumbnail, files);
+    }
+
+    fn replace_document(document: &mut InputMediaDocument, files: &mut Files) {
+        replace_attach!(document.media, files);
+        replace_attach!(document.thumbnail, files);
     }
 
     fn replace_photo(photo: &mut InputMediaPhoto, files: &mut Files) {
@@ -657,6 +739,7 @@ mod input_file_replacement {
                 InputRichBlock::Details(details) => replace_blocks(&mut details.blocks, files),
                 InputRichBlock::Animation(b) => replace_animation(&mut b.animation, files),
                 InputRichBlock::Audio(b) => replace_audio(&mut b.audio, files),
+                InputRichBlock::Document(b) => replace_document(&mut b.document, files),
                 InputRichBlock::Photo(b) => replace_photo(&mut b.photo, files),
                 InputRichBlock::Video(b) => replace_video(&mut b.video, files),
                 InputRichBlock::VoiceNote(b) => replace_voice_note(&mut b.voice_note, files),
@@ -667,9 +750,11 @@ mod input_file_replacement {
                 | InputRichBlock::Divider(_)
                 | InputRichBlock::MathematicalExpression(_)
                 | InputRichBlock::Anchor(_)
+                | InputRichBlock::ExpandableBlockquote(_)
                 | InputRichBlock::Pullquote(_)
                 | InputRichBlock::Table(_)
                 | InputRichBlock::Map(_)
+                | InputRichBlock::Buttons(_)
                 | InputRichBlock::Thinking(_) => {}
             }
         }
@@ -686,6 +771,9 @@ mod input_file_replacement {
                         }
                         InputRichMessageMediaKind::Audio(audio) => {
                             replace_audio(audio, &mut files);
+                        }
+                        InputRichMessageMediaKind::Document(document) => {
+                            replace_document(document, &mut files);
                         }
                         InputRichMessageMediaKind::Photo(photo) => {
                             replace_photo(photo, &mut files);
@@ -711,35 +799,60 @@ mod input_file_replacement {
         use std::path::PathBuf;
 
         use super::super::{
-            InputRichBlock, InputRichBlockDetails, InputRichBlockPhoto, InputRichMessage,
-            InputRichMessageMedia, InputRichMessageMediaKind, RichText,
+            InputRichBlock, InputRichBlockDetails, InputRichBlockDocument, InputRichBlockPhoto,
+            InputRichMessage, InputRichMessageMedia, InputRichMessageMediaKind, RichText,
         };
-        use crate::input_media::{InputMediaPhoto, InputMediaVideo};
+        use crate::input_media::{InputMediaDocument, InputMediaPhoto, InputMediaVideo};
 
         #[test]
         fn input_files_are_replaced_with_attach_references() {
             let mut message = InputRichMessage::builder()
-                .media(vec![InputRichMessageMedia::builder()
-                    .id("video1")
-                    .media(InputRichMessageMediaKind::Video(
-                        InputMediaVideo::builder()
-                            .media(PathBuf::from("video.mp4"))
-                            .thumbnail(PathBuf::from("thumbnail.jpg"))
-                            .build(),
-                    ))
-                    .build()])
+                .media(vec![
+                    InputRichMessageMedia::builder()
+                        .id("video1")
+                        .media(InputRichMessageMediaKind::Video(
+                            InputMediaVideo::builder()
+                                .media(PathBuf::from("video.mp4"))
+                                .thumbnail(PathBuf::from("thumbnail.jpg"))
+                                .build(),
+                        ))
+                        .build(),
+                    InputRichMessageMedia::builder()
+                        .id("document1")
+                        .media(InputRichMessageMediaKind::Document(
+                            InputMediaDocument::builder()
+                                .media(PathBuf::from("document.pdf"))
+                                .thumbnail(PathBuf::from("document-thumbnail.jpg"))
+                                .build(),
+                        ))
+                        .build(),
+                ])
                 .blocks(vec![InputRichBlock::Details(
                     InputRichBlockDetails::builder()
                         .summary(RichText::from("photos"))
-                        .blocks(vec![InputRichBlock::Photo(
-                            InputRichBlockPhoto::builder()
-                                .photo(
-                                    InputMediaPhoto::builder()
-                                        .media(PathBuf::from("photo.jpg"))
-                                        .build(),
-                                )
-                                .build(),
-                        )])
+                        .blocks(vec![
+                            InputRichBlock::Photo(
+                                InputRichBlockPhoto::builder()
+                                    .photo(
+                                        InputMediaPhoto::builder()
+                                            .media(PathBuf::from("photo.jpg"))
+                                            .build(),
+                                    )
+                                    .build(),
+                            ),
+                            InputRichBlock::Document(
+                                InputRichBlockDocument::builder()
+                                    .document(
+                                        InputMediaDocument::builder()
+                                            .media(PathBuf::from("block-document.pdf"))
+                                            .thumbnail(PathBuf::from(
+                                                "block-document-thumbnail.jpg",
+                                            ))
+                                            .build(),
+                                    )
+                                    .build(),
+                            ),
+                        ])
                         .build(),
                 )])
                 .build();
@@ -751,16 +864,33 @@ mod input_file_replacement {
                 vec![
                     ("file0".to_owned(), PathBuf::from("video.mp4")),
                     ("file1".to_owned(), PathBuf::from("thumbnail.jpg")),
-                    ("file2".to_owned(), PathBuf::from("photo.jpg")),
+                    ("file2".to_owned(), PathBuf::from("document.pdf")),
+                    ("file3".to_owned(), PathBuf::from("document-thumbnail.jpg")),
+                    ("file4".to_owned(), PathBuf::from("photo.jpg")),
+                    ("file5".to_owned(), PathBuf::from("block-document.pdf")),
+                    (
+                        "file6".to_owned(),
+                        PathBuf::from("block-document-thumbnail.jpg")
+                    ),
                 ]
             );
 
             let value = serde_json::to_value(&message).unwrap();
             assert_eq!(value["media"][0]["media"]["media"], "attach://file0");
             assert_eq!(value["media"][0]["media"]["thumbnail"], "attach://file1");
+            assert_eq!(value["media"][1]["media"]["media"], "attach://file2");
+            assert_eq!(value["media"][1]["media"]["thumbnail"], "attach://file3");
             assert_eq!(
                 value["blocks"][0]["blocks"][0]["photo"]["media"],
-                "attach://file2"
+                "attach://file4"
+            );
+            assert_eq!(
+                value["blocks"][0]["blocks"][1]["document"]["media"],
+                "attach://file5"
+            );
+            assert_eq!(
+                value["blocks"][0]["blocks"][1]["document"]["thumbnail"],
+                "attach://file6"
             );
         }
     }

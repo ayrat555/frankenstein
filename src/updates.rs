@@ -8,8 +8,8 @@ use crate::payments::{PaidMediaPurchased, PreCheckoutQuery, ShippingQuery};
 use crate::types::{
     AllowedUpdate, BotSubscriptionUpdated, BusinessConnection, BusinessMessagesDeleted,
     CallbackQuery, ChatBoostRemoved, ChatBoostUpdated, ChatJoinRequest, ChatMemberUpdated,
-    ManagedBotUpdated, Message, MessageReactionCountUpdated, MessageReactionUpdated, Poll,
-    PollAnswer,
+    ManagedBotUpdated, Message, MessageGenerationStopped, MessageReactionCountUpdated,
+    MessageReactionUpdated, Poll, PollAnswer,
 };
 
 /// Represents an incoming update from telegram.
@@ -53,6 +53,7 @@ pub enum UpdateContent {
     PurchasedPaidMedia(PaidMediaPurchased),
     ManagedBot(ManagedBotUpdated),
     Subscription(BotSubscriptionUpdated),
+    StoppedMessageGeneration(MessageGenerationStopped),
 }
 
 #[apply(apistruct!)]

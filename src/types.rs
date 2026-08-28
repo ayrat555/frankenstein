@@ -110,6 +110,14 @@ pub struct ReplyParameters {
     pub poll_option_id: Option<String>,
 }
 
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct EphemeralMessageParameters {
+    pub receiver_user_id: u64,
+    pub callback_query_id: Option<String>,
+    pub replace_callback_query_message: Option<bool>,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "status", rename_all = "snake_case")]
 pub enum ChatMember {
@@ -233,6 +241,7 @@ pub struct ChatMemberAdministrator {
     pub can_manage_topics: Option<bool>,
     pub can_manage_direct_messages: Option<bool>,
     pub can_manage_tags: Option<bool>,
+    pub can_send_welcome_messages: bool,
     pub custom_title: Option<String>,
 }
 
@@ -343,6 +352,7 @@ pub enum AllowedUpdate {
     RemovedChatBoost,
     ManagedBot,
     Subscription,
+    StoppedMessageGeneration,
 }
 
 #[apply(apistruct!)]
@@ -533,6 +543,7 @@ pub struct Message {
     pub checklist_tasks_done: Option<Box<ChecklistTasksDone>>,
     pub checklist_tasks_added: Option<Box<ChecklistTasksAdded>>,
     pub community_chat_added: Option<Box<CommunityChatAdded>>,
+    pub community_chat_joined: Option<Box<CommunityChatJoined>>,
     pub community_chat_removed: Option<Box<CommunityChatRemoved>>,
     pub direct_message_price_changed: Option<Box<DirectMessagePriceChanged>>,
     pub forum_topic_created: Option<Box<ForumTopicCreated>>,
@@ -984,6 +995,12 @@ pub struct CommunityChatAdded {
 }
 
 #[apply(apistruct!)]
+#[derive(Eq)]
+pub struct CommunityChatJoined {
+    pub community: Community,
+}
+
+#[apply(apistruct!)]
 #[derive(Copy, Eq)]
 pub struct CommunityChatRemoved {}
 
@@ -1211,6 +1228,7 @@ pub struct ReplyKeyboardMarkup {
     pub one_time_keyboard: Option<bool>,
     pub input_field_placeholder: Option<String>,
     pub selective: Option<bool>,
+    pub force_reply: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -1282,6 +1300,7 @@ pub struct ReplyKeyboardRemove {
 #[derive(Eq)]
 pub struct InlineKeyboardMarkup {
     pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
+    pub force_reply: Option<bool>,
 }
 
 #[apply(apistruct!)]
@@ -1300,7 +1319,12 @@ pub struct InlineKeyboardButton {
     pub callback_game: Option<CallbackGame>,
     pub pay: Option<bool>,
     pub style: Option<ButtonStyle>,
+    pub disabled: Option<DisabledButton>,
 }
+
+#[apply(apistruct!)]
+#[derive(Copy, Eq)]
+pub struct DisabledButton {}
 
 #[apply(apistruct!)]
 #[derive(Eq)]
@@ -1780,6 +1804,15 @@ pub struct ChatAdministratorRights {
     pub can_manage_topics: Option<bool>,
     pub can_manage_direct_messages: Option<bool>,
     pub can_manage_tags: Option<bool>,
+    pub can_send_welcome_messages: bool,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct MessageGenerationStopped {
+    pub chat: Chat,
+    pub message_thread_id: Option<i32>,
+    pub draft_id: i64,
 }
 
 #[apply(apistruct!)]
