@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* fix: serialize the `type` of the media embedded in rich message blocks
+
 ## 0.52.0 (2026-08-28)
 
 * feat: Bot API 10.3 - [#336](https://github.com/ayrat555/frankenstein/pull/336)

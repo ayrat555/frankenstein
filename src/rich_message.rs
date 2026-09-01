@@ -630,38 +630,123 @@ pub struct InputRichBlockButtons {
     pub align: Option<String>,
 }
 
+/// Serializers adding the `type` discriminator that the Bot API requires on the media
+/// objects embedded in rich blocks.
+///
+/// [`InputRichMessageMediaKind`] gets the discriminator from its enum tag, but blocks like
+/// [`InputRichBlockVideo`] hold the concrete media struct, so it has to be added here.
+mod tagged_media {
+    use serde::{Serialize, Serializer};
+
+    use crate::input_media::{
+        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo,
+        InputMediaVoiceNote,
+    };
+
+    #[derive(Serialize)]
+    struct Tagged<'a, T> {
+        #[serde(rename = "type")]
+        type_field: &'static str,
+        #[serde(flatten)]
+        media: &'a T,
+    }
+
+    pub fn animation<S: Serializer>(
+        media: &InputMediaAnimation,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error> {
+        Tagged {
+            type_field: "animation",
+            media,
+        }
+        .serialize(serializer)
+    }
+
+    pub fn audio<S: Serializer>(media: &InputMediaAudio, serializer: S) -> Result<S::Ok, S::Error> {
+        Tagged {
+            type_field: "audio",
+            media,
+        }
+        .serialize(serializer)
+    }
+
+    pub fn document<S: Serializer>(
+        media: &InputMediaDocument,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error> {
+        Tagged {
+            type_field: "document",
+            media,
+        }
+        .serialize(serializer)
+    }
+
+    pub fn photo<S: Serializer>(media: &InputMediaPhoto, serializer: S) -> Result<S::Ok, S::Error> {
+        Tagged {
+            type_field: "photo",
+            media,
+        }
+        .serialize(serializer)
+    }
+
+    pub fn video<S: Serializer>(media: &InputMediaVideo, serializer: S) -> Result<S::Ok, S::Error> {
+        Tagged {
+            type_field: "video",
+            media,
+        }
+        .serialize(serializer)
+    }
+
+    pub fn voice_note<S: Serializer>(
+        media: &InputMediaVoiceNote,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error> {
+        Tagged {
+            type_field: "voice_note",
+            media,
+        }
+        .serialize(serializer)
+    }
+}
+
 #[apply(apistruct!)]
 pub struct InputRichBlockAnimation {
+    #[serde(serialize_with = "tagged_media::animation")]
     pub animation: InputMediaAnimation,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockAudio {
+    #[serde(serialize_with = "tagged_media::audio")]
     pub audio: InputMediaAudio,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockDocument {
+    #[serde(serialize_with = "tagged_media::document")]
     pub document: InputMediaDocument,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockPhoto {
+    #[serde(serialize_with = "tagged_media::photo")]
     pub photo: InputMediaPhoto,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockVideo {
+    #[serde(serialize_with = "tagged_media::video")]
     pub video: InputMediaVideo,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockVoiceNote {
+    #[serde(serialize_with = "tagged_media::voice_note")]
     pub voice_note: InputMediaVoiceNote,
     pub caption: Option<RichBlockCaption>,
 }
@@ -893,5 +978,52 @@ mod input_file_replacement {
                 "attach://file6"
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        InputRichBlock, InputRichBlockPhoto, InputRichBlockVideo, InputRichMessage,
+        RichBlockCaption, RichText,
+    };
+    use crate::input_media::{InputMediaPhoto, InputMediaVideo};
+    use crate::test_json::assert_json_str;
+
+    #[test]
+    fn block_media_is_serialized_with_its_type() {
+        let message = InputRichMessage::builder()
+            .blocks(vec![
+                InputRichBlock::Video(
+                    InputRichBlockVideo::builder()
+                        .video(
+                            InputMediaVideo::builder()
+                                .media("https://example.com/video.mp4".to_string())
+                                .supports_streaming(true)
+                                .build(),
+                        )
+                        .build(),
+                ),
+                InputRichBlock::Photo(
+                    InputRichBlockPhoto::builder()
+                        .photo(
+                            InputMediaPhoto::builder()
+                                .media("https://example.com/photo.jpg".to_string())
+                                .build(),
+                        )
+                        .caption(
+                            RichBlockCaption::builder()
+                                .text(RichText::from("A photo"))
+                                .build(),
+                        )
+                        .build(),
+                ),
+            ])
+            .build();
+
+        assert_json_str(
+            &message,
+            r#"{"blocks":[{"type":"video","video":{"type":"video","media":"https://example.com/video.mp4","supports_streaming":true}},{"type":"photo","photo":{"type":"photo","media":"https://example.com/photo.jpg"},"caption":{"text":"A photo"}}]}"#,
+        );
     }
 }
