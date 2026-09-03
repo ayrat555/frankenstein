@@ -632,36 +632,42 @@ pub struct InputRichBlockButtons {
 
 #[apply(apistruct!)]
 pub struct InputRichBlockAnimation {
+    #[serde(serialize_with = "rich_block_media_type::animation")]
     pub animation: InputMediaAnimation,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockAudio {
+    #[serde(serialize_with = "rich_block_media_type::audio")]
     pub audio: InputMediaAudio,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockDocument {
+    #[serde(serialize_with = "rich_block_media_type::document")]
     pub document: InputMediaDocument,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockPhoto {
+    #[serde(serialize_with = "rich_block_media_type::photo")]
     pub photo: InputMediaPhoto,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockVideo {
+    #[serde(serialize_with = "rich_block_media_type::video")]
     pub video: InputMediaVideo,
     pub caption: Option<RichBlockCaption>,
 }
 
 #[apply(apistruct!)]
 pub struct InputRichBlockVoiceNote {
+    #[serde(serialize_with = "rich_block_media_type::voice_note")]
     pub voice_note: InputMediaVoiceNote,
     pub caption: Option<RichBlockCaption>,
 }
@@ -669,6 +675,53 @@ pub struct InputRichBlockVoiceNote {
 #[apply(apistruct!)]
 pub struct InputRichBlockThinking {
     pub text: RichText,
+}
+
+/// Serializers for the `InputMedia*` objects embedded in rich message blocks.
+///
+/// The Bot API requires the nested media object of an [`InputRichBlock`] to
+/// carry its own `"type"` field: `InputRichBlockPhoto.photo` must serialize
+/// as `{"type": "photo", ...}`. The `InputMedia*` structs are deliberately
+/// tagless — the `"type"` tag is supplied by the `InputMedia` and
+/// [`InputRichMessageMediaKind`] enums on the paths that need it — so the
+/// block structs inject the tag here, only where the Bot API asks for it.
+mod rich_block_media_type {
+    use serde::{Serialize, Serializer};
+
+    use crate::input_media::{
+        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto,
+        InputMediaVideo, InputMediaVoiceNote,
+    };
+
+    #[derive(Serialize)]
+    struct TaggedMedia<'a, T: Serialize> {
+        #[serde(flatten)]
+        media: &'a T,
+        #[serde(rename = "type")]
+        type_tag: &'static str,
+    }
+
+    macro_rules! media_type_serializer {
+        ($name:ident, $media:ty, $tag:literal) => {
+            pub(super) fn $name<S: Serializer>(
+                media: &$media,
+                serializer: S,
+            ) -> Result<S::Ok, S::Error> {
+                TaggedMedia {
+                    media,
+                    type_tag: $tag,
+                }
+                .serialize(serializer)
+            }
+        };
+    }
+
+    media_type_serializer!(animation, InputMediaAnimation, "animation");
+    media_type_serializer!(audio, InputMediaAudio, "audio");
+    media_type_serializer!(document, InputMediaDocument, "document");
+    media_type_serializer!(photo, InputMediaPhoto, "photo");
+    media_type_serializer!(video, InputMediaVideo, "video");
+    media_type_serializer!(voice_note, InputMediaVoiceNote, "voice_note");
 }
 
 #[cfg(any(feature = "trait-sync", feature = "trait-async"))]
@@ -891,6 +944,86 @@ mod input_file_replacement {
             assert_eq!(
                 value["blocks"][0]["blocks"][1]["document"]["thumbnail"],
                 "attach://file6"
+            );
+        }
+    }
+}
+
+#[cfg(test)]
+mod rich_block_media_type_tests {
+    use crate::input_media::{
+        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto,
+        InputMediaVideo, InputMediaVoiceNote,
+    };
+    use crate::rich_message::{
+        InputRichBlock, InputRichBlockAnimation, InputRichBlockAudio, InputRichBlockDocument,
+        InputRichBlockPhoto, InputRichBlockVideo, InputRichBlockVoiceNote, InputRichMessage,
+    };
+
+    /// The Bot API rejects a rich media block whose nested `InputMedia*`
+    /// object lacks its own `"type"` field ("can't parse InputRichBlock:
+    /// Can't find field \"type\"").
+    #[test]
+    fn rich_media_blocks_serialize_nested_input_media_type() {
+        let blocks = vec![
+            (
+                InputRichBlock::Animation(
+                    InputRichBlockAnimation::builder()
+                        .animation(InputMediaAnimation::builder().media(std::path::PathBuf::from("a.mp4")).build())
+                        .build(),
+                ),
+                "animation",
+            ),
+            (
+                InputRichBlock::Audio(
+                    InputRichBlockAudio::builder()
+                        .audio(InputMediaAudio::builder().media(std::path::PathBuf::from("a.mp3")).build())
+                        .build(),
+                ),
+                "audio",
+            ),
+            (
+                InputRichBlock::Document(
+                    InputRichBlockDocument::builder()
+                        .document(InputMediaDocument::builder().media(std::path::PathBuf::from("a.pdf")).build())
+                        .build(),
+                ),
+                "document",
+            ),
+            (
+                InputRichBlock::Photo(
+                    InputRichBlockPhoto::builder()
+                        .photo(InputMediaPhoto::builder().media(std::path::PathBuf::from("a.jpg")).build())
+                        .build(),
+                ),
+                "photo",
+            ),
+            (
+                InputRichBlock::Video(
+                    InputRichBlockVideo::builder()
+                        .video(InputMediaVideo::builder().media(std::path::PathBuf::from("a.mp4")).build())
+                        .build(),
+                ),
+                "video",
+            ),
+            (
+                InputRichBlock::VoiceNote(
+                    InputRichBlockVoiceNote::builder()
+                        .voice_note(InputMediaVoiceNote::builder().media(std::path::PathBuf::from("a.ogg")).build())
+                        .build(),
+                ),
+                "voice_note",
+            ),
+        ];
+
+        for (block, tag) in blocks {
+            let message = InputRichMessage::builder().blocks(vec![block]).build();
+            let value = serde_json::to_value(&message).unwrap();
+            assert_eq!(value["blocks"][0]["type"], serde_json::json!(tag));
+            assert_eq!(
+                value["blocks"][0][tag]["type"],
+                serde_json::json!(tag),
+                "nested input media object must carry type={tag}",
             );
         }
     }
