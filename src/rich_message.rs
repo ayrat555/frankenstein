@@ -984,22 +984,43 @@ mod input_file_replacement {
 #[cfg(test)]
 mod tests {
     use super::{
-        InputRichBlock, InputRichBlockPhoto, InputRichBlockVideo, InputRichMessage,
+        InputRichBlock, InputRichBlockAnimation, InputRichBlockAudio, InputRichBlockDocument,
+        InputRichBlockPhoto, InputRichBlockVideo, InputRichBlockVoiceNote, InputRichMessage,
         RichBlockCaption, RichText,
     };
-    use crate::input_media::{InputMediaPhoto, InputMediaVideo};
+    use crate::input_media::{
+        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto,
+        InputMediaVideo, InputMediaVoiceNote,
+    };
     use crate::test_json::assert_json_str;
 
     #[test]
     fn block_media_is_serialized_with_its_type() {
         let message = InputRichMessage::builder()
             .blocks(vec![
-                InputRichBlock::Video(
-                    InputRichBlockVideo::builder()
-                        .video(
-                            InputMediaVideo::builder()
-                                .media("https://example.com/video.mp4".to_string())
-                                .supports_streaming(true)
+                InputRichBlock::Animation(
+                    InputRichBlockAnimation::builder()
+                        .animation(
+                            InputMediaAnimation::builder()
+                                .media("https://example.com/animation.gif".to_string())
+                                .build(),
+                        )
+                        .build(),
+                ),
+                InputRichBlock::Audio(
+                    InputRichBlockAudio::builder()
+                        .audio(
+                            InputMediaAudio::builder()
+                                .media("https://example.com/audio.mp3".to_string())
+                                .build(),
+                        )
+                        .build(),
+                ),
+                InputRichBlock::Document(
+                    InputRichBlockDocument::builder()
+                        .document(
+                            InputMediaDocument::builder()
+                                .media("https://example.com/document.pdf".to_string())
                                 .build(),
                         )
                         .build(),
@@ -1018,12 +1039,31 @@ mod tests {
                         )
                         .build(),
                 ),
+                InputRichBlock::Video(
+                    InputRichBlockVideo::builder()
+                        .video(
+                            InputMediaVideo::builder()
+                                .media("https://example.com/video.mp4".to_string())
+                                .supports_streaming(true)
+                                .build(),
+                        )
+                        .build(),
+                ),
+                InputRichBlock::VoiceNote(
+                    InputRichBlockVoiceNote::builder()
+                        .voice_note(
+                            InputMediaVoiceNote::builder()
+                                .media("https://example.com/voice.ogg".to_string())
+                                .build(),
+                        )
+                        .build(),
+                ),
             ])
             .build();
 
         assert_json_str(
             &message,
-            r#"{"blocks":[{"type":"video","video":{"type":"video","media":"https://example.com/video.mp4","supports_streaming":true}},{"type":"photo","photo":{"type":"photo","media":"https://example.com/photo.jpg"},"caption":{"text":"A photo"}}]}"#,
+            r#"{"blocks":[{"type":"animation","animation":{"type":"animation","media":"https://example.com/animation.gif"}},{"type":"audio","audio":{"type":"audio","media":"https://example.com/audio.mp3"}},{"type":"document","document":{"type":"document","media":"https://example.com/document.pdf"}},{"type":"photo","photo":{"type":"photo","media":"https://example.com/photo.jpg"},"caption":{"text":"A photo"}},{"type":"video","video":{"type":"video","media":"https://example.com/video.mp4","supports_streaming":true}},{"type":"voice_note","voice_note":{"type":"voice_note","media":"https://example.com/voice.ogg"}}]}"#,
         );
     }
 }
