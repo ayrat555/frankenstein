@@ -989,8 +989,8 @@ mod tests {
         RichBlockCaption, RichText,
     };
     use crate::input_media::{
-        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto,
-        InputMediaVideo, InputMediaVoiceNote,
+        InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo,
+        InputMediaVoiceNote,
     };
     use crate::test_json::assert_json_str;
 
