@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.52.1 (2026-09-25)
 
-* fix: serialize the `type` of the media embedded in rich message blocks
+* fix: serialize the `type` of the media embedded in rich message blocks - [#339](https://github.com/ayrat555/frankenstein/pull/339)
 
 ## 0.52.0 (2026-08-28)
 
