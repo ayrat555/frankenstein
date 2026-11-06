@@ -23,7 +23,7 @@ use crate::updates::{Update, WebhookInfo};
 
 macro_rules! request {
     ($name:ident, $return:ty) => {
-        paste::paste! {
+        pastey::paste! {
             #[allow(async_fn_in_trait)]
             #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
             #[inline(always)]
@@ -40,7 +40,7 @@ macro_rules! request {
 /// request no body
 macro_rules! request_nb {
     ($name:ident, $return:ty) => {
-        paste::paste! {
+        pastey::paste! {
             #[allow(async_fn_in_trait)]
             #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
             #[inline(always)]
@@ -57,7 +57,7 @@ macro_rules! request_nb {
 /// request with some properties utilizing [`HasInputFile`]
 macro_rules! request_f {
     ($name:ident, $return:ty, $($fileproperty:ident),+) => {
-        paste::paste! {
+        pastey::paste! {
             #[allow(async_fn_in_trait)]
             #[doc = "Call the `" $name "` method.\n\nSee <https://core.telegram.org/bots/api#" $name:lower ">."]
             async fn [<$name:snake>] (

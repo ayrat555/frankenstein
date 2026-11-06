@@ -170,7 +170,7 @@ mod tests {
 
     macro_rules! case {
         ($method:ident, $status:literal, $body:ident $(, $params:ident )? ) => {{
-            paste::paste! {
+            pastey::paste! {
                 let mut server = mockito::Server::new();
                 let mock = server
                     .mock("POST", concat!("/", stringify!($method)))
