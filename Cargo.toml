@@ -40,7 +40,7 @@ bon = "3.0.0"
 macro_rules_attribute = "0.2.0"
 mime_guess = { version = "2", optional = true }
 multipart = { version = "0.18", optional = true, default-features = false, features = ["client"] }
-paste = "1.0.2"
+pastey = "0.2.3"
 serde = { version = "1.0.157", features = ["derive"] }
 serde_json = { version = "1.0.45", optional = true }
 serde_with = { version = "3.0.0", default-features = false, features = ["macros"] }

@@ -50,7 +50,7 @@ pub enum InlineQueryResult {
 
 macro_rules! iqr_from {
     (maybecached $type:ident) => {
-        paste::paste! {
+        pastey::paste! {
             impl From<[< InlineQueryResultCached $type >] > for InlineQueryResult {
                 fn from(value: [< InlineQueryResultCached $type >]) -> Self {
                     Self::$type(MaybeCached::Cached(value))
@@ -64,7 +64,7 @@ macro_rules! iqr_from {
         }
     };
     (cached $type:ident) => {
-        paste::paste! {
+        pastey::paste! {
             impl From<[< InlineQueryResultCached $type >] > for InlineQueryResult {
                 fn from(value: [< InlineQueryResultCached $type >]) -> Self {
                     Self::$type(value)
@@ -73,7 +73,7 @@ macro_rules! iqr_from {
         }
     };
     ($type:ident) => {
-        paste::paste! {
+        pastey::paste! {
             impl From<[< InlineQueryResult $type >] > for InlineQueryResult {
                 fn from(value: [< InlineQueryResult $type >]) -> Self {
                     Self::$type(value)
