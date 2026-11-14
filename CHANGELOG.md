@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.53.0 (2026-11-14)
+
+* feat: Bot API 10.4 - [#344](https://github.com/ayrat555/frankenstein/pull/344)
+  * BREAKING: `chat_id` is now optional (`Option<ChatId>`) on `sendMessage`, `sendRichMessage`, `sendPhoto`, `sendAudio`, `sendDocument`, `sendVideo`, `sendAnimation`, `sendVoice`, `sendVideoNote`, `sendLivePhoto`, `sendLocation`, `sendVenue`, `sendContact` and `sendSticker` params, and `receiver_user_id` is optional on `EphemeralMessageParameters`
+  * BREAKING: `ReplyParameters` and `TextQuote` (and the method params containing `ReplyParameters`) no longer implement `Eq`, as they can now contain `RichText`
+  * `StoryAreaPosition` is renamed to `AreaPosition`; the old name is kept as a deprecated alias
+
 ## 0.52.1 (2026-09-25)
 
 * fix: serialize the `type` of the media embedded in rich message blocks - [#339](https://github.com/ayrat555/frankenstein/pull/339)
