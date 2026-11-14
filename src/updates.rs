@@ -9,7 +9,7 @@ use crate::types::{
     AllowedUpdate, BotSubscriptionUpdated, BusinessConnection, BusinessMessagesDeleted,
     CallbackQuery, ChatBoostRemoved, ChatBoostUpdated, ChatJoinRequest, ChatMemberUpdated,
     ManagedBotUpdated, Message, MessageGenerationStopped, MessageReactionCountUpdated,
-    MessageReactionUpdated, Poll, PollAnswer,
+    MessageReactionUpdated, Poll, PollAnswer, SharedWidgetQuery, WidgetQuery,
 };
 
 /// Represents an incoming update from telegram.
@@ -41,6 +41,8 @@ pub enum UpdateContent {
     InlineQuery(InlineQuery),
     ChosenInlineResult(ChosenInlineResult),
     CallbackQuery(Box<CallbackQuery>),
+    WidgetQuery(Box<WidgetQuery>),
+    SharedWidgetQuery(Box<SharedWidgetQuery>),
     ShippingQuery(ShippingQuery),
     PreCheckoutQuery(PreCheckoutQuery),
     Poll(Box<Poll>),
@@ -74,6 +76,62 @@ pub struct WebhookInfo {
 mod serde_tests {
     use super::*;
     use crate::types::{Chat, ChatType, User};
+
+    #[test]
+    pub fn widget_query_update_is_deserialized() {
+        let update_content = r#"{
+            "update_id": 2342,
+            "widget_query": {
+                "id": "q1",
+                "from": {"id": 275808073, "is_bot": false, "first_name": "Ayrat"},
+                "chat": {"id": 275808073, "type": "private", "first_name": "Ayrat"},
+                "message_id": 10,
+                "chat_instance": "ci",
+                "type": {
+                    "type": "sign_data",
+                    "wallet": {"address": "EQabc", "amount": "1000000000", "public_key": "ab", "state_init": "te6c"},
+                    "sign_data": "{}"
+                },
+                "data": "vote:1"
+            }
+        }"#;
+
+        let update: Update = serde_json::from_str(update_content).unwrap();
+        let UpdateContent::WidgetQuery(query) = update.content else {
+            panic!("expected a widget query, got {:?}", update.content);
+        };
+        assert_eq!(query.data, "vote:1");
+        let crate::types::WidgetQueryType::SignData(sign_data) = query.type_field else {
+            panic!("expected sign_data");
+        };
+        assert_eq!(sign_data.wallet.address, "EQabc");
+    }
+
+    #[test]
+    pub fn shared_widget_query_update_is_deserialized() {
+        let update_content = r#"{
+            "update_id": 2343,
+            "shared_widget_query": {
+                "id": "q2",
+                "from": {"id": 275808073, "is_bot": false, "first_name": "Ayrat"},
+                "type": {"type": "data"},
+                "data": "refresh",
+                "widget_id": "w1"
+            }
+        }"#;
+
+        let update: Update = serde_json::from_str(update_content).unwrap();
+        let UpdateContent::SharedWidgetQuery(query) = update.content else {
+            panic!("expected a shared widget query, got {:?}", update.content);
+        };
+        assert_eq!(query.widget_id, "w1");
+        assert_eq!(
+            query.type_field,
+            crate::types::WidgetQueryType::Data(
+                crate::types::WidgetQueryTypeData::builder().build()
+            )
+        );
+    }
 
     #[test]
     pub fn update_content_is_flattened() {

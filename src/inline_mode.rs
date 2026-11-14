@@ -403,11 +403,23 @@ pub enum InputMessageContent {
     Venue(InputVenueMessageContent),
     Contact(InputContactMessageContent),
     Invoice(InputInvoiceMessageContent),
+    Widget(InputWidgetMessageContent),
+    SharedWidget(InputSharedWidgetMessageContent),
 }
 
 impl From<InputTextMessageContent> for InputMessageContent {
     fn from(value: InputTextMessageContent) -> Self {
         Self::Text(value)
+    }
+}
+impl From<InputWidgetMessageContent> for InputMessageContent {
+    fn from(value: InputWidgetMessageContent) -> Self {
+        Self::Widget(value)
+    }
+}
+impl From<InputSharedWidgetMessageContent> for InputMessageContent {
+    fn from(value: InputSharedWidgetMessageContent) -> Self {
+        Self::SharedWidget(value)
     }
 }
 impl From<InputRichMessageContent> for InputMessageContent {
@@ -448,6 +460,33 @@ pub struct InputTextMessageContent {
 #[apply(apistruct!)]
 pub struct InputRichMessageContent {
     pub rich_message: InputRichMessage,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputWidgetMessageContent {
+    pub html: String,
+    pub width: Option<u32>,
+    pub height: Option<u32>,
+    pub public_data: Option<String>,
+    pub chat_data: Option<String>,
+    pub caption: Option<String>,
+    pub parse_mode: Option<ParseMode>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub show_caption_above_media: Option<bool>,
+    pub allow_queries: Option<bool>,
+    pub is_shared: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct InputSharedWidgetMessageContent {
+    pub widget_id: String,
+    pub chat_data: Option<String>,
+    pub caption: Option<String>,
+    pub parse_mode: Option<ParseMode>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub show_caption_above_media: Option<bool>,
 }
 
 #[apply(apistruct!)]

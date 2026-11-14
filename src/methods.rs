@@ -48,10 +48,9 @@ pub struct DeleteWebhookParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendMessageParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -71,7 +70,7 @@ pub struct SendMessageParams {
 #[apply(apistruct!)]
 pub struct SendRichMessageParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -123,7 +122,6 @@ pub struct ForwardMessagesParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct CopyMessageParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -158,10 +156,9 @@ pub struct CopyMessagesParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendPhotoParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -181,10 +178,9 @@ pub struct SendPhotoParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendAudioParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -206,10 +202,9 @@ pub struct SendAudioParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendDocumentParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -229,10 +224,9 @@ pub struct SendDocumentParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendVideoParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -259,10 +253,9 @@ pub struct SendVideoParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendAnimationParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -286,10 +279,9 @@ pub struct SendAnimationParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendVoiceParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -308,10 +300,9 @@ pub struct SendVoiceParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendVideoNoteParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -329,10 +320,9 @@ pub struct SendVideoNoteParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendLivePhotoParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -353,7 +343,6 @@ pub struct SendLivePhotoParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendPaidMediaParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -375,7 +364,6 @@ pub struct SendPaidMediaParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendMediaGroupParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -392,7 +380,7 @@ pub struct SendMediaGroupParams {
 #[apply(apistruct!)]
 pub struct SendLocationParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -449,7 +437,7 @@ pub struct EditMessageChecklistParams {
 #[apply(apistruct!)]
 pub struct SendVenueParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -471,10 +459,9 @@ pub struct SendVenueParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendContactParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -531,7 +518,6 @@ pub struct SendPollParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendDiceParams {
     pub business_connection_id: Option<String>,
     pub chat_id: ChatId,
@@ -548,6 +534,72 @@ pub struct SendDiceParams {
 }
 
 #[apply(apistruct!)]
+pub struct SendWidgetParams {
+    pub chat_id: ChatId,
+    pub message_thread_id: Option<i32>,
+    pub html: String,
+    pub width: Option<u32>,
+    pub height: Option<u32>,
+    pub public_data: Option<String>,
+    pub chat_data: Option<String>,
+    pub caption: Option<String>,
+    pub parse_mode: Option<ParseMode>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub show_caption_above_media: Option<bool>,
+    pub allow_queries: Option<bool>,
+    pub is_shared: Option<bool>,
+    pub disable_notification: Option<bool>,
+    pub protect_content: Option<bool>,
+    pub allow_paid_broadcast: Option<bool>,
+    pub message_effect_id: Option<String>,
+    pub reply_parameters: Option<ReplyParameters>,
+    pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[apply(apistruct!)]
+pub struct SendSharedWidgetParams {
+    pub chat_id: ChatId,
+    pub message_thread_id: Option<i32>,
+    pub widget_id: String,
+    pub chat_data: Option<String>,
+    pub caption: Option<String>,
+    pub parse_mode: Option<ParseMode>,
+    pub caption_entities: Option<Vec<MessageEntity>>,
+    pub show_caption_above_media: Option<bool>,
+    pub disable_notification: Option<bool>,
+    pub protect_content: Option<bool>,
+    pub allow_paid_broadcast: Option<bool>,
+    pub message_effect_id: Option<String>,
+    pub reply_parameters: Option<ReplyParameters>,
+    pub reply_markup: Option<ReplyMarkup>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct AnswerWidgetQueryParams {
+    pub widget_query_id: String,
+    pub data: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct EditMessageWidgetDataParams {
+    pub chat_id: Option<ChatId>,
+    pub message_id: Option<i32>,
+    pub inline_message_id: Option<String>,
+    pub public_data: Option<String>,
+    pub chat_data: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct EditSharedWidgetDataParams {
+    pub widget_id: String,
+    pub public_data: String,
+    pub cache_time: Option<u32>,
+}
+
+#[apply(apistruct!)]
 #[derive(Eq)]
 pub struct SendMessageDraftParams {
     pub chat_id: ChatId,
@@ -561,7 +613,6 @@ pub struct SendMessageDraftParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendChecklistParams {
     pub business_connection_id: String,
     pub chat_id: ChatId,
@@ -1249,10 +1300,9 @@ pub struct DeleteAllMessageReactionsParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendStickerParams {
     pub business_connection_id: Option<String>,
-    pub chat_id: ChatId,
+    pub chat_id: Option<ChatId>,
     pub message_thread_id: Option<i32>,
     pub direct_messages_topic_id: Option<i64>,
     pub ephemeral_message_parameters: Option<EphemeralMessageParameters>,
@@ -1402,6 +1452,8 @@ pub struct GiftPremiumSubscriptionParams {
 pub struct VerifyUserParams {
     pub user_id: u64,
     pub custom_description: Option<String>,
+    pub custom_description_parse_mode: Option<ParseMode>,
+    pub custom_description_entities: Option<Vec<MessageEntity>>,
 }
 
 #[apply(apistruct!)]
@@ -1409,6 +1461,8 @@ pub struct VerifyUserParams {
 pub struct VerifyChatParams {
     pub chat_id: ChatId,
     pub custom_description: Option<String>,
+    pub custom_description_parse_mode: Option<ParseMode>,
+    pub custom_description_entities: Option<Vec<MessageEntity>>,
 }
 
 #[apply(apistruct!)]
@@ -1550,6 +1604,19 @@ pub struct ConvertGiftToStarsParams {
 
 #[apply(apistruct!)]
 #[derive(Eq)]
+pub struct DeleteBusinessAccountGiftParams {
+    pub business_connection_id: String,
+    pub owned_gift_id: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct GetUniqueGiftParams {
+    pub name: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
 pub struct UpgradeGiftParams {
     pub business_connection_id: String,
     pub owner_gift_id: String,
@@ -1619,7 +1686,6 @@ pub struct AnswerInlineQueryParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendInvoiceParams {
     pub chat_id: ChatId,
     pub message_thread_id: Option<i32>,
@@ -1729,7 +1795,6 @@ pub struct SetPassportDataErrorsParams {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct SendGameParams {
     pub business_connection_id: Option<String>,
     pub chat_id: i64,

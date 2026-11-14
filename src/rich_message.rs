@@ -93,6 +93,7 @@ pub enum RichTextObject {
     EmailAddress(RichTextEmailAddress),
     PhoneNumber(RichTextPhoneNumber),
     BankCardNumber(RichTextBankCardNumber),
+    TonAddress(RichTextTonAddress),
     Mention(RichTextMention),
     Hashtag(RichTextHashtag),
     Cashtag(RichTextCashtag),
@@ -131,6 +132,7 @@ rich_text_from!(RichTextUrl, Url);
 rich_text_from!(RichTextEmailAddress, EmailAddress);
 rich_text_from!(RichTextPhoneNumber, PhoneNumber);
 rich_text_from!(RichTextBankCardNumber, BankCardNumber);
+rich_text_from!(RichTextTonAddress, TonAddress);
 rich_text_from!(RichTextMention, Mention);
 rich_text_from!(RichTextHashtag, Hashtag);
 rich_text_from!(RichTextCashtag, Cashtag);
@@ -213,6 +215,12 @@ pub struct RichTextPhoneNumber {
 pub struct RichTextBankCardNumber {
     pub text: Box<RichText>,
     pub bank_card_number: String,
+}
+
+#[apply(apistruct!)]
+pub struct RichTextTonAddress {
+    pub text: Box<RichText>,
+    pub address: String,
 }
 
 #[apply(apistruct!)]

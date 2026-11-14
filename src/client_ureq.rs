@@ -139,24 +139,25 @@ mod tests {
     use crate::inline_mode::{InlineQueryResult, InlineQueryResultVenue};
     use crate::input_media::{InputMediaPhoto, MediaGroupInputMedia};
     use crate::methods::{
-        AnswerCallbackQueryParams, AnswerInlineQueryParams, BanChatMemberParams, CopyMessageParams,
-        CreateChatInviteLinkParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
+        AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerWidgetQueryParams,
+        BanChatMemberParams, CopyMessageParams, CreateChatInviteLinkParams,
+        DeleteBusinessAccountGiftParams, DeleteChatPhotoParams, DeleteChatStickerSetParams,
         DeleteMessageParams, DeleteMyCommandsParams, DeleteWebhookParams, EditChatInviteLinkParams,
         EditEphemeralMessageMediaParams, EditMessageCaptionParams, EditMessageLiveLocationParams,
-        EditMessageMediaParams, EditMessageTextParams, ExportChatInviteLinkParams,
-        ForwardMessageParams, GetChatAdministratorsParams, GetChatMemberCountParams,
-        GetChatMemberParams, GetFileParams, GetMyCommandsParams, GetStickerSetParams,
-        GetUpdatesParams, GetUserProfilePhotosParams, LeaveChatParams, PinChatMessageParams,
-        PromoteChatMemberParams, RestrictChatMemberParams, RevokeChatInviteLinkParams,
-        SendAnimationParams, SendAudioParams, SendChatActionParams, SendContactParams,
-        SendDiceParams, SendDocumentParams, SendLocationParams, SendMediaGroupParams,
-        SendMessageParams, SendPhotoParams, SendPollParams, SendRichMessageDraftParams,
-        SendRichMessageParams, SendStickerParams, SendVenueParams, SendVideoNoteParams,
-        SendVideoParams, SendVoiceParams, SetChatAdministratorCustomTitleParams,
-        SetChatDescriptionParams, SetChatPermissionsParams, SetChatPhotoParams,
-        SetChatStickerSetParams, SetChatTitleParams, SetMyCommandsParams, SetWebhookParams,
-        StopMessageLiveLocationParams, StopPollParams, UnbanChatMemberParams,
-        UnpinChatMessageParams,
+        EditMessageMediaParams, EditMessageTextParams, EditMessageWidgetDataParams,
+        EditSharedWidgetDataParams, ExportChatInviteLinkParams, ForwardMessageParams,
+        GetChatAdministratorsParams, GetChatMemberCountParams, GetChatMemberParams, GetFileParams,
+        GetMyCommandsParams, GetStickerSetParams, GetUniqueGiftParams, GetUpdatesParams,
+        GetUserProfilePhotosParams, LeaveChatParams, PinChatMessageParams, PromoteChatMemberParams,
+        RestrictChatMemberParams, RevokeChatInviteLinkParams, SendAnimationParams, SendAudioParams,
+        SendChatActionParams, SendContactParams, SendDiceParams, SendDocumentParams,
+        SendLocationParams, SendMediaGroupParams, SendMessageParams, SendPhotoParams,
+        SendPollParams, SendRichMessageDraftParams, SendRichMessageParams, SendSharedWidgetParams,
+        SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams,
+        SendWidgetParams, SetChatAdministratorCustomTitleParams, SetChatDescriptionParams,
+        SetChatPermissionsParams, SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams,
+        SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
+        UnbanChatMemberParams, UnpinChatMessageParams,
     };
     use crate::rich_message::{
         InputRichBlock, InputRichBlockPhoto, InputRichMessage, InputRichMessageMedia,
@@ -165,7 +166,7 @@ mod tests {
     use crate::test_json::assert_json_str;
     use crate::types::{
         AllowedUpdate, BotCommand, BotCommandScope, BotCommandScopeChat, ChatAction, ChatId,
-        ChatPermissions, InputPollOption,
+        ChatPermissions, EphemeralMessageParameters, InputPollOption,
     };
 
     macro_rules! case {
@@ -780,6 +781,115 @@ mod tests {
             .chat_id(-1001368460856)
             .build();
         let response = case!(deleteChatStickerSet, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn send_widget_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2758,\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"first_name\":\"Ayrat\"},\"has_protected_content\":true,\"widget\":{\"width\":300,\"height\":120,\"html\":\"<p>Hi</p>\",\"public_data\":\"{}\"}}}";
+        let params = SendWidgetParams::builder()
+            .chat_id(275808073)
+            .html("<p>Hi</p>")
+            .width(300)
+            .height(120)
+            .public_data("{}")
+            .allow_queries(true)
+            .build();
+        let response = case!(sendWidget, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn send_shared_widget_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2759,\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"first_name\":\"Ayrat\"},\"has_protected_content\":true,\"widget\":{\"id\":\"w1\",\"html\":\"<p>Poll</p>\",\"public_data\":\"{}\"}}}";
+        let params = SendSharedWidgetParams::builder()
+            .chat_id(275808073)
+            .widget_id("w1")
+            .build();
+        let response = case!(sendSharedWidget, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn edit_message_widget_data_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = EditMessageWidgetDataParams::builder()
+            .chat_id(275808073)
+            .message_id(2758)
+            .chat_data("{\"turn\":2}")
+            .build();
+        let response = case!(editMessageWidgetData, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn edit_shared_widget_data_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = EditSharedWidgetDataParams::builder()
+            .widget_id("w1")
+            .public_data("{\"votes\":3}")
+            .cache_time(60_u32)
+            .build();
+        let response = case!(editSharedWidgetData, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn get_unique_gift_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"gift_id\":\"1\",\"base_name\":\"Cat\",\"name\":\"Cat-1\",\"number\":1,\"model\":{\"name\":\"M\",\"sticker\":{\"file_id\":\"f\",\"file_unique_id\":\"u\",\"type\":\"regular\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false},\"rarity_per_mille\":1},\"symbol\":{\"name\":\"S\",\"sticker\":{\"file_id\":\"f\",\"file_unique_id\":\"u\",\"type\":\"regular\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false},\"rarity_per_mille\":1},\"backdrop\":{\"name\":\"B\",\"colors\":{\"center_color\":1,\"edge_color\":2,\"symbol_color\":3,\"text_color\":4},\"rarity_per_mille\":1}}}";
+        let params = GetUniqueGiftParams::builder().name("Cat-1").build();
+        let response = case!(getUniqueGift, 200, response_string, params).unwrap();
+        assert_eq!(response.result.name, "Cat-1");
+    }
+
+    #[test]
+    fn delete_business_account_gift_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = DeleteBusinessAccountGiftParams::builder()
+            .business_connection_id("bc")
+            .owned_gift_id("g1")
+            .build();
+        let response = case!(deleteBusinessAccountGift, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn answer_widget_query_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = AnswerWidgetQueryParams::builder()
+            .widget_query_id("id")
+            .data("ok")
+            .build();
+        let response = case!(answerWidgetQuery, 200, response_string, params).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn get_chat_share_theme_backdrops_success() {
+        let response_string = "{\"ok\":true,\"result\":{\"backdrops\":[{\"id\":1,\"name\":\"Amber\",\"colors\":{\"center_color\":1,\"edge_color\":2,\"symbol_color\":3,\"text_color\":4}}]}}";
+        let response = case!(getChatShareThemeBackdrops, 200, response_string).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn send_message_ephemeral_callback_reply_without_chat_id() {
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":0,\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"first_name\":\"Ayrat\"},\"text\":\"Only you can see this\"}}";
+        let params = SendMessageParams::builder()
+            .ephemeral_message_parameters(
+                EphemeralMessageParameters::builder()
+                    .callback_query_id("cb")
+                    .build(),
+            )
+            .text("Only you can see this")
+            .build();
+        assert_eq!(
+            serde_json::to_value(&params).unwrap(),
+            serde_json::json!({
+                "ephemeral_message_parameters": {"callback_query_id": "cb"},
+                "text": "Only you can see this"
+            })
+        );
+        let response = case!(sendMessage, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
