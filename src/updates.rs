@@ -83,8 +83,8 @@ mod serde_tests {
             "update_id": 2342,
             "widget_query": {
                 "id": "q1",
-                "from": {"id": 275808073, "is_bot": false, "first_name": "Ayrat"},
-                "chat": {"id": 275808073, "type": "private", "first_name": "Ayrat"},
+                "from": {"id": 123456789, "is_bot": false, "first_name": "Name"},
+                "chat": {"id": 123456789, "type": "private", "first_name": "Name"},
                 "message_id": 10,
                 "chat_instance": "ci",
                 "type": {
@@ -113,7 +113,7 @@ mod serde_tests {
             "update_id": 2343,
             "shared_widget_query": {
                 "id": "q2",
-                "from": {"id": 275808073, "is_bot": false, "first_name": "Ayrat"},
+                "from": {"id": 123456789, "is_bot": false, "first_name": "Name"},
                 "type": {"type": "data"},
                 "data": "refresh",
                 "widget_id": "w1"
@@ -147,11 +147,11 @@ mod serde_tests {
                 },
                 "date": 1618207352,
                 "chat": {
-                    "id": 275808073,
+                    "id": 123456789,
                     "type": "private",
-                    "username": "Ayrat555",
-                    "first_name": "Ayrat",
-                    "last_name": "Badykov"
+                    "username": "Name555",
+                    "first_name": "Name",
+                    "last_name": "Surname"
                 },
                 "text": "Hello!"
             }
@@ -172,11 +172,11 @@ mod serde_tests {
             .date(1618207352)
             .chat(
                 Chat::builder()
-                    .id(275808073)
+                    .id(123456789)
                     .type_field(ChatType::Private)
-                    .username("Ayrat555")
-                    .first_name("Ayrat")
-                    .last_name("Badykov")
+                    .username("Name555")
+                    .first_name("Name")
+                    .last_name("Surname")
                     .build(),
             )
             .text("Hello!")

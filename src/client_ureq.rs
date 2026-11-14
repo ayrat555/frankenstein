@@ -195,7 +195,7 @@ mod tests {
 
     #[test]
     fn get_updates_success() {
-        let response_string = "{\"ok\":true,\"result\":[{\"update_id\":379656753,\"message\":{\"message_id\":2741,\"from\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"date\":1618149703,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"dsaf\"}}]}";
+        let response_string = "{\"ok\":true,\"result\":[{\"update_id\":379656753,\"message\":{\"message_id\":2741,\"from\":{\"id\":123456789,\"is_bot\":false,\"first_name\":\"Name\",\"last_name\":\"Surname\",\"username\":\"Name555\",\"language_code\":\"en\"},\"date\":1618149703,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"text\":\"dsaf\"}}]}";
         let params = GetUpdatesParams::builder()
             .allowed_updates(vec![AllowedUpdate::Message])
             .build();
@@ -209,9 +209,9 @@ mod tests {
 
     #[test]
     fn send_message_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello!\"}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"text\":\"Hello!\"}}";
         let params = SendMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .text("Hello!")
             .build();
         let response = case!(sendMessage, 200, response_string, params).unwrap();
@@ -290,10 +290,10 @@ mod tests {
 
     #[test]
     fn forward_message_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2747,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618294971,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello\"}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2747,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618294971,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"text\":\"Hello\"}}";
         let params = ForwardMessageParams::builder()
-            .chat_id(275808073)
-            .from_chat_id(275808073)
+            .chat_id(123456789)
+            .from_chat_id(123456789)
             .message_id(2747)
             .build();
         let response = case!(forwardMessage, 200, response_string, params).unwrap();
@@ -304,8 +304,8 @@ mod tests {
     fn copy_message_success() {
         let response_string = "{\"ok\":true,\"result\":{\"message_id\":2749}}";
         let params = CopyMessageParams::builder()
-            .chat_id(275808073)
-            .from_chat_id(275808073)
+            .chat_id(123456789)
+            .from_chat_id(123456789)
             .message_id(2747)
             .build();
         let response = case!(copyMessage, 200, response_string, params).unwrap();
@@ -314,9 +314,9 @@ mod tests {
 
     #[test]
     fn send_location_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2750,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382060,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2750,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382060,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
         let params = SendLocationParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .latitude(49.7)
             .longitude(6.95)
             .build();
@@ -326,9 +326,9 @@ mod tests {
 
     #[test]
     fn edit_message_live_location_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
         let params = EditMessageLiveLocationParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2752)
             .latitude(49.7)
             .longitude(6.95)
@@ -339,9 +339,9 @@ mod tests {
 
     #[test]
     fn stop_message_live_location_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2752,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618382998,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"edit_date\":1618383189,\"location\":{\"longitude\":6.96,\"latitude\":49.800009,\"live_period\":300}}}";
         let params = StopMessageLiveLocationParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2752)
             .build();
         let response = case!(stopMessageLiveLocation, 200, response_string, params).unwrap();
@@ -350,9 +350,9 @@ mod tests {
 
     #[test]
     fn send_venue_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2754,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618410490,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"venue\":{\"location\":{\"longitude\":6.949981,\"latitude\":49.700002},\"title\":\"Meow\",\"address\":\"Hoof\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2754,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618410490,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"venue\":{\"location\":{\"longitude\":6.949981,\"latitude\":49.700002},\"title\":\"Meow\",\"address\":\"Hoof\"},\"location\":{\"longitude\":6.949981,\"latitude\":49.700002}}}";
         let params = SendVenueParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .latitude(49.7)
             .longitude(6.95)
             .title("Meow")
@@ -364,9 +364,9 @@ mod tests {
 
     #[test]
     fn send_contact_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2755,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618465934,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"contact\":{\"phone_number\":\"49\",\"first_name\":\"Meow\"}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2755,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618465934,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"contact\":{\"phone_number\":\"49\",\"first_name\":\"Meow\"}}}";
         let params = SendContactParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .phone_number("49")
             .first_name("Meow")
             .build();
@@ -376,9 +376,9 @@ mod tests {
 
     #[test]
     fn send_poll_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2756,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618466302,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"poll\":{\"id\":\"5458519832506925078\",\"question\":\"are you?\",\"options\":[{\"text\":\"1\",\"voter_count\":0},{\"text\":\"2\",\"voter_count\":0}],\"total_voter_count\":0,\"is_closed\":false,\"is_anonymous\":true,\"type\":\"regular\",\"allows_multiple_answers\":false}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2756,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618466302,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"poll\":{\"id\":\"5458519832506925078\",\"question\":\"are you?\",\"options\":[{\"text\":\"1\",\"voter_count\":0},{\"text\":\"2\",\"voter_count\":0}],\"total_voter_count\":0,\"is_closed\":false,\"is_anonymous\":true,\"type\":\"regular\",\"allows_multiple_answers\":false}}}";
         let params = SendPollParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .question("are you?")
             .options(vec![
                 InputPollOption::builder().text("1").build(),
@@ -391,8 +391,8 @@ mod tests {
 
     #[test]
     fn send_dice_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2757,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"dice\":{\"emoji\":\"🎲\",\"value\":5}}}";
-        let params = SendDiceParams::builder().chat_id(275808073).build();
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2757,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618467133,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"dice\":{\"emoji\":\"🎲\",\"value\":5}}}";
+        let params = SendDiceParams::builder().chat_id(123456789).build();
         let response = case!(sendDice, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
@@ -401,7 +401,7 @@ mod tests {
     fn send_chat_action_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = SendChatActionParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .action(ChatAction::Typing)
             .build();
         let response = case!(sendChatAction, 200, response_string, params).unwrap();
@@ -412,7 +412,7 @@ mod tests {
     fn get_user_profile_photos_success() {
         let response_string = "{\"ok\":true,\"result\":{\"total_count\":3,\"photos\":[[{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYQADg0kCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEg0kCAAE\",\"width\":160,\"height\":160,\"file_size\":8068},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYgADhEkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhEkCAAE\",\"width\":320,\"height\":320,\"file_size\":22765},{\"file_id\":\"AgACAgIAAxUAAWB332IlzabFGWzaMrOdQ4ODVLyaAAKypzEbSX9wEEzMxT7F-grc3UA5DwAEAQADAgADYwADhUkCAAEfBA\",\"file_unique_id\":\"AQAD3UA5DwAEhUkCAAE\",\"width\":640,\"height\":640,\"file_size\":65663}],[{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYQADZj0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZj0KAAE\",\"width\":160,\"height\":160,\"file_size\":13459},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYgADZz0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEZz0KAAE\",\"width\":320,\"height\":320,\"file_size\":41243},{\"file_id\":\"AgACAgIAAxUAAWB332JpnZNv9ZNeZeIt1FFCdOroAAKwpzEbSX9wEOb5okUMX3tVSRdLDQAEAQADAgADYwADaD0KAAEfBA\",\"file_unique_id\":\"AQADSRdLDQAEaD0KAAE\",\"width\":640,\"height\":640,\"file_size\":114427}],[{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYQADdkwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEdkwAAg\",\"width\":160,\"height\":160,\"file_size\":6631},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYgADd0wAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEd0wAAg\",\"width\":320,\"height\":320,\"file_size\":20495},{\"file_id\":\"AgACAgIAAxUAAWB332ISVowq4pXLx3y1o-7WQteeAAKvpzEbSX9wEBlOkdDjqlYW1Du3DQAEAQADAgADYwADeEwAAh8E\",\"file_unique_id\":\"AQAD1Du3DQAEeEwAAg\",\"width\":640,\"height\":640,\"file_size\":54395}]]}}";
         let params = GetUserProfilePhotosParams::builder()
-            .user_id(275808073_u64)
+            .user_id(123456789_u64)
             .build();
         let response = case!(getUserProfilePhotos, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -433,7 +433,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = BanChatMemberParams::builder()
             .chat_id(-1001368460856)
-            .user_id(275808073_u64)
+            .user_id(123456789_u64)
             .build();
         let response = case!(banChatMember, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -458,7 +458,7 @@ mod tests {
             .build();
         let params = RestrictChatMemberParams::builder()
             .chat_id(-1001368460856)
-            .user_id(275808073_u64)
+            .user_id(123456789_u64)
             .permissions(perm)
             .build();
         let response = case!(restrictChatMember, 200, response_string, params).unwrap();
@@ -470,7 +470,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = PromoteChatMemberParams::builder()
             .chat_id(-1001368460856)
-            .user_id(275808073_u64)
+            .user_id(123456789_u64)
             .can_change_info(true)
             .build();
         let response = case!(promoteChatMember, 200, response_string, params).unwrap();
@@ -482,7 +482,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = SetChatAdministratorCustomTitleParams::builder()
             .chat_id(-1001368460856)
-            .user_id(275808073_u64)
+            .user_id(123456789_u64)
             .custom_title("King")
             .build();
         let response = case!(
@@ -563,10 +563,10 @@ mod tests {
 
     #[test]
     fn send_photo_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2763,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618730180,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA20AA0U3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0U3AwAB\",\"width\":320,\"height\":320,\"file_size\":19968},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3gAA0Y3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0Y3AwAB\",\"width\":799,\"height\":800,\"file_size\":63581},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3kAA0M3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0M3AwAB\",\"width\":847,\"height\":848,\"file_size\":63763}]}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2763,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618730180,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA20AA0U3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0U3AwAB\",\"width\":320,\"height\":320,\"file_size\":19968},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3gAA0Y3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0Y3AwAB\",\"width\":799,\"height\":800,\"file_size\":63581},{\"file_id\":\"AgACAgIAAxkDAAIKy2B73MQXIhoDDmLXjcUjgqGf-m8bAALjsDEbORLgS-s4BkBzcC5DYvIBny4AAwEAAwIAA3kAA0M3AwABHwQ\",\"file_unique_id\":\"AQADYvIBny4AA0M3AwAB\",\"width\":847,\"height\":848,\"file_size\":63763}]}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendPhotoParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .photo(file)
             .build();
         let response = case!(sendPhoto, 200, response_string, params).unwrap();
@@ -575,10 +575,10 @@ mod tests {
 
     #[test]
     fn send_audio_file_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAudioParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .audio(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
@@ -587,10 +587,10 @@ mod tests {
 
     #[test]
     fn send_audio_file_with_thumb_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2766,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735176,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAudioParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .audio(file.clone())
             .thumbnail(file)
             .build();
@@ -600,11 +600,11 @@ mod tests {
 
     #[test]
     fn send_audio_file_id_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2769,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618735333,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0WB78OUFavWx6fjzCQ_d5qnu_R7mAALkDAACORLgS5co1z0uFAKgHwQ\",\"file_unique_id\":\"AgAD5AwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file =
             "CQACAgIAAxkDAAIKzmB78EjK-iOHo-HKC-M6p4r0jGdmAALkDAACORLgS5co1z0uFAKgHwQ".to_string();
         let params = SendAudioParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .audio(file)
             .build();
         let response = case!(sendAudio, 200, response_string, params).unwrap();
@@ -613,10 +613,10 @@ mod tests {
 
     #[test]
     fn send_document_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendDocumentParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .document(file)
             .build();
         let response = case!(sendDocument, 200, response_string, params).unwrap();
@@ -625,10 +625,10 @@ mod tests {
 
     #[test]
     fn send_video_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVideoParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .video(file)
             .build();
         let response = case!(sendVideo, 200, response_string, params).unwrap();
@@ -637,10 +637,10 @@ mod tests {
 
     #[test]
     fn send_animation_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendAnimationParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .animation(file)
             .build();
         let response = case!(sendAnimation, 200, response_string, params).unwrap();
@@ -649,10 +649,10 @@ mod tests {
 
     #[test]
     fn send_voice_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVoiceParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .voice(file)
             .build();
         let response = case!(sendVoice, 200, response_string, params).unwrap();
@@ -661,10 +661,10 @@ mod tests {
 
     #[test]
     fn send_video_note_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2770,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618737593,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"audio\":{\"file_id\":\"CQACAgIAAxkDAAIK0mB7-bnnewABfdaFKK4NzVLQ7BvgCwAC6gwAAjkS4Et_njaNR8IUMB8E\",\"file_unique_id\":\"AgAD6gwAAjkS4Es\",\"duration\":123,\"title\":\"Way Back Home\",\"file_name\":\"audio.mp3\",\"mime_type\":\"audio/mpeg\",\"file_size\":2957092}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendVideoNoteParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .video_note(file)
             .build();
         let response = case!(sendVideoNote, 200, response_string, params).unwrap();
@@ -676,7 +676,7 @@ mod tests {
         let response_string = "{\"ok\":true,\"result\":true}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SetChatPhotoParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .photo(file)
             .build();
         let response = case!(setChatPhoto, 200, response_string, params).unwrap();
@@ -709,7 +709,7 @@ mod tests {
     fn pin_chat_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = PinChatMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2766)
             .build();
         let response = case!(pinChatMessage, 200, response_string, params).unwrap();
@@ -719,7 +719,7 @@ mod tests {
     #[test]
     fn unpin_chat_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
-        let params = UnpinChatMessageParams::builder().chat_id(275808073).build();
+        let params = UnpinChatMessageParams::builder().chat_id(123456789).build();
         let response = case!(unpinChatMessage, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
@@ -734,7 +734,7 @@ mod tests {
 
     #[test]
     fn get_chat_administrators_success() {
-        let response_string = "{\"ok\":true,\"result\":[{\"status\":\"administrator\",\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"can_be_edited\":false,\"is_anonymous\":true,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_video_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":false,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true,\"can_send_welcome_messages\":false},{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}]}";
+        let response_string = "{\"ok\":true,\"result\":[{\"status\":\"administrator\",\"user\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"can_be_edited\":false,\"is_anonymous\":true,\"can_manage_chat\":true,\"can_delete_messages\":true,\"can_manage_video_chats\":true,\"can_restrict_members\":true,\"can_promote_members\":false,\"can_change_info\":true,\"can_invite_users\":true,\"can_pin_messages\":true,\"can_send_welcome_messages\":false},{\"status\":\"creator\",\"user\":{\"id\":123456789,\"is_bot\":false,\"first_name\":\"Name\",\"last_name\":\"Surname\",\"username\":\"Name555\",\"language_code\":\"en\"},\"is_anonymous\":false}]}";
         let params = GetChatAdministratorsParams::builder()
             .chat_id(-1001368460856)
             .build();
@@ -754,10 +754,10 @@ mod tests {
 
     #[test]
     fn get_chat_member_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"status\":\"creator\",\"user\":{\"id\":275808073,\"is_bot\":false,\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\",\"username\":\"Ayrat555\",\"language_code\":\"en\"},\"is_anonymous\":false}}";
+        let response_string = "{\"ok\":true,\"result\":{\"status\":\"creator\",\"user\":{\"id\":123456789,\"is_bot\":false,\"first_name\":\"Name\",\"last_name\":\"Surname\",\"username\":\"Name555\",\"language_code\":\"en\"},\"is_anonymous\":false}}";
         let params = GetChatMemberParams::builder()
             .chat_id(-1001368460856)
-            .user_id(275808073_u64)
+            .user_id(123456789_u64)
             .build();
         let response = case!(getChatMember, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
@@ -786,9 +786,9 @@ mod tests {
 
     #[test]
     fn send_widget_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2758,\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"first_name\":\"Ayrat\"},\"has_protected_content\":true,\"widget\":{\"width\":300,\"height\":120,\"html\":\"<p>Hi</p>\",\"public_data\":\"{}\"}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2758,\"date\":1618467133,\"chat\":{\"id\":123456789,\"type\":\"private\",\"first_name\":\"Name\"},\"has_protected_content\":true,\"widget\":{\"width\":300,\"height\":120,\"html\":\"<p>Hi</p>\",\"public_data\":\"{}\"}}}";
         let params = SendWidgetParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .html("<p>Hi</p>")
             .width(300)
             .height(120)
@@ -801,9 +801,9 @@ mod tests {
 
     #[test]
     fn send_shared_widget_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2759,\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"first_name\":\"Ayrat\"},\"has_protected_content\":true,\"widget\":{\"id\":\"w1\",\"html\":\"<p>Poll</p>\",\"public_data\":\"{}\"}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2759,\"date\":1618467133,\"chat\":{\"id\":123456789,\"type\":\"private\",\"first_name\":\"Name\"},\"has_protected_content\":true,\"widget\":{\"id\":\"w1\",\"html\":\"<p>Poll</p>\",\"public_data\":\"{}\"}}}";
         let params = SendSharedWidgetParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .widget_id("w1")
             .build();
         let response = case!(sendSharedWidget, 200, response_string, params).unwrap();
@@ -814,7 +814,7 @@ mod tests {
     fn edit_message_widget_data_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = EditMessageWidgetDataParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2758)
             .chat_data("{\"turn\":2}")
             .build();
@@ -873,7 +873,7 @@ mod tests {
 
     #[test]
     fn send_message_ephemeral_callback_reply_without_chat_id() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":0,\"date\":1618467133,\"chat\":{\"id\":275808073,\"type\":\"private\",\"first_name\":\"Ayrat\"},\"text\":\"Only you can see this\"}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":0,\"date\":1618467133,\"chat\":{\"id\":123456789,\"type\":\"private\",\"first_name\":\"Name\"},\"text\":\"Only you can see this\"}}";
         let params = SendMessageParams::builder()
             .ephemeral_message_parameters(
                 EphemeralMessageParameters::builder()
@@ -947,7 +947,7 @@ mod tests {
     fn delete_my_commands_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let scope = BotCommandScope::Chat(BotCommandScopeChat {
-            chat_id: ChatId::Integer(275808073),
+            chat_id: ChatId::Integer(123456789),
         });
         let params = DeleteMyCommandsParams::builder()
             .scope(scope)
@@ -969,7 +969,7 @@ mod tests {
     fn get_my_commands_scope_success() {
         let response_string = "{\"ok\":true,\"result\":[]}";
         let scope = BotCommandScope::Chat(BotCommandScopeChat {
-            chat_id: ChatId::Integer(275808073),
+            chat_id: ChatId::Integer(123456789),
         });
         let params = GetMyCommandsParams::builder().scope(scope).build();
         let response = case!(getMyCommands, 200, response_string, params).unwrap();
@@ -998,10 +998,10 @@ mod tests {
 
     #[test]
     fn edit_message_text_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619158446,\"text\":\"Hi!!\"}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"edit_date\":1619158446,\"text\":\"Hi!!\"}}";
         let params = EditMessageTextParams::builder()
             .text("Hi!!")
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2782)
             .build();
         let response = case!(editMessageText, 200, response_string, params).unwrap();
@@ -1010,9 +1010,9 @@ mod tests {
 
     #[test]
     fn edit_message_caption_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2784,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619159414,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619159461,\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA20AA1hCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3gAA1lCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3kAA1pCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}],\"caption\":\"Caption\"}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2784,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619159414,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"edit_date\":1619159461,\"photo\":[{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA20AA1hCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1hCAAI\",\"width\":320,\"height\":320,\"file_size\":19162},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3gAA1lCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1lCAAI\",\"width\":800,\"height\":800,\"file_size\":65697},{\"file_id\":\"AgACAgIAAxkDAAIK4GCCaaWDayYgzQ-BykVy8LYkW0wzAAL-rzEbRx8RSCnCkWjXtdN9ZNLmny4AAwEAAwIAA3kAA1pCAAIfBA\",\"file_unique_id\":\"AQADZNLmny4AA1pCAAI\",\"width\":1146,\"height\":1146,\"file_size\":101324}],\"caption\":\"Caption\"}}";
         let params = EditMessageCaptionParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2784)
             .caption("Caption")
             .build();
@@ -1035,7 +1035,7 @@ mod tests {
     fn delete_message_success() {
         let response_string = "{\"ok\":true,\"result\":true}";
         let params = DeleteMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2784)
             .build();
         let response = case!(deleteMessage, 200, response_string, params).unwrap();
@@ -1044,10 +1044,10 @@ mod tests {
 
     #[test]
     fn send_sticker_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"type\":\"regular\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumbnail\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2788,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619245784,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"sticker\":{\"file_id\":\"CAACAgIAAxkDAAIK5GCDutgNxc07rqqtjkGWrGskbHfQAAIMEAACRx8ZSKJ6Z5GkdVHcHwQ\",\"file_unique_id\":\"AgADDBAAAkcfGUg\",\"type\":\"regular\",\"width\":512,\"height\":512,\"is_animated\":false,\"is_video\":false,\"thumbnail\":{\"file_id\":\"AAMCAgADGQMAAgrkYIO62A3FzTuuqq2OQZasayRsd9AAAgwQAAJHHxlIonpnkaR1Udz29bujLgADAQAHbQADzR4AAh8E\",\"file_unique_id\":\"AQAD9vW7oy4AA80eAAI\",\"width\":320,\"height\":320,\"file_size\":19264},\"file_size\":36596}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = SendStickerParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .sticker(file)
             .build();
         let response = case!(sendSticker, 200, response_string, params).unwrap();
@@ -1098,7 +1098,7 @@ mod tests {
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let params = EditEphemeralMessageMediaParams::builder()
             .chat_id(-1001368460856)
-            .receiver_user_id(275808073)
+            .receiver_user_id(123456789)
             .ephemeral_message_id(513)
             .media(InputMediaPhoto::builder().media(file).build())
             .build();
@@ -1125,7 +1125,7 @@ mod tests {
 
     #[test]
     fn send_rich_message_with_file_upload_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let rich_message = InputRichMessage::builder()
             .html("<p>Hello <img src=\"tg://photo?id=logo\"></p>")
@@ -1137,7 +1137,7 @@ mod tests {
                 .build()])
             .build();
         let params = SendRichMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .rich_message(rich_message)
             .build();
 
@@ -1163,10 +1163,10 @@ mod tests {
 
     #[test]
     fn send_rich_message_without_file_upload_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
         let rich_message = InputRichMessage::builder().html("<p>Hello</p>").build();
         let params = SendRichMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .rich_message(rich_message)
             .build();
 
@@ -1198,7 +1198,7 @@ mod tests {
             )])
             .build();
         let params = SendRichMessageDraftParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .draft_id(1)
             .rich_message(rich_message)
             .build();
@@ -1225,7 +1225,7 @@ mod tests {
 
     #[test]
     fn edit_message_text_rich_message_with_file_upload_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"edit_date\":1619158446,\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2782,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619158127,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"edit_date\":1619158446,\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let rich_message = InputRichMessage::builder()
             .blocks(vec![InputRichBlock::Photo(
@@ -1235,7 +1235,7 @@ mod tests {
             )])
             .build();
         let params = EditMessageTextParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .message_id(2782)
             .rich_message(rich_message)
             .build();
