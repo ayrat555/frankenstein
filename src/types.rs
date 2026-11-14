@@ -3,7 +3,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::games::{CallbackGame, Game};
-use crate::gifts::{AcceptedGiftTypes, GiftInfo, UniqueGiftColors, UniqueGiftInfo};
+use crate::gifts::{
+    AcceptedGiftTypes, GiftInfo, UniqueGift, UniqueGiftBackdropColors, UniqueGiftColors,
+    UniqueGiftInfo,
+};
 use crate::input_media::InputPollOptionMedia;
 use crate::macros::{apistruct, apply};
 use crate::parse_mode::ParseMode;
@@ -96,7 +99,6 @@ pub struct BotCommandScopeChatMember {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct ReplyParameters {
     pub message_id: Option<i32>,
     pub chat_id: Option<ChatId>,
@@ -105,6 +107,7 @@ pub struct ReplyParameters {
     pub quote: Option<String>,
     pub quote_parse_mode: Option<ParseMode>,
     pub quote_entities: Option<Vec<MessageEntity>>,
+    pub quote_rich_texts: Option<Vec<RichText>>,
     pub quote_position: Option<u32>,
     pub checklist_task_id: Option<i64>,
     pub poll_option_id: Option<String>,
@@ -113,7 +116,7 @@ pub struct ReplyParameters {
 #[apply(apistruct!)]
 #[derive(Eq)]
 pub struct EphemeralMessageParameters {
-    pub receiver_user_id: u64,
+    pub receiver_user_id: Option<u64>,
     pub callback_query_id: Option<String>,
     pub replace_callback_query_message: Option<bool>,
 }
@@ -148,6 +151,8 @@ pub enum MessageEntityType {
     Url,
     Email,
     PhoneNumber,
+    BankCardNumber,
+    TonAddress,
     Bold,
     Italic,
     Underline,
@@ -340,6 +345,8 @@ pub enum AllowedUpdate {
     InlineQuery,
     ChosenInlineResult,
     CallbackQuery,
+    WidgetQuery,
+    SharedWidgetQuery,
     ShippingQuery,
     PreCheckoutQuery,
     PurchasedPaidMedia,
@@ -448,6 +455,8 @@ pub struct ChatFullInfo {
     pub paid_message_star_count: Option<u32>,
     pub guard_bot: Option<User>,
     pub community: Option<Community>,
+    pub ton_wallet_card: Option<TonWalletCard>,
+    pub share_theme: Option<ChatShareTheme>,
 }
 
 #[apply(apistruct!)]
@@ -501,6 +510,7 @@ pub struct Message {
     pub video: Option<Box<Video>>,
     pub video_note: Option<Box<VideoNote>>,
     pub voice: Option<Box<Voice>>,
+    pub widget: Option<Box<Widget>>,
     pub caption: Option<String>,
     pub caption_entities: Option<Vec<MessageEntity>>,
     pub show_caption_above_media: Option<bool>,
@@ -558,6 +568,7 @@ pub struct Message {
     pub giveaway_completed: Option<GiveawayCompleted>,
     pub managed_bot_created: Option<Box<ManagedBotCreated>>,
     pub paid_message_price_changed: Option<PaidMessagePriceChanged>,
+    pub paid_messages_waived: Option<PaidMessagesWaived>,
     pub suggested_post_approved: Option<Box<SuggestedPostApproved>>,
     pub suggested_post_approval_failed: Option<Box<SuggestedPostApprovalFailed>>,
     pub suggested_post_declined: Option<Box<SuggestedPostDeclined>>,
@@ -565,6 +576,7 @@ pub struct Message {
     pub poll_option_deleted: Option<Box<PollOptionDeleted>>,
     pub suggested_post_paid: Option<Box<SuggestedPostPaid>>,
     pub suggested_post_refunded: Option<Box<SuggestedPostRefunded>>,
+    pub ton_wallet_transfer: Option<Box<TonWalletTransfer>>,
     pub video_chat_scheduled: Option<Box<VideoChatScheduled>>,
     pub video_chat_started: Option<Box<VideoChatStarted>>,
     pub video_chat_ended: Option<Box<VideoChatEnded>>,
@@ -595,10 +607,10 @@ pub struct MessageEntity {
 }
 
 #[apply(apistruct!)]
-#[derive(Eq)]
 pub struct TextQuote {
     pub text: String,
     pub entities: Option<Vec<MessageEntity>>,
+    pub rich_texts: Option<Vec<RichText>>,
     pub position: u32,
     pub is_manual: Option<bool>,
 }
@@ -620,6 +632,7 @@ pub struct ExternalReplyInfo {
     pub video: Option<Video>,
     pub video_note: Option<VideoNote>,
     pub voice: Option<Voice>,
+    pub widget: Option<Widget>,
     pub has_media_spoiler: Option<bool>,
     pub checklist: Option<Checklist>,
     pub contact: Option<Contact>,
@@ -1483,8 +1496,11 @@ pub struct UserRating {
     pub next_level_rating: Option<i32>,
 }
 
+#[deprecated(since = "0.53.0", note = "renamed to `AreaPosition` in Bot API 10.4")]
+pub type StoryAreaPosition = AreaPosition;
+
 #[apply(apistruct!)]
-pub struct StoryAreaPosition {
+pub struct AreaPosition {
     pub x_percentage: f64,
     pub y_percentage: f64,
     pub width_percentage: f64,
@@ -1548,7 +1564,7 @@ pub struct StoryAreaTypeUniqueGift {
 
 #[apply(apistruct!)]
 pub struct StoryArea {
-    pub position: StoryAreaPosition,
+    pub position: AreaPosition,
     #[serde(rename = "type")]
     pub type_field: StoryAreaType,
 }
@@ -1987,9 +2003,207 @@ pub struct PollOptionDeleted {
     pub option_text_entities: Option<Vec<MessageEntity>>,
 }
 
+#[apply(apistruct!)]
+#[derive(Copy, Eq)]
+pub struct PaidMessagesWaived {}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct Widget {
+    pub id: Option<String>,
+    pub width: Option<u32>,
+    pub height: Option<u32>,
+    pub html: String,
+    pub public_data: Option<String>,
+    pub chat_data: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct WidgetQuery {
+    pub id: String,
+    pub from: User,
+    pub chat: Option<Chat>,
+    pub message_id: Option<i32>,
+    pub inline_message_id: Option<String>,
+    pub chat_instance: String,
+    pub chat_type: Option<String>,
+    #[serde(rename = "type")]
+    pub type_field: WidgetQueryType,
+    pub data: String,
+    pub widget_id: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct SharedWidgetQuery {
+    pub id: String,
+    pub from: User,
+    #[serde(rename = "type")]
+    pub type_field: WidgetQueryType,
+    pub data: String,
+    pub widget_id: String,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum WidgetQueryType {
+    Data(WidgetQueryTypeData),
+    SignData(WidgetQueryTypeSignData),
+    SentTransaction(WidgetQueryTypeSentTransaction),
+}
+
+#[apply(apistruct!)]
+pub struct WidgetQueryTypeData {
+    pub wallet_card: Option<TonWalletCard>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct WidgetQueryTypeSignData {
+    pub wallet: WidgetQueryWallet,
+    pub sign_data: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct WidgetQueryTypeSentTransaction {
+    pub wallet: WidgetQueryWallet,
+    pub msg_hash: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct WidgetQueryWallet {
+    pub address: String,
+    pub amount: String,
+    pub public_key: Option<String>,
+    pub state_init: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct TonWalletCard {
+    pub address: String,
+    pub amount: String,
+    pub stickers: Vec<TonWalletCardSticker>,
+    pub background_nft_address: Option<String>,
+}
+
+#[apply(apistruct!)]
+pub struct TonWalletCardSticker {
+    pub position: AreaPosition,
+    pub nft: TonNft,
+}
+
+#[apply(apistruct!)]
+pub struct TonNft {
+    pub address: String,
+    pub collection_address: Option<String>,
+    pub index: String,
+    pub name: String,
+    pub description: String,
+    pub attributes: Option<Vec<TonNftAttribute>>,
+    pub gift: Option<UniqueGift>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct TonNftAttribute {
+    pub trait_type: String,
+    pub value: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct TonWalletTransfer {
+    pub transaction_id: String,
+    pub peer_address: String,
+    pub amount: String,
+    pub comment: Option<String>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum ChatShareTheme {
+    Emoji(ChatShareThemeEmoji),
+    UniqueGift(Box<ChatShareThemeUniqueGift>),
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChatShareThemeEmoji {
+    pub emojis: Vec<EmojiType>,
+    pub background_backdrop_id: Option<i64>,
+}
+
+#[apply(apistruct!)]
+pub struct ChatShareThemeUniqueGift {
+    pub gift: UniqueGift,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum EmojiType {
+    Emoji(EmojiTypeEmoji),
+    CustomEmoji(EmojiTypeCustomEmoji),
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct EmojiTypeEmoji {
+    pub emoji: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct EmojiTypeCustomEmoji {
+    pub custom_emoji_id: String,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChatShareThemeBackdrop {
+    pub id: i64,
+    pub name: String,
+    pub colors: UniqueGiftBackdropColors,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct ChatShareThemeBackdrops {
+    pub backdrops: Vec<ChatShareThemeBackdrop>,
+}
+
 #[cfg(test)]
 mod serde_tests {
     use super::*;
+    #[test]
+    fn chat_full_info_share_theme_and_ton_wallet_card() {
+        let json = r#"{
+            "id": 1, "type": "private", "accent_color_id": 0, "max_reaction_count": 11,
+            "accepted_gift_types": {"unlimited_gifts": true, "limited_gifts": true, "unique_gifts": true, "premium_subscription": true, "gifts_from_channels": true},
+            "ton_wallet_card": {
+                "address": "EQabc", "amount": "5",
+                "stickers": [{
+                    "position": {"x_percentage": 50.0, "y_percentage": 50.0, "width_percentage": 10.0, "height_percentage": 10.0, "rotation_angle": 0.0, "corner_radius_percentage": 0.0},
+                    "nft": {"address": "EQnft", "index": "7", "name": "Cat", "description": "A cat", "attributes": [{"trait_type": "Eyes", "value": "Blue"}]}
+                }]
+            },
+            "share_theme": {"type": "emoji", "emojis": [{"type": "emoji", "emoji": "🔥"}, {"type": "custom_emoji", "custom_emoji_id": "42"}], "background_backdrop_id": 3}
+        }"#;
+        let info: ChatFullInfo = serde_json::from_str(json).unwrap();
+        let card = info.ton_wallet_card.unwrap();
+        assert_eq!(card.stickers[0].nft.name, "Cat");
+        let Some(ChatShareTheme::Emoji(theme)) = info.share_theme else {
+            panic!("expected an emoji share theme");
+        };
+        assert_eq!(
+            theme.emojis[1],
+            EmojiType::CustomEmoji(
+                EmojiTypeCustomEmoji::builder()
+                    .custom_emoji_id("42")
+                    .build()
+            )
+        );
+    }
 
     #[test]
     pub fn kicked_user_status_is_parsed() {

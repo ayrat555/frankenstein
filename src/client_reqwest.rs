@@ -148,9 +148,9 @@ mod tests {
 
     #[tokio::test]
     async fn async_send_message_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"text\":\"Hello!\"}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2746,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1618207352,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"text\":\"Hello!\"}}";
         let params = SendMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .text("Hello!")
             .build();
         let mut server = mockito::Server::new_async().await;
@@ -171,7 +171,7 @@ mod tests {
 
     #[tokio::test]
     async fn async_send_rich_message_with_file_upload_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":275808073,\"type\":\"private\",\"username\":\"Ayrat555\",\"first_name\":\"Ayrat\",\"last_name\":\"Badykov\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
+        let response_string = "{\"ok\":true,\"result\":{\"message_id\":2790,\"from\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\"},\"date\":1619336672,\"chat\":{\"id\":123456789,\"type\":\"private\",\"username\":\"Name555\",\"first_name\":\"Name\",\"last_name\":\"Surname\"},\"rich_message\":{\"blocks\":[{\"type\":\"paragraph\",\"text\":\"Hello\"}]}}}";
         let file = std::path::PathBuf::from("./frankenstein_logo.png");
         let rich_message = InputRichMessage::builder()
             .blocks(vec![InputRichBlock::Photo(
@@ -181,7 +181,7 @@ mod tests {
             )])
             .build();
         let params = SendRichMessageParams::builder()
-            .chat_id(275808073)
+            .chat_id(123456789)
             .rich_message(rich_message)
             .build();
         let mut server = mockito::Server::new_async().await;

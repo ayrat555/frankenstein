@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use crate::games::GameHighScore;
-use crate::gifts::{Gifts, OwnedGifts};
+use crate::gifts::{Gifts, OwnedGifts, UniqueGift};
 use crate::inline_mode::{
     PreparedInlineMessage, PreparedKeyboardButton, SentGuestMessage, SentWebAppMessage,
 };
@@ -15,9 +15,9 @@ use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
     BotAccessSettings, BotCommand, BotDescription, BotName, BotShortDescription,
-    BusinessConnection, ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File,
-    ForumTopic, MenuButton, Message, MessageId, Poll, Story, User, UserChatBoosts,
-    UserProfileAudios, UserProfilePhotos,
+    BusinessConnection, ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember,
+    ChatShareThemeBackdrops, File, ForumTopic, MenuButton, Message, MessageId, Poll, Story, User,
+    UserChatBoosts, UserProfileAudios, UserProfilePhotos,
 };
 use crate::updates::{Update, WebhookInfo};
 
@@ -284,6 +284,8 @@ pub trait TelegramApi {
     }
 
     request!(sendDice, Message);
+    request!(sendWidget, Message);
+    request!(sendSharedWidget, Message);
     request!(sendMessageDraft, bool);
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
@@ -350,6 +352,7 @@ pub trait TelegramApi {
     request!(hideGeneralForumTopic, bool);
     request!(unhideGeneralForumTopic, bool);
     request!(answerCallbackQuery, bool);
+    request!(answerWidgetQuery, bool);
     request!(answerGuestQuery, SentGuestMessage);
     request!(getUserChatBoosts, UserChatBoosts);
     request!(getBusinessConnection, BusinessConnection);
@@ -456,6 +459,8 @@ pub trait TelegramApi {
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
+    request!(editMessageWidgetData, bool);
+    request!(editSharedWidgetData, bool);
     fn edit_ephemeral_message_text(
         &self,
         params: &crate::methods::EditEphemeralMessageTextParams,
@@ -591,6 +596,8 @@ pub trait TelegramApi {
     request!(setCustomEmojiStickerSetThumbnail, bool);
     request!(deleteStickerSet, bool);
     request_nb!(getAvailableGifts, Gifts);
+    request!(getUniqueGift, UniqueGift);
+    request_nb!(getChatShareThemeBackdrops, ChatShareThemeBackdrops);
     request!(sendGift, bool);
     request!(giftPremiumSubscription, bool);
     request!(verifyUser, bool);
@@ -634,6 +641,7 @@ pub trait TelegramApi {
     request!(getUserGifts, OwnedGifts);
     request!(getChatGifts, OwnedGifts);
     request!(convertGiftToStars, bool);
+    request!(deleteBusinessAccountGift, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);
 

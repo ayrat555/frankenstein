@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use crate::games::GameHighScore;
-use crate::gifts::{Gifts, OwnedGifts};
+use crate::gifts::{Gifts, OwnedGifts, UniqueGift};
 use crate::inline_mode::{
     PreparedInlineMessage, PreparedKeyboardButton, SentGuestMessage, SentWebAppMessage,
 };
@@ -15,9 +15,9 @@ use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
     BotAccessSettings, BotCommand, BotDescription, BotName, BotShortDescription,
-    BusinessConnection, ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember, File,
-    ForumTopic, MenuButton, Message, MessageId, Poll, Story, User, UserChatBoosts,
-    UserProfileAudios, UserProfilePhotos,
+    BusinessConnection, ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember,
+    ChatShareThemeBackdrops, File, ForumTopic, MenuButton, Message, MessageId, Poll, Story, User,
+    UserChatBoosts, UserProfileAudios, UserProfilePhotos,
 };
 use crate::updates::{Update, WebhookInfo};
 
@@ -300,6 +300,8 @@ where
     }
 
     request!(sendDice, Message);
+    request!(sendWidget, Message);
+    request!(sendSharedWidget, Message);
     request!(sendMessageDraft, bool);
     request!(sendChatAction, bool);
     request!(setMessageReaction, bool);
@@ -367,6 +369,7 @@ where
     request!(hideGeneralForumTopic, bool);
     request!(unhideGeneralForumTopic, bool);
     request!(answerCallbackQuery, bool);
+    request!(answerWidgetQuery, bool);
     request!(answerGuestQuery, SentGuestMessage);
     request!(getUserChatBoosts, UserChatBoosts);
     request!(getBusinessConnection, BusinessConnection);
@@ -475,6 +478,8 @@ where
     }
 
     request!(editMessageReplyMarkup, MessageOrBool);
+    request!(editMessageWidgetData, bool);
+    request!(editSharedWidgetData, bool);
     async fn edit_ephemeral_message_text(
         &self,
         params: &crate::methods::EditEphemeralMessageTextParams,
@@ -615,6 +620,8 @@ where
     request!(setCustomEmojiStickerSetThumbnail, bool);
     request!(deleteStickerSet, bool);
     request_nb!(getAvailableGifts, Gifts);
+    request!(getUniqueGift, UniqueGift);
+    request_nb!(getChatShareThemeBackdrops, ChatShareThemeBackdrops);
     request!(sendGift, bool);
     request!(giftPremiumSubscription, bool);
     request!(verifyUser, bool);
@@ -659,6 +666,7 @@ where
     request!(getUserGifts, OwnedGifts);
     request!(getChatGifts, OwnedGifts);
     request!(convertGiftToStars, bool);
+    request!(deleteBusinessAccountGift, bool);
     request!(upgradeGift, bool);
     request!(transferGift, bool);
 

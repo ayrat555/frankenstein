@@ -15,7 +15,10 @@ pub enum ParseMode {
 
     MarkdownV2,
 
-    #[deprecated = "This is a legacy mode, retained for backward compatibility. Use `MarkdownV2` instead."]
+    #[deprecated(
+        since = "0.11.0",
+        note = "This is a legacy mode, retained for backward compatibility. Use `MarkdownV2` instead."
+    )]
     Markdown,
 }
 
