@@ -39,7 +39,7 @@ async-trait = { version = "0.1", optional = true }
 bon = "3.0.0"
 macro_rules_attribute = "0.2.0"
 mime_guess = { version = "2", optional = true }
-multipart = { version = "0.18", optional = true, default-features = false, features = ["client"] }
+multipart = { package = "multipart_ng", version = "0.18.1", optional = true, default-features = false, features = ["client"] }
 paste = "1.0.2"
 serde = { version = "1.0.157", features = ["derive"] }
 serde_json = { version = "1.0.45", optional = true }
