@@ -164,10 +164,9 @@ mod tests {
         InputRichMessageMediaKind,
     };
     use crate::test_json::assert_json_str;
-    use crate::types::CallbackQueryMode;
     use crate::types::{
-        AllowedUpdate, BotCommand, BotCommandScope, BotCommandScopeChat, ChatAction, ChatId,
-        ChatPermissions, EphemeralMessageParameters, InputPollOption,
+        AllowedUpdate, BotCommand, BotCommandScope, BotCommandScopeChat, CallbackQueryMode,
+        ChatAction, ChatId, ChatPermissions, EphemeralMessageParameters, InputPollOption,
     };
 
     macro_rules! case {
