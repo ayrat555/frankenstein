@@ -825,6 +825,9 @@ mod input_file_replacement {
                 InputRichBlock::Blockquote(blockquote) => {
                     replace_blocks(&mut blockquote.blocks, files);
                 }
+                InputRichBlock::ExpandableBlockquote(blockquote) => {
+                    replace_blocks(&mut blockquote.blocks, files);
+                }
                 InputRichBlock::Collage(collage) => replace_blocks(&mut collage.blocks, files),
                 InputRichBlock::Slideshow(slideshow) => {
                     replace_blocks(&mut slideshow.blocks, files);
@@ -843,7 +846,6 @@ mod input_file_replacement {
                 | InputRichBlock::Divider(_)
                 | InputRichBlock::MathematicalExpression(_)
                 | InputRichBlock::Anchor(_)
-                | InputRichBlock::ExpandableBlockquote(_)
                 | InputRichBlock::Pullquote(_)
                 | InputRichBlock::Table(_)
                 | InputRichBlock::Map(_)
@@ -892,8 +894,9 @@ mod input_file_replacement {
         use std::path::PathBuf;
 
         use super::super::{
-            InputRichBlock, InputRichBlockDetails, InputRichBlockDocument, InputRichBlockPhoto,
-            InputRichMessage, InputRichMessageMedia, InputRichMessageMediaKind, RichText,
+            InputRichBlock, InputRichBlockDetails, InputRichBlockDocument,
+            InputRichBlockExpandableBlockQuotation, InputRichBlockPhoto, InputRichMessage,
+            InputRichMessageMedia, InputRichMessageMediaKind, RichText,
         };
         use crate::input_media::{InputMediaDocument, InputMediaPhoto, InputMediaVideo};
 
@@ -984,6 +987,39 @@ mod input_file_replacement {
             assert_eq!(
                 value["blocks"][0]["blocks"][1]["document"]["thumbnail"],
                 "attach://file6"
+            );
+        }
+
+        #[test]
+        fn input_files_in_expandable_blockquote_are_replaced() {
+            let mut message = InputRichMessage::builder()
+                .blocks(vec![InputRichBlock::ExpandableBlockquote(
+                    InputRichBlockExpandableBlockQuotation::builder()
+                        .blocks(vec![InputRichBlock::Photo(
+                            InputRichBlockPhoto::builder()
+                                .photo(
+                                    InputMediaPhoto::builder()
+                                        .media(PathBuf::from("quoted.jpg"))
+                                        .build(),
+                                )
+                                .build(),
+                        )])
+                        .build(),
+                )])
+                .build();
+
+            let files = message.replace_input_files();
+
+            assert_eq!(
+                files,
+                vec![("file0".to_owned(), PathBuf::from("quoted.jpg"))]
+            );
+
+            let value = serde_json::to_value(&message).unwrap();
+            assert_eq!(value["blocks"][0]["type"], "expandable_blockquote");
+            assert_eq!(
+                value["blocks"][0]["blocks"][0]["photo"]["media"],
+                "attach://file0"
             );
         }
     }
