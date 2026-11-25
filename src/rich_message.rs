@@ -398,7 +398,7 @@ pub struct RichBlockBlockQuotation {
 
 #[apply(apistruct!)]
 pub struct RichBlockExpandableBlockQuotation {
-    pub text: RichText,
+    pub blocks: Vec<RichBlock>,
     pub credit: Option<RichText>,
 }
 
@@ -585,7 +585,7 @@ pub struct InputRichBlockBlockQuotation {
 
 #[apply(apistruct!)]
 pub struct InputRichBlockExpandableBlockQuotation {
-    pub text: RichText,
+    pub blocks: Vec<InputRichBlock>,
     pub credit: Option<RichText>,
 }
 

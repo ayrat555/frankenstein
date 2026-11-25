@@ -156,14 +156,15 @@ mod tests {
         SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams,
         SendWidgetParams, SetChatAdministratorCustomTitleParams, SetChatDescriptionParams,
         SetChatPermissionsParams, SetChatPhotoParams, SetChatStickerSetParams, SetChatTitleParams,
-        SetMyCommandsParams, SetWebhookParams, StopMessageLiveLocationParams, StopPollParams,
-        UnbanChatMemberParams, UnpinChatMessageParams,
+        SetMyCommandsParams, SetMySettingsParams, SetWebhookParams, StopMessageLiveLocationParams,
+        StopPollParams, UnbanChatMemberParams, UnpinChatMessageParams,
     };
     use crate::rich_message::{
         InputRichBlock, InputRichBlockPhoto, InputRichMessage, InputRichMessageMedia,
         InputRichMessageMediaKind,
     };
     use crate::test_json::assert_json_str;
+    use crate::types::CallbackQueryMode;
     use crate::types::{
         AllowedUpdate, BotCommand, BotCommandScope, BotCommandScopeChat, ChatAction, ChatId,
         ChatPermissions, EphemeralMessageParameters, InputPollOption,
@@ -262,8 +263,19 @@ mod tests {
 
     #[test]
     fn get_me_success() {
-        let response_string = "{\"ok\":true,\"result\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_inline_queries\":false}}";
+        let response_string = "{\"ok\":true,\"result\":{\"id\":1276618370,\"is_bot\":true,\"first_name\":\"test_el_bot\",\"username\":\"el_mon_test_bot\",\"can_join_groups\":true,\"can_read_all_group_messages\":false,\"supports_guest_queries\":false,\"supports_inline_queries\":false,\"needs_inline_query_location\":false,\"can_connect_to_business\":false,\"has_main_web_app\":false,\"has_topics_enabled\":false,\"allows_users_to_create_topics\":false,\"has_topic_sidebar\":false,\"can_manage_bots\":false,\"supports_join_request_queries\":false}}";
         let response = case!(getMe, 200, response_string).unwrap();
+        assert_json_str(&response, response_string);
+    }
+
+    #[test]
+    fn set_my_settings_success() {
+        let response_string = "{\"ok\":true,\"result\":true}";
+        let params = SetMySettingsParams::builder()
+            .has_topic_sidebar(true)
+            .callback_query_mode(CallbackQueryMode::Inline)
+            .build();
+        let response = case!(setMySettings, 200, response_string, params).unwrap();
         assert_json_str(&response, response_string);
     }
 
