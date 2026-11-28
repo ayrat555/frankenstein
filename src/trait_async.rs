@@ -14,9 +14,9 @@ use crate::payments::{StarAmount, StarTransactions};
 use crate::response::{MessageOrBool, MethodResponse};
 use crate::stickers::{Sticker, StickerSet};
 use crate::types::{
-    BotAccessSettings, BotCommand, BotDescription, BotName, BotShortDescription,
+    BotAccessSettings, BotCommand, BotDescription, BotFullInfo, BotName, BotShortDescription,
     BusinessConnection, ChatAdministratorRights, ChatFullInfo, ChatInviteLink, ChatMember,
-    ChatShareThemeBackdrops, File, ForumTopic, MenuButton, Message, MessageId, Poll, Story, User,
+    ChatShareThemeBackdrops, File, ForumTopic, MenuButton, Message, MessageId, Poll, Story,
     UserChatBoosts, UserProfileAudios, UserProfilePhotos,
 };
 use crate::updates::{Update, WebhookInfo};
@@ -120,7 +120,7 @@ where
     request!(setWebhook, bool);
     request!(deleteWebhook, bool);
     request_nb!(getWebhookInfo, WebhookInfo);
-    request_nb!(getMe, User);
+    request_nb!(getMe, BotFullInfo);
     request_nb!(logOut, bool);
     request_nb!(close, bool);
     request!(forwardMessage, Message);
@@ -376,6 +376,7 @@ where
     request!(getMyCommands, Vec<BotCommand>);
     request!(setMyCommands, bool);
     request!(deleteMyCommands, bool);
+    request!(setMySettings, bool);
     request!(setMyName, bool);
     request!(getMyName, BotName);
     request!(setMyDescription, bool);

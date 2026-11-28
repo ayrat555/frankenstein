@@ -14,10 +14,11 @@ use crate::payments::{LabeledPrice, ShippingOption};
 use crate::rich_message::InputRichMessage;
 use crate::stickers::{InputSticker, MaskPosition, StickerFormat, StickerType};
 use crate::types::{
-    AllowedUpdate, BotCommand, BotCommandScope, ChatAction, ChatAdministratorRights, ChatId,
-    ChatPermissions, EphemeralMessageParameters, InlineKeyboardMarkup, InputChecklist,
-    InputPollOption, KeyboardButton, LinkPreviewOptions, MenuButton, MessageEntity, PollType,
-    ReactionType, ReplyMarkup, ReplyParameters, StoryArea, SuggestedPostParameters,
+    AllowedUpdate, BotCommand, BotCommandScope, CallbackQueryMode, ChatAction,
+    ChatAdministratorRights, ChatId, ChatPermissions, EphemeralMessageParameters,
+    InlineKeyboardMarkup, InputChecklist, InputPollOption, KeyboardButton, LinkPreviewOptions,
+    MenuButton, MessageEntity, PollType, ReactionType, ReplyMarkup, ReplyParameters, StoryArea,
+    SuggestedPostParameters,
 };
 
 #[apply(apistruct!)]
@@ -1081,6 +1082,26 @@ pub struct SetMyCommandsParams {
     pub commands: Vec<BotCommand>,
     pub scope: Option<BotCommandScope>,
     pub language_code: Option<String>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct SetMySettingsParams {
+    pub supports_inline_queries: Option<bool>,
+    pub inline_query_placeholder: Option<String>,
+    pub needs_inline_query_location: Option<bool>,
+    pub inline_feedback_share_denominator: Option<u32>,
+    pub can_join_groups: Option<bool>,
+    pub can_read_all_group_messages: Option<bool>,
+    pub can_connect_to_business: Option<bool>,
+    pub can_manage_bots: Option<bool>,
+    pub supports_guest_queries: Option<bool>,
+    pub supports_join_request_queries: Option<bool>,
+    pub has_topics_enabled: Option<bool>,
+    pub allows_users_to_create_topics: Option<bool>,
+    pub has_topic_sidebar: Option<bool>,
+    pub can_communicate_with_bots: Option<bool>,
+    pub callback_query_mode: Option<CallbackQueryMode>,
 }
 
 #[apply(apistruct!)]

@@ -4,7 +4,7 @@
 
 Telegram bot API client for Rust.
 
-It's a complete wrapper for Telegram bot API, and it's up-to-date with version 10.4 of the API.
+It's a complete wrapper for Telegram bot API, and it's up-to-date with version 10.5 of the API.
 
 Frankenstein's data structures (Rust structs and enums) are mapped one-to-one from Telegram bot API types and method parameters.
 
@@ -51,9 +51,6 @@ first_name	String	User's or bot's first name
 last_name	String	Optional. User's or bot's last name
 username	String	Optional. User's or bot's username
 language_code	String	Optional. IETF language tag of the user's language
-can_join_groups	Boolean	Optional. True, if the bot can be invited to groups. Returned only in getMe.
-can_read_all_group_messages	Boolean	Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
-supports_inline_queries	Boolean	Optional. True, if the bot supports inline queries. Returned only in getMe.
 ```
 
 In Frankenstein, it's described like this:
@@ -66,9 +63,6 @@ pub struct User {
     pub last_name: Option<String>,
     pub username: Option<String>,
     pub language_code: Option<String>,
-    pub can_join_groups: Option<bool>,
-    pub can_read_all_group_messages: Option<bool>,
-    pub supports_inline_queries: Option<bool>,
 }
 ```
 

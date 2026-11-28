@@ -61,6 +61,14 @@ pub enum ChatAction {
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
+pub enum CallbackQueryMode {
+    Default,
+    Auto,
+    Inline,
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
 pub enum ButtonStyle {
     Danger,
     Success,
@@ -373,16 +381,29 @@ pub struct User {
     pub language_code: Option<String>,
     pub is_premium: Option<bool>,
     pub added_to_attachment_menu: Option<bool>,
-    pub can_join_groups: Option<bool>,
-    pub can_read_all_group_messages: Option<bool>,
-    pub supports_guest_queries: Option<bool>,
-    pub supports_join_request_queries: Option<bool>,
-    pub supports_inline_queries: Option<bool>,
-    pub can_connect_to_business: Option<bool>,
-    pub has_main_web_app: Option<bool>,
-    pub has_topics_enabled: Option<bool>,
-    pub allows_users_to_create_topics: Option<bool>,
-    pub can_manage_bots: Option<bool>,
+}
+
+#[apply(apistruct!)]
+#[derive(Eq)]
+pub struct BotFullInfo {
+    pub id: u64,
+    pub is_bot: bool,
+    pub first_name: String,
+    pub username: Option<String>,
+    pub active_usernames: Option<Vec<String>>,
+    pub can_join_groups: bool,
+    pub can_read_all_group_messages: bool,
+    pub supports_guest_queries: bool,
+    pub supports_inline_queries: bool,
+    pub inline_query_placeholder: Option<String>,
+    pub needs_inline_query_location: bool,
+    pub can_connect_to_business: bool,
+    pub has_main_web_app: bool,
+    pub has_topics_enabled: bool,
+    pub allows_users_to_create_topics: bool,
+    pub has_topic_sidebar: bool,
+    pub can_manage_bots: bool,
+    pub supports_join_request_queries: bool,
 }
 
 #[apply(apistruct!)]
@@ -1188,6 +1209,7 @@ pub struct WriteAccessAllowed {
     pub from_request: Option<bool>,
     pub web_app_name: Option<String>,
     pub from_attachment_menu: Option<bool>,
+    pub inviter: Option<User>,
 }
 
 #[apply(apistruct!)]

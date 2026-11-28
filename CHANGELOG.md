@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+* feat: Bot API 10.5
+  * BREAKING: `getMe` now returns the new `BotFullInfo` type instead of `User`; bot-only fields (`can_join_groups`, `can_read_all_group_messages`, `supports_inline_queries`, `supports_guest_queries`, `supports_join_request_queries`, `can_connect_to_business`, `has_main_web_app`, `has_topics_enabled`, `allows_users_to_create_topics`, `can_manage_bots`) are removed from `User`
+  * BREAKING: `RichBlockExpandableBlockQuotation` and `InputRichBlockExpandableBlockQuotation` now have `blocks` instead of `text`
+  * Added `setMySettings` method with `SetMySettingsParams` and `CallbackQueryMode`
+  * Added `inviter` to `WriteAccessAllowed`
+
 ## 0.53.0 (2026-11-14)
 
 * feat: Bot API 10.4 - [#344](https://github.com/ayrat555/frankenstein/pull/344)
